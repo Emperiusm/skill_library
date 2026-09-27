@@ -8,7 +8,6 @@ description: "Revive a legacy 3D model: retexture, rig, animate, let the origina
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Revive, don't rebuild: retexture the old model, rig and animate it, and let the original forms carry the nostalgia.
-### Phase 1: Assess the old mesh [inference]
 
 ## Source
 
@@ -29,6 +28,8 @@ Tools used: None named in the post or comments. The model is an Anomalocaris (ex
 
 **Why**
 **[inference]** A 2013 model was likely built for older render budgets, which maps well onto an old-school RTS unit; the revival is economical only if the old topology is serviceable.
+
+## Phase 1: Assess the old mesh [inference]
 
 ## Phase 2: Retexture
 
