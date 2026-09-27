@@ -156,8 +156,13 @@ Every run delivers:
     pipeline first for the top candidates without per-video prompts,
     highest relevance first. This is the default for scheduled/cron runs
     once Ehsan enables it.
-  Hard limits regardless of mode: cap 3 downloads per run, never download
-  model files, never download the same video twice in one run. The
+  Hard limits regardless of mode: cap 3 media downloads per run, never
+  download the same video twice in one run. Whisper model weights are NOT
+  banned: they may be downloaded exactly once as a setup step, but only
+  with Ehsan's explicit approval in chat first. If the model download
+  re-fires approval cards in a loop (the Hugging Face CDN behavior),
+  kill it immediately with `process.kill` and treat local transcription as
+  unavailable for the run; never retry it. The
   approval-gate rule below is absolute: if ANY download hits
   `pending_user_confirmation` or an approval card, kill the process
   immediately with `process.kill` and skip that video; never retry it, never
