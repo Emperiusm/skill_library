@@ -8,7 +8,6 @@ description: "Build a target-driven real-time GPU fluid sim. Trigger when fluid 
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Drive fluid by target: a target-driven GPU fluid sim running in real time.
-### Phase 1: Simulate the fog as a real-time GPU fluid
 
 ## Source
 
@@ -37,6 +36,8 @@ Arrival (fifty plates; "Offer weapon" and "there is no linear time" named).
 Real-time GPU execution is the product constraint: TideGlass is an ambient
 companion app, not an offline render, so the sim must hold frame rate as
 wallpaper.
+
+## Phase 1: Simulate the fog as a real-time GPU fluid
 
 ## Phase 2: Emit ink along the glyph stroke with a travelling pen
 
