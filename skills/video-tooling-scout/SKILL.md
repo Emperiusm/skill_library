@@ -16,7 +16,7 @@ recommended gaps, so you can audit whether you need a tool for a project or
 just keep it on the side as known.
 
 ## Workflow
-1. **Scan** (`bin/scan_videos.py [days]`): pulls recent posts from the
+1. **Scan** (`scripts/scan_videos.py [days]`): pulls recent posts from the
    subreddits in `subreddits.yaml` via the Arctic Shift public API, keeps
    video posts (YouTube / Vimeo / native Reddit video), scores them by
    tooling relevance x engagement (zero-tooling-signal posts are downweighted
@@ -31,7 +31,7 @@ just keep it on the side as known.
    - **Native Reddit video (v.redd.it):** the video file itself is a short
      clip; the tooling signal is in the post text and comments. Pull full
      post text from the scan output and top comments with
-     `bin/fetch_comments.py <post_id>[:num_comments] [...]` (post id = base-36
+     `scripts/fetch_comments.py <post_id>[:num_comments] [...]` (post id = base-36
      id in the permalink; append `:num_comments` from the scan output so the
      script can detect Arctic Shift coverage gaps). When Arctic Shift returns
      zero comments for a post that has some, the script falls back to old
@@ -39,16 +39,47 @@ just keep it on the side as known.
      any YouTube demo/tutorial links found in the comments: they often
      contain the real breakdown.
 3. **Extract tooling** per video as a full-depth workflow audit, not a short
-   summary. Per-video required fields: source title, creator, URL; exact
-   tools used; a phased workflow with `Do`, `Check`, and `Why` for each
-   phase; exact parameters, brush names, values, costs, benchmarks, and
-   quoted principles wherever the captions/comments/metadata support them;
-   and the distilled human/process principles underneath the mechanics.
-   Never invent transcript lines or parameters; label inferences clearly.
-   When captions are unavailable and the run is a scheduled (non-interactive)
-   one, mark that audit `DEPTH-LIMITED`, explain why, and note that a media
-   download for full transcription would require the operator's explicit
-   per-video approval (see the interactive exception below).
+   summary. Every audit follows the canonical format (see the canonical
+   example `references/example-run-report.md` and the full worked skill
+   `skills/cinematic-cavern/SKILL.md`):
+
+   ```markdown
+   ## <N>. "<Video title>" (<Creator>)
+
+   Source: <URL> | <duration> | r/<sub> post <post_id> (score <n>)
+
+   Tools used: <exact tools, versions, plugins>
+
+   This audit reconstructs the exact workflow shown in the video, step by
+   step, so another agent can follow the same process. Every phase has three
+   parts: **Do** (the action), **Check** (how the human verifies it), and
+   **Why** (the principle). The video's core method is: <one sentence>.
+
+   ### Phase 1: <Name>
+
+   **Do**
+   1. <action>
+
+   **Check**
+   - <how the human verifies it>
+
+   **Why**
+   <the principle>
+
+   ### The human method, distilled
+   1. <decision habit, quoted where the creator stated it>
+
+   **Depth status:** FULL | DEPTH-LIMITED (<why>) | NO-TOOLING (<why>)
+   ```
+
+   Required: exact tools used; exact parameters, brush names, values, costs,
+   benchmarks, and quoted principles wherever the captions/comments/metadata
+   support them. Never invent transcript lines or parameters; label
+   inferences clearly. When captions are unavailable and the run is a
+   scheduled (non-interactive) one, mark that audit `DEPTH-LIMITED`, explain
+   why, and note that a media download for full transcription would require
+   the operator's explicit per-video approval (see the interactive exception
+   below).
 4. **Diff against every pipeline inventory**
    (`references/*-pipeline-inventory.md`): produce one have-vs-need table per
    inventory. Your primary inventory's table comes first; additional
@@ -62,8 +93,8 @@ just keep it on the side as known.
    the described need counts even if the wording differs). Matches go in a
    "Gap alerts" section at the very top of the report AND at the top of the
    operator's chat summary. Do not bury them in the tables.
-6. **Watchlist trending** (`bin/trend_watchlist.py`): after extraction, run
-   `python3 bin/trend_watchlist.py --date YYYY-MM-DD "<tool 1>" "<tool 2>" ...`
+6. **Watchlist trending** (`scripts/trend_watchlist.py`): after extraction, run
+   `python3 scripts/trend_watchlist.py --date YYYY-MM-DD "<tool 1>" "<tool 2>" ...`
    with every extracted tool name. The script compares them against
    `references/tooling-watchlist.md` (case-insensitive, token-overlap),
    appends "seen again <date>" to reappearing rows in place, and prints a
@@ -87,7 +118,7 @@ Every run delivers:
 - Per-inventory have-vs-need tables (primary first): Tool/stage | Found in
   (video) | Status (HAVE/PARTIAL/NEED) | Pipeline evidence |
   Recommendation (adopt now / backlog / watchlist / skip + why).
-- Watchlist trending snippet (from `bin/trend_watchlist.py`).
+- Watchlist trending snippet (from `scripts/trend_watchlist.py`).
 - Gap recommendations: the 3-5 highest-leverage NEEDs, each with what it
   replaces or unblocks in the pipeline and a concrete next step.
 - Explicit non-goals: tools found but correctly skipped, with one-line
