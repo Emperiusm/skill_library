@@ -8,7 +8,6 @@ description: "Feed photogrammetry only the frames it needs: score frames for qua
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Feed photogrammetry only the frames that matter: score frames for quality and overlap, extract the best, skip the rest.
-### Phase 1: Load video and set timeline regions
 
 ## Source
 
@@ -30,6 +29,8 @@ Tools used: adaptive-frame-extractor (native C++ desktop app, macOS/Windows/Linu
 
 **Why**
 The camera motion, and therefore the right frame spacing, changes across a capture session. Regions let one extraction pass treat each part on its own terms, and separate folders keep multi-pass scans separable when you get to reconstruction.
+
+## Phase 1: Load video and set timeline regions
 
 ## Phase 2: Adaptive extraction (motion-driven spacing)
 
