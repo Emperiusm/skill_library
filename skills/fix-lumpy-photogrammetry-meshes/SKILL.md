@@ -13,7 +13,7 @@ This audit reconstructs the exact workflow shown in the video, step by step, so 
 
 Creator: Nachiket B
 
-Source: https://youtu.be/m9oxz99Ysp0 | duration unknown | r/photogrammetry post 1wjnwzi (score 223)
+Source: https://youtu.be/m9oxz99Ysp0 | 61 s, uploaded 2026-09-13 | r/photogrammetry post 1wjnwzi (score 223)
 
 ## Tools used
 
@@ -166,13 +166,62 @@ reshaped the author's demo policy).
 9. **A real trial is a self-run.** The only meaningful test is the buyer running it on
    their own mesh with their own settings, reading their own report line.
 
+## Video-observed evidence (depth recovery, 2026-09-27)
+
+The full 61-second video was downloaded and all 12 extracted frames reviewed
+(frame-by-frame; no captions exist and no local transcription was possible,
+so any spoken audio is unverified, but the video's instruction is carried by
+on-screen text overlays that were fully captured). What the video shows,
+beyond the product page and Reddit thread:
+
+- **The exact click path.** Select the lumpy mesh in the Blender 5.1.2
+  3D viewport, press **N** to open the N-panel, open the **Planer** tab,
+  and click the blue **"Refine (in place)"** button. On-screen text:
+  "SELECT YOUR MESH AND PRESS N", then "IN A CLICK".
+- **The panel parameters as shipped** (visible in the N-panel, frame 6):
+  - Denoise: Normal Filter Iters 14, Vertex Update Iters 20,
+    Crease Sensitivity 0.18
+  - Planar segmentation: Begin Distance (m) 1.00, Merge Angle (deg) 24.00,
+    Min Plane Area (m²) 4.00, Min Faces / Plane 3, Snap Dist (m) 1.00
+  - Edges & bevels: Edge Angle (deg) 14.00, Smooth Leftover Detail (checked)
+  - Output: Decimate (smears baked texture), Shade Smooth, Measure Fidelity
+    (checked), Force Watertight (closed)
+- **Intermediate objects.** During the run the outliner shows generated
+  `PLANES_VIDEO`, `PLANES_CAM`, and `PLANES_UNION` objects: the solver
+  builds plane visualizations as it works. The finished mesh lands as
+  `REFINED_Building_CLEAN` next to the untouched `Building_CLEAN_SRC`.
+- **The run report, verbatim** (status bar, first run):
+  `Refined 14982 -> 14782 faces, 235 planes, 4425 verts snapped (3549 edg,
+  86 non-manifold | 449) | deviation mean 0.088m p95 0.070m max 1.664m`.
+  On-screen text: "1 CLICK AND UNDER 15 SECONDS FOR THIS MESH". The video
+  description confirms the building came back at 0.086 m mean deviation.
+- **Second run, textured.** A textured run shows `14982 -> 16982 faces,
+  225 planes, 6625 verts snapped (1669 edg, 110 corner), open edges 4188,
+  non-manifold 4690 | deviation mean 0.086m p95 0.2...`, with on-screen
+  text "TEXTURES AND UV PRESERVED", "WALLS FLAT. PARAPETS STRIGHT" (sic),
+  and "EVEN TELLS YOU HOW FAITHFUL IT STAYED".
+- **Social proof shown in-video.** A 5-star review is quoted on screen:
+  "Life saver for me. Bought it on the spur of the moment. Left it working
+  for about 30 minutes on a very large very nasty (10m faces) mesh of a
+  building, full of irrelevant foliage, from a Lidar scan. Worked
+  brilliantly first time."
+- **Closing card.** "PLANER / Blender 4.2+" and "LINK IN THE DESCRIPTION"
+  (SuperHive and Gumroad links in the description, verified live).
+
+Description-confirmed facts folded in: requires Blender 4.2+, pure Python on
+the numpy that ships with Blender, no external dependencies; works with
+Google Photorealistic 3D Tiles, Metashape, RealityCapture, Pix4D, and
+OpenDroneMap; explicitly does NOT reduce poly count, make meshes watertight,
+or repair holes/non-manifold edges (inherited unchanged from the source).
+
 ## Depth status
- DEPTH-LIMITED (no captions; the caption-fetch tool hit an approval
-gate that was declined, and the video file cannot be pulled. Full depth would require
-a media download, which needs the operator's explicit approval per the skill's interactive
-exception. The reconstruction above draws on the SuperHive product page, the Reddit
-post selftext, the full comment thread including the author's demo description and
-two report lines, and the exact tuning table.)
+PARTIAL (was DEPTH-LIMITED). The video itself is now fully observed:
+61 seconds downloaded, 12 frames reviewed, all on-screen text and panel
+parameters captured, description verified. Remaining gap: no captions exist
+and local transcription was impossible (Whisper model weights were not
+cached and model downloads are forbidden), so any spoken narration is
+unverified. The video's instruction content is carried by its text overlays,
+which were fully captured, so this gap is narrow.
 
 ---
 
