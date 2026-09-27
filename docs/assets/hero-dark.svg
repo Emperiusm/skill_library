@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" role="img" aria-label="video-tooling-scout pipeline: Scan Reddit for video posts, Summarize from captions, Extract tooling, Diff against your pipeline inventory, Report have-vs-need.">
+  <rect width="960" height="220" fill="#0d1117"/>
+  <g font-family="system-ui, -apple-system, sans-serif">
+    <text x="480" y="34" text-anchor="middle" fill="#e6edf3" font-size="20" font-weight="700">video-tooling-scout</text>
+    <g font-size="13">
+      <rect x="30"  y="70" width="150" height="90" rx="10" fill="#161b22" stroke="#58a6ff"/>
+      <text x="105" y="105" text-anchor="middle" fill="#e6edf3" font-weight="700">1. SCAN</text>
+      <text x="105" y="128" text-anchor="middle" fill="#8b949e">subreddits via</text>
+      <text x="105" y="146" text-anchor="middle" fill="#8b949e">Arctic Shift API</text>
+      <rect x="210" y="70" width="150" height="90" rx="10" fill="#161b22" stroke="#58a6ff"/>
+      <text x="285" y="105" text-anchor="middle" fill="#e6edf3" font-weight="700">2. SUMMARIZE</text>
+      <text x="285" y="128" text-anchor="middle" fill="#8b949e">captions + metadata</text>
+      <text x="285" y="146" text-anchor="middle" fill="#8b949e">no downloads</text>
+      <rect x="390" y="70" width="150" height="90" rx="10" fill="#161b22" stroke="#58a6ff"/>
+      <text x="465" y="105" text-anchor="middle" fill="#e6edf3" font-weight="700">3. EXTRACT</text>
+      <text x="465" y="128" text-anchor="middle" fill="#8b949e">tools, plugins,</text>
+      <text x="465" y="146" text-anchor="middle" fill="#8b949e">stages, automation</text>
+      <rect x="570" y="70" width="150" height="90" rx="10" fill="#161b22" stroke="#58a6ff"/>
+      <text x="645" y="105" text-anchor="middle" fill="#e6edf3" font-weight="700">4. DIFF</text>
+      <text x="645" y="128" text-anchor="middle" fill="#8b949e">against YOUR pipeline</text>
+      <text x="645" y="146" text-anchor="middle" fill="#8b949e">inventory</text>
+      <rect x="750" y="70" width="150" height="90" rx="10" fill="#161b22" stroke="#3fb950"/>
+      <text x="825" y="105" text-anchor="middle" fill="#e6edf3" font-weight="700">5. REPORT</text>
+      <text x="825" y="128" text-anchor="middle" fill="#8b949e">have-vs-need +</text>
+      <text x="825" y="146" text-anchor="middle" fill="#8b949e">gap alerts</text>
+    </g>
+    <g stroke="#58a6ff" stroke-width="2">
+      <line x1="180" y1="115" x2="210" y2="115"/><polygon points="210,108 222,115 210,122" fill="#58a6ff"/>
+      <line x1="360" y1="115" x2="390" y2="115"/><polygon points="390,108 402,115 390,122" fill="#58a6ff"/>
+      <line x1="540" y1="115" x2="570" y2="115"/><polygon points="570,108 582,115 570,122" fill="#58a6ff"/>
+      <line x1="720" y1="115" x2="750" y2="115"/><polygon points="750,108 762,115 750,122" fill="#58a6ff"/>
+    </g>
+    <text x="480" y="195" text-anchor="middle" fill="#8b949e" font-size="13">Read-only. Never posts, comments, or votes. Watchlist is append-only.</text>
+  </g>
+</svg>
