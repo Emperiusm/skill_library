@@ -6,7 +6,7 @@ full output contract: gap alerts first, per-inventory have-vs-need tables,
 watchlist trending, non-goals, then a full-depth workflow audit for every
 audited video. **Depth benchmark:** every audited video is reconstructed as
 source line, tools used, phased Do / Check / Why, exact parameters where the
-source gives them, and distilled principles. **25 unique videos/posts**
+source gives them, and distilled principles. **24 unique videos/posts**
 audited. Method: captions/metadata only, zero downloads, zero approval
 prompts. Anything inferred is marked [inference]. Videos without captions
 are marked DEPTH-LIMITED.
@@ -23,7 +23,7 @@ No new P1/P2 gap matches in the latest (v3) window. Standing gaps, unchanged:
    (auto-rig + retarget) before UE packaging.
 3. **AI-vendor generation/acceptance spec (P1).** the intake stage needs a written
    "what good means" per asset type before the next model swap.
-4. **Mesh compression + virtual-texture standard for foundry output (P1).**
+4. **Mesh compression + virtual-texture standard for pipeline output (P1).**
    The Cave Expedition devlog (video #3 below) is the copyable recipe:
    8-bit UVs, octahedron normals, 3-integer vertices, patch-grid UVs.
    **Caution:** the devlog's captions were unavailable for this deep audit
@@ -46,18 +46,18 @@ No new P1/P2 gap matches in the latest (v3) window. Standing gaps, unchanged:
 
 ## Have-vs-need per repo (consolidated across all runs)
 
-### Primary pipeline (example: Blender + Godot indie project)
+### Example pipeline A (Blender + Godot indie project)
 
 | Tool / stage | Found in video | Status | Recommendation |
 |---|---|---|---|
 | Mesh compression recipe (8-bit UVs, octahedron normals, 3-int vertices) | #3 Cave Expedition | NEED | **Backlog (P1).** Adopt as asset-pipeline output standard; answers the perf-budget gap |
 | Virtual texturing + GPU feedback rendering | #3 | NEED | **Backlog, same ticket.** Only if scenes get large |
 | Rigging / skinning / animation retarget | #7 model revival | NEED | **Adopt now (P1).** Second independent signal for the audit gap |
-| MCP servers driving Blender/Unreal (agentic DCC) | #14 kinesin/ATP | NEED | **Adopt (P2).** Blender MCP spike behind review stage |
-| Agentic cinematic from game source | #17 Claude trailer | PARTIAL | **Backlog (P2-adjacent).** Trailer generation as review-stage artifact |
+| MCP servers driving Blender/Unreal (agentic DCC) | n/a | NEED | **Adopt (P2).** Blender MCP spike behind review stage |
+| Agentic cinematic from game source | #16 Claude trailer | PARTIAL | **Backlog (P2-adjacent).** Trailer generation as review-stage artifact |
 | Obi Physics (particle-based, SDF collision) | #3 | NEED | **Watchlist.** Proven rope/ragdoll pattern for gameplay modules |
-| SPH fracture/contact modeling (Autodyn-class) | #24 armor sim | NEED | **Watchlist.** Only if destruction sim enters scope |
-| Squishy Volumes (Blender MPM soft-body) | #18 | NEED | **Watchlist.** Free; fracture upcoming |
+| SPH fracture/contact modeling (Autodyn-class) | #23 armor sim | NEED | **Watchlist.** Only if destruction sim enters scope |
+| Squishy Volumes (Blender MPM soft-body) | #17 | NEED | **Watchlist.** Free; fracture upcoming |
 | ComfyUI custom nodes / Minimax H3 via `@comfyorg` | #1 RESISTANCE | NEED | **Watchlist.** Expose intake stages as custom nodes |
 | AI video generation (Minimax H3, Seedance 2 Fast) | #1 | NEED | **Watchlist.** Trailers/marketing only |
 | AI image edit/gen feeding pipeline (Nano Banana class) | #1 | PARTIAL | **Backlog.** Define intake's image stage as model-swappable |
@@ -68,44 +68,44 @@ No new P1/P2 gap matches in the latest (v3) window. Standing gaps, unchanged:
 | Deterministic topology via VDBs + math | #12 | HAVE | Validation, no action |
 | LOD generation | #8 Minecraft | HAVE | Keep; texture-LOD-from-seed is PARTIAL → watchlist |
 | Deterministic behavioral scripts beating learned policies | #6 RO engine | HAVE | Adopt the *validation*: fake-player eval harness as an AI-service milestone |
-| Procedural ribbon cables (Blender GeoNodes) | #21 | PARTIAL | **Watchlist.** Prop-detail stage if ever needed |
-| Leather-patch Substance generator | #22 | NEED | Same as material-acceptance-spec gap: define "good material" first |
-| Procedural material authoring (Substance-class) | #15, #16 | NEED | **Backlog.** Pairs with AI-vendor acceptance spec |
+| Procedural ribbon cables (Blender GeoNodes) | #20 | PARTIAL | **Watchlist.** Prop-detail stage if ever needed |
+| Leather-patch Substance generator | #21 | NEED | Same as material-acceptance-spec gap: define "good material" first |
+| Procedural material authoring (Substance-class) | #14, #15 | NEED | **Backlog.** Pairs with AI-vendor acceptance spec |
 | Intelligent frame extraction (quality scoring, overlap warnings) | #11 | NEED | **Backlog.** Front door if intake ever accepts video |
 | Gaussian Splatting as representation | #11 comments | NEED | **Watchlist.** Fast preview before mesh commit |
 | SAM background removal | #11 comments | NEED | **Watchlist.** Phone-scan cleanup before intake |
-| Light Wrangler gobos (Blender) | #19 | PARTIAL | **Watchlist.** Minor; only if render-look work grows |
-| Non-manifold fix for surface-nets | #3 | PARTIAL | **Watchlist.** Only if voxel meshing enters foundry |
+| Light Wrangler gobos (Blender) | #18 | PARTIAL | **Watchlist.** Minor; only if render-look work grows |
+| Non-manifold fix for surface-nets | #3 | PARTIAL | **Watchlist.** Only if voxel meshing enters the pipeline |
 | Compute-shader tessellation | #3 | NEED | **Watchlist.** UE5 Nanite covers client side |
-| Tideglass target-driven GPU fluid | #23 | n/a | **Skip.** Cinematics-only, not asset tooling |
+| Tideglass target-driven GPU fluid | #22 | n/a | **Skip.** Cinematics-only, not asset tooling |
 | Weta bubbles solver in Houdini | #13 | n/a | **Skip.** Cinematics-only, not asset tooling |
 | NLE / edit / grade (Da Vinci Resolve 21) | #1 | n/a | **Skip.** Human editing tool |
 | Browser-based procedural delivery | #10 | n/a | **Skip.** Different project's lane |
 
-### Second project (pixel-art side-scroller)
+### Example pipeline B (2D project)
 
 | Tool / stage | Found in video | Status | Recommendation |
 |---|---|---|---|
-| Rigging / retargeting | #7 | NEED | adopt: the second project's character form-swap system will need retargets |
+| Rigging / retargeting | #7 | NEED | adopt: character form-swap systems will need retargets |
 | Mesh compression standard | #3 | NEED | watch: relevant when 3D segments ship |
-| Agentic cinematic from game source | #17 | PARTIAL | backlog: trailer artifact for the slice |
+| Agentic cinematic from game source | #16 | PARTIAL | backlog: trailer artifact for the slice |
 | Deterministic scripts vs RL | #6 | HAVE | validation of deterministic-core instinct |
-| Everything else above | n/a |, | skip: no fit for pixel-art side-scroller |
+| Everything else above | n/a |, | skip: no fit for a 2D project |
 
-### Third project (cozy city-builder)
+### Example pipeline C (city-builder)
 
 | Tool / stage | Found in video | Status | Recommendation |
 |---|---|---|---|
 | Procedural construction shader | #5 | NEED | **Backlog.** Construction animation for buildings |
 | Shader-driven skyline fill | #9 | NEED | **Watchlist.** Directly relevant to skyline scale |
 | Houdini Engine SaaS | #12 | NEED | skip: project deliberately engine-independent |
-| SPH fracture | #24 | NEED | skip: static buildings, no destruction in scope |
+| SPH fracture | #23 | NEED | skip: static buildings, no destruction in scope |
 
-### Fourth project (space strategy)
+### Example pipeline D (strategy game)
 
 | Tool / stage | Found in video | Status | Recommendation |
 |---|---|---|---|
-| SPH fracture/contact modeling | #24 | NEED | **Watchlist.** Conceivable for battle-damage later |
+| SPH fracture/contact modeling | #23 | NEED | **Watchlist.** Conceivable for battle-damage later |
 | Mesh compression standard | #3 | NEED | **Watchlist.** Fleet-scale scenes |
 | Houdini Engine SaaS | #12 | NEED | skip: engine-neutral Python+Blender pipeline |
 
@@ -1479,136 +1479,7 @@ Anything inferred is marked [inference].
 
 ---
 
-## 14. "Kinesin movement powered by ATP (blender and unreal MCP)" (Mister-Fordo)
-
-Source: https://v.redd.it/q9u9qpb7u5oh1 | r/Simulated post 1wa3y1w (score 109, 7 comments) | native clip (demo, not tutorial)
-
-Tools used: Blender (with the Molecular Nodes addon), Unreal Engine, MCP
-servers for Blender and Unreal driven by an AI agent, frontier models ("Astra"
-for most of the work; "Fable 5.1", called "Claude Fable 5.1" in the comments,
-for some Unreal Engine work after the plus subscription usage ran out),
-molecular model data from https://www.rcsb.org/ (RCSB Protein Data Bank).
-
-This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Build rust as a material system: layered procedural weathering with exposed parameters, not painted-on decay.
-Pattern grounding (not the poster's exact setup): public MCP-server docs
-describe the agentic-DCC loop. mcp-blender: "Drive it from your IDE, terminal,
-or AI agent and run an iterative render-analyze-refine loop without leaving
-Blender"; agents get screenshots, renders, and scene data back. MifBridge:
-each backend "reports what actually happened rather than what it was asked to
-do." The sections below marked [pattern] come from this general documentation;
-sections marked [inference] are reconstructed, not stated.
-
-### Phase 1: Source the science
-
-**Do**
-1. Pull the kinesin model data from https://www.rcsb.org/ (stated in selftext).
-2. Build the model inside Blender using the Molecular Nodes addon (stated:
-   "getting a model built inside of blender which uses the Molecular Nodes addon").
-
-**Check**
-- [inference] The motor-domain structure reads correctly in the viewport before
-  any animation work begins.
-
-**Why**
-- [inference] Real experimental structure first, art direction second. The
-  subject is kinesin movement powered by ATP, so the protein geometry is the
-  ground truth everything else hangs on.
-
-### Phase 2: Put the agent in the driver's seat
-
-**Do**
-1. [pattern, inference] Install and enable the MCP addon (Blender) and the MCP
-   plugin (Unreal), start the server(s), and connect the MCP client the agent
-   runs in.
-2. Give the agent natural-language direction for what the scene needs (the
-   title states the build used "blender and unreal MCP").
-
-**Check**
-- [pattern] The agent's tool calls return actual engine state, not echoes of
-  the request ("reports what actually happened rather than what it was asked
-  to do").
-
-**Why**
-- [pattern, inference] The model does not emit files for a human to paste into
-  the editor. It drives the tool directly and reads the result back, which
-  closes the blind "write script, paste, screenshot the errors, guess again"
-  loop.
-
-### Phase 3: Build the Blender scene and animation through the agent
-
-**Do**
-1. Agent calls scene/modeling tools to assemble the kinesin scene (stated:
-   "then it proceeded to build the animation").
-2. [pattern, inference] Iterate on the animation: the agent renders, looks at
-   the render, and refines ("the agent sees its renders ... and iterates").
-
-**Check**
-- The stepping motion reads as movement. Commenters treated motion as the
-  visible criterion ("Not moving fast enough", "MORE WIGGLE WE NEED WIGGLE"),
-  so [inference] the check is the clip itself: does the kinesin walk.
-
-**Why**
-- [inference] Same arbiter as the human workflow: look at it, change what is
-  wrong. The agent just does the looking through captures instead of eyes.
-
-### Phase 4: Move to Unreal for the later stage
-
-**Do**
-1. Import the Blender-built animation into Unreal (stated: "all that got
-   imported into Unreal, for a later stage of this project").
-2. Continue the Unreal Engine work through the Unreal MCP with the agent
-   (stated that MCPs, plural, were used; [inference] on exactly which Unreal
-   steps were agent-driven versus manual).
-
-**Check**
-- [inference] The scene opens and plays in Unreal with no broken references.
-
-**Why**
-- [inference] Blender is the molecular build room; Unreal is the later-stage
-  home. Each DCC gets the job it is best at, and the agent crosses the gap.
-
-### Phase 5: Manage the model roster
-
-**Do**
-1. Use "Astra" for most of the work; switch back to "Fable 5.1" for some of
-   the Unreal Engine work once the plus subscription usage ran out (stated).
-2. Keep the work framed around existing published structures. The poster,
-   asked how he avoided the biology-content refusals other users hit, answered
-   "It just worked? lol" and guessed "the fact i'm not trying to create new
-   molecules but just going off existing papers" (stated, comments).
-
-**Check**
-- [inference] If a model refuses a biology prompt, reframe around reproducing
-  an existing published mechanism rather than designing anything new.
-
-**Why**
-- Frontier models gate biology work (commenters report censorship and review
-  holds on molecular-biology prompts). Working from existing papers stayed
-  inside the allowed lane, by the poster's own account.
-
-### The human method, distilled
-
-1. The agent drives the tool; it does not export files. Tool results report
-   actual engine state, closing the guess-and-check loop. [pattern]
-2. Render-analyze-refine: the agent sees its own output (screenshots, renders,
-   scene data) and iterates. [pattern]
-3. Science data first: start from rcsb.org structures via the Molecular Nodes
-   addon. (stated)
-4. Right DCC per stage: Blender for the molecular build and animation, Unreal
-   for the later stage. (stated)
-5. Frame biology prompts around existing published work, not novel molecule
-   design. (stated, poster's own guess)
-6. Model budget is real: Astra for the bulk, Fable 5.1 when the plus
-   subscription ran out. (stated)
-
-**Depth status:** DEPTH-LIMITED (the clip is a demo with no transcript; the
-agent-loop mechanics are reconstructed from the post's stated steps plus public
-MCP-server documentation, with [inference]/[pattern] marks; the exact servers,
-prompts, and tool calls are not stated).
-
----
-
-## 15. "How to Make Realistic Rust Materials" (Loic Anquetil)
+## 14. "How to Make Realistic Rust Materials" (Loic Anquetil)
 
 Source: https://v.redd.it/9oiwcc43mhrh1 | r/Substance3D post 1wp51i2 by P_Gresty
 (score 39, 0 comments) | native clip (demo, not tutorial)
@@ -1786,7 +1657,7 @@ alone would be thin, since the post has 0 comments).
 
 ---
 
-## 16. "I Used Substance Painter to Texture my Characters!" (SpencerJDev)
+## 15. "I Used Substance Painter to Texture my Characters!" (SpencerJDev)
 
 Source: https://v.redd.it/0sg7ad4lrxph1 | r/Substance3D post 1wi7qbh (score 36,
 1 comment thread: "that cat is awesome i love it lol", "Nice!") | native clip
@@ -1857,7 +1728,7 @@ Anything not stated by the sources is marked [inference].
 
 ---
 
-## 17. "I gave claude access to my cozy tower defense game, and asked it to make a cinematic trailer. It interpreted my game as a horror-movie." (illadann7)
+## 16. "I gave claude access to my cozy tower defense game, and asked it to make a cinematic trailer. It interpreted my game as a horror-movie." (illadann7)
 
 Source: https://www.reddit.com/r/aigamedev/comments/1wrgmaw | r/aigamedev post 1wrgmaw (score 91) | native clip (demo, not tutorial)
 
@@ -2006,7 +1877,7 @@ where the HOW lived)
 
 ---
 
-## 18. "Material Point Method in Blender, 890k Particles, Faking Fracture With Voronoi Cells" (Algebraic-UG)
+## 17. "Material Point Method in Blender, 890k Particles, Faking Fracture With Voronoi Cells" (Algebraic-UG)
 
 Source: https://www.reddit.com/r/Simulated/comments/1w8fd67 | r/Simulated post 1w8fd67 (score 67) | native clip (demo, not tutorial)
 
@@ -2088,7 +1959,7 @@ bar; the Voronoi fake is honest about not clearing it yet.
 
 ---
 
-## 19. "Houdini X Mops-Blender/cycles" (gio_bero)
+## 18. "Houdini X Mops-Blender/cycles" (gio_bero)
 
 Source: https://www.reddit.com/r/houdini/comments/1wp1cad | r/houdini post 1wp1cad (score 66) | native clip (demo, not tutorial)
 
@@ -2177,7 +2048,7 @@ inferred beyond the sources is tagged [inference].
 
 ---
 
-## 20. "How I made the multiplayer movement smooth in my game" (Ase-Dev ("Don't Lose Your Head"))
+## 19. "How I made the multiplayer movement smooth in my game" (Ase-Dev ("Don't Lose Your Head"))
 
 Source: https://v.redd.it/yvsd4zqwjarh1 | r/unity post 1wo9pos (score 29) |
 native clip (demo, not tutorial)
@@ -2258,7 +2129,7 @@ confirmation are stated in the post and comments)
 
 ---
 
-## 21. "Procedural Ribbon cables" (deepak365days)
+## 20. "Procedural Ribbon cables" (deepak365days)
 
 Source: https://v.redd.it/v7m78fgu9eqh1 | r/proceduralgeneration post 1wkatjx
 (score 177) | native clip (showcase, no tutorial)
@@ -2322,7 +2193,7 @@ parameters, or geometry method are stated anywhere; phases above are mostly
 
 ---
 
-## 22. "Leather Patch Generator" (Javadrajabzade)
+## 21. "Leather Patch Generator" (Javadrajabzade)
 
 Source: https://v.redd.it/9vqa8ywo21rh1 | r/Substance3D post 1wn37iv
 (score 176) | native clip (showcase, portfolio cross-post; 1 comment)
@@ -2366,7 +2237,7 @@ be honestly reconstructed)
 
 ---
 
-## 23. "Arrival Logograms, on a target-driven fluid sim. Real time on the GPU" (PiXeL161616 (TideGlass))
+## 22. "Arrival Logograms, on a target-driven fluid sim. Real time on the GPU" (PiXeL161616 (TideGlass))
 
 Source: https://v.redd.it/41d4qi2la9nh1 | r/Simulated post 1w60bt0
 (score 631) | native clip (demo; rich author selftext + 18 comments)
@@ -2495,7 +2366,7 @@ and the Mac-only status)
 
 ---
 
-## 24. "I'm making an armor simulation mode for my game" (silenttoaster7 (Galaxy Engine))
+## 23. "I'm making an armor simulation mode for my game" (silenttoaster7 (Galaxy Engine))
 
 Source: https://v.redd.it/ugv32oe4vrrh1 | r/Simulated post 1wqejcs
 (score 243) | native clip (devlog-style demo; 16 comments)
@@ -2593,7 +2464,7 @@ popular YouTube sims, not to the author's own solver.)
 
 ---
 
-## 25. "Looking for advice on topology / rendering. Any tips?" (Rew1ndy)
+## 24. "Looking for advice on topology / rendering. Any tips?" (Rew1ndy)
 
 Source: https://v.redd.it/pqk9jg7mp0sh1 | r/blender post 1wre6mr (score 26) |
 native clip (work-in-progress render turntable, not a tutorial)
