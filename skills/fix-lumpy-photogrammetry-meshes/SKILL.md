@@ -8,7 +8,6 @@ description: "Fix lumpy photogrammetry meshes in Blender the Planer way: detect 
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Fix the geometry, don't smooth it: detect planar regions, snap vertices to fitted planes and their intersections, and prove fidelity with a deviation report.
-### Phase 1: Start from the damaged mesh
 
 ## Source
 
@@ -43,6 +42,8 @@ viewport orbiting the result (per the author's comment).
 **Why**
 Every existing fix costs something (detail, UVs, texture, or a day per building);
 Planer exists to fix the geometry without paying those costs.
+
+## Phase 1: Start from the damaged mesh
 
 ## Phase 2: Run the Planer pipeline (N-panel)
 
