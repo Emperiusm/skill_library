@@ -8,7 +8,6 @@ description: "Productize procedural generation: headless Houdini Engine behind a
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Sell the engine, not the app: headless Houdini Engine behind an async queue and server pool, with deterministic VDB-and-math topology at the core.
-### Phase 1: Build the procedural core as a deterministic asset graph
 
 ## Source
 
@@ -29,6 +28,8 @@ Tools used: Houdini Engine (headless geometry engine), VDBs, Houdini math/solver
 
 **Why**
 When Houdini runs as a geometry engine behind a web app, there is no artist in the loop to fix a bad cook. The asset has to be a reliable function of its inputs. VDBs give watertight, topology-stable intermediates; Houdini's math keeps the whole graph recomputable rather than hand-tweaked.
+
+## Phase 1: Build the procedural core as a deterministic asset graph
 
 ## Phase 2: Put the Engine behind an async queue, not dedicated sessions
 
