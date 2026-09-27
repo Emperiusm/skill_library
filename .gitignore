@@ -1,0 +1,6 @@
+# scratch / run output
+work/
+reports/
+__pycache__/
+*.pyc
+*.pyo
