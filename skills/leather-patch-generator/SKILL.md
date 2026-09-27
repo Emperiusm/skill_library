@@ -8,7 +8,6 @@ description: "Generate leather patch materials with a parametric Substance gener
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Generate materials, don't paint them: a parametric leather-patch generator with exposed controls.
-### Phase 1: Author a procedural leather material [inference: reconstruction]
 
 ## Source
 
@@ -39,6 +38,8 @@ https://www.artstation.com/a/56020938. The single comment is a reaction
 **Why**
 A generator post is a portfolio move: the tool is the artifact. With no
 tutorial content, the workflow cannot go deeper than this.
+
+## Phase 1: Author a procedural leather material [inference: reconstruction]
 
 ## The human method, distilled
 
