@@ -21,13 +21,29 @@ it on the side as known.
    video posts (YouTube / Vimeo / native Reddit video), scores them by
    tooling relevance x engagement (zero-tooling-signal posts are downweighted
    regardless of engagement), and prints ranked JSON to stdout.
-2. **Summarize** each top video. Two paths, both captions/metadata only
-   (see the no-approval rule below):
-   - **YouTube/Vimeo:** the video-summarizer skill:
-     `python3 ~/workspace/skills/video-summarizer/bin/yt_summarize.py "<url>" --no-frames`.
-     Read `work/<video_id>/result.json` yourself; never invent transcript
-     lines or tool mentions. If a video has no captions, use its metadata +
-     description and move on, unless the interactive exception below applies.
+2. **Summarize** each top video with the deepened pipeline FIRST (the
+   Cinematic Cavern recovery on 2026-09-27 proved this is what reaches
+   FULL depth; captions/metadata are the fallback, not the default):
+   - **YouTube/Vimeo, deepened attempt first:** `python3
+     ~/workspace/skills/video-summarizer/bin/yt_download.py "<url>" --out
+     work/<video_id> --quality high` (if it times out, retry once with
+     `--continue`; the .part file resumes), then
+     `~/workspace/skills/video-summarizer/.venv/bin/python
+     ~/workspace/skills/video-summarizer/bin/yt_transcribe.py
+     work/<video_id>/media.* --model large-v3-turbo`, then `python3
+     ~/workspace/skills/video-summarizer/bin/yt_frames.py "<url>" --out
+     work/<video_id>/frames --from-video work/<video_id>/media.mp4 --count
+     12`. Read the transcript and review the frames yourself; never invent
+     transcript lines, values, or parameters, and never describe frames you
+     did not read. A partial download is still usable: ffprobe the .part
+     file and transcribe/frame-extract what downloaded.
+   - **Fallback (captions/metadata only):** if the download fails, stalls
+     with zero progress for 5+ minutes, or hits ANY approval gate, kill the
+     process immediately with `process.kill` and never retry that video
+     this run. Then run `python3
+     ~/workspace/skills/video-summarizer/bin/yt_summarize.py "<url>"
+     --no-frames` and read `work/<video_id>/result.json` yourself; never
+     invent transcript lines or tool mentions.
    - **Native Reddit video (v.redd.it):** the video file itself is a short
      clip; the tooling signal is in the post text and comments. Pull full
      post text from the scan output and top comments with
@@ -122,19 +138,24 @@ Every run delivers:
 - No live browser anywhere in this loop. Reddit via Arctic Shift API
   (PullPush API as the comments fallback), videos via the video-summarizer
   skill (plain HTTP + local tools).
-- **Depth escalation (media download) option.** Every run declares one mode
-  at the start; Ehsan chooses the mode when the run is set up, and it is
-  stated in the run report. Modes:
-  - `off`: captions and metadata only. DEPTH-LIMITED audits stay limited.
-    Default for scheduled/cron runs unless Ehsan enables otherwise.
-  - `ask` (interactive/chat runs only): for each high-relevance video with
-    no captions, offer the download in chat first ("this one needs a
+- **Depth mode (media download).** The deepened pipeline (download +
+  local transcribe + frame review) is attempted FIRST for every
+  YouTube/Vimeo video, per workflow step 2; captions/metadata are the
+  fallback when the download fails or is blocked. Every run declares one
+  mode at the start; Ehsan chooses the mode when the run is set up, and it
+  is stated in the run report. Modes:
+  - `off`: captions and metadata only; no downloads attempted.
+    DEPTH-LIMITED audits stay limited. The conservative option; default
+    only if Ehsan says so.
+  - `ask` (interactive/chat runs only): the deepened attempt runs for each
+    video only after Ehsan approves it in chat first ("this one needs a
     download to transcribe, approve?"). If he says no or doesn't answer,
     fall back to metadata + description and move on.
   - `pre-approved`: Ehsan grants a standing allowance of up to N media
-    downloads per run (default 2, his call). The run may attempt downloads
-    for DEPTH-LIMITED audits without per-video prompts, highest relevance
-    first.
+    downloads per run (default 2, his call). The run attempts the deepened
+    pipeline first for the top candidates without per-video prompts,
+    highest relevance first. This is the default for scheduled/cron runs
+    once Ehsan enables it.
   Hard limits regardless of mode: cap 3 downloads per run, never download
   model files, never download the same video twice in one run. The
   approval-gate rule below is absolute: if ANY download hits
@@ -146,20 +167,19 @@ Every run delivers:
   runtime approval gate, so worst case a blocked download is skipped, never
   a loop.
 - **Approval rule: scheduled runs are strict, interactive runs allow exceptions.**
-  Scheduled/cron runs: never trigger approval requests. Captions and metadata
-  only unless the run's configured depth-escalation mode is `pre-approved`
-  (see above). If any command hits an approval gate
-  (`pending_user_confirmation` or an approval card), kill the process
-  immediately with `process.kill` and skip that item; never retry it. If the
-  same host prompts more than 3 times in one run, stop hitting that host
-  entirely for the rest of the run. Surface skipped items and the host in the
-  report.
+  Scheduled/cron runs: never trigger approval requests. The run's
+  configured depth mode governs downloads (`off` = none; `pre-approved` =
+  up to N deepened attempts, highest relevance first). If any command hits
+  an approval gate (`pending_user_confirmation` or an approval card), kill
+  the process immediately with `process.kill` and skip that item; never
+  retry it. If the same host prompts more than 3 times in one run, stop
+  hitting that host entirely for the rest of the run. Surface skipped items
+  and the host in the report.
 - **Interactive exception (chat runs only, never cron).** When Ehsan is
-  present in chat, the depth-escalation mode defaults to `ask`: a
-  high-relevance video with no captions may be downloaded for local
-  transcription with his explicit per-video go-ahead in chat first. Cap 3
-  downloads per run. The per-host 3-prompt kill guard still applies, so the
-  worst case is a handful of taps, never a loop.
+  present in chat, the depth mode defaults to `ask`: the deepened attempt
+  runs for a video only with his explicit per-video go-ahead in chat first.
+  Cap 3 downloads per run. The per-host 3-prompt kill guard still applies,
+  so the worst case is a handful of taps, never a loop.
 - Comparison target defaults to all four inventories with Aegis primary.
   When Ehsan names a single repo, lead with that repo's table but still run
   the others. Never reuse one repo's inventory for a different repo; if an
