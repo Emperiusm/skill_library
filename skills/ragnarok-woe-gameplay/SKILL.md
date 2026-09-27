@@ -21,10 +21,3 @@ One paragraph: the video is 173 seconds of player-POV gameplay footage from Ragn
 ## Depth status
  NO-TOOLING (captions also absent on this video, but irrelevant: gameplay footage of a commercial title cannot yield a tooling workflow even with a transcript. Not pursued further per task instructions.)
 
----
-
-# Native Reddit demo clips: workflow reconstructions
-
-All three videos in this batch are **native Reddit video posts (v.redd.it)**: short demo clips, not narrated tutorials. There is no voiceover, no step-by-step, no screen capture of an editor. Each reconstruction below is built only from the author's post text, the visible comments, and (for V5) the author's post history context visible in the dataset. Where the source is thin, phase breakdowns are explicitly marked **[inference]**.
-
----
