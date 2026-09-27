@@ -8,7 +8,6 @@ description: "Generate ribbon cables procedurally with parametric controls inste
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Detail procedurally: ribbon cables generated with parametric controls instead of modeled by hand.
-### Phase 1: Build the procedural cable system [inference: reconstruction]
 
 ## Source
 
@@ -38,6 +37,8 @@ workflow below reconstructs only what the clip and comments confirm.
 **Why**
 Procedural generation earns its keep when the output stays editable. The
 author's yes to end-adjustment is the main confirmed workflow property.
+
+## Phase 1: Build the procedural cable system [inference: reconstruction]
 
 ## Phase 2: Randomized color assignment [inference: minimal reconstruction]
 
