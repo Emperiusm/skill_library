@@ -8,7 +8,6 @@ description: "Ship procedural 3D in the browser: client-side WebGPU with a WGSL 
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Ship the experience in the browser: client-side WebGPU rendering with a WGSL pipeline and a GLSL fallback.
-### Phase 1: Generate everything client-side from a seed
 
 ## Source
 
@@ -30,6 +29,8 @@ Tools used: Browser (client-side), WebGPU via vgpu with a WGSL post-processing p
 
 **Why**
 Seeded client-side generation means the game ships as code, not content: infinite backrooms with a static hosting footprint (it lives on vercel.app as a static deploy).
+
+## Phase 1: Generate everything client-side from a seed
 
 ## Phase 2: Stream a 3x3 window of 57m sections
 
