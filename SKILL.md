@@ -38,10 +38,17 @@ just keep it on the side as known.
      Reddit JSON then the PullPush API automatically. Also pull metadata for
      any YouTube demo/tutorial links found in the comments: they often
      contain the real breakdown.
-3. **Extract tooling** per video: named software, plugins/add-ons, pipeline
-   stages (modeling, retopo, UV, bake, rig, LOD, QA, engine import), and any
-   automation (scripts, CI, batch processing). Record one quote or frame
-   reference per claim.
+3. **Extract tooling** per video as a full-depth workflow audit, not a short
+   summary. Per-video required fields: source title, creator, URL; exact
+   tools used; a phased workflow with `Do`, `Check`, and `Why` for each
+   phase; exact parameters, brush names, values, costs, benchmarks, and
+   quoted principles wherever the captions/comments/metadata support them;
+   and the distilled human/process principles underneath the mechanics.
+   Never invent transcript lines or parameters; label inferences clearly.
+   When captions are unavailable and the run is a scheduled (non-interactive)
+   one, mark that audit `DEPTH-LIMITED`, explain why, and note that a media
+   download for full transcription would require the operator's explicit
+   per-video approval (see the interactive exception below).
 4. **Diff against every pipeline inventory**
    (`references/*-pipeline-inventory.md`): produce one have-vs-need table per
    inventory. Your primary inventory's table comes first; additional
@@ -65,6 +72,10 @@ just keep it on the side as known.
    `~/video-tooling-scout-reports/`) as `have-vs-need-YYYY-MM-DD.md` with
    the Output Contract below, and append genuinely new tools to
    `references/tooling-watchlist.md` (the keep-on-the-side list).
+   **Promote high-signal extractions to skill cards** in `skillset/` (see
+   `skillset/README.md` for the card format): a card is a compression of a
+   full-depth audit into what the skill does, where it was learned from,
+   the evidence, and the compressed workflow.
 
 ## Output Contract
 Every run delivers:

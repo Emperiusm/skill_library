@@ -1,9 +1,9 @@
 # video-tooling-scout
 
-[![CI](https://github.com/Emperiusm/video-tooling-scout/actions/workflows/ci.yml/badge.svg)](https://github.com/Emperiusm/video-tooling-scout/actions/workflows/ci.yml)
+[![CI](https://github.com/Emperiusm/skill_library/actions/workflows/ci.yml/badge.svg)](https://github.com/Emperiusm/skill_library/actions/workflows/ci.yml)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-2C4DC4)](LICENSE.md)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-2C4DC4)](https://www.python.org)
-[![Dependencies: none](https://img.shields.io/badge/dependencies-none-0F7B5F)](https://github.com/Emperiusm/video-tooling-scout)
+[![Dependencies: none](https://img.shields.io/badge/dependencies-none-0F7B5F)](https://github.com/Emperiusm/skill_library)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hero-dark.svg">
@@ -107,7 +107,7 @@ what you're missing" instead of "here's what's popular".
 | A reports directory of your choice | Run output, e.g. `~/video-tooling-scout-reports/` |
 
 ```bash
-git clone https://github.com/Emperiusm/video-tooling-scout.git && cd video-tooling-scout
+git clone https://github.com/Emperiusm/skill_library.git && cd skill_library
 python3 -m py_compile bin/*.py   # the whole gate: stdlib only, compiles clean
 ```
 
@@ -118,10 +118,10 @@ cp references/example-pipeline-inventory.md references/my-pipeline-inventory.md
 # then edit my-pipeline-inventory.md, references/p1-gaps.md, subreddits.yaml
 ```
 
-> [!NOTE]
-> Replace `Emperiusm` with the GitHub user or org this repo is published under.
-
 ## Quick start
+
+New here? Read [`references/example-run-report.md`](references/example-run-report.md) first:
+it's a trimmed real run showing exactly what each step below produces. Then:
 
 ```bash
 # 1. Scan the last 2 days of your subreddits, ranked by tooling relevance.
@@ -180,9 +180,12 @@ so a retry loop can never recur.
 
 ### 3. Extract tooling, 4. Diff against your inventories
 
-Per video, extract named software, plugins/add-ons, pipeline stages (modeling, retopo, UV, bake,
-rig, LOD, QA, engine import), and automation (scripts, CI, batch processing), with one quote or
-frame reference per claim. Then diff against every `references/*-pipeline-inventory.md`: one
+Per video, reconstruct the full workflow: exact tools used, a phased workflow with `Do`,
+`Check`, and `Why` per phase, exact parameters/values/costs/benchmarks where the captions,
+comments, or metadata support them, and the human/process principles underneath. Never
+invent transcript lines or parameters; label inferences clearly. Videos that can't reach
+full depth on captions/metadata alone are marked `DEPTH-LIMITED` with the reason stated.
+See [`SKILL.md`](SKILL.md) for the complete audit standard. Then diff against every `references/*-pipeline-inventory.md`: one
 have-vs-need table per inventory, primary first, each tool marked HAVE / PARTIAL / NEED with
 pipeline evidence and a recommendation (adopt now / backlog / watchlist / skip + why). A tool
 can be NEED for one pipeline and HAVE for another; the tables say so.
@@ -251,6 +254,8 @@ The short version:
 | Document | What it covers |
 |---|---|
 | [`SKILL.md`](SKILL.md) | **The operator playbook.** Workflow steps, output contract, operating rules. This governs a run. |
+| [`references/example-run-report.md`](references/example-run-report.md) | **A finished run, trimmed.** Read this first: gap alerts, a full-depth video audit, a have-vs-need table, trending, non-goals. This is what your runs should look like. |
+| [`skillset/`](skillset/) | **The library.** Durable skill cards promoted from run reports: what each learned skill does, where it was learned from, the evidence, the compressed workflow. Four example cards included. |
 | [`references/example-pipeline-inventory.md`](references/example-pipeline-inventory.md) | Template pipeline inventory (HAVE with evidence, verified NEED). Copy and fill in. |
 | [`references/p1-gaps.md`](references/p1-gaps.md) | Gap-alert template: format, example rows, maintenance rules. |
 | [`references/tooling-watchlist.md`](references/tooling-watchlist.md) | The append-only watchlist; 3 labeled example rows show the format. |
