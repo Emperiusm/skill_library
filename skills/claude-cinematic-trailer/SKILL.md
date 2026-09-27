@@ -8,7 +8,6 @@ description: "Direct an AI agent to cut a cinematic trailer from your game, then
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Direct the agent, inspect the cut: give the agent game access plus a creative brief, then curate its cinematic output.
-### Phase 1: Grant the agent read access to the game
 
 ## Source
 
@@ -35,6 +34,8 @@ Tools used: Claude (agent/director), Unity (read-only access via MCP), OpenRoute
 A trailer agent needs source-material understanding without the risk of it
 editing the game. Read-only access plus a written no-changes rule is the
 safest way to let an agent study a project.
+
+## Phase 1: Grant the agent read access to the game
 
 ## Phase 2: Prompt with constraints, a budget, and autonomy
 
