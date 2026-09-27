@@ -8,7 +8,6 @@ description: "Author a reverse-erosion construction effect: blueprint preview, c
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Reverse the process: define erosion as the build unit, run it in reverse for the grow-in, and layer blueprint preview, climbing rim, and ember finish.
-### Phase 1: Define the build unit: the erosion factor
 
 ## Source
 
@@ -29,6 +28,8 @@ Tools used: Unnamed game engine (the author describes a "procedural build system
 
 **Why**
 The teardown parameter already encodes the build order. Reusing it as the build parameter means the construction animation is free: the system already knows which stone/beam comes in which order.
+
+## Phase 1: Define the build unit: the erosion factor
 
 ## Phase 2: Run erosion in reverse: the grow-in
 
