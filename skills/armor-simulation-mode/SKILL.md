@@ -8,7 +8,6 @@ description: "Simulate armor impacts with SPH fracture and contact modeling. Tri
 ## Purpose
 
 This skill reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Simulate the impact: SPH fracture and contact modeling for armor simulation.
-### Phase 1: Reuse the engine's existing physics as the base
 
 ## Source
 
@@ -39,6 +38,8 @@ does not name his own solver.
 **Why**
 A mode reuses tested physics instead of duplicating it; the new work is
 scenario tooling, not a new engine.
+
+## Phase 1: Reuse the engine's existing physics as the base
 
 ## Phase 2: Add armor-mode authoring tools
 
