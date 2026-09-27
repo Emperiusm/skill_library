@@ -8,7 +8,6 @@ description: "Run 890k-particle Material Point Method sims with Voronoi-cell fra
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Fake fracture at scale: an 890k-particle Material Point Method sim with Voronoi-cell fracture, inside Blender.
-### Phase 1: Install the free add-on
 
 ## Source
 
@@ -30,6 +29,8 @@ easily find it as "Squishy Volumes" (it\'s free)'.)
 **Why**
 The whole workflow rides on one free add-on, so the barrier to repeating
 it is installation, not licensing.
+
+## Phase 1: Install the free add-on
 
 ## Phase 2: Set up the MPM soft-body simulation
 
