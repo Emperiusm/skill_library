@@ -8,7 +8,6 @@ description: "Implement a two-way coupled bubbles solver from the Weta FX whitep
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Implement the paper, don't approximate it: a two-way coupled bubbles solver built from the whitepaper's equations in vanilla Houdini nodes.
-### Phase 1: Define what the native solver cannot do
 
 ## Source
 
@@ -29,6 +28,8 @@ Tools used: Houdini (vanilla nodes only, no custom plugins), Gas Project Non Div
 
 **Why**
 Rewriting a solver starts with a precise statement of the native one's failure mode. One-way coupling is fine until the bubbles are the subject; the whitepaper implementation exists because hero shots needed the water to push back.
+
+## Phase 1: Define what the native solver cannot do
 
 ## Phase 2: Adopt the whitepaper, scope the simplification
 
