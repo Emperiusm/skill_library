@@ -8,7 +8,6 @@ description: "Drive Blender/Cycles rendering with Houdini motion operators. Trig
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Bridge the DCCs: Houdini motion operators drive Blender/Cycles rendering.
-### Phase 1: Build motion graphics in Houdini with MOPS
 
 ## Source
 
@@ -30,6 +29,8 @@ for Houdini), per the post title "Houdini X Mops-Blender/cycles".
 
 **Why**
 Houdini plus MOPS is the motion-design stage; rendering happens elsewhere.
+
+## Phase 1: Build motion graphics in Houdini with MOPS
 
 ## Phase 2: Move the work to Blender and render in Cycles
 
