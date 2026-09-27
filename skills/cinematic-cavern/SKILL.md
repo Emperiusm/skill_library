@@ -388,12 +388,73 @@ Closing advice from the video: if you are making your own scene, start
 small. Shape one rock, repair one water boundary, compare the change from
 the path where the player will actually see it.
 
+## Video-observed evidence (depth recovery, 2026-09-27)
+
+What was recovered: with the operator's explicit approval, the first 79%
+of the video was downloaded (12.5 of 15.8 MB; the connection was then
+repeatedly closed by YouTube and the resume gave up after 10 retries) and
+12 frames were extracted and visually reviewed. No transcript exists: the
+video has no captions, and local transcription was blocked because no
+complete whisper model is cached and downloading one fires the
+approval-gate loop. The missing 21% is the final ~2.75 minutes. The video
+itself is built from branded "KAIGEN INTERACTIVE / SHADINGHOST" breakdown
+cards that mix native editor footage with annotated source breakdowns
+("Actual project evidence | Annotated breakdown").
+
+Video-observed details, by phase (these confirm or extend the guide):
+
+- **Phase 1:** card "SIMPLE FORMS FIRST | Placeholder arches and stairs |
+  Flat water surfaces"; caption "Archived Godet cavern blockout | Simple
+  structural forms before detailed art".
+- **Phase 2:** on-screen captions "Cut the main fractures | Dam Standard |
+  Vary depth and direction" and "Refine the planes | hPolish | Keep varied
+  edges and quiet areas". ZBrush status bar shows ActivePoints 919.8K /
+  TotalPoints 919.8K, matching the guide's ~932,000-face high sculpt.
+- **Phase 4:** card "PREPARE UVS AND BAKE | SET UP THE BAKE | Low mesh +
+  aligned high sculpt | 2048 | DirectX", confirming 2048 textures and
+  DirectX normals.
+- **Phase 5:** Substance 3D Painter layer stack, top to bottom: "Top moss -
+  good rock", "Moss breakup", "Moss breakup 2", "Crevice minimal
+  variation", "Cavity dirt - Engrave fill", "Dirt 1". Technique card:
+  "Control the coverage | Black mask | Reveal selected areas".
+- **Phase 6:** card "PLACE THE ROCK IN CONTEXT | Support the base | Review
+  at player distance"; caption "Native Unreal Engine 5.8.2 | Revised cavern
+  placement checkpoint" (version as shown in the video).
+- **Phase 9:** PoolSolver.h shown on screen (lines 144-175, partially
+  legible): per-cell loop over 4 neighbors, zero flow at solid cells,
+  face depth from surface heights, flow update with damping, depth update
+  `NextDepth[I] = max(0, Depth[I] + Dt*Net/Area)`, velocity derived from
+  flow, `Speed = hypot(Velocity.x, Velocity.y)`. Principle cards: "COMPARE
+  SURFACE HEIGHT, NOT DEPTH | Each cell stores both | Compare neighbouring
+  surfaces" and "KEEP THE WATER ACCOUNTING EXPLICIT | UPDATE THE DEPTH |
+  Incoming minus outgoing | Divide by cell area". Quoted code comment:
+  "Art-directed foam proxy, not a physical entrained-air simulation."
+- **Phase 10:** card "WAVES AT PLAYER SCALE | Movement disturbs the pool |
+  Waves spread behind the character | Watch the wake after each step";
+  footage is a third-person playtest at real-time 1x.
+- **Phase 12:** Houdini Particle Fluid Surface node, values from the scene:
+  Method = Average Position, Particle Separation 0.04, Voxel Scale 0.75,
+  Influence Scale 3, Droplet Scale 1, Erosion Scale 0.8, Convert To =
+  Surface Polygon Soup, Isovalue 0. (The guide had 0.04 and 0.75; the rest
+  are new and video-observed.)
+- **Phase 13:** card "DESCRIBE ONE IMPACT | Receiving crests and foam |
+  Droplets and mist at the landing"; caption "Refined impact foam with
+  broken edges and clear-water gaps".
+
+Depth status after recovery: PARTIAL. The guide remains the primary source
+for the full 15-phase workflow; the video frames above are now
+video-observed rather than guide-supported. Still missing: the spoken
+narration (no transcript obtainable) and the final ~2.75 minutes.
+
 ## Operating rules
 
 - Never invent parameters: every number above comes from the source video or
   its companion code. Where the video gives a value (4.7-unit source width,
-  0.04 particle separation, 0.75 voxel scale, 2048 textures, 600-step test),
-  use it; where it doesn't, say so.
+  0.04 particle separation, 0.75 voxel scale, 2048 textures, 600-step test,
+  Influence Scale 3, Droplet Scale 1, Erosion Scale 0.8, Isovalue 0),
+  use it; where it doesn't, say so. Values marked video-observed in the
+  evidence section were read from the video's own frames on 2026-09-27;
+  the rest are guide-supported.
 - The player's view is the acceptance test for every phase, not just the
   last one.
 - This skill teaches a workflow, not a scene: adapt the phases to your own
