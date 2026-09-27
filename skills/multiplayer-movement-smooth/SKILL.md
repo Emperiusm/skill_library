@@ -8,7 +8,6 @@ description: "Smooth multiplayer movement with client prediction and server reco
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Smooth movement is reconciliation: client prediction with server correction, tested at every reachable crossing.
-### Phase 1: Rigidbody-level interpolation
 
 ## Source
 
@@ -38,6 +37,8 @@ specific package is claimed.
 Jitter in networked movement comes from rendered frames falling between
 physics ticks. Rigidbody interpolation smooths the visual transform between
 fixed updates.
+
+## Phase 1: Rigidbody-level interpolation
 
 ## Phase 2: Add the network components
 
