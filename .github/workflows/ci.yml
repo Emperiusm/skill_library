@@ -13,4 +13,4 @@ jobs:
         with:
           python-version: "3.11"
       - name: Compile all scripts
-        run: python3 -m py_compile skills/video-tooling-scout/scripts/*.py
+        run: python3 -m py_compile video-tooling-scout/scripts/*.py
