@@ -132,7 +132,7 @@ cp skills/video-tooling-scout/references/example-pipeline-inventory.md \
 ## Quick start
 
 New here? Read [`skills/video-tooling-scout/references/example-run-report.md`](skills/video-tooling-scout/references/example-run-report.md) first:
-it's a full real run (25 videos, every one audited at full depth) showing exactly what each step below produces. Then:
+it's a full real run (24 videos, every one audited at full depth) showing exactly what each step below produces. Then:
 
 ```bash
 # 1. Scan the last 2 days of your subreddits, ranked by tooling relevance.
