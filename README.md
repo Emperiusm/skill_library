@@ -1,9 +1,18 @@
-# video-tooling-scout
+# skill_library
 
 [![CI](https://github.com/Emperiusm/skill_library/actions/workflows/ci.yml/badge.svg)](https://github.com/Emperiusm/skill_library/actions/workflows/ci.yml)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-2C4DC4)](LICENSE.md)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-2C4DC4)](https://www.python.org)
 [![Dependencies: none](https://img.shields.io/badge/dependencies-none-0F7B5F)](https://github.com/Emperiusm/skill_library)
+
+A library of executable skills. Each directory under [`skills/`](skills/) is one skill
+(a `SKILL.md` playbook plus its scripts and references); [`skillset/`](skillset/) holds
+compressed knowledge cards learned from scout runs (reference notes, not executable skills).
+
+| Skill | What it teaches |
+|---|---|
+| [`video-tooling-scout`](skills/video-tooling-scout/SKILL.md) | Scout tooling videos on Reddit, extract every tool/pipeline shown, and diff against your pipeline inventories to produce have-vs-need reports with gap alerts. |
+| [`cinematic-cavern`](skills/cinematic-cavern/SKILL.md) | Build a cinematic cavern scene end to end: Blender blockout, ZBrush sculpt, game-mesh reduction, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver, player-to-water contact, Houdini waterfall, final assembly. |
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hero-dark.svg">
@@ -36,7 +45,7 @@ never posts, comments, or votes. It only reads.*
 
 ***How it works***
 - [The map](#the-map)
-- [Scan](#1-scan-binscan_videospy)
+- [Scan](#1-scan)
 - [Summarize](#2-summarize-captions-and-metadata-only)
 - [Extract and diff](#3-extract-tooling-4-diff-against-your-inventories)
 - [Watchlist trending](#watchlist-trending-and-gap-alerts)
@@ -62,7 +71,7 @@ never posts, comments, or votes. It only reads.*
 </picture>
 
 The loop is one direction: Reddit → your reports directory. The scout's only persistent state is
-`references/tooling-watchlist.md`, which is append-only: entries are never deleted, only annotated
+`skills/video-tooling-scout/references/tooling-watchlist.md`, which is append-only: entries are never deleted, only annotated
 (adopted, superseded, skipped, seen-again dates). A claim of "your pipeline has this" requires
 evidence (a file path, a CI workflow, or an audit citation); "probably has it" is treated as NEED
 until verified.
@@ -88,11 +97,11 @@ what you're missing" instead of "here's what's popular".
 
 | Term | Meaning |
 |---|---|
-| **Scan** | `bin/scan_videos.py`: pulls recent video posts from `subreddits.yaml` via the Arctic Shift public API and ranks them by tooling relevance × engagement. |
-| **Pipeline inventory** | A `references/*-pipeline-inventory.md` file describing what your pipeline already does (HAVE) and verified-absent gaps (NEED). Copy [`references/example-pipeline-inventory.md`](references/example-pipeline-inventory.md) to start. |
+| **Scan** | `skills/video-tooling-scout/scripts/scan_videos.py`: pulls recent video posts from `skills/video-tooling-scout/subreddits.yaml` via the Arctic Shift public API and ranks them by tooling relevance × engagement. |
+| **Pipeline inventory** | A `skills/video-tooling-scout/references/*-pipeline-inventory.md` file describing what your pipeline already does (HAVE) and verified-absent gaps (NEED). Copy [`skills/video-tooling-scout/references/example-pipeline-inventory.md`](skills/video-tooling-scout/references/example-pipeline-inventory.md) to start. |
 | **Have-vs-need** | Per-inventory table marking each found tool HAVE / PARTIAL / NEED with pipeline evidence and a recommendation (adopt now / backlog / watchlist / skip + why). |
-| **Gap alert** | An extracted tool that matches [`references/p1-gaps.md`](references/p1-gaps.md) by keyword *or* meaning. Reported at the very top of the run report and the operator summary. |
-| **Watchlist** | [`references/tooling-watchlist.md`](references/tooling-watchlist.md): the keep-on-the-side list of interesting tools. `bin/trend_watchlist.py` annotates reappearances; three or more sightings flag a tool TRENDING. |
+| **Gap alert** | An extracted tool that matches [`skills/video-tooling-scout/references/p1-gaps.md`](skills/video-tooling-scout/references/p1-gaps.md) by keyword *or* meaning. Reported at the very top of the run report and the operator summary. |
+| **Watchlist** | [`skills/video-tooling-scout/references/tooling-watchlist.md`](skills/video-tooling-scout/references/tooling-watchlist.md): the keep-on-the-side list of interesting tools. `skills/video-tooling-scout/scripts/trend_watchlist.py` annotates reappearances; three or more sightings flag a tool TRENDING. |
 | **Operator** | The human running the scout. Only the operator approves downloads; scheduled runs never ask. |
 
 </details>
@@ -108,47 +117,50 @@ what you're missing" instead of "here's what's popular".
 
 ```bash
 git clone https://github.com/Emperiusm/skill_library.git && cd skill_library
-python3 -m py_compile bin/*.py   # the whole gate: stdlib only, compiles clean
+python3 -m py_compile skills/video-tooling-scout/scripts/*.py   # the whole gate: stdlib only, compiles clean
 ```
 
 Copy the templates before your first run:
 
 ```bash
-cp references/example-pipeline-inventory.md references/my-pipeline-inventory.md
-# then edit my-pipeline-inventory.md, references/p1-gaps.md, subreddits.yaml
+cp skills/video-tooling-scout/references/example-pipeline-inventory.md \
+   skills/video-tooling-scout/references/my-pipeline-inventory.md
+# then edit my-pipeline-inventory.md, p1-gaps.md, and
+# skills/video-tooling-scout/subreddits.yaml
 ```
 
 ## Quick start
 
-New here? Read [`references/example-run-report.md`](references/example-run-report.md) first:
-it's a trimmed real run showing exactly what each step below produces. Then:
+New here? Read [`skills/video-tooling-scout/references/example-run-report.md`](skills/video-tooling-scout/references/example-run-report.md) first:
+it's a full real run (25 videos, every one audited at full depth) showing exactly what each step below produces. Then:
 
 ```bash
 # 1. Scan the last 2 days of your subreddits, ranked by tooling relevance.
-python3 bin/scan_videos.py 2 > /tmp/scan.json
+python3 skills/video-tooling-scout/scripts/scan_videos.py 2 > /tmp/scan.json
 
 # 2. Summarize the top videos (captions/metadata; your summarizer of choice),
 #    or pull the comment threads where the tooling details live:
-python3 bin/fetch_comments.py <post_id>:<num_comments> [...]
+python3 skills/video-tooling-scout/scripts/fetch_comments.py <post_id>:<num_comments> [...]
 
 # 3. Extract tooling per video (software, plugins, stages, automation),
 #    each with a source quote, and diff against your inventories.
 
 # 4. Flag reappearances on the watchlist (appends "seen again <date>"):
-python3 bin/trend_watchlist.py --date 2026-09-27 "<tool 1>" "<tool 2>" ...
+python3 skills/video-tooling-scout/scripts/trend_watchlist.py --date 2026-09-27 "<tool 1>" "<tool 2>" ...
 
 # 5. Write the report (have-vs-need-YYYY-MM-DD.md) to your reports directory
-#    and append genuinely new tools to references/tooling-watchlist.md.
+#    and append genuinely new tools to
+#    skills/video-tooling-scout/references/tooling-watchlist.md.
 ```
 
-See [`SKILL.md`](SKILL.md) for the full operator playbook: the workflow steps, the output
+See [`SKILL.md`](skills/video-tooling-scout/SKILL.md) for the full operator playbook: the workflow steps, the output
 contract every run delivers, and the operating rules (including the approval rule).
 
 ## How it works
 
-### 1. Scan (`bin/scan_videos.py`)
+### 1. Scan
 
-Reads `subreddits.yaml` (hand-editable; one subreddit per line, no `r/` prefix), pulls recent
+`skills/video-tooling-scout/scripts/scan_videos.py` reads `skills/video-tooling-scout/subreddits.yaml` (hand-editable; one subreddit per line, no `r/` prefix), pulls recent
 posts from each via the Arctic Shift public API (`https://arctic-shift.photon-reddit.com`), and
 keeps video posts: YouTube / Vimeo links and native Reddit video. Posts below `min_score`
 (default 20) are dropped. Each survivor is scored:
@@ -167,13 +179,13 @@ keyword hits, and a relevance number. Deep analysis is capped (default 8 videos 
 - **YouTube / Vimeo:** your captions-first summarizer. Never invent transcript lines or tool
   mentions. If a video has no captions, use its metadata + description and move on.
 - **Native Reddit video:** the clip is short; the signal is in the post text and the comments.
-  `bin/fetch_comments.py <post_id>[:num_comments]` pulls top comments from Arctic Shift, and when
+  `skills/video-tooling-scout/scripts/fetch_comments.py <post_id>[:num_comments]` pulls top comments from Arctic Shift, and when
   Arctic Shift returns zero comments for a post that has some (a known index coverage gap), it
   falls back automatically: old Reddit JSON first, then the PullPush API. Also check YouTube
   demo/tutorial links found in the comments; they often contain the real breakdown.
 
 The default loop **never downloads video or model files**. The approval rule is in
-[`SKILL.md`](SKILL.md): scheduled runs are strict (kill anything that hits an approval gate,
+[`SKILL.md`](skills/video-tooling-scout/SKILL.md): scheduled runs are strict (kill anything that hits an approval gate,
 never retry); interactive runs may download a captionless video for transcription only with the
 operator's explicit per-video go-ahead, capped at 3 per run, with a per-host 3-prompt kill guard
 so a retry loop can never recur.
@@ -185,19 +197,19 @@ Per video, reconstruct the full workflow: exact tools used, a phased workflow wi
 comments, or metadata support them, and the human/process principles underneath. Never
 invent transcript lines or parameters; label inferences clearly. Videos that can't reach
 full depth on captions/metadata alone are marked `DEPTH-LIMITED` with the reason stated.
-See [`SKILL.md`](SKILL.md) for the complete audit standard. Then diff against every `references/*-pipeline-inventory.md`: one
+See [`SKILL.md`](skills/video-tooling-scout/SKILL.md) for the complete audit standard. Then diff against every `skills/video-tooling-scout/references/*-pipeline-inventory.md`: one
 have-vs-need table per inventory, primary first, each tool marked HAVE / PARTIAL / NEED with
 pipeline evidence and a recommendation (adopt now / backlog / watchlist / skip + why). A tool
 can be NEED for one pipeline and HAVE for another; the tables say so.
 
 ### Watchlist trending and gap alerts
 
-After extraction, `bin/trend_watchlist.py --date YYYY-MM-DD "<tool>" ...` compares tool names
+After extraction, `skills/video-tooling-scout/scripts/trend_watchlist.py --date YYYY-MM-DD "<tool>" ...` compares tool names
 against the watchlist (case-insensitive substring + token overlap, both directions), appends
 "seen again <date>" to reappearing rows in place, and prints a "Watchlist trending" snippet for
 the report. A tool seen three or more times is flagged **TRENDING**.
 
-Separately, every extracted tool is checked against `references/p1-gaps.md` by keyword **and**
+Separately, every extracted tool is checked against `skills/video-tooling-scout/references/p1-gaps.md` by keyword **and**
 by meaning. Matches become **gap alerts** at the very top of the report and the operator's
 summary, never buried in the tables.
 
@@ -216,21 +228,21 @@ write a dated report. Two constraints for scheduled runs:
 Example:
 
 ```cron
-18 8 * * * cd /path/to/video-tooling-scout && /usr/bin/python3 bin/scan_videos.py 2 > ~/video-tooling-scout-reports/scan-$(date +\%F).json
+18 8 * * * cd /path/to/skill_library && /usr/bin/python3 skills/video-tooling-scout/scripts/scan_videos.py 2 > ~/video-tooling-scout-reports/scan-$(date +\%F).json
 ```
 
 (Adapt to your full run wrapper; the report writing and watchlist update are operator steps per
-[`SKILL.md`](SKILL.md).)
+[`SKILL.md`](skills/video-tooling-scout/SKILL.md).)
 
 ## Status and evidence
 
 | Component | Status | Evidence |
 |---|---|---|
-| `bin/scan_videos.py` | Implemented, live against Arctic Shift | Ranked JSON output; zero-tooling-signal downweight verified in runs |
-| `bin/fetch_comments.py` | Implemented, fallback chain verified | Old Reddit JSON bot-walled from some sandboxes; PullPush recovered comments in testing |
-| `bin/trend_watchlist.py` | Implemented | Appends "seen again" in place; TRENDING flag at 3+ sightings |
+| `skills/video-tooling-scout/scripts/scan_videos.py` | Implemented, live against Arctic Shift | Ranked JSON output; zero-tooling-signal downweight verified in runs |
+| `skills/video-tooling-scout/scripts/fetch_comments.py` | Implemented, fallback chain verified | Old Reddit JSON bot-walled from some sandboxes; PullPush recovered comments in testing |
+| `skills/video-tooling-scout/scripts/trend_watchlist.py` | Implemented | Appends "seen again" in place; TRENDING flag at 3+ sightings |
 | Watchlist / gap list | Append-only by convention | `trend_watchlist.py` never deletes; `p1-gaps.md` maintained the same way |
-| CI | `py_compile` on `bin/*.py` | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) |
+| CI | `py_compile` on `skills/video-tooling-scout/scripts/*.py` | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) |
 | Tests | None beyond compilation | Honest limit: no unit test suite ships yet |
 
 **Not implemented:** automatic posting/commenting (deliberately out of scope), automatic tool
@@ -246,20 +258,20 @@ The short version:
 | **Third-party APIs are trusted, not verified** | Arctic Shift, PullPush, and Reddit JSON can be down, rate-limited, or stale. Runs degrade gracefully and say so; they don't verify the APIs' answers. |
 | **Captions are author-supplied** | They can be wrong. Every extracted claim should carry a source quote so the operator can check. |
 | **Watchlist matching is fuzzy** | Token-overlap matching can near-miss. Matches are surfaced for the operator, not trusted blindly. |
-| **No test suite** | The gate is `python3 -m py_compile bin/*.py`. Behavioral regressions are caught by the operator reading reports, not by tests. |
-| **The example inventory is fictional** | `references/example-pipeline-inventory.md` is a template. Your have-vs-need tables are only as honest as the inventory you write. |
+| **No test suite** | The gate is `python3 -m py_compile skills/video-tooling-scout/scripts/*.py`. Behavioral regressions are caught by the operator reading reports, not by tests. |
+| **The example inventory is fictional** | `skills/video-tooling-scout/references/example-pipeline-inventory.md` is a template. Your have-vs-need tables are only as honest as the inventory you write. |
 
 ## Documentation
 
 | Document | What it covers |
 |---|---|
-| [`SKILL.md`](SKILL.md) | **The operator playbook.** Workflow steps, output contract, operating rules. This governs a run. |
-| [`references/example-run-report.md`](references/example-run-report.md) | **A finished run, trimmed.** Read this first: gap alerts, a full-depth video audit, a have-vs-need table, trending, non-goals. This is what your runs should look like. |
+| [`SKILL.md`](skills/video-tooling-scout/SKILL.md) | **The operator playbook.** Workflow steps, output contract, operating rules. This governs a run. |
+| [`skills/video-tooling-scout/references/example-run-report.md`](skills/video-tooling-scout/references/example-run-report.md) | **A finished run, in full.** Read this first: gap alerts, per-inventory have-vs-need tables, trending, non-goals, and a full-depth workflow audit for every one of the 25 audited videos. This is what your runs should look like. |
 | [`skillset/`](skillset/) | **The library.** Durable skill cards promoted from run reports: what each learned skill does, where it was learned from, the evidence, the compressed workflow. Four example cards included. |
-| [`references/example-pipeline-inventory.md`](references/example-pipeline-inventory.md) | Template pipeline inventory (HAVE with evidence, verified NEED). Copy and fill in. |
-| [`references/p1-gaps.md`](references/p1-gaps.md) | Gap-alert template: format, example rows, maintenance rules. |
-| [`references/tooling-watchlist.md`](references/tooling-watchlist.md) | The append-only watchlist; 3 labeled example rows show the format. |
-| [`subreddits.yaml`](subreddits.yaml) | Hand-editable subreddit list and scan defaults. |
+| [`skills/video-tooling-scout/references/example-pipeline-inventory.md`](skills/video-tooling-scout/references/example-pipeline-inventory.md) | Template pipeline inventory (HAVE with evidence, verified NEED). Copy and fill in. |
+| [`skills/video-tooling-scout/references/p1-gaps.md`](skills/video-tooling-scout/references/p1-gaps.md) | Gap-alert template: format, example rows, maintenance rules. |
+| [`skills/video-tooling-scout/references/tooling-watchlist.md`](skills/video-tooling-scout/references/tooling-watchlist.md) | The append-only watchlist; 3 labeled example rows show the format. |
+| [`skills/video-tooling-scout/subreddits.yaml`](skills/video-tooling-scout/subreddits.yaml) | Hand-editable subreddit list and scan defaults. |
 | [`SECURITY.md`](SECURITY.md) | Threat model, known limits, how to report a vulnerability. |
 
 ## Contributing
@@ -268,7 +280,7 @@ The short version:
 
 - **Standard library only.** Every script must run on `python3` with no installs.
   A dependency added to look sophisticated is supply-chain surface bought for nothing.
-- **`python3 -m py_compile bin/*.py` must pass.** CI enforces it.
+- **`python3 -m py_compile skills/video-tooling-scout/scripts/*.py` must pass.** CI enforces it.
 - **Keep it read-only.** No posting, commenting, voting, or downloading in the default
   loop. Proposals that add outbound actions need an explicit operator-approval design.
 - **Don't invent evidence.** Summaries cite sources; HAVE requires a cited file path,
