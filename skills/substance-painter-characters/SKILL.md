@@ -8,7 +8,6 @@ description: "Texture game characters in Substance Painter: bake mesh maps, buil
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Texture characters as a pipeline: bake mesh maps, build materials in layers, keep the stack editable.
-### Phase 1: Block the character textures procedurally
 
 ## Source
 
@@ -37,6 +36,8 @@ creator's animation work (stated: "keep up with my animation work").
 **Why**
 - The stated reason for loving Painter is "the non-destructive workflow":
   procedural layers stay editable, so design changes do not mean repainting.
+
+## Phase 1: Block the character textures procedurally
 
 ## Phase 2: Hand-paint details on top
 
@@ -71,12 +72,6 @@ creator's animation work (stated: "keep up with my animation work").
 in the selftext plus two trivial comments; no layers, generators, brushes,
 maps, bakes, or export settings are named anywhere in the source).
 
----
-
-# Simulation workflows: reconstructions
-
-Sections 17-19. Reconstructed from Reddit post metadata, selftext, and comments only.
-No video transcripts were available (all three are native v.redd.it demo clips).
 Anything not stated by the sources is marked [inference].
 
 ---
