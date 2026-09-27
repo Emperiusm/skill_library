@@ -23,6 +23,13 @@ import time
 import urllib.parse
 import urllib.request
 
+USAGE = """Usage: fetch_comments.py <post_id>[:num_comments] [<post_id>[:num_comments] ...]
+  post_id       Base-36 id from the permalink, e.g. 1wjnwzi.
+  :num_comments  Optional expected comment count (from scan output); when
+                Arctic Shift returns zero comments for a post that has some,
+                the script falls back to old Reddit JSON, then PullPush.
+  Prints JSON: {post_id: [{author, score, body}, ...], "_sources": {...}}."""
+
 ARCTIC = "https://arctic-shift.photon-reddit.com/api/comments/search"
 SCOUT_UA = "Mozilla/5.0 (compatible; video-tooling-scout/1.0)"
 BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -126,10 +133,15 @@ def parse_spec(spec):
 
 
 def main():
+    specs = [s for s in sys.argv[1:] if not s.startswith("-")]
+    if "-h" in sys.argv[1:] or "--help" in sys.argv[1:]:
+        print(USAGE)
+        return
+    if not specs:
+        print(USAGE, file=sys.stderr)
+        sys.exit(2)
     out, sources = {}, {}
-    for spec in sys.argv[1:]:
-        if spec.startswith("-"):
-            continue
+    for spec in specs:
         pid, expected = parse_spec(spec)
         try:
             comments = fetch_arctic(pid)

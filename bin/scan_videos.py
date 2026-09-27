@@ -86,16 +86,41 @@ def is_video_post(p):
     return False
 
 
+USAGE = """Usage: scan_videos.py [days] [--help]
+  days   How many days back to scan (positive integer; default from
+         subreddits.yaml scan_defaults). Prints ranked JSON to stdout."""
+
+
+def parse_days(argv, default_days):
+    if len(argv) < 2:
+        return default_days
+    if argv[1] in ("-h", "--help"):
+        print(USAGE)
+        sys.exit(0)
+    try:
+        days = int(argv[1])
+    except ValueError:
+        print(f"error: days must be a positive integer, got {argv[1]!r}\n{USAGE}",
+              file=sys.stderr)
+        sys.exit(2)
+    if days <= 0:
+        print(f"error: days must be a positive integer, got {days}\n{USAGE}",
+              file=sys.stderr)
+        sys.exit(2)
+    return days
+
+
 def main():
     subs, default_days, min_score, max_deep = load_subs()
-    days = int(sys.argv[1]) if len(sys.argv) > 1 else default_days
+    days = parse_days(sys.argv, default_days)
     after = int(time.time()) - days * 86400
     out = []
+    warnings = []
     for sub in subs:
         try:
             posts = fetch(sub, after)
         except Exception as e:
-            print(json.dumps({"warning": f"{sub}: {e}"}))
+            warnings.append(f"{sub}: {e}")
             continue
         for p in posts:
             if p.get("removed_by_category") or p.get("stickied"):
@@ -129,11 +154,11 @@ def main():
                 "selftext_snippet": (p.get("selftext") or "")[:300],
             })
     out.sort(key=lambda x: x["relevance"], reverse=True)
-    print(json.dumps({
-        "meta": {"days": days, "subs": subs, "min_score": min_score,
-                 "video_posts": len(out), "deep_analysis_cap": max_deep},
-        "videos": out,
-    }, indent=1))
+    meta = {"days": days, "subs": subs, "min_score": min_score,
+            "video_posts": len(out), "deep_analysis_cap": max_deep}
+    if warnings:
+        meta["warnings"] = warnings
+    print(json.dumps({"meta": meta, "videos": out}, indent=1))
 
 
 if __name__ == "__main__":
