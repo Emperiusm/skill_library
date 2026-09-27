@@ -8,7 +8,6 @@ description: "Fill a cyberpunk skyline with a procedural building shader instead
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Fill the skyline with shaders, not geometry: a procedural building shader generates the city at render time.
-### Phase 1: Define the skyline's role [inference]
 
 ## Source
 
@@ -28,6 +27,8 @@ Tools used: Not stated. A shader language in some 3D engine (which engine, which
 
 **Why**
 Background buildings buy depth cheaply; no viewer will inspect them, so they can be pure shader output.
+
+## Phase 1: Define the skyline's role [inference]
 
 ## Phase 2: Author buildings as shader code, not meshes [inference]
 
