@@ -8,7 +8,6 @@ description: "Test game AI empirically: pit deterministic behavioral scripts aga
 ## Purpose
 
 This audit reconstructs the exact workflow shown in the video, step by step, so another agent can follow the same process. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The video's core method is: Test the question empirically: pit deterministic behavioral scripts against a learned policy in the same engine and measure which wins.
-### Phase 1: Set the question: can a fake player beat a veteran?
 
 ## Source
 
@@ -29,6 +28,8 @@ Tools used: Godot (custom Ragnarök Online prototype engine built by the author)
 
 **Why**
 A concrete opponent (deterministic scripts, then a real PvP veteran as the eventual goal) turns a vague AI interest into a benchmark.
+
+## Phase 1: Set the question: can a fake player beat a veteran?
 
 ## Phase 2: Build the testbed: custom RO prototype in Godot
 
