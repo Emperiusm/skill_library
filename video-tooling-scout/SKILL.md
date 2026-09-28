@@ -126,6 +126,43 @@ it on the side as known.
 7. **Write the report** to `~/workspace/your_files/video-tooling-scout/`
    as `have-vs-need-YYYY-MM-DD.md` with the Output Contract below, and append
    genuinely new tools to `references/tooling-watchlist.md` (the keep-on-the-side list).
+8. **Publish to skill_library** (standing rule, Ehsan 2026-09-28): every daily run
+   converts each audit into its equivalent skill in the public skill_library repo
+   (`~/workspace/video-tooling-scout-public/`), following the library's SKILL.md
+   standard: frontmatter name/description, Purpose, Source (with URL), Tools used,
+   phases with Do/Check/Why, human method distilled, Depth status. Dedup before
+   creating:
+   - Same tool + same workflow already a skill: expand that skill (add phases,
+     parameters, evidence). Do not duplicate.
+   - Same tool + different workflow or version: new variant skill, named
+     `<topic>-<distinguisher>` (e.g. `ue58-video-in-materials` vs a future
+     `ue59-...`).
+   - New tool or workflow: new skill.
+   - DEPTH-LIMITED audits with no extractable workflow: stay in the daily report
+     only. Never pad thin evidence into `skills/`.
+   **Depth-calibration gate (mandatory, added 2026-09-28 after a scout skill
+   shipped as a thin summary of a 100-comment thread):** a scout skill is an
+   executable workflow, not a summary. Before writing it:
+   - Re-read the exemplar `~/workspace/user/files/cinematic-cavern-workflow-guide.md`
+     and match its depth, not its topic: every phase has Do (the action),
+     Check (how the human verifies it), and Why (the principle); exact tools,
+     versions, parameters, numbers, costs, and benchmarks wherever the source
+     supports them; quoted principles; named failure modes with their fixes.
+   - Compression test: could another agent execute the workflow from the skill
+     file alone, without reading the audit? If not, it is a summary. Go deeper.
+   - No substantive contributor detail is cut for brevity: every commenter's
+     technique, number, and defect report goes in, attributed. Length is not a
+     defect; thinness is.
+   - Never invent parameters or transcript lines; label inferences clearly,
+     exactly as the audit does.
+   Also publish the full daily report to `docs/scout-reports/have-vs-need-YYYY-MM-DD.md`
+   (keep `docs/scout-reports/README.md` index current), sync the new watchlist rows
+   into the repo mirror's `video-tooling-scout/references/tooling-watchlist.md`, and
+   add README skills-table rows. Publishing route is the live browser after Ehsan's
+   sign-in (token/SSH publishing does not work from the sandbox). Scheduled runs
+   prepare everything locally in the public mirror and list the files as
+   ready-to-publish; the browser upload itself happens when Ehsan is present with a
+   signed-in session, never unattended.
 
 ## Output Contract
 Every run delivers:
@@ -141,6 +178,9 @@ Every run delivers:
 - Gap recommendations: the 3-5 highest-leverage NEEDs, each with what it
   replaces or unblocks in the repo pipeline and a concrete next step.
 - Explicit non-goals: tools found but correctly skipped, with one-line reasons.
+- skill_library artifacts staged in `~/workspace/video-tooling-scout-public/`:
+  one new/expanded/variant skill per FULL or PARTIAL audit, the full report under
+  `docs/scout-reports/`, synced watchlist rows, README table rows.
 
 ## Operating Rules
 - No live browser anywhere in this loop. Reddit via Arctic Shift API
