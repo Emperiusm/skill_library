@@ -23,15 +23,23 @@ it on the side as known.
    regardless of engagement), and prints ranked JSON to stdout.
 2. **Summarize** each top video with the deepened pipeline FIRST (the
    Cinematic Cavern recovery on 2026-09-27 proved this is what reaches
-   FULL depth; captions/metadata are the fallback, not the default):
+   FULL depth; captions/metadata are the fallback, not the default).
+   The pipeline scripts live in this repo under
+   `video-tooling-scout/scripts/` (`yt_download.py`, `yt_transcribe.py`,
+   `yt_frames.py`, `yt_summarize.py`); local-machine setup is in
+   `video-tooling-scout/LOCAL_SETUP.md`. Note: the sandbox cannot complete
+   the Whisper model download (its network approval fires one card per
+   HTTP request, and the model fetch makes hundreds), so local
+   transcription is a local-machine step; the sandbox runs download +
+   frames and falls back to captions/metadata for text.
    - **YouTube/Vimeo, deepened attempt first:** `python3
-     ~/workspace/skills/video-summarizer/bin/yt_download.py "<url>" --out
+     scripts/yt_download.py "<url>" --out
      work/<video_id> --quality high` (if it times out, retry once with
      `--continue`; the .part file resumes), then
-     `~/workspace/skills/video-summarizer/.venv/bin/python
-     ~/workspace/skills/video-summarizer/bin/yt_transcribe.py
+     `.venv/bin/python
+     scripts/yt_transcribe.py
      work/<video_id>/media.* --model large-v3-turbo`, then `python3
-     ~/workspace/skills/video-summarizer/bin/yt_frames.py "<url>" --out
+     scripts/yt_frames.py "<url>" --out
      work/<video_id>/frames --from-video work/<video_id>/media.mp4 --count
      12`. Read the transcript and review the frames yourself; never invent
      transcript lines, values, or parameters, and never describe frames you
@@ -41,7 +49,7 @@ it on the side as known.
      with zero progress for 5+ minutes, or hits ANY approval gate, kill the
      process immediately with `process.kill` and never retry that video
      this run. Then run `python3
-     ~/workspace/skills/video-summarizer/bin/yt_summarize.py "<url>"
+     scripts/yt_summarize.py "<url>"
      --no-frames` and read `work/<video_id>/result.json` yourself; never
      invent transcript lines or tool mentions.
    - **Native Reddit video (v.redd.it):** the video file itself is a short
@@ -157,12 +165,13 @@ Every run delivers:
     highest relevance first. This is the default for scheduled/cron runs
     once Ehsan enables it.
   Hard limits regardless of mode: cap 3 media downloads per run, never
-  download the same video twice in one run. Whisper model weights are NOT
-  banned: they may be downloaded exactly once as a setup step, but only
-  with Ehsan's explicit approval in chat first. If the model download
-  re-fires approval cards in a loop (the Hugging Face CDN behavior),
-  kill it immediately with `process.kill` and treat local transcription as
-  unavailable for the run; never retry it. The
+  download the same video twice in one run. Local transcription (Whisper
+  model weights) is a local-machine step per LOCAL_SETUP.md: the sandbox
+  cannot complete the model download because its network approval fires
+  one card per HTTP request and the model fetch makes hundreds, an
+  uncompletable loop. Never attempt a model download from the sandbox;
+  kill it immediately if one starts. In the sandbox, the deepened pipeline
+  is download + frame review, with captions/metadata as the text fallback. The
   approval-gate rule below is absolute: if ANY download hits
   `pending_user_confirmation` or an approval card, kill the process
   immediately with `process.kill` and skip that video; never retry it, never
