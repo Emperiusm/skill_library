@@ -40,6 +40,10 @@ notes, not executable skills).
 | [`tideglass-fluid-sim`](skills/tideglass-fluid-sim/SKILL.md) | Build a target-driven real-time GPU fluid sim. |
 | [`armor-simulation-mode`](skills/armor-simulation-mode/SKILL.md) | Simulate armor impacts with SPH fracture and contact modeling. |
 | [`topology-rendering-advice`](skills/topology-rendering-advice/SKILL.md) | NO-TOOLING negative example: beginner modeling Q&A with no extractable workflow. Documents what the scout correctly skips. |
+| [`konte-multishot-ai-video`](skills/konte-multishot-ai-video/SKILL.md) | Run multi-shot AI video like a software project: TypeScript DSL, stable asset addresses, non-destructive variants, explicit acceptances, agents driving ComfyUI. |
+| [`blender-mcp-camera-minimax`](skills/blender-mcp-camera-minimax/SKILL.md) | Direct AI video camera moves in 3D first: block with Codex CLI plus Blender MCP, render a reference clip, assign role-based inputs in MiniMax H3. |
+| [`ue58-video-in-materials`](skills/ue58-video-in-materials/SKILL.md) | Route real video into Unreal materials: Media Framework, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, light-function projectors. |
+| [`syf-motion-blur-pro`](skills/syf-motion-blur-pro/SKILL.md) | Add motion blur with a free OFX plugin: match the algorithm to the motion type, tune length vs strength, stack instances for complex shots. |
 
 ## The tool
 
