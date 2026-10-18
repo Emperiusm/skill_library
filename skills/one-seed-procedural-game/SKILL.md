@@ -1,0 +1,114 @@
+---
+name: "one_seed_procedural_game"
+description: "Build a game with zero asset files: generate terrain, towns, people, sky, sound effects, and music from one seed at startup, constructing every prop in code from boxes, spheres, and cones and synthesizing all audio from sine waves. Trigger when the asset pipeline itself is the cost you want to delete."
+---
+
+# One-Seed Procedural Game: No Asset Files
+
+## Purpose
+
+This skill teaches the asset-less construction discipline end to end: one
+seed builds the whole world at startup, every prop is code-built from a tiny
+primitive kit, and all audio is synthesized from waveforms. Every phase has
+three parts: **Do** (the action), **Check** (how the human verifies it), and
+**Why** (the principle). The core method is: the seed is the asset pipeline.
+
+## Source
+
+Creator: Inevitable-Cash8506. Trailer:
+https://v.redd.it/72mj84s289th1 (r/proceduralgeneration post 1wwnkkl, 14
+comments; the author's comments are the technical record). Game:
+https://absolutelynormal.silberie.com/download ("PROJECT: ABSOLUTELY
+NORMAL"). Audited 2026-10-05.
+
+## Tools used
+
+No named engine, DCC, or audio tool. The stack is: a seeded PRNG driving all
+world generation; code-built mesh primitives (boxes, spheres, cones);
+sine waves and basic waveforms for all sound and music. The author's
+discipline, quoted: the game "loads no asset files."
+
+## Phase 1: Set the one-seed architecture
+
+**Do**
+1. At startup, take one seed and derive everything from it: terrain, roads,
+   towns, people, sky, sound effects, and radio music. Every island is
+   different because the seed is different.
+2. Generate in a fixed order from the seed stream so the same seed always
+   rebuilds the same island.
+
+**Check**
+- "No assets" means precisely: nothing made in Blender, no recorded sounds.
+  If a file on disk is required for the game to run (other than code),
+  the discipline is broken.
+
+**Why**
+One seed plus code-built content removes the entire asset pipeline: no
+authoring tools, no import step, no asset versioning. The world is a pure
+function of the seed.
+
+## Phase 2: Build props from the primitive kit
+
+**Do**
+1. Restrict geometry to boxes, spheres, and cones (plus rounded boxes).
+2. Compose recognizable props by combination, not by modeling. The author's
+   worked example, a bathtub: a rounded box for the tub, a few spheres for
+   the foam, four little cones for the claw feet, and a rubber duck made of
+   two spheres and a cone.
+3. Keep the kit deliberately less hardcore than pure-math surfaces: the
+   author uses simple shapes "like boxes and spheres instead of pure sine
+   waves" for geometry.
+
+**Check**
+- Every prop decomposes into the kit on inspection. If a prop needs a shape
+  outside boxes/spheres/cones, either compose it from the kit or admit the
+  kit grew.
+
+**Why**
+A tiny primitive kit keeps every prop reproducible from the seed and
+reasonably cheap; composition, not modeling, is the authoring act.
+
+## Phase 3: Synthesize all audio
+
+**Do**
+1. Generate sound effects and music from sine waves and other basic
+   waveforms at startup, from the same seed stream. The author's note: "the
+   sounds in mine actually are made with sine waves and other basic
+   waveforms", including the radio music.
+2. Keep the audio fully procedural: no samples, no recordings.
+
+**Check**
+- Mute test: every sound the game makes must trace back to the waveform
+  synthesizer. The one admitted exception in the source game is the font:
+  "The font is the one thing I didn't make." Name your exceptions the same
+  way instead of letting them hide.
+
+**Why**
+Waveform synthesis keeps audio under the same one-seed reproducibility
+guarantee as the geometry; there is no audio asset pipeline either.
+
+## The human method, distilled
+
+1. The seed is the asset pipeline: world, props, and audio all derive from
+   one value at startup.
+2. Boxes, spheres, cones, sine waves: pick primitives simple enough to
+   reason about, then compose everything from them.
+3. Disclose the trick plainly: the author explains the method in the open,
+   including the joke that "officially they're cows" and nobody asked where
+   the herd keeps coming from. The discipline survives scrutiny because it
+   is stated, not hidden.
+
+## Failure modes
+
+- **"No assets" drift**: a teammate adds a recorded sound or a modeled
+  prop. Fix: the startup audit, if it is not code-built from the seed, it
+  does not ship.
+- **Kit creep**: props start needing lathes, toruses, extrusions. Fix:
+  compose from the kit first (the bathtub rule); grow the kit only as a
+  deliberate, documented decision.
+- **Seed-order bugs**: generating towns before terrain shifts every
+  downstream draw. Fix: fixed generation order from the seed stream;
+  changing the order is a breaking change to all existing seeds.
+
+**Depth status:** FULL (author's own comments; the tooling signal is entirely
+in the text, so no video download was needed).
