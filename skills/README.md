@@ -6,6 +6,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 
 | Skill | What it teaches |
 |---|---|
+| [`toon-2d-in-3d-dynamic-texture`](toon-2d-in-3d-dynamic-texture/SKILL.md) | Render a classic DBZ cel look in 3D: fake light direction with a target point instead of a real light, drive drawn cel shapes on a dynamic texture, verify with extreme-zoom closeup animation. |
+| [`phosphor-command-code-drawn-procgen`](phosphor-command-code-drawn-procgen/SKILL.md) | Ship a code-drawn procedural game: no sprites or textures, deliberate phosphor-CRT radar-scope aesthetic, generate operations per contract with a persistent base-builder layer. |
+| [`greenscreen-plate-production-keying`](greenscreen-plate-production-keying/SKILL.md) | Produce pro-level greenscreen plates for keying practice: cinema camera, ProRes RAW, in-frame tracking markers, deliberately kept imperfect plates, shot planning for full 3D-world building. |
 | [`cinematic-cavern`](cinematic-cavern/SKILL.md) | Build a cinematic cavern scene end to end: Blender blockout, ZBrush sculpt, game-mesh reduction, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver, player-to-water contact, Houdini waterfall, final assembly. |
 | [`resistance-sci-fi-short`](resistance-sci-fi-short/SKILL.md) | Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. |
 | [`fix-lumpy-photogrammetry-meshes`](fix-lumpy-photogrammetry-meshes/SKILL.md) | Fix lumpy photogrammetry meshes in Blender the Planer way: detect planar regions, snap vertices to fitted planes and intersections, prove fidelity with a deviation report. |
