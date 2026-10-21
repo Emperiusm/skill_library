@@ -9,8 +9,7 @@ A library of executable skills, grouped by category under [`skills/`](skills/): 
 `skills/<category>/<name>/` directory is one skill, a `SKILL.md` playbook that teaches
 one workflow end to end. [`video-tooling-scout/`](video-tooling-scout/)
 is the tool that learns them: it watches Reddit for tooling videos and turns each one into a
-skill. [`skillset/`](skillset/) holds compressed knowledge cards from scout runs (reference
-notes, not executable skills).
+skill.
 
 ## The skills
 
@@ -287,7 +286,7 @@ The short version:
 |---|---|
 | [`SKILL.md`](video-tooling-scout/SKILL.md) | **The operator playbook.** Workflow steps, output contract, operating rules. This governs a run. |
 | [`video-tooling-scout/references/example-run-report.md`](video-tooling-scout/references/example-run-report.md) | **A finished run, in full.** Read this first: gap alerts, per-inventory have-vs-need tables, trending, non-goals, and a full-depth workflow audit for every one of the 25 audited videos. This is what your runs should look like. |
-| [`skillset/`](skillset/) | **The library.** Durable skill cards promoted from run reports: what each learned skill does, where it was learned from, the evidence, the compressed workflow. Four example cards included. |
+| [`skills/`](skills/README.md) | **The library.** Every executable skill, grouped by category: what each one teaches and the workflow it encodes. |
 | [`video-tooling-scout/references/example-pipeline-inventory.md`](video-tooling-scout/references/example-pipeline-inventory.md) | Template pipeline inventory (HAVE with evidence, verified NEED). Copy and fill in. |
 | [`video-tooling-scout/references/p1-gaps.md`](video-tooling-scout/references/p1-gaps.md) | Gap-alert template: format, example rows, maintenance rules. |
 | [`video-tooling-scout/references/tooling-watchlist.md`](video-tooling-scout/references/tooling-watchlist.md) | The append-only watchlist; 3 labeled example rows show the format. |
