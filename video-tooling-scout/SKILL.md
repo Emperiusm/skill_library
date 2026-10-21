@@ -65,7 +65,7 @@ it on the side as known.
 3. **Extract tooling** per video as a full-depth workflow audit (Cinematic Cavern
    standard). The exemplar is
    `~/workspace/user/files/cinematic-cavern-workflow-guide.md`; the public
-   repo's worked skill `skills/cinematic-cavern/SKILL.md` is the same format.
+   repo's worked skill `skills/procgen-worlds/cinematic-cavern/SKILL.md` is the same format.
    Every audit follows this canonical format:
 
    ```markdown
@@ -140,6 +140,20 @@ it on the side as known.
    - New tool or workflow: new skill.
    - DEPTH-LIMITED audits with no extractable workflow: stay in the daily report
      only. Never pad thin evidence into `skills/`.
+   **Categories (Ehsan 2026-10-20):** skills live one level deep at
+   `skills/<category>/<name>/`. Assign every new or expanded skill exactly one
+   category from this fixed list: `capture` (photogrammetry, 3DGS, plates,
+   photo-based intake), `characters` (character pipelines, rigging, cloth/hair
+   on characters), `procgen-worlds` (procedural generation, worlds, scenes),
+   `ai-video` (AI video generation/editing, avatar and trailer tooling),
+   `simulation-vfx` (physics sims, destruction, VFX effects and breakdowns),
+   `materials-shaders` (material authoring, shaders, texturing),
+   `engine-runtime` (engine systems, runtime/render tech, browser/WebGPU),
+   `automation` (agent pipelines, DCC bridges, productized generation),
+   `no-tooling` (negative examples with no extractable workflow). Pick the
+   closest fit; never invent a new category (that is Ehsan's call). When
+   dedup expands an existing skill, keep it in its current category. Update
+   the grouped table in `skills/README.md` and the root README in the same run.
    **Depth-calibration gate (mandatory, added 2026-09-28 after a scout skill
    shipped as a thin summary of a 100-comment thread):** a scout skill is an
    executable workflow, not a summary. Before writing it:

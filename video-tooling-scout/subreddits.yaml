@@ -9,12 +9,21 @@
 # Dropped 2026-09-27: r/trellis (zero posts in 90 days, dead or nonexistent),
 # r/rigging (mostly theater/lifting rigging, not 3D), r/MMORPG + r/RagnarokOnline
 # (gameplay, not tooling), r/StableDiffusion (superseded by r/comfyui for workflows).
+#
+# Added 2026-10-20 (verified via Arctic Shift 90-day video rates): threejs (59%),
+# GraphicsProgramming (38%), VoxelGameDev (48%), shaders (26%, technique-dense),
+# RealTimeVFX (game-VFX sibling of r/vfx; volume unverified, API returned 422).
+# Skipped: aivideo (all AI clips, no workflow), IndieDev, PixelArt, Unity3D
+# (showcase-heavy), computergraphics (overlaps GraphicsProgramming), Cinema4D,
+# AfterEffects (off-pipeline), ZBrush (15% video, too thin for a 2-day window).
 
 subreddits:
   # Engine subs (tutorials, tech showcases, pipeline breakdowns)
   - unity
   - unrealengine
   - godot
+  - threejs
+  - GraphicsProgramming
   # DCC and asset-creation tooling
   - blender
   - houdini
@@ -30,6 +39,9 @@ subreddits:
   - technicalart
   - proceduralgeneration
   - vfx
+  - RealTimeVFX
+  - shaders
+  - VoxelGameDev
   - Simulated
   # Asset-adjacent 3D and general dev
   - 3Dmodeling
