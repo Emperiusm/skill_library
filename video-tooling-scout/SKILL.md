@@ -172,11 +172,13 @@ it on the side as known.
    Also publish the full daily report to `docs/scout-reports/have-vs-need-YYYY-MM-DD.md`
    (keep `docs/scout-reports/README.md` index current), sync the new watchlist rows
    into the repo mirror's `video-tooling-scout/references/tooling-watchlist.md`, and
-   add README skills-table rows. Publishing route is the live browser after Ehsan's
-   sign-in (token/SSH publishing does not work from the sandbox). Scheduled runs
-   prepare everything locally in the public mirror and list the files as
-   ready-to-publish; the browser upload itself happens when Ehsan is present with a
-   signed-in session, never unattended.
+   add the new skill's row to the grouped table in `skills/README.md` (under its
+   category). In the root README, update ONLY the skill count and the category
+   counts in "The skills" table; never append chronological "new this run" prose
+   there (that is what made it a mess, Ehsan 2026-10-20). Publishing route is the
+   API push script `~/workspace/skills/video-tooling-scout/bin/push_skill_library.py`
+   under Ehsan's standing pre-approval (2026-10-17): runs publish unattended, no
+   browser upload, no per-batch approval asks.
 
 ## Output Contract
 Every run delivers:
