@@ -223,6 +223,69 @@ a fixed seed asset (concept image + generation prompt), keep the reference
 cell, the per-cell setting labels, and the failure-mode list. The output is
 an acceptance record, not an opinion.
 
+## AAA studio practice
+
+How AAA studios evaluate AI avatar/facial models, and what to borrow.
+
+1. **Acceptance is shipped-game parity, not a metric leaderboard.** EA SEED's
+   Voice2Face (audio-driven facial animation from recorded speech) was
+   accepted into *Battlefield 6* cinematics and *EA SPORTS FC 25* crowd
+   chants because it held quality while cutting production time.
+   - Source: https://www.ea.com/en-ca/news/seed-10-year-anniversary
+2. **Real-time interaction tests beat watching videos.** In SEED's IVA 2022
+   study, researchers rejected judging gesture models by watching
+   pre-recorded videos and built a live testbed: participants conversed with
+   embodied agents while quality was measured via questionnaires plus gaze
+   tracking. Lesson: this harness's "natural-speed, full result" judging is
+   the triage minimum; a AAA studio would add a live-interaction pass before
+   acceptance.
+   - Source: https://www.ea.com/seed/news/evaluating-data-driven-co-speech-gestures
+3. **Writer-authored spec with human iteration gates.** Ubisoft NEO NPCs
+   (GDC 2024): writers author each NPC's backstory, personality, and emotion,
+   the LLM improvises within that spec, NVIDIA ACE Audio2Face drives the
+   lip-sync, and writers iterate continuously as the acceptance gate.
+   - Sources: https://www.kitguru.net/gaming/matthew-wilson/nvidia-teams-up-with-ubisoft-to-showcase-ai-powered-npcs-for-games/;
+     https://hitmarker.net/news/ubisoft-shows-off-ai-powered-npc-project-at-gdc-2024-883339
+4. **Fixed-benchmark harnesses exist for animation synthesis.** Ubisoft La
+   Forge's LAFAN1 ships a motion dataset with an evaluation script computing
+   fixed quantitative metrics (L2Q quaternion error, L2P position error,
+   NPSS spectral similarity) against baselines at 5/15/30/45-frame
+   transitions, plus tolerance tests on expected values. It is the closest
+   AAA-published analog of this skill's harness (for body motion; no AAA
+   equivalent found for a lip-sync model-settings matrix). *Inference
+   (labeled):* metric details taken from search-indexed docs after a 429
+   blocked the live fetch, so re-confirm before relying on the specifics.
+   - Sources: https://deepwiki.com/ubisoft/ubisoft-laforge-animation-dataset/2-getting-started;
+     https://deepwiki.com/ubisoft/ubisoft-laforge-animation-dataset/4.2-validation-and-testing
+5. **Golden-image regression is the industry's automated visual QA.** The
+   Vision engine team's CI generates platform-specific reference images and
+   fails on any pixel-by-pixel difference; references are auto-generated and
+   re-approved when the pipeline changes, with seeded randomness to keep
+   comparisons meaningful.
+   - Source: https://www.gamedeveloper.com/programming/automated-tests-and-continuous-integration-in-game-projects
+6. **Studio-side observability.** Inworld's GDC 2025 briefing on how studios
+   QA AI characters: telemetry on character responses, custom testing agents
+   for NPC interaction QA, vision models watching specific screen regions,
+   and character fidelity to IP expectations as the primary acceptance
+   concern. *Inference (labeled):* vendor-described studio practice, not an
+   independently confirmed studio benchmark; treat as directional.
+   - Source: https://thefilibusterblog.com/inworld-ai-at-gdc-2025-exclusive-qa-on-summer-announcements-for-aaa-games/
+
+### Agent-executable automation upgrades (from AAA practice)
+
+- **Machine-readable results log.** Write every comparison as JSON rows
+  {model, settings, verdict, failure_modes[]} alongside the labeled grid, so
+  runs become a queryable acceptance dataset. (AAA form: LAFAN1's
+  expected-value tests; this harness's "the label is the experiment record".)
+- **Golden reference gate.** Freeze one accepted output per model+settings
+  and run a pixel/structure diff on regeneration; fail loudly on any
+  difference, since avatar pipelines must be deterministic. (AAA form: Vision
+  engine pixel-by-pixel regression.)
+- **Live-interaction sample before acceptance.** After triage picks a winner,
+  run a short real-time session against it and log structured observer notes;
+  natural-speed grid judging stays for triage, interaction for acceptance.
+  (AAA form: SEED's IVA 2022 testbed.)
+
 **Depth status:** FULL (12-frame review of a labeled grid; no captions
 exist and the sandbox cannot run local transcription, but the frames carry
 all parameters). Inferences are labeled. Nothing invented.

@@ -233,6 +233,63 @@ Record these so the next run does not repeat them:
 7. **Budget the tokens, not just the GPUs.** A week's agent budget burned in
    one night.
 
+## AAA studio practice
+
+How AAA game studios run the same pattern (per-shot direction, farm queues,
+validation-gated QC), and what to borrow.
+
+1. **AI passes inside shipped cinematics are acceptance-gated, not
+   generative.** EA SEED's Voice2Face generates lip and facial movement from
+   recorded speech and was used in *Battlefield 6* cinematics and *EA SPORTS
+   FC 25* crowd chants; the studio's stated bar is shipped-quality output
+   with reduced production time. Ubisoft La Forge's Ghostwriter was
+   explicitly scoped by its researchers (GDC 2023) as a scriptwriting aid,
+   not for cinematics or lore: AAA studios currently let AI automate
+   production around authored content, not replace it.
+   - Sources: https://www.ea.com/en-ca/news/seed-10-year-anniversary;
+     https://www.videogameschronicle.com/news/ubisoft-is-developing-an-ai-tool-that-aims-to-support-scriptwriters/
+2. **Farm queues are Deadline-style schedulers, not hand-written
+   dispatchers.** AWS Thinkbox Deadline 10.3 (built in close work with Epic)
+   lets an artist submit a cinematic job from UE5's Movie Render Queue with
+   one click; the farm pools idle on-prem workstation GPUs and scales to
+   cloud for spikes. That is the AAA form of this skill's Tensor Master
+   dispatcher plus idle cutoffs.
+   - Source: https://www.4rfv.com/JBRMD35X7U7X/aws-thinkbox-deadline-adds-finalpixel-render-support-for.htm
+3. **Shot specs live in a production tracker; QC is partly automated.**
+   Insomniac Games runs Flow Production Tracking (formerly ShotGrid) as its
+   system of record across 300+ users and thousands of tasks per month; the
+   Shotgun-for-games initiative (Avalanche, Microsoft Game Studios, EA) has
+   supervisors reviewing web playback with annotations. Automated validation
+   apps (e.g. tk-multi-data-validation) run rule-based scene checks before
+   publish. That is the AAA form of this skill's NOT-ALLOWED-TO-CHANGE lock
+   list plus the Coordinator's shot list.
+   - Sources: https://builtin.com/job/flow-production-tracking-administrator/10298926;
+     https://www.4rfv.com/454LN3KZL65Z/shotgun-software-announces-shotgun-for-game-developers.htm
+4. **Human-validation-gated automation.** Ubisoft Toronto's performance-
+   capture pipeline timecode-syncs all capture streams; once the cinematic
+   director validates the cut, custom scripts process the weekly data flow
+   with no manual handling per take. Human judges once, machines run the
+   rest: the same direction-prep-render-QC split this skill's four-agent
+   crew runs.
+   - Source: https://news.ubisoft.com/en-ca/article/4wk5z7buVQE8JrVZdkyAT2/how-ubisoft-toronto-embraces-the-future-of-performance-capture
+
+### Agent-executable automation upgrades (from AAA practice)
+
+- **Job manifest as JSON.** Write each shot job as a record {shot_id,
+  prompt, refs[], lock_list[], render_settings{}, farm_target} and check it
+  into git before dispatch; the QC agent reads the same file to verify lock
+  fidelity instead of re-parsing notes. (AAA form: Flow Production Tracking
+  as the system of record.)
+- **Pre-dispatch validation.** Before a job hits the farm, a script asserts
+  the lock list is non-empty, all reference files resolve, and settings
+  match a prepared profile; reject incomplete jobs at Prep time, not after
+  paying to render a malformed take. (AAA form: tk-multi-data-validation
+  before publish.)
+- **Idle-aware keepalive.** Query queue depth before each rental; kill a
+  rental whose queue sits empty for more than 5 minutes (this skill's
+  invariant: agents keep the next job ready before a worker idles). (AAA
+  form: Deadline idle-pool release.)
+
 **Depth status:** FULL (author's complete written breakdown with job specs,
 failure taxonomy, and cost receipts; commenters corroborate the agentic-setup
 reading).

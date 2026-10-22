@@ -61,6 +61,64 @@ Tools used: Blender (mannequin scene + camera animation); Blender MCP via Codex 
 1. Direct the camera in 3D, generate the image in AI, never the reverse.
 2. Check the four failure modes on every output: identity drift, framing changes, background consistency, loop seam.
 
+## AAA studio practice
+
+Camera-first directing is standard AAA cinematics practice; this skill's
+Blender blocking plus AI rendering is the indie form of it.
+
+1. **Camera as an independent data stream.** Ninja Theory's SIGGRAPH 2016
+   "real-time cinematography" on *Hellblade: Senua's Sacrifice*: a scene
+   shot, edited, and rendered live in front of an audience in under ten
+   minutes, with camera motion and focus captured as their own stream played
+   back against performances in UE4 Sequencer. Camera path as an independent
+   input, not baked into footage.
+   - Sources: https://blog.siggraph.org/2016/10/ninja-theory-epic-games-talk-hellblade-future-real-time.html/;
+     https://www.fxguide.com/fxfeatured/epic-win-previs-to-final-in-five-minutes/
+2. **Lock the camera before spending money.** Naughty Dog (GDC 2017): *all*
+   cinematic scenes start in previs; digital previz (crude models) plans
+   camera angles, sets, and movement before any rendering, and the mocap
+   stage physically recreates in-game geometry because stage time is
+   expensive.
+   - Source: https://gamesbeat.com/how-planning-and-technology-helped-naughty-dog-animate-uncharted-4-a-thiefs-end/
+3. **The camera as a physical film camera.** Santa Monica Studio, *God of
+   War* (2018): zero camera cuts mandated across gameplay and cinematics; DP
+   Dori Arazi tuned the virtual mocap equipment like a documentary camera,
+   and where mocap was impossible animators hand-blocked staging with
+   untextured models (GDC 2019).
+   - Source: https://sms.playstation.com/stories/evolving-our-tech-building-powerful-and-unique-game-talented-creatives
+4. **The vendor-standard workflow.** Epic's Animation Field Guide: realtime
+   pipelines begin with blocking and layout in Sequencer with low-resolution
+   stand-ins, then each asset is replaced with a final version as work
+   progresses.
+   - Source: http://acaa.work/resources/guide.pdf
+5. **Camera-first is a formal role.** Skydance's Senior Cinematics Camera
+   Layout Artist (*Marvel 1943: Rise of Hydra*) operates the virtual camera
+   at performance-capture shoots and edits cameras in Maya and Unreal.
+   - Sources: https://up2staff.com/santa-artist-seattle-angeles-los-valley-at-skydance;
+     https://www.aivanet.com/2024/03/unreal-engine-just-demoed-film-quality-visuals-running-in-real-time/
+6. **Camera as a separate pass.** An 80 Level artist interview documents
+   capturing the performance first, then "shooting" the cameras as a later
+   pass (5-6 angles), authoring them in Maya, and syncing into Sequencer.
+   - Source: https://80.lv/articles/integrating-real-time-rendering-into-film-production-pipeline/
+
+### Agent-executable automation upgrades (from AAA practice)
+
+- **Export the camera path as data.** Export the Blender camera animation
+  (FBX or Alembic) alongside the reference clip; keep it as the ground-truth
+  move for any re-render in any tool. (AAA form: Ninja Theory's camera as an
+  independent stream; Epic's Sequencer layout.)
+- **Automate the four failure checks.** *Inference (labeled):* these are
+  standard computer-vision metrics assembled here, not cited studio
+  automation. Compute per-output deltas against the reference: identity
+  embedding distance (identity drift), camera-path correlation from frame
+  homography (framing changes), background similarity outside the subject
+  mask (background consistency), and first-frame vs last-frame match (loop
+  seam). An agent runs the numbers; the human still judges intent.
+- **Shoot the move twice.** Render two blocking variants (e.g. wide vs
+  tight) before any generation, mirroring the 5-6-angle coverage pass; pick
+  the move, then spend the generation budget. (AAA form: 80 Level's separate
+  camera pass.)
+
 ## Depth status
 
 FULL (author's full "How I made it" post text + 17 comments).
