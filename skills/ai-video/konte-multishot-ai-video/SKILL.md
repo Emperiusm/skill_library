@@ -63,6 +63,64 @@ Tools used: **konte** (MIT, https://github.com/shiwano/konte): TypeScript DSL fo
 2. "Wrap, never replace" your existing tools: the adapter layer sits around what you already use.
 3. Dogfood the tool on a real artifact: "this 90-second piece is what I've been using to dogfood it", the demo is also the validation harness.
 
+## AAA studio practice
+
+How AAA studios run the same pattern (shots declared in data, stable asset
+addresses, non-destructive takes, explicit approvals, automated machinery),
+and what to borrow.
+
+1. **USD is the AAA form of "shots in code with stable addresses."** Animal
+   Logic open-sourced USD ALab, a real production scene covering the full
+   path from global assets through shot outputs: referencing, point
+   instancing, assemblies, technical variants, global assets, and
+   shot-based overrides. Variant sets are non-destructive takes (konte's
+   "regenerating does not overwrite anything"); references are stable
+   addresses (`video:shot.05.motion` is konte's version); shot-based
+   overrides are per-shot acceptance records. Animal Logic moved its Sydney
+   and Vancouver studios to an end-to-end USD pipeline across 2017-2020
+   (*Peter Rabbit* to *Peter Rabbit 2*), the same transition this skill's
+   DSL is doing for AI video at indie scale.
+   - Source: https://www.cgw.com/Press-Center/News/2021/Animal-Logic-Advances-Open-Source-Learning-Via-U.aspx
+2. **Highly automated multi-DCC pipelines feed human review, not the other
+   way around.** Animal Logic's own *Peter Rabbit 2* writeup: ZBrush
+   (sculpting), Houdini (simulation), Maya (animation), and Marvelous
+   Designer (clothing) plus proprietary Beast (rigging), Glimpse
+   (rendering), Weave (cloth), Ash (shading), Filament (lighting), and
+   Alfro (fur) were "all joined to form a highly automated pipeline that
+   could provide fully furred, simulated, lit, and rendered reviews for all
+   departments dailies." That is the AAA form of konte's Phase 3: the
+   machinery is automated and the human lives in the review surface.
+   - Source: https://animallogic.com/portfolio/projects/peter-rabbit-2/
+3. **Explicit acceptances are a production tracker's review and approval
+   workflow.** Autodesk Flow Production Tracking (formerly ShotGrid) is the
+   industry's central hub for tracking assets, shots, versions, notes,
+   reviews, and approvals; its review toolset (Live Review, compare modes,
+   annotations) is where acceptances become durable records, and it
+   integrates with Maya, Blender, and Unreal with APIs for custom pipeline
+   tools. That is the AAA system-of-record version of konte's acceptance
+   records and browser review UI.
+   - Source: https://www.autodesk.com/campaigns/flow-production-tracking
+
+### Agent-executable automation upgrades (from AAA practice)
+
+- **Acceptance as a machine-readable log.** Write every acceptance to a
+  JSON log (shot_id, take_id, reviewer, timestamp, note) instead of only
+  marking it in the review UI; the agent computes downstream staleness by
+  walking the dependency graph against this log. (AAA form: ShotGrid
+  approval statuses as the source of truth.)
+- **Staleness sweep command.** On any asset change, run a graph walk that
+  marks dependent takes stale and prints the affected list for the human's
+  review pass; never rely on the human remembering what went stale. (AAA
+  form: status propagation across shots.)
+- **Adapter wrap-check before dispatch.** Before the agent drives a ComfyUI
+  adapter, a script asserts the instance is reachable and ComfyUI-Manager
+  is present; fail fast with the adapter's diagnostics instead of a
+  half-run generation. (AAA form: validation before publish.)
+- **Take manifests beside takes.** Store each take with a sidecar manifest
+  (take_id, parent asset address, params, accepted/stale status) so an
+  agent can list and compare takes programmatically, mirroring USD
+  variant-set semantics. (AAA form: variant sets + shot-based overrides.)
+
 ## Depth status
 
 FULL (full post text by the author + comments; no media needed, the tooling signal is the system description, not the video frames).

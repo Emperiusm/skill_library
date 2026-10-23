@@ -181,5 +181,66 @@ Tools used: **ComfyUI** + **comfyui-minimax-h3-studio** workflow,
 - **Qwen auto-description was hit-or-miss and slow** — removed from the
   workflow; do not re-add without a solid rule set.
 
+## AAA studio practice
+
+How AAA film VFX does the same thing (replace the performer, keep the
+motion and scene), and what to borrow.
+
+1. **ILM FaceSwap on *Indiana Jones and the Dial of Destiny* (2023).** ILM's
+   biggest de-aging project: ~100 VFX artists, 3 years, to take Harrison
+   Ford from 80 to 42 for a 25-minute sequence. The pipeline: Flux, a
+   proprietary system with two infrared cameras riding either side of the
+   main camera; Medusa, ILM and DisneyResearch|Studios' facial-capture rig
+   that reconstructs the face in full motion; a FACS expression library
+   recorded from Ford as the base; machine-learning reference material from
+   previous Indiana Jones films. Director James Mangold: "I could shoot
+   Harrison on a Monday ... and I could see dailies by Wednesday with his
+   head already replaced." The AAA form of this skill's save-the-character-
+   once unit is a full expression and lighting library per performer; the
+   AAA form of the trimmer + generation loop is a 2-day dailies turnaround
+   per shot.
+   - Source: https://80.lv/articles/see-how-industrial-light-magic-made-harrison-ford-40-years-younger?amp=1
+2. **The Mandalorian's Luke: deepfake + Lola VFX 2.5D.** Jon Favreau: the
+   deepfake analysis of Mark Hamill footage built "a library of expressions,
+   faces, looks, and lighting scenarios" that the AI superimposed over the
+   physical performer's corresponding expressions; body double Max
+   Lloyd-Jones performed the movement; Lola VFX's 2.5D de-aging blended the
+   performances; Hamill was also filmed in "The Egg," a lighting rig that
+   captured ultra-high-res face textures with controlled lighting. Two
+   lessons for this skill: (a) the reference library covers expressions AND
+   lighting, not just identity; (b) the motion source and the likeness
+   source stay separate all the way through, exactly like this skill's
+   source-video-guides-motion / reference-image-guides-appearance split.
+   - Source: https://screenrant.com/mandalorian-luke-mark-hamill-deaged-technology-deepfake-explained/
+3. **AAA is hiring for exactly this ML discipline.** ILM hired YouTuber
+   Shamook (2021) for his deepfake research after his video improved the
+   Mandalorian Luke shot; ILM's statement: "Over the past several years ILM
+   has been investing in both machine learning and A.I. as a means to
+   produce compelling visual effects work." Community-developed face-swap
+   tooling is on the AAA hiring track, which is where workflows like this
+   skill are heading.
+   - Source: https://www.thewrap.com/lucasfilms-ilm-hires-youtuber-who-improved-cgi-luke-in-the-mandalorian/
+
+### Agent-executable automation upgrades (from AAA practice)
+
+- **Character unit as a structured record.** Save the reference image +
+  description with a JSON sidecar (character_id, lighting notes, expression
+  range, prompt that produced the best take), mirroring ILM's
+  expression-and-lighting library; the agent picks the right reference per
+  shot from the sidecar instead of hand-picking files.
+- **Per-take parameter log.** Log seed, megapixels, mask mode, and prompt
+  per take in JSON (the dailies discipline); the agent reproduces or varies
+  takes from the log without re-typing.
+- **Mask verification before generation.** Render the inverted-color mask
+  preview and have the agent assert the masked region matches the SAM3
+  target (e.g. bounding-box overlap against the segmentation) before
+  spending the generation; the AAA form is tracking verification before
+  the expensive face-swap pass.
+- **Failure modes as an executable decision tree.** Encode this skill's
+  failure modes: if the source has transitions/effects, raise prompt detail
+  on effects first; if the clip exceeds the OOM threshold (30-40 s on
+  4070 Ti-class), auto-split into looping chunks with cached prompts. Run
+  the tree before the first generation, not after the first failure.
+
 **Depth status:** FULL (full post text + 33 comments with quoted settings,
 benchmarks, and failure reports; no transcript exists for native Reddit video).

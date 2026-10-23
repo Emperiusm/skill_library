@@ -155,6 +155,61 @@ Open prompts buy creativity at the cost of genre accuracy. Specificity
    and the boss shot from reading the project, but read cozy as horror.
    Fix it with a more specific prompt next time.
 
+## AAA studio practice
+
+How AAA studios and film handle the same pattern (AI-assisted trailer
+production), and what to borrow.
+
+1. **AI picks the moments; a human edits the trailer.** For *Morgan* (2016),
+   20th Century Fox and IBM Watson trained on 100 horror trailers cut into
+   individual moments, ran visual, audio, and composition analysis (Watson
+   APIs) to learn what reads as scary, then fed the full 90-minute film in;
+   Watson picked 10 moments (6 minutes total). A resident IBM filmmaker then
+   arranged and edited those moments into the trailer: title cards, musical
+   overlay, ordering. Result: 24 hours vs the typical 10 days to a month.
+   The AAA split is exactly the inverse of this skill's failure: machine
+   selection, human editorial judgment, and crucially the system was
+   trained on the *genre* of trailer it was asked to cut, which is what
+   fixes the cozy-read-as-horror miss.
+   - Source: http://techportfolio.net/2016/09/how-ibm-watson-created-a-horror-movie-trailer/
+2. **AAA trailers start from a shot list and capture in-engine, not from
+   open-ended generation.** Per a 2026 trailer-production guide: every shot
+   is tagged with camera behavior, subject, duration, and audio hook before
+   capture; in-engine capture uses Unreal Sequencer + Movie Render Queue or
+   Unity Cinemachine + Timeline + Recorder; capture days run 8-12 hours per
+   shot day. This skill's agent skipped all of that and generated Veo clips
+   from a loose brief instead of capturing the build it could read; the
+   shot list is the AAA form of the specificity this skill's Phase 6 says
+   the next prompt needs.
+   - Source: https://game-ace.com/blog/video-game-trailer-production/
+3. **Replayable, iterable shots beat one-shot generation.** Blizzard's
+   gameplay-trailer process builds shots in Sequencer so the exact same
+   scene replays at will, extracts depth passes for post, and iterates a
+   single shot from rough sketch to final with multi-team collaboration.
+   For an agent pipeline, scripted replayable capture (or seeded,
+   locked-parameter generation) is the AAA discipline this skill lacks.
+   - Source: https://www.invenglobal.com/articles/25875/everything-blizzard-says-about-creating-gameplay-trailers
+
+### Agent-executable automation upgrades (from AAA practice)
+
+- **Shot-list JSON before any generation.** Write a shot list manifest
+  (shot_id, camera behavior, subject, duration, audio hook, tone reference)
+  and require human approval of it before the agent generates a frame. This
+  is the executable form of Phase 6's lesson and the AAA fix for the genre
+  miss: genre lives in the shot list, not in one open-ended prompt.
+- **Genre check as a gate.** Before generating, the agent must state the
+  game's genre from reading the build and name 2-3 reference trailers; if
+  the detected genre and the prompt's tone words conflict, stop and ask.
+  (AAA form: Watson was trained on the genre of trailer it had to cut.)
+- **Requirement reconciliation.** After the run, the agent diffs the prompt's
+  requirements (TTS, budget, duration, style) against what it actually did
+  and reports each drop explicitly. (AAA form: review notes.) This skill's
+  TTS was silently dropped; an explicit reconciliation turns silent drops
+  into visible ones.
+- **Budget ledger as code.** Track per-clip cost against the cap in a JSON
+  ledger the agent updates after each generation job; abort when the
+  projected total exceeds the cap. (AAA form: farm/job accounting.)
+
 ## Depth status
  FULL (for post+comments reconstruction; the tool chain,
 budget, and agent decisions were all mined from OP's comments, which is
