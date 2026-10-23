@@ -1,5 +1,5 @@
 ---
-name: "handdrawn_foliage_alpha_cards"
+name: handdrawn-foliage-alpha-cards
 description: "Hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in Photoshop, masked-opacity material in-engine for crisp hard leaf edges. No separate leaf geometry unless you simulate real tree physics. Trigger when modeling stylized trees or foliage for a game."
 ---
 

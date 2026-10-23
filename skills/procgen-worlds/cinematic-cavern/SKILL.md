@@ -1,5 +1,5 @@
 ---
-name: "cinematic_cavern"
+name: cinematic-cavern
 description: "Build a cinematic cave/pool/waterfall scene end to end: Blender blockout, ZBrush sculpt, decimation to game mesh, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver, player-to-water contact, Houdini waterfall source and surface, and final assembly with player-guiding contrast. Trigger when building a water-centric 3D environment, a game-ready rock/water asset pipeline, or a custom water solver."
 ---
 

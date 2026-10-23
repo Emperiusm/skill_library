@@ -13,7 +13,7 @@ skill.
 
 ## The skills
 
-74 skills in 9 categories, growing with every daily scout run. The full grouped
+92 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
@@ -25,8 +25,8 @@ reports under [`docs/scout-reports/`](docs/scout-reports/).
 | [`ai-video`](skills/ai-video/) | 14 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
 | [`simulation-vfx`](skills/simulation-vfx/) | 10 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 7 | Material authoring, shaders, texturing |
-| [`engine-runtime`](skills/engine-runtime/) | 10 | Engine systems, runtime and render tech, browser and WebGPU |
-| [`automation`](skills/automation/) | 5 | Agent-driven pipelines, DCC bridges, productized generation |
+| [`engine-runtime`](skills/engine-runtime/) | 26 | Engine systems, runtime and render tech, browser and WebGPU |
+| [`automation`](skills/automation/) | 7 | Agent-driven pipelines, DCC bridges, productized generation |
 | [`no-tooling`](skills/no-tooling/) | 2 | Negative examples: footage with no extractable workflow, kept on purpose |
 
 ## The tool
@@ -124,6 +124,24 @@ what you're missing" instead of "here's what's popular".
 | **Operator** | The human running the scout. Only the operator approves downloads; scheduled runs never ask. |
 
 </details>
+
+## Use the skills
+
+Every skill here is a plain `SKILL.md` folder in the Agent Skills open
+standard, so the library installs straight into the agent you already use:
+
+```bash
+npx skills add Emperiusm/skill_library
+```
+
+Claude Code users can also install by category through the plugin
+marketplace:
+
+```bash
+claude plugin marketplace add Emperiusm/skill_library
+claude plugin install skill-library@skill-library      # everything
+claude plugin install engine-runtime@skill-library    # or a single category
+```
 
 ## Install
 

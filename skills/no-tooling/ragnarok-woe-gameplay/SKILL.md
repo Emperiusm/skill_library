@@ -1,5 +1,5 @@
 ---
-name: "ragnarok_woe"
+name: ragnarok-woe-gameplay
 description: "NO-TOOLING: gameplay footage with no extractable workflow. Kept as a negative example of what the scout skips. No trigger."
 ---
 

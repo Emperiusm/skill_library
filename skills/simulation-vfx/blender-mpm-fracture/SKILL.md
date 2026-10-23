@@ -1,5 +1,5 @@
 ---
-name: "blender_mpm"
+name: blender-mpm-fracture
 description: "Run 890k-particle Material Point Method sims with Voronoi-cell fracture in Blender. Trigger when faking fracture at scale."
 ---
 

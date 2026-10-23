@@ -1,5 +1,5 @@
 ---
-name: "chaos_flesh_dataflow_soft_body"
+name: chaos-flesh-dataflow-soft-body
 description: "Build a UE 5.8 Chaos Flesh soft-body asset with DataFlow: mesh prep rules, Static-to-Tet-Mesh template, tet density tuning, the missing Set-Flesh-Default-Properties fix, and deformable solver wiring. Trigger when adding squishy/rubbery physics to an Unreal scene."
 ---
 

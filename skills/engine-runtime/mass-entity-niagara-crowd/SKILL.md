@@ -1,5 +1,5 @@
 ---
-name: "mass_entity_niagara_crowd"
+name: mass-entity-niagara-crowd
 description: "Render massive UE crowds without per-agent actors: simulate in custom C++ MassEntity processors, stream transform arrays into Niagara GPU particles, animate with VATs. Trigger when building RTS/battle crowds, swarm renders, or agent visualizations in Unreal."
 ---
 

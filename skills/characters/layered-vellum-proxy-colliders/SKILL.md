@@ -1,5 +1,5 @@
 ---
-name: "layered_vellum_proxy_colliders"
+name: layered-vellum-proxy-colliders
 description: "Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers that collide against each other."
 ---
 

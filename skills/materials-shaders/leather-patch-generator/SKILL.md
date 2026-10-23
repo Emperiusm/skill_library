@@ -1,5 +1,5 @@
 ---
-name: "leather_patch"
+name: leather-patch-generator
 description: "Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators."
 ---
 

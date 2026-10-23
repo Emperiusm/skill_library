@@ -1,5 +1,5 @@
 ---
-name: "raup_shell_morphospace"
+name: raup-shell-morphospace
 description: "Generate every seashell from three numbers: David Raup's morphospace (flare, verm, spire), built as a Blender geometry-nodes / TouchDesigner generator with cellular-automaton or reaction-diffusion pigment patterns, plus a StyleGAN3 latent-space museum when parametric dimensions explode. Trigger when building parametric 3D generators, morphospace-style variant exploration, or seeded procedural assets."
 ---
 

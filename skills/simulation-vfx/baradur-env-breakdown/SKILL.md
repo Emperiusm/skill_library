@@ -1,5 +1,5 @@
 ---
-name: "baradur_env_breakdown"
+name: baradur-env-breakdown
 description: "Assemble a large-scale VFX environment as labeled reviewable stages (Base/Tower/Lava/Eye/comp): Nuke-style 3D assembly, 100GB+ smoke-sim cache budgeting, breakdown-as-deliverable scheduled in weeks, grade for drama without crushing detail. Trigger when a VFX environment shot needs stage-gated review or a reel-grade breakdown."
 ---
 

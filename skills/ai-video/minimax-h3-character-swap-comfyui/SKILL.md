@@ -1,5 +1,5 @@
 ---
-name: "minimax_h3_character_swap_comfyui"
+name: minimax-h3-character-swap-comfyui
 description: "Swap a character in video with MiniMax H3 in ComfyUI: mask with SAM3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the finished result. RTX 4090, 3s at 0.8MP in ~2.5 minutes. Trigger when doing local AI character replacement or video inpainting."
 ---
 

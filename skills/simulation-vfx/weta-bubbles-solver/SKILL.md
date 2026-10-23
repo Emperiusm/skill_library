@@ -1,5 +1,5 @@
 ---
-name: "weta_bubbles"
+name: weta-bubbles-solver
 description: "Implement a two-way coupled bubbles solver from the Weta FX whitepaper in vanilla Houdini nodes. Trigger when building a production fluid solver from a paper."
 ---
 

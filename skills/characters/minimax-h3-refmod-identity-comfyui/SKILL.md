@@ -1,5 +1,5 @@
 ---
-name: "minimax_h3_refmod_identity_comfyui"
+name: minimax-h3-refmod-identity-comfyui
 description: "Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod custom nodes, then prompt scenes, outfits, poses, and environments. 8 steps / 6 min, 25 steps / 14 min at 1.8 MP. Trigger when doing local AI character-consistent image generation without training a LoRA."
 ---
 

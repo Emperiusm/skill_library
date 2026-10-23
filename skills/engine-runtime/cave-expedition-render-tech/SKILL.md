@@ -1,5 +1,5 @@
 ---
-name: "cave_expedition_tech"
+name: cave-expedition-render-tech
 description: "Ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, GPU-driven detail, each stage held to its budget. Trigger when optimizing 3D rendering performance."
 ---
 

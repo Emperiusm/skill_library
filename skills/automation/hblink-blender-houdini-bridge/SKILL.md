@@ -1,5 +1,5 @@
 ---
-name: "hblink_blender_houdini_bridge"
+name: hblink-blender-houdini-bridge
 description: "Bridge Blender and Houdini with a live socket link and a smart cache: live geometry/UVs/attributes/materials into SOPs or Solaris, RBD caching via rest-fracture plus per-frame transform/velocity point files (35x smaller than Alembic hierarchies), JSON material-rebuild sidecars, and beta Blender-rig to KineFX/APEX character transfer. Trigger when moving sims, scenes, or rigs between Blender and Houdini."
 ---
 

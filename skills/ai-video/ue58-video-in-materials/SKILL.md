@@ -1,5 +1,5 @@
 ---
-name: "ue58_video_in_materials"
+name: ue58-video-in-materials
 description: "Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens or in materials in UE."
 ---
 

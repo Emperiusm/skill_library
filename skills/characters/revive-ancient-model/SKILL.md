@@ -1,5 +1,5 @@
 ---
-name: "revive_ancient_model"
+name: revive-ancient-model
 description: "Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. Trigger when refurbishing old assets."
 ---
 

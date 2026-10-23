@@ -1,5 +1,5 @@
 ---
-name: "blueprint_construction"
+name: blueprint-construction-effect
 description: "Author a reverse-erosion construction effect: blueprint preview, climbing rim shader, ember particle finish. Trigger when building grow-in VFX."
 ---
 

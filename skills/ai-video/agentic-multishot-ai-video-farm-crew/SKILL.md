@@ -1,5 +1,5 @@
 ---
-name: "agentic_multishot_ai_video_farm_crew"
+name: agentic-multishot-ai-video-farm-crew
 description: "Produce multi-shot AI video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit NOT-ALLOWED-TO-CHANGE lock lists, dispatch via a ComfyUI front-end plus GPU-rental queue, run Coordinator/Prep/Farm-monitor/QC agents in a direction-prep-render-QC loop, fix the four canonical mask failures. Trigger when producing multi-shot AI video with agents and rented GPUs."
 ---
 

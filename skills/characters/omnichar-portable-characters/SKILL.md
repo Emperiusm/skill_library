@@ -1,5 +1,5 @@
 ---
-name: "omnichar_portable_characters"
+name: omnichar-portable-characters
 description: "Ship consistent AI characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the ComfyUI-Omnichar custom nodes, then decode the same file into Minimax H3, Krea2, Flux2 dev, or klein 9B/4B. Trigger when a character must keep the same face, body, and clothes across every model and shot."
 ---
 

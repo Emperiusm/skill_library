@@ -1,5 +1,5 @@
 ---
-name: "blender_fake_sim_rigging"
+name: blender-fake-sim-rigging
 description: "Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for animation or game export."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "moss_image_comfyui_recipe"
+name: moss-image-comfyui-recipe
 description: "Run OpenMOSS MOSS-Image (5B DiT, Apache 2.0) in ComfyUI: starter settings, VRAM/quant options, layout-JSON text rendering, and the community LoRA/tooling wave. Trigger when generating text-bearing images, posters, or concept art with open weights."
 ---
 

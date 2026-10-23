@@ -1,5 +1,5 @@
 ---
-name: "seeded_squad_sim_deterministic_replay"
+name: seeded-squad-sim-deterministic-replay
 description: "Build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate RNG streams per system; an event log with a hash plus replay checking proves determinism; per-soldier deterministic decisions from perception plus morale/cohesion values; squads reach platoon HQ through a radio operator. Trigger when building a seeded sim, a deterministic game, or a replay/debugging harness."
 ---
 

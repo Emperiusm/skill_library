@@ -1,5 +1,5 @@
 ---
-name: "ai_character_pipeline"
+name: ai-character-pipeline
 description: "Turn an AI character concept into a rigged, game-ready 3D asset, two methods from the thread's top chains: (1) Tripo P2.0 generate-then-repair (recommended): clean 4-view turnaround, Smart Mesh generation, GPT Astra mesh split plus UV fix plus CC0 textures, Mixamo or Tripo rigging, Mixamo or Cascadeur or Fable animation, spring-bone cloth; (2) base-mesh-first: bought or Sketchfab or Humble Bundle base mesh, Pupa's addon rigging, Blender MCP plus AI assist, Mixamo animations. Meshy is not recommended for characters. Trigger when turning an AI character concept into a usable game asset."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "ascii_raymarched_world_grid"
+name: ascii-raymarched-world-grid
 description: "Build a single-file raymarched web game world on a 2048x2048 one-byte-per-cell material grid: place settlements first, bake roads with a Dijkstra slope-cost path search, then render every feature as a dumb per-ray material lookup, no SDF. Trigger when building a cheap grid-baked game world or an ASCII/character-cell renderer."
 ---
 

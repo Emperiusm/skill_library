@@ -1,5 +1,5 @@
 ---
-name: "one_seed_procedural_game"
+name: one-seed-procedural-game
 description: "Build a game with zero asset files: generate terrain, towns, people, sky, sound effects, and music from one seed at startup, constructing every prop in code from boxes, spheres, and cones and synthesizing all audio from sine waves. Trigger when the asset pipeline itself is the cost you want to delete."
 ---
 

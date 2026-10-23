@@ -1,5 +1,5 @@
 ---
-name: "netcode_movement"
+name: multiplayer-movement-smooth
 description: "Smooth multiplayer movement with client prediction and server reconciliation. Trigger when fixing netcode movement."
 ---
 

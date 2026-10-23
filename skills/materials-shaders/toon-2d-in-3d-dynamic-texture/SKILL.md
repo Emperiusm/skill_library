@@ -1,5 +1,5 @@
 ---
-name: "toon_2d_in_3d_dynamic_texture"
+name: toon-2d-in-3d-dynamic-texture
 description: "Render a classic DBZ cel look in 3D with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup animation. Trigger when building a 2D-anime look in a 3D engine or writing toon-shading rules for an art bible."
 ---
 

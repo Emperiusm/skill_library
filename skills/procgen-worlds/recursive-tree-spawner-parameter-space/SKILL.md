@@ -1,5 +1,5 @@
 ---
-name: "recursive_tree_spawner_parameter_space"
+name: recursive-tree-spawner-parameter-space
 description: "Drive procedural tree generation by sweeping parameter ranges (not the algorithm): one recursive branch spawner yields one species or many depending on range width; ship via prefab, AutoLOD decimation, GPUInstancer plus impostors, and shared textures, or generate LODs from the same recursive recipe. Reconstructs Lara_the_dev's r/proceduralgeneration talk demo and its commenter production stack. Trigger when building procedural vegetation, or when unoptimized generator output needs a production path."
 ---
 

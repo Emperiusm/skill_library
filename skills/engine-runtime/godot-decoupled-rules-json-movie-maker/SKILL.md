@@ -1,5 +1,5 @@
 ---
-name: "godot_decoupled_rules_json_movie_maker"
+name: godot-decoupled-rules-json-movie-maker
 description: "Build a Godot game with engine-decoupled rules: game logic in a plain library with no Godot dependency, each rule a small class behind a name-to-builder dictionary, content as JSON rule lists, 3D-to-pixel-art via a small viewport plus pixelation shader, and trailers as scripted runs re-shot with Godot Movie Maker mode after every change. Trigger when structuring a Godot game's rules, content data, or trailer pipeline."
 ---
 

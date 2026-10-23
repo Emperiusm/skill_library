@@ -1,5 +1,5 @@
 ---
-name: "procedural_galaxy_generator_blender"
+name: procedural-galaxy-generator-blender
 description: "Build procedural galaxies in Blender with geometry nodes plus shaders: point clouds for stars, volumes for everything else, energy-preserving far-field glow, keyframed emissive flythroughs, 3D gravitational lensing meshes, dust lanes as layered volume roles (absorption/emission/particles), and instanced deep-field domains with cosmological redshift. Trigger when building deep-space VFX or procedural astronomy."
 ---
 

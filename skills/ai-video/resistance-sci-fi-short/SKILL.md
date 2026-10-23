@@ -1,5 +1,5 @@
 ---
-name: "resistance_sci_fi"
+name: resistance-sci-fi-short
 description: "Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. Trigger when producing AI video with a human directing hand."
 ---
 

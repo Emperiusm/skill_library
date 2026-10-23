@@ -103,7 +103,22 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`seeded-squad-sim-deterministic-replay`](engine-runtime/seeded-squad-sim-deterministic-replay/SKILL.md) | Build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate RNG streams per system; an event. |
 | [`webgpu-black-hole-raytracer`](engine-runtime/webgpu-black-hole-raytracer/SKILL.md) | Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per. |
 | [`unity-dots-fake-ragdoll-crowds`](engine-runtime/unity-dots-fake-ragdoll-crowds/SKILL.md) | Render 10,000-character crowds with fake ragdolls: premade collapse clips plus deterministic launch, baked vertex anims, sub-1000-tri meshes, no armatures, 3 LODs; plus the no-full-ECS arrays-plus-Burst alternative. |
-
+| [`godot-2d-movement`](engine-runtime/godot-2d-movement/SKILL.md) | Implement 2D kinematic character movement in Godot 4.7 with CharacterBody2D and move_and_slide(): platformer run/jump with gravity, top-down 8-direction motion, slope. |
+| [`godot-3d-essentials`](engine-runtime/godot-3d-essentials/SKILL.md) | Set up a Godot 4.7 3D scene: Node3D transforms, Camera3D, lighting (DirectionalLight3D/OmniLight3D), WorldEnvironment for sky/ambient/tonemap/post, MeshInstance3D materials. |
+| [`godot-animation`](engine-runtime/godot-animation/SKILL.md) | Animate in Godot 4.7 three ways: AnimationPlayer for keyframed clips (incl. call and signal tracks), AnimationTree with state machines and blend spaces for character. |
+| [`godot-audio`](engine-runtime/godot-audio/SKILL.md) | Play and mix audio in Godot 4.7: AudioStreamPlayer (2D/3D variants), audio buses with volume/mute and effects, music vs SFX routing, db/linear volume, and precise. |
+| [`godot-csharp`](engine-runtime/godot-csharp/SKILL.md) | Use C#/.NET in Godot 4.7: partial classes extending nodes, the PascalCase lifecycle (_Ready/_Process/_PhysicsProcess), [Export] fields, [Signal] delegates as C# events. |
+| [`godot-export`](engine-runtime/godot-export/SKILL.md) | Export and build a Godot 4.7 project for distribution: install export templates, define export presets (Windows/macOS/Linux/Web/Android), run headless command-line exports. |
+| [`godot-gdscript`](engine-runtime/godot-gdscript/SKILL.md) | Write idiomatic GDScript for Godot 4.7: static typing, the node lifecycle (_ready/_process/_physics_process), @export/@onready/@tool annotations, signals, and await for. |
+| [`godot-gdscript-headless-testing`](engine-runtime/godot-gdscript-headless-testing/SKILL.md) | Run GDScript test suites from the command line with `godot --headless`, using a SceneTree/MainLoop runner script that exits non-zero on failure so CI can gate merges. Use. |
+| [`godot-multiplayer`](engine-runtime/godot-multiplayer/SKILL.md) | Build networked games with Godot 4.7 high-level multiplayer: set up an ENetMultiplayerPeer server/client, define RPCs with the @rpc annotation (call via rpc()/rpc_id()), set. |
+| [`godot-nodes-scenes`](engine-runtime/godot-nodes-scenes/SKILL.md) | Structure a Godot 4.7 project with the scene tree and node composition: build reusable scenes, instance PackedScenes at runtime, navigate the tree safely, and register. |
+| [`godot-physics`](engine-runtime/godot-physics/SKILL.md) | Use Godot 4.7 physics bodies and detection in 2D and 3D: RigidBody, StaticBody, Area, and CharacterBody; collision layers vs masks; contact/overlap signals; and raycasts. |
+| [`godot-resources`](engine-runtime/godot-resources/SKILL.md) | Design data-driven Godot 4.7 games with custom Resource classes: define typed data with class_name + @export, save/load .tres/.res files, instance and duplicate resources. |
+| [`godot-shaders`](engine-runtime/godot-shaders/SKILL.md) | Write Godot 4.7 shaders in the Godot Shading Language: canvas_item shaders for 2D and spatial shaders for 3D, with vertex/fragment functions, uniforms (source_color. |
+| [`godot-signals-groups`](engine-runtime/godot-signals-groups/SKILL.md) | Build event-driven, decoupled Godot 4.7 gameplay with signals and node groups: declare and emit custom signals, connect with Callables (incl. bind/one-shot), and broadcast to. |
+| [`godot-tilemap`](engine-runtime/godot-tilemap/SKILL.md) | Build and edit tile-based 2D levels in Godot 4.7 with TileMapLayer and TileSet: paint layers, set up collision/navigation/custom-data on tiles, autotile with terrain sets. |
+| [`godot-ui-control`](engine-runtime/godot-ui-control/SKILL.md) | Build Godot 4.7 user interfaces with Control nodes: anchors and offsets for responsive layout, Container nodes (VBox/HBox/Grid/Margin) for automatic arrangement, Theme. |
 ## Automation and bridges (`automation/`)
 
 | Skill | What it teaches |
@@ -113,7 +128,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`houdini-jewelry-saas`](automation/houdini-jewelry-saas/SKILL.md) | Productize procedural generation: headless Houdini Engine behind an async queue and server pool with a web UI. |
 | [`houdini-mops-blender`](automation/houdini-mops-blender/SKILL.md) | Drive Blender/Cycles rendering with Houdini motion operators. |
 | [`nomad-blender-live-link`](automation/nomad-blender-live-link/SKILL.md) | Verify and use the Nomad Sculpt live link to Blender and other PC apps: install the link, round-trip a sculpt iPad-to-PC and back, and check the. |
-
+| [`steam-publish`](automation/steam-publish/SKILL.md) | Publish or update a game on Steam with Steamworks and SteamPipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release. |
+| [`itch-publish`](automation/itch-publish/SKILL.md) | Publish and update a game on itch.io: create the project page and upload builds with the butler CLI (butler push) to named channels. Use for itch.io publishing, butler push. |
 ## No-tooling examples (`no-tooling/`)
 
 | Skill | What it teaches |

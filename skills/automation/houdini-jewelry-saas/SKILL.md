@@ -1,5 +1,5 @@
 ---
-name: "houdini_jewelry_saas"
+name: houdini-jewelry-saas
 description: "Productize procedural generation: headless Houdini Engine behind an async queue and server pool with a web UI. Trigger when serving procedural systems as a product."
 ---
 

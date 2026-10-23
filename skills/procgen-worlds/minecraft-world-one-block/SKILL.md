@@ -1,5 +1,5 @@
 ---
-name: "minecraft_world_gen"
+name: minecraft-world-one-block
 description: "Generate massive voxel worlds from one block with deterministic sampling and LOD. Trigger when building large-scale procedural terrain."
 ---
 

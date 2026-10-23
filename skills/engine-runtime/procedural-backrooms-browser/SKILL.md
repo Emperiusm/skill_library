@@ -1,5 +1,5 @@
 ---
-name: "browser_backrooms"
+name: procedural-backrooms-browser
 description: "Ship procedural 3D in the browser: client-side WebGPU with a WGSL pipeline and GLSL fallback. Trigger when delivering 3D on the web with no install."
 ---
 

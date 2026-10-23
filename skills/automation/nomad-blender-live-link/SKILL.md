@@ -1,5 +1,5 @@
 ---
-name: "nomad_blender_live_link"
+name: nomad-blender-live-link
 description: "Verify and use the Nomad Sculpt live link to Blender and other PC apps: install the link, round-trip a sculpt iPad-to-PC and back, and check the update's tube tool, brush stroke editing, lattice tool, and saved undo history. Reconstructs Vertex Senpai's update video chapters plus a firsthand Reddit verification. Trigger when bridging iPad sculpting into a PC DCC pipeline, or evaluating the link before depending on it."
 ---
 

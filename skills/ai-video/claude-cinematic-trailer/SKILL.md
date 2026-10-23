@@ -1,5 +1,5 @@
 ---
-name: "claude_trailer"
+name: claude-cinematic-trailer
 description: "Direct an AI agent to cut a cinematic trailer from your game, then curate its output. Trigger when generating trailers with agents."
 ---
 

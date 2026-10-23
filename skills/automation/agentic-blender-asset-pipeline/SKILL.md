@@ -1,5 +1,5 @@
 ---
-name: "agentic_blender_asset_pipeline"
+name: agentic-blender-asset-pipeline
 description: "Drive Blender as an agent subroutine to build game-ready 3D assets: screenshot-measure-execute-assess loop via Blender MCP, per-asset ASSESSMENT.md files, non-destructive fit studies, human-in-the-loop mechanical correction, Tripo Smart Mesh concept-to-modular-mesh generation, Mixamo FBX export with baked textures, and modular level assembly. Trigger when building game assets with an AI coding agent, setting up an agent-driven Blender workflow, or converting AI-generated meshes into assembled game-ready parts."
 ---
 

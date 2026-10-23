@@ -1,5 +1,5 @@
 ---
-name: "substance_painter_3dspace_blur_filter"
+name: substance-painter-3dspace-blur-filter
 description: "Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map instead of UV adjacency; bake the result down on low-end machines. Reconstructs Such_Screen_3435's free filter workflow from r/Substance3D. Trigger when UV seams survive 2D blur, or when evaluating blur-across-islands techniques."
 ---
 

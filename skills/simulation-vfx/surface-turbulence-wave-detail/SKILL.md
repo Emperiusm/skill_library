@@ -1,5 +1,5 @@
 ---
-name: "surface_turbulence_wave_detail"
+name: surface-turbulence-wave-detail
 description: "Add fine surface waves to a cached particle-based liquid simulation without rerunning it: build a fine surface point set, track it with an advection plus repair loop (insert/delete, bend constraint, normal and tangential regularization), then simulate waves on the surface with a locally estimated Laplacian and curvature-driven sourcing, implemented as a three-stage Houdini network. Trigger when a liquid sim looks too smooth up close, when re-simming at higher resolution is too expensive, or when you need iterated wave-detail looks on cached fluid motion."
 ---
 

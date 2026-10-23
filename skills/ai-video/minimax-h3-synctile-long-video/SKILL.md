@@ -1,5 +1,5 @@
 ---
-name: "minimax_h3_synctile_long_video"
+name: minimax-h3-synctile-long-video
 description: "Generate long MiniMax H3 videos in ComfyUI (tested 600 frames / 25 s at 4K) with zero clip chaining: SyncTile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising trajectory. Two-stage: 0.5 MP draft, 3D latent upscale, 4K refine. Trigger when MiniMax H3 videos must run long or 4K without seams between segments."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "painter_characters"
+name: substance-painter-characters
 description: "Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline."
 ---
 

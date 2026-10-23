@@ -1,5 +1,5 @@
 ---
-name: "ro_engine_ai"
+name: ro-engine-neural-vs-scripts
 description: "Test game AI empirically: pit deterministic behavioral scripts against a learned policy in a custom engine and measure which wins. Trigger when evaluating game AI approaches."
 ---
 

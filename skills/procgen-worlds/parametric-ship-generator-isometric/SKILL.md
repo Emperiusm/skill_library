@@ -1,5 +1,5 @@
 ---
-name: "parametric_ship_generator_isometric"
+name: parametric-ship-generator-isometric
 description: "Generate sci-fi ships (and stations, megacities) as parametric 3D geometry drawn isometrically onto a 2D canvas in plain JavaScript: grid-snapped hull segments, taper profiles, fit rules for engines/noses/wings, seed-driven output. Trigger when building a code-driven procedural vehicle or prop generator."
 ---
 

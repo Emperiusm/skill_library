@@ -1,5 +1,5 @@
 ---
-name: "godot_procgen_city_glb_export_schema"
+name: godot-procgen-city-glb-export-schema
 description: "Ship a Godot procedural city as documented glb: keep generation procedural in-engine, define the schema of custom glb properties so others can write their own importers, and accept that shader tricks (decals, interior mapping) won't round-trip 1:1. Trigger when exporting procedural Godot scenes for other tools."
 ---
 

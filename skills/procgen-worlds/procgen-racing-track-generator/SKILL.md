@@ -1,5 +1,5 @@
 ---
-name: "procgen_racing_track_generator"
+name: procgen-racing-track-generator
 description: "Generate endless arcade racing tracks by polygon seeding, midpoint-displacement, bezier smoothing, and bending straight mesh segments along the curves, the 4-year Freeway Fever recipe. Supports intersections and highway interchanges. Trigger when building a procedural racing track or road-network generator."
 ---
 

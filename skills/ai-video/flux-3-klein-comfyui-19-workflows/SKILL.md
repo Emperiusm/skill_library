@@ -1,5 +1,5 @@
 ---
-name: "flux_3_klein_comfyui_19_workflows"
+name: flux-3-klein-comfyui-19-workflows
 description: "Run FLUX 3 Klein (Black Forest Labs) in ComfyUI for text-to-image, image editing, and multi-image combining using Pixaroma's 19 free workflows: prompt discipline, prompt upsampler, Layout Boxes, inpaint crop/stitch, text edits, character sheets, outpaint LoRA, and ref-image combining up to 10 images. Trigger when generating, editing, or combining images with FLUX 3 Klein in ComfyUI."
 ---
 

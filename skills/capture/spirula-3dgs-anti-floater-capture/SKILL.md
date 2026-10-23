@@ -1,5 +1,5 @@
 ---
-name: "spirula_3dgs_anti_floater_capture"
+name: spirula-3dgs-anti-floater-capture
 description: "Produce clean 3D Gaussian splats with Spirula: plan phone capture around the actual camera moves (4K60), enable normal and depth estimation at SfM time, and use Mild training-time floater suppression. Reconstructs SnipperAndClipper's quoted workflow from r/vfx. Trigger when generating splats that must survive close camera moves without indistinct clouds or floaters."
 ---
 

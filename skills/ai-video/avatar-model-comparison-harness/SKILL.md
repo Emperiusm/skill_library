@@ -1,5 +1,5 @@
 ---
-name: "avatar_model_comparison_harness"
+name: avatar-model-comparison-harness
 description: "Evaluate lip-synced AI avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed full-result judging, and a named failure-mode taxonomy. Reconstructs SECourses' 38-test comparison (MiniMax H3, CodeFormer, AvatarForever, LongCat, Wan 2.2, HuMo and 10 more) across 8 panels. Trigger when benchmarking AI avatar/video models or writing an AI-vendor acceptance spec."
 ---
 

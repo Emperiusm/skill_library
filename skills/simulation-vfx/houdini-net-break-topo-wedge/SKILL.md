@@ -1,5 +1,5 @@
 ---
-name: "houdini_net_break_topo_wedge"
+name: houdini-net-break-topo-wedge
 description: "Break a net in slow motion for commercial VFX: curve-spline knot modeling, glue constraints to kill jitter and untangling, procedural art-directed cuts, TOPs wedge runs to dial stretch/stress breakage limits. Cheap constraints before expensive solvers; when a parameter is a guess, wedge it. Trigger when tearing or breaking cloth-like geometry under art direction."
 ---
 

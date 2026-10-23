@@ -1,5 +1,5 @@
 ---
-name: "minimax_h3_selflift_long_video"
+name: minimax-h3-selflift-long-video
 description: "Stitch seamless long videos with MiniMax H3 in ComfyUI without color shift: SelfLift dual-sampling context mode, differential 0.1 noise at seams, Color Transfer pinned per segment, h3_upscaler_lms_v0.1, int8 VAE. Fix degradation at the intermediate stage, never at the end. Trigger when generating multi-segment AI video where seams or color drift appear."
 ---
 

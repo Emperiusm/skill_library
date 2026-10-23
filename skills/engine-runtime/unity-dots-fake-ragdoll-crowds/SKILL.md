@@ -1,5 +1,5 @@
 ---
-name: "unity_dots_fake_ragdoll_crowds"
+name: unity-dots-fake-ragdoll-crowds
 description: "Render 10,000-character crowds in Unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 LOD levels. Includes the no-full-ECS alternative (arrays plus Burst/Jobs plus TransformAccessArray into pooled GameObjects). Trigger when a crowd or swarm must scale past a few thousand agents."
 ---
 

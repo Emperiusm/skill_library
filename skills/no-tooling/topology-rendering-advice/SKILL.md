@@ -1,5 +1,5 @@
 ---
-name: "topology_advice"
+name: topology-rendering-advice
 description: "NO-TOOLING: beginner modeling Q&A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger."
 ---
 

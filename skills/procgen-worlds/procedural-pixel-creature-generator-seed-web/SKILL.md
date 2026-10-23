@@ -1,5 +1,5 @@
 ---
-name: "procedural_pixel_creature_generator_seed_web"
+name: procedural-pixel-creature-generator-seed-web
 description: "Seed-driven web pixel-creature generator: one number grows a named creature from 35 body types across 8 sizes (8 to 1024 px), 8 animations, 7 palettes; exports transparent PNG, GIF, sprite strip, and 12-creature sheets with shareable seed URLs. Trigger when procedurally generating pixel-art sprite sets or seed-shareable creature systems."
 ---
 

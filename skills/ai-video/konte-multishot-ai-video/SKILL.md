@@ -1,5 +1,5 @@
 ---
-name: "konte_multishot_ai_video"
+name: konte-multishot-ai-video
 description: "Run multi-shot AI video like a software project: declare shots in a TypeScript DSL, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive ComfyUI. Trigger when producing multi-shot AI video."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "armor_sim"
+name: armor-simulation-mode
 description: "Simulate armor impacts with SPH fracture and contact modeling. Trigger when adding destruction sims to games."
 ---
 

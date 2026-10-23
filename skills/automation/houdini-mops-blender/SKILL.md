@@ -1,5 +1,5 @@
 ---
-name: "houdini_mops"
+name: houdini-mops-blender
 description: "Drive Blender/Cycles rendering with Houdini motion operators. Trigger when bridging Houdini motion design into Blender."
 ---
 

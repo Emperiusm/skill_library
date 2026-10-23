@@ -1,5 +1,5 @@
 ---
-name: "webgpu_black_hole_raytracer"
+name: webgpu-black-hole-raytracer
 description: "Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational redshift, an interactive spin 0 to 0.998 slider, and an Interstellar-style cinematic grade. Trigger when building a browser physics visualization or interactive simulation demo."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "procedural_pixel_creature_generator"
+name: procedural-pixel-creature-generator
 description: "Generate pixel-art creatures in code (Godot 4.5 / C#): seed-driven bodies, limbs, faces, markings, rigs, and multi-directional animations, with frame counts derived by the rigging engine and export as transparent PNG sprite sheets plus a JSON manifest (directions, frames, pivots, timing). Trigger when building a procedural 2D creature pipeline, a sprite-sheet export contract, or seed-deterministic game art."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "corridor_key_2_ai_chroma_keyer"
+name: corridor-key-2-ai-chroma-keyer
 description: "Pull production-grade chroma keys with Corridor Key 2.0, the open-source ML keyer: drag the shot in and press go, add a rough alpha-hint matte only for hard shots, pipe a Magic Mask into the hint channel, manage despill, and finish motion-blurred edges with an IBK core-matte pass. Train your own model on your own footage with an alpha-hint 4th channel and LPIPS perceptual loss. Trigger when keying green/blue screen without manual roto."
 ---
 

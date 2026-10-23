@@ -1,5 +1,5 @@
 ---
-name: "fix_lumpy_meshes"
+name: fix-lumpy-photogrammetry-meshes
 description: "Fix lumpy photogrammetry meshes in Blender the Planer way: detect planar regions, snap vertices to fitted planes and intersections, prove fidelity with a deviation report. Trigger when cleaning scan meshes."
 ---
 

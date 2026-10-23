@@ -1,5 +1,5 @@
 ---
-name: "frame_extractor"
+name: adaptive-frame-extractor
 description: "Feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. Trigger when extracting frames for SfM pipelines."
 ---
 

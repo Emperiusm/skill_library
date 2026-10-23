@@ -1,5 +1,5 @@
 ---
-name: "runevision_voronoi_terrain_stack"
+name: runevision-voronoi-terrain-stack
 description: "Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU Instancer Pro instancing + occlusion culling, Microsplat, Amplify Impostors. 70-90 fps on M1 MacBook, zero baking. Trigger when procedural terrain needs designed macro-features (lakes, rivers, cliffs) instead of rolled noise."
 ---
 

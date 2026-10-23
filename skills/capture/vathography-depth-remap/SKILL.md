@@ -1,5 +1,5 @@
 ---
-name: "vathography_depth_remap"
+name: vathography-depth-remap
 description: "Turn a photograph's hidden depth pass into the artwork: estimate a detailed depth map from a single photo with Marigold V2 (Apache 2.0, commercial OK), then remap it in the Blender compositor with a Color Ramp to compose volume, mist, and focus. Trigger when a depth map should be shown, not hidden."
 ---
 

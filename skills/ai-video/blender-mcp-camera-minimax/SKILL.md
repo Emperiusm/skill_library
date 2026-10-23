@@ -1,5 +1,5 @@
 ---
-name: "blender_mcp_camera_minimax"
+name: blender-mcp-camera-minimax
 description: "Direct AI video camera moves in 3D first: block the move with Codex CLI plus Blender MCP, render a reference clip, assign role-based inputs in MiniMax H3 reference-to-video. Trigger when AI video needs a deliberate camera move."
 ---
 

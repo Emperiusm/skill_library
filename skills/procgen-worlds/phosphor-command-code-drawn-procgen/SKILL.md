@@ -1,5 +1,5 @@
 ---
-name: "phosphor_command_code_drawn_procgen"
+name: phosphor-command-code-drawn-procgen
 description: "Ship a code-drawn procedural game in the Phosphor Command pattern: everything drawn by code (no sprites, no textures), a deliberate phosphor-CRT radar-scope aesthetic, and generation at the operation level (a contract names the map type, the environment is generated per operation) with a persistent base-builder layer. Trigger when designing procedural mission generation or an asset-less code-drawn visual style."
 ---
 

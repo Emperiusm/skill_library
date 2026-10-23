@@ -1,5 +1,5 @@
 ---
-name: "rust_materials"
+name: realistic-rust-materials
 description: "Author realistic rust as a layered procedural material system with exposed parameters. Trigger when weathering materials in Substance."
 ---
 

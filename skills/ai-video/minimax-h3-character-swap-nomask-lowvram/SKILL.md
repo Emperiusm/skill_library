@@ -1,5 +1,5 @@
 ---
-name: "minimax_h3_character_swap_nomask_lowvram"
+name: minimax-h3-character-swap-nomask-lowvram
 description: "Swap a character in video with MiniMax H3 + Character Swap LoRA in ComfyUI with no masking: 0.4 MP at 8 steps, runs on 6 GB VRAM. Reference-video latent injection, Qwen2.1 start-frame trick, and the wan2gp low-VRAM alternative. Trigger when doing AI character replacement on a low-VRAM card."
 ---
 

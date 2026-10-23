@@ -1,5 +1,5 @@
 ---
-name: "ribbon_cables"
+name: procedural-ribbon-cables
 description: "Generate ribbon cables procedurally with parametric controls instead of modeling by hand. Trigger when detailing hard-surface props."
 ---
 

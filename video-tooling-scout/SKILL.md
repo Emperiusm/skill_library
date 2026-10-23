@@ -1,5 +1,5 @@
 ---
-name: "video_tooling_scout"
+name: video-tooling-scout
 description: "Scout tooling videos on Reddit: pulls video posts from configured subreddits, summarizes each with the video-summarizer skill, extracts every tool/pipeline mentioned, and diffs it against every repo pipeline inventory (Aegis primary) to produce per-repo have-vs-need lists with gap recommendations. Trigger on requests to scan subreddits for tooling videos, audit video tooling against a repo, or compare found tools to an existing pipeline."
 ---
 
@@ -130,7 +130,10 @@ it on the side as known.
    converts each audit into its equivalent skill in the public skill_library repo
    (`~/workspace/video-tooling-scout-public/`), following the library's SKILL.md
    standard: frontmatter name/description, Purpose, Source (with URL), Tools used,
-   phases with Do/Check/Why, human method distilled, Depth status. Dedup before
+   phases with Do/Check/Why, human method distilled, Depth status. Frontmatter
+   `name` is kebab-case and exactly the skill's folder name (the Agent Skills
+   standard; snake_case names break the standard installers, fixed library-wide
+   2026-10-23). Dedup before
    creating:
    - Same tool + same workflow already a skill: expand that skill (add phases,
      parameters, evidence). Do not duplicate.

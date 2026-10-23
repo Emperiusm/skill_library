@@ -1,5 +1,5 @@
 ---
-name: "ue58_gradient_animated_materials"
+name: ue58-gradient-animated-materials
 description: "Build four gradient-driven animated materials in Unreal Engine 5.8's Material Editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient texture pack, with TextureSample-driven graphs and a loop-point check. Reconstructs Chapter 9 of Enrique Ventura's Materials Masterclass. Trigger when animating materials cheaply without flipbooks, Niagara, or sequencer tracks."
 ---
 

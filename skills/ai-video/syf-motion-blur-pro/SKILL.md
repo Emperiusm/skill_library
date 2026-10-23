@@ -1,5 +1,5 @@
 ---
-name: "syf_motion_blur_pro"
+name: syf-motion-blur-pro
 description: "Add motion blur with a free OFX plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. Trigger when adding motion blur in post."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "skyline_shader"
+name: procedural-building-shader
 description: "Fill a cyberpunk skyline with a procedural building shader instead of geometry. Trigger when a city must scale cheaply."
 ---
 

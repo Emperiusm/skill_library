@@ -1,5 +1,5 @@
 ---
-name: "tideglass_fluid"
+name: tideglass-fluid-sim
 description: "Build a target-driven real-time GPU fluid sim. Trigger when fluid must hit art-directed targets in real time."
 ---
 

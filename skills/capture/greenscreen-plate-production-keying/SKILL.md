@@ -1,5 +1,5 @@
 ---
-name: "greenscreen_plate_production_keying"
+name: greenscreen-plate-production-keying
 description: "Produce pro-level greenscreen plates for keying/compositing practice or demoreels: stage shoot, cinema camera, ProRes RAW capture, in-frame tracking markers, deliberately kept motion-blur/defocus plates, planned lighting/camera moves/costumes so artists can build full 3D worlds around the plates. Trigger when building a VFX practice plate library, keying training set, or compositing demoreel footage."
 ---
 
