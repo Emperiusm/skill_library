@@ -60,6 +60,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`resistance-sci-fi-short`](ai-video/resistance-sci-fi-short/SKILL.md) | Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. |
 | [`syf-motion-blur-pro`](ai-video/syf-motion-blur-pro/SKILL.md) | Add motion blur with a free OFX plugin: match the algorithm to the motion type, tune length vs strength, stack instances for complex shots. |
 | [`ue58-video-in-materials`](ai-video/ue58-video-in-materials/SKILL.md) | Route real video into Unreal materials: Media Framework, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, light-function projectors. |
+| [`minimax-h3-synctile-long-video`](ai-video/minimax-h3-synctile-long-video/SKILL.md) | Generate long MiniMax H3 videos (tested 600 frames / 25 s at 4K) with one denoising trajectory: SyncTile blends overlapping tiles x 124-frame windows at every model call; 0.5 MP draft, 3D latent upscale, 4K refine. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -74,6 +75,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`surface-turbulence-wave-detail`](simulation-vfx/surface-turbulence-wave-detail/SKILL.md) | Add fine surface waves to a cached particle-based liquid simulation without rerunning it: build a fine surface point set, track it with an advection. |
 | [`tideglass-fluid-sim`](simulation-vfx/tideglass-fluid-sim/SKILL.md) | Build a target-driven real-time GPU fluid sim. |
 | [`weta-bubbles-solver`](simulation-vfx/weta-bubbles-solver/SKILL.md) | Implement a two-way coupled bubbles solver from the Weta FX whitepaper in vanilla Houdini nodes. |
+| [`corridor-key-2-ai-chroma-keyer`](simulation-vfx/corridor-key-2-ai-chroma-keyer/SKILL.md) | Pull production chroma keys with Corridor Key 2.0: one-click key, rough alpha-hint mattes only for hard shots, Magic Mask into the hint channel, despill discipline, IBK core-matte edge pass, train-your-own-model recipe. |
 
 ## Materials and shaders (`materials-shaders/`)
 
@@ -100,6 +102,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ro-engine-neural-vs-scripts`](engine-runtime/ro-engine-neural-vs-scripts/SKILL.md) | Test game AI empirically: pit deterministic behavioral scripts against a learned policy in a custom engine and measure which wins. |
 | [`seeded-squad-sim-deterministic-replay`](engine-runtime/seeded-squad-sim-deterministic-replay/SKILL.md) | Build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate RNG streams per system; an event. |
 | [`webgpu-black-hole-raytracer`](engine-runtime/webgpu-black-hole-raytracer/SKILL.md) | Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per. |
+| [`unity-dots-fake-ragdoll-crowds`](engine-runtime/unity-dots-fake-ragdoll-crowds/SKILL.md) | Render 10,000-character crowds with fake ragdolls: premade collapse clips plus deterministic launch, baked vertex anims, sub-1000-tri meshes, no armatures, 3 LODs; plus the no-full-ECS arrays-plus-Burst alternative. |
 
 ## Automation and bridges (`automation/`)
 
