@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>skill_library: game tooling skills for AI agents</title>
+<meta name="description" content="92 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<style>
+  :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width:1060px; margin:0 auto; padding:40px 20px 64px; }
+  h1 { font-size:32px; margin:0 0 6px; }
+  .sub { color:var(--dim); margin:0 0 22px; }
+  .install { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:0 0 18px; }
+  .install code { display:block; font:13.5px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--accent); white-space:pre-wrap; }
+  #search { width:100%; padding:11px 14px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--text); font-size:15px; margin:6px 0 10px; }
+  section { margin-top:34px; }
+  h2 { font-size:21px; border-bottom:1px solid var(--line); padding-bottom:8px; }
+  .count { color:var(--dim); font-size:14px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:14px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .card h3 { margin:0 0 6px; font-size:15.5px; }
+  .card a { color:var(--accent); text-decoration:none; word-break:break-word; }
+  .card a:hover { text-decoration:underline; }
+  .card p { margin:0; color:var(--dim); font-size:14px; }
+  footer { margin-top:48px; color:var(--dim); font-size:13.5px; }
+  footer a { color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>skill_library</h1>
+  <p class="sub">92 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <div class="install">
+    <code>npx skills add Emperiusm/skill_library
+claude plugin marketplace add Emperiusm/skill_library
+claude plugin install skill-library@skill-library</code>
+  </div>
+  <input id="search" type="search" placeholder="Search 92 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">26</span></h2>
+<div class="grid">
+<article class="card" data-search="ascii-raymarched-world-grid build a single-file raymarched web game world on a 2048x2048 one-byte-per-cell material grid: place settlements first, bake roads with a dijkstra slope-cost path search, then render every feature as a dumb per-ray...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ascii-raymarched-world-grid/SKILL.md">ascii-raymarched-world-grid</a></h3>
+  <p>Build a single-file raymarched web game world on a 2048x2048 one-byte-per-cell material grid: place settlements first, bake roads with a Dijkstra slope-cost path search, then render every feature as a dumb per-ray...</p>
+</article>
+<article class="card" data-search="cave-expedition-render-tech ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, gpu-driven detail, each stage held to its budget. trigger when optimizing 3d rendering performance.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/cave-expedition-render-tech/SKILL.md">cave-expedition-render-tech</a></h3>
+  <p>Ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, GPU-driven detail, each stage held to its budget. Trigger when optimizing 3D rendering performance.</p>
+</article>
+<article class="card" data-search="godot-2d-movement implement 2d kinematic character movement in godot 4.7 with characterbody2d and move_and_slide(): platformer run/jump with gravity, top-down 8-direction motion, slope handling, and reading collisions. use when coding a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-2d-movement/SKILL.md">godot-2d-movement</a></h3>
+  <p>Implement 2D kinematic character movement in Godot 4.7 with CharacterBody2D and move_and_slide(): platformer run/jump with gravity, top-down 8-direction motion, slope handling, and reading collisions. Use when coding a...</p>
+</article>
+<article class="card" data-search="godot-3d-essentials set up a godot 4.7 3d scene: node3d transforms, camera3d, lighting (directionallight3d/omnilight3d), worldenvironment for sky/ambient/tonemap/post, meshinstance3d materials, and gridmap for tile-based 3d levels. use...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-3d-essentials/SKILL.md">godot-3d-essentials</a></h3>
+  <p>Set up a Godot 4.7 3D scene: Node3D transforms, Camera3D, lighting (DirectionalLight3D/OmniLight3D), WorldEnvironment for sky/ambient/tonemap/post, MeshInstance3D materials, and GridMap for tile-based 3D levels. Use...</p>
+</article>
+<article class="card" data-search="godot-animation animate in godot 4.7 three ways: animationplayer for keyframed clips (incl. call and signal tracks), animationtree with state machines and blend spaces for character animation, and tween for short procedural/ui tweens...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-animation/SKILL.md">godot-animation</a></h3>
+  <p>Animate in Godot 4.7 three ways: AnimationPlayer for keyframed clips (incl. call and signal tracks), AnimationTree with state machines and blend spaces for character animation, and Tween for short procedural/UI tweens...</p>
+</article>
+<article class="card" data-search="godot-audio play and mix audio in godot 4.7: audiostreamplayer (2d/3d variants), audio buses with volume/mute and effects, music vs sfx routing, db/linear volume, and precise sync-to-beat playback timing. use when playing sounds or...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-audio/SKILL.md">godot-audio</a></h3>
+  <p>Play and mix audio in Godot 4.7: AudioStreamPlayer (2D/3D variants), audio buses with volume/mute and effects, music vs SFX routing, db/linear volume, and precise sync-to-beat playback timing. Use when playing sounds or...</p>
+</article>
+<article class="card" data-search="godot-csharp use c#/.net in godot 4.7: partial classes extending nodes, the pascalcase lifecycle (_ready/_process/_physicsprocess), [export] fields, [signal] delegates as c# events, type-safe node lookup, and calling between c# and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-csharp/SKILL.md">godot-csharp</a></h3>
+  <p>Use C#/.NET in Godot 4.7: partial classes extending nodes, the PascalCase lifecycle (_Ready/_Process/_PhysicsProcess), [Export] fields, [Signal] delegates as C# events, type-safe node lookup, and calling between C# and...</p>
+</article>
+<article class="card" data-search="godot-decoupled-rules-json-movie-maker build a godot game with engine-decoupled rules: game logic in a plain library with no godot dependency, each rule a small class behind a name-to-builder dictionary, content as json rule lists, 3d-to-pixel-art via a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-decoupled-rules-json-movie-maker/SKILL.md">godot-decoupled-rules-json-movie-maker</a></h3>
+  <p>Build a Godot game with engine-decoupled rules: game logic in a plain library with no Godot dependency, each rule a small class behind a name-to-builder dictionary, content as JSON rule lists, 3D-to-pixel-art via a...</p>
+</article>
+<article class="card" data-search="godot-export export and build a godot 4.7 project for distribution: install export templates, define export presets (windows/macos/linux/web/android), run headless command-line exports for ci, and handle web (html5) coop/coep and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-export/SKILL.md">godot-export</a></h3>
+  <p>Export and build a Godot 4.7 project for distribution: install export templates, define export presets (Windows/macOS/Linux/Web/Android), run headless command-line exports for CI, and handle web (HTML5) COOP/COEP and...</p>
+</article>
+<article class="card" data-search="godot-gdscript write idiomatic gdscript for godot 4.7: static typing, the node lifecycle (_ready/_process/_physics_process), @export/@onready/@tool annotations, signals, and await for asynchronous flow. use when editing .gd scripts in...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-gdscript/SKILL.md">godot-gdscript</a></h3>
+  <p>Write idiomatic GDScript for Godot 4.7: static typing, the node lifecycle (_ready/_process/_physics_process), @export/@onready/@tool annotations, signals, and await for asynchronous flow. Use when editing .gd scripts in...</p>
+</article>
+<article class="card" data-search="godot-gdscript-headless-testing run gdscript test suites from the command line with `godot --headless`, using a scenetree/mainloop runner script that exits non-zero on failure so ci can gate merges. use when a godot project needs unit tests without...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-gdscript-headless-testing/SKILL.md">godot-gdscript-headless-testing</a></h3>
+  <p>Run GDScript test suites from the command line with `godot --headless`, using a SceneTree/MainLoop runner script that exits non-zero on failure so CI can gate merges. Use when a Godot project needs unit tests without...</p>
+</article>
+<article class="card" data-search="godot-multiplayer build networked games with godot 4.7 high-level multiplayer: set up an enetmultiplayerpeer server/client, define rpcs with the @rpc annotation (call via rpc()/rpc_id()), set per-node multiplayer authority, and replicate...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-multiplayer/SKILL.md">godot-multiplayer</a></h3>
+  <p>Build networked games with Godot 4.7 high-level multiplayer: set up an ENetMultiplayerPeer server/client, define RPCs with the @rpc annotation (call via rpc()/rpc_id()), set per-node multiplayer authority, and replicate...</p>
+</article>
+<article class="card" data-search="godot-nodes-scenes structure a godot 4.7 project with the scene tree and node composition: build reusable scenes, instance packedscenes at runtime, navigate the tree safely, and register autoload singletons. use when designing .tscn...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-nodes-scenes/SKILL.md">godot-nodes-scenes</a></h3>
+  <p>Structure a Godot 4.7 project with the scene tree and node composition: build reusable scenes, instance PackedScenes at runtime, navigate the tree safely, and register autoload singletons. Use when designing .tscn...</p>
+</article>
+<article class="card" data-search="godot-physics use godot 4.7 physics bodies and detection in 2d and 3d: rigidbody, staticbody, area, and characterbody; collision layers vs masks; contact/overlap signals; and raycasts (raycast nodes and direct space-state queries)...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-physics/SKILL.md">godot-physics</a></h3>
+  <p>Use Godot 4.7 physics bodies and detection in 2D and 3D: RigidBody, StaticBody, Area, and CharacterBody; collision layers vs masks; contact/overlap signals; and raycasts (RayCast nodes and direct space-state queries)...</p>
+</article>
+<article class="card" data-search="godot-resources design data-driven godot 4.7 games with custom resource classes: define typed data with class_name + @export, save/load .tres/.res files, instance and duplicate resources, and load on demand with resourceloader (incl...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-resources/SKILL.md">godot-resources</a></h3>
+  <p>Design data-driven Godot 4.7 games with custom Resource classes: define typed data with class_name + @export, save/load .tres/.res files, instance and duplicate resources, and load on demand with ResourceLoader (incl...</p>
+</article>
+<article class="card" data-search="godot-shaders write godot 4.7 shaders in the godot shading language: canvas_item shaders for 2d and spatial shaders for 3d, with vertex/fragment functions, uniforms (source_color, hint_range), time/uv animation, and screen-reading...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-shaders/SKILL.md">godot-shaders</a></h3>
+  <p>Write Godot 4.7 shaders in the Godot Shading Language: canvas_item shaders for 2D and spatial shaders for 3D, with vertex/fragment functions, uniforms (source_color, hint_range), TIME/UV animation, and screen-reading...</p>
+</article>
+<article class="card" data-search="godot-signals-groups build event-driven, decoupled godot 4.7 gameplay with signals and node groups: declare and emit custom signals, connect with callables (incl. bind/one-shot), and broadcast to many nodes via groups and call_group. use...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-signals-groups/SKILL.md">godot-signals-groups</a></h3>
+  <p>Build event-driven, decoupled Godot 4.7 gameplay with signals and node groups: declare and emit custom signals, connect with Callables (incl. bind/one-shot), and broadcast to many nodes via groups and call_group. Use...</p>
+</article>
+<article class="card" data-search="godot-tilemap build and edit tile-based 2d levels in godot 4.7 with tilemaplayer and tileset: paint layers, set up collision/navigation/custom-data on tiles, autotile with terrain sets, and read/write cells from code (set_cell...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-tilemap/SKILL.md">godot-tilemap</a></h3>
+  <p>Build and edit tile-based 2D levels in Godot 4.7 with TileMapLayer and TileSet: paint layers, set up collision/navigation/custom-data on tiles, autotile with terrain sets, and read/write cells from code (set_cell...</p>
+</article>
+<article class="card" data-search="godot-ui-control build godot 4.7 user interfaces with control nodes: anchors and offsets for responsive layout, container nodes (vbox/hbox/grid/margin) for automatic arrangement, theme resources for consistent styling, and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-ui-control/SKILL.md">godot-ui-control</a></h3>
+  <p>Build Godot 4.7 user interfaces with Control nodes: anchors and offsets for responsive layout, Container nodes (VBox/HBox/Grid/Margin) for automatic arrangement, Theme resources for consistent styling, and...</p>
+</article>
+<article class="card" data-search="mass-entity-niagara-crowd render massive ue crowds without per-agent actors: simulate in custom c++ massentity processors, stream transform arrays into niagara gpu particles, animate with vats. trigger when building rts/battle crowds, swarm...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/mass-entity-niagara-crowd/SKILL.md">mass-entity-niagara-crowd</a></h3>
+  <p>Render massive UE crowds without per-agent actors: simulate in custom C++ MassEntity processors, stream transform arrays into Niagara GPU particles, animate with VATs. Trigger when building RTS/battle crowds, swarm...</p>
+</article>
+<article class="card" data-search="multiplayer-movement-smooth smooth multiplayer movement with client prediction and server reconciliation. trigger when fixing netcode movement.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/multiplayer-movement-smooth/SKILL.md">multiplayer-movement-smooth</a></h3>
+  <p>Smooth multiplayer movement with client prediction and server reconciliation. Trigger when fixing netcode movement.</p>
+</article>
+<article class="card" data-search="procedural-backrooms-browser ship procedural 3d in the browser: client-side webgpu with a wgsl pipeline and glsl fallback. trigger when delivering 3d on the web with no install.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/procedural-backrooms-browser/SKILL.md">procedural-backrooms-browser</a></h3>
+  <p>Ship procedural 3D in the browser: client-side WebGPU with a WGSL pipeline and GLSL fallback. Trigger when delivering 3D on the web with no install.</p>
+</article>
+<article class="card" data-search="ro-engine-neural-vs-scripts test game ai empirically: pit deterministic behavioral scripts against a learned policy in a custom engine and measure which wins. trigger when evaluating game ai approaches.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ro-engine-neural-vs-scripts/SKILL.md">ro-engine-neural-vs-scripts</a></h3>
+  <p>Test game AI empirically: pit deterministic behavioral scripts against a learned policy in a custom engine and measure which wins. Trigger when evaluating game AI approaches.</p>
+</article>
+<article class="card" data-search="seeded-squad-sim-deterministic-replay build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate rng streams per system; an event log with a hash plus replay checking proves determinism; per-soldier...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/seeded-squad-sim-deterministic-replay/SKILL.md">seeded-squad-sim-deterministic-replay</a></h3>
+  <p>Build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate RNG streams per system; an event log with a hash plus replay checking proves determinism; per-soldier...</p>
+</article>
+<article class="card" data-search="unity-dots-fake-ragdoll-crowds render 10,000-character crowds in unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 lod levels...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/unity-dots-fake-ragdoll-crowds/SKILL.md">unity-dots-fake-ragdoll-crowds</a></h3>
+  <p>Render 10,000-character crowds in Unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 LOD levels...</p>
+</article>
+<article class="card" data-search="webgpu-black-hole-raytracer build an interactive, physically-grounded kerr black-hole renderer in the browser with webgpu: backwards ray integration through kerr spacetime per pixel, blackbody disk color with doppler shift and gravitational...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/webgpu-black-hole-raytracer/SKILL.md">webgpu-black-hole-raytracer</a></h3>
+  <p>Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational...</p>
+</article>
+</div></section>
+<section><h2>AI video <span class="count">14</span></h2>
+<div class="grid">
+<article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
+  <p>Produce multi-shot AI video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit NOT-ALLOWED-TO-CHANGE lock lists, dispatch via a ComfyUI front-end plus GPU-rental queue, run...</p>
+</article>
+<article class="card" data-search="avatar-model-comparison-harness evaluate lip-synced ai avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/avatar-model-comparison-harness/SKILL.md">avatar-model-comparison-harness</a></h3>
+  <p>Evaluate lip-synced AI avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed...</p>
+</article>
+<article class="card" data-search="blender-mcp-camera-minimax direct ai video camera moves in 3d first: block the move with codex cli plus blender mcp, render a reference clip, assign role-based inputs in minimax h3 reference-to-video. trigger when ai video needs a deliberate...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/blender-mcp-camera-minimax/SKILL.md">blender-mcp-camera-minimax</a></h3>
+  <p>Direct AI video camera moves in 3D first: block the move with Codex CLI plus Blender MCP, render a reference clip, assign role-based inputs in MiniMax H3 reference-to-video. Trigger when AI video needs a deliberate...</p>
+</article>
+<article class="card" data-search="claude-cinematic-trailer direct an ai agent to cut a cinematic trailer from your game, then curate its output. trigger when generating trailers with agents.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/claude-cinematic-trailer/SKILL.md">claude-cinematic-trailer</a></h3>
+  <p>Direct an AI agent to cut a cinematic trailer from your game, then curate its output. Trigger when generating trailers with agents.</p>
+</article>
+<article class="card" data-search="flux-3-klein-comfyui-19-workflows run flux 3 klein (black forest labs) in comfyui for text-to-image, image editing, and multi-image combining using pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, layout boxes, inpaint crop/stitch...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/flux-3-klein-comfyui-19-workflows/SKILL.md">flux-3-klein-comfyui-19-workflows</a></h3>
+  <p>Run FLUX 3 Klein (Black Forest Labs) in ComfyUI for text-to-image, image editing, and multi-image combining using Pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, Layout Boxes, inpaint crop/stitch...</p>
+</article>
+<article class="card" data-search="konte-multishot-ai-video run multi-shot ai video like a software project: declare shots in a typescript dsl, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive comfyui...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/konte-multishot-ai-video/SKILL.md">konte-multishot-ai-video</a></h3>
+  <p>Run multi-shot AI video like a software project: declare shots in a TypeScript DSL, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive ComfyUI...</p>
+</article>
+<article class="card" data-search="minimax-h3-character-swap-comfyui swap a character in video with minimax h3 in comfyui: mask with sam3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-comfyui/SKILL.md">minimax-h3-character-swap-comfyui</a></h3>
+  <p>Swap a character in video with MiniMax H3 in ComfyUI: mask with SAM3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the...</p>
+</article>
+<article class="card" data-search="minimax-h3-character-swap-nomask-lowvram swap a character in video with minimax h3 + character swap lora in comfyui with no masking: 0.4 mp at 8 steps, runs on 6 gb vram. reference-video latent injection, qwen2.1 start-frame trick, and the wan2gp low-vram...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-nomask-lowvram/SKILL.md">minimax-h3-character-swap-nomask-lowvram</a></h3>
+  <p>Swap a character in video with MiniMax H3 + Character Swap LoRA in ComfyUI with no masking: 0.4 MP at 8 steps, runs on 6 GB VRAM. Reference-video latent injection, Qwen2.1 start-frame trick, and the wan2gp low-VRAM...</p>
+</article>
+<article class="card" data-search="minimax-h3-selflift-long-video stitch seamless long videos with minimax h3 in comfyui without color shift: selflift dual-sampling context mode, differential 0.1 noise at seams, color transfer pinned per segment, h3_upscaler_lms_v0.1, int8 vae. fix...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-selflift-long-video/SKILL.md">minimax-h3-selflift-long-video</a></h3>
+  <p>Stitch seamless long videos with MiniMax H3 in ComfyUI without color shift: SelfLift dual-sampling context mode, differential 0.1 noise at seams, Color Transfer pinned per segment, h3_upscaler_lms_v0.1, int8 VAE. Fix...</p>
+</article>
+<article class="card" data-search="minimax-h3-synctile-long-video generate long minimax h3 videos in comfyui (tested 600 frames / 25 s at 4k) with zero clip chaining: synctile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-synctile-long-video/SKILL.md">minimax-h3-synctile-long-video</a></h3>
+  <p>Generate long MiniMax H3 videos in ComfyUI (tested 600 frames / 25 s at 4K) with zero clip chaining: SyncTile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising...</p>
+</article>
+<article class="card" data-search="moss-image-comfyui-recipe run openmoss moss-image (5b dit, apache 2.0) in comfyui: starter settings, vram/quant options, layout-json text rendering, and the community lora/tooling wave. trigger when generating text-bearing images, posters, or...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/moss-image-comfyui-recipe/SKILL.md">moss-image-comfyui-recipe</a></h3>
+  <p>Run OpenMOSS MOSS-Image (5B DiT, Apache 2.0) in ComfyUI: starter settings, VRAM/quant options, layout-JSON text rendering, and the community LoRA/tooling wave. Trigger when generating text-bearing images, posters, or...</p>
+</article>
+<article class="card" data-search="resistance-sci-fi-short direct an ai-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable comfyui nodes, keep prompt writing manual, edit and grade in an nle. trigger when producing ai video with a human...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/resistance-sci-fi-short/SKILL.md">resistance-sci-fi-short</a></h3>
+  <p>Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. Trigger when producing AI video with a human...</p>
+</article>
+<article class="card" data-search="syf-motion-blur-pro add motion blur with a free ofx plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. trigger when adding motion...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/syf-motion-blur-pro/SKILL.md">syf-motion-blur-pro</a></h3>
+  <p>Add motion blur with a free OFX plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. Trigger when adding motion...</p>
+</article>
+<article class="card" data-search="ue58-video-in-materials route real video into unreal materials: media framework pipeline, procedural scanlines, crt glass, mosaic uv math, subuv flipbooks, yaw-only billboards, light-function projectors. trigger when putting video on screens...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/ue58-video-in-materials/SKILL.md">ue58-video-in-materials</a></h3>
+  <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
+</article>
+</div></section>
+<section><h2>Procedural generation and worlds <span class="count">14</span></h2>
+<div class="grid">
+<article class="card" data-search="cinematic-cavern build a cinematic cave/pool/waterfall scene end to end: blender blockout, zbrush sculpt, decimation to game mesh, substance bake and pbr materials, unreal export, scripted repairs, a c++ height-field water solver...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/cinematic-cavern/SKILL.md">cinematic-cavern</a></h3>
+  <p>Build a cinematic cave/pool/waterfall scene end to end: Blender blockout, ZBrush sculpt, decimation to game mesh, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver...</p>
+</article>
+<article class="card" data-search="godot-procgen-city-glb-export-schema ship a godot procedural city as documented glb: keep generation procedural in-engine, define the schema of custom glb properties so others can write their own importers, and accept that shader tricks (decals, interior...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/godot-procgen-city-glb-export-schema/SKILL.md">godot-procgen-city-glb-export-schema</a></h3>
+  <p>Ship a Godot procedural city as documented glb: keep generation procedural in-engine, define the schema of custom glb properties so others can write their own importers, and accept that shader tricks (decals, interior...</p>
+</article>
+<article class="card" data-search="minecraft-world-one-block generate massive voxel worlds from one block with deterministic sampling and lod. trigger when building large-scale procedural terrain.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/minecraft-world-one-block/SKILL.md">minecraft-world-one-block</a></h3>
+  <p>Generate massive voxel worlds from one block with deterministic sampling and LOD. Trigger when building large-scale procedural terrain.</p>
+</article>
+<article class="card" data-search="one-seed-procedural-game build a game with zero asset files: generate terrain, towns, people, sky, sound effects, and music from one seed at startup, constructing every prop in code from boxes, spheres, and cones and synthesizing all audio from...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/one-seed-procedural-game/SKILL.md">one-seed-procedural-game</a></h3>
+  <p>Build a game with zero asset files: generate terrain, towns, people, sky, sound effects, and music from one seed at startup, constructing every prop in code from boxes, spheres, and cones and synthesizing all audio from...</p>
+</article>
+<article class="card" data-search="parametric-ship-generator-isometric generate sci-fi ships (and stations, megacities) as parametric 3d geometry drawn isometrically onto a 2d canvas in plain javascript: grid-snapped hull segments, taper profiles, fit rules for engines/noses/wings...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/parametric-ship-generator-isometric/SKILL.md">parametric-ship-generator-isometric</a></h3>
+  <p>Generate sci-fi ships (and stations, megacities) as parametric 3D geometry drawn isometrically onto a 2D canvas in plain JavaScript: grid-snapped hull segments, taper profiles, fit rules for engines/noses/wings...</p>
+</article>
+<article class="card" data-search="phosphor-command-code-drawn-procgen ship a code-drawn procedural game in the phosphor command pattern: everything drawn by code (no sprites, no textures), a deliberate phosphor-crt radar-scope aesthetic, and generation at the operation level (a contract...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/phosphor-command-code-drawn-procgen/SKILL.md">phosphor-command-code-drawn-procgen</a></h3>
+  <p>Ship a code-drawn procedural game in the Phosphor Command pattern: everything drawn by code (no sprites, no textures), a deliberate phosphor-CRT radar-scope aesthetic, and generation at the operation level (a contract...</p>
+</article>
+<article class="card" data-search="procedural-galaxy-generator-blender build procedural galaxies in blender with geometry nodes plus shaders: point clouds for stars, volumes for everything else, energy-preserving far-field glow, keyframed emissive flythroughs, 3d gravitational lensing...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-galaxy-generator-blender/SKILL.md">procedural-galaxy-generator-blender</a></h3>
+  <p>Build procedural galaxies in Blender with geometry nodes plus shaders: point clouds for stars, volumes for everything else, energy-preserving far-field glow, keyframed emissive flythroughs, 3D gravitational lensing...</p>
+</article>
+<article class="card" data-search="procedural-pixel-creature-generator generate pixel-art creatures in code (godot 4.5 / c#): seed-driven bodies, limbs, faces, markings, rigs, and multi-directional animations, with frame counts derived by the rigging engine and export as transparent png...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-pixel-creature-generator/SKILL.md">procedural-pixel-creature-generator</a></h3>
+  <p>Generate pixel-art creatures in code (Godot 4.5 / C#): seed-driven bodies, limbs, faces, markings, rigs, and multi-directional animations, with frame counts derived by the rigging engine and export as transparent PNG...</p>
+</article>
+<article class="card" data-search="procedural-pixel-creature-generator-seed-web seed-driven web pixel-creature generator: one number grows a named creature from 35 body types across 8 sizes (8 to 1024 px), 8 animations, 7 palettes; exports transparent png, gif, sprite strip, and 12-creature sheets...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-pixel-creature-generator-seed-web/SKILL.md">procedural-pixel-creature-generator-seed-web</a></h3>
+  <p>Seed-driven web pixel-creature generator: one number grows a named creature from 35 body types across 8 sizes (8 to 1024 px), 8 animations, 7 palettes; exports transparent PNG, GIF, sprite strip, and 12-creature sheets...</p>
+</article>
+<article class="card" data-search="procedural-ribbon-cables generate ribbon cables procedurally with parametric controls instead of modeling by hand. trigger when detailing hard-surface props.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-ribbon-cables/SKILL.md">procedural-ribbon-cables</a></h3>
+  <p>Generate ribbon cables procedurally with parametric controls instead of modeling by hand. Trigger when detailing hard-surface props.</p>
+</article>
+<article class="card" data-search="procgen-racing-track-generator generate endless arcade racing tracks by polygon seeding, midpoint-displacement, bezier smoothing, and bending straight mesh segments along the curves, the 4-year freeway fever recipe. supports intersections and highway...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procgen-racing-track-generator/SKILL.md">procgen-racing-track-generator</a></h3>
+  <p>Generate endless arcade racing tracks by polygon seeding, midpoint-displacement, bezier smoothing, and bending straight mesh segments along the curves, the 4-year Freeway Fever recipe. Supports intersections and highway...</p>
+</article>
+<article class="card" data-search="raup-shell-morphospace generate every seashell from three numbers: david raup&#x27;s morphospace (flare, verm, spire), built as a blender geometry-nodes / touchdesigner generator with cellular-automaton or reaction-diffusion pigment patterns, plus...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/raup-shell-morphospace/SKILL.md">raup-shell-morphospace</a></h3>
+  <p>Generate every seashell from three numbers: David Raup&#x27;s morphospace (flare, verm, spire), built as a Blender geometry-nodes / TouchDesigner generator with cellular-automaton or reaction-diffusion pigment patterns, plus...</p>
+</article>
+<article class="card" data-search="recursive-tree-spawner-parameter-space drive procedural tree generation by sweeping parameter ranges (not the algorithm): one recursive branch spawner yields one species or many depending on range width; ship via prefab, autolod decimation, gpuinstancer plus...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/recursive-tree-spawner-parameter-space/SKILL.md">recursive-tree-spawner-parameter-space</a></h3>
+  <p>Drive procedural tree generation by sweeping parameter ranges (not the algorithm): one recursive branch spawner yields one species or many depending on range width; ship via prefab, AutoLOD decimation, GPUInstancer plus...</p>
+</article>
+<article class="card" data-search="runevision-voronoi-terrain-stack drive large-scale procedural terrain with voronoi macro-cells for level-design control over noise: layerprocgen framework, fast erosion filter, gpu instancer pro instancing + occlusion culling, microsplat, amplify...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/runevision-voronoi-terrain-stack/SKILL.md">runevision-voronoi-terrain-stack</a></h3>
+  <p>Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU Instancer Pro instancing + occlusion culling, Microsplat, Amplify...</p>
+</article>
+</div></section>
+<section><h2>Simulation and VFX <span class="count">10</span></h2>
+<div class="grid">
+<article class="card" data-search="armor-simulation-mode simulate armor impacts with sph fracture and contact modeling. trigger when adding destruction sims to games.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/armor-simulation-mode/SKILL.md">armor-simulation-mode</a></h3>
+  <p>Simulate armor impacts with SPH fracture and contact modeling. Trigger when adding destruction sims to games.</p>
+</article>
+<article class="card" data-search="baradur-env-breakdown assemble a large-scale vfx environment as labeled reviewable stages (base/tower/lava/eye/comp): nuke-style 3d assembly, 100gb+ smoke-sim cache budgeting, breakdown-as-deliverable scheduled in weeks, grade for drama...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/baradur-env-breakdown/SKILL.md">baradur-env-breakdown</a></h3>
+  <p>Assemble a large-scale VFX environment as labeled reviewable stages (Base/Tower/Lava/Eye/comp): Nuke-style 3D assembly, 100GB+ smoke-sim cache budgeting, breakdown-as-deliverable scheduled in weeks, grade for drama...</p>
+</article>
+<article class="card" data-search="blender-mpm-fracture run 890k-particle material point method sims with voronoi-cell fracture in blender. trigger when faking fracture at scale.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/blender-mpm-fracture/SKILL.md">blender-mpm-fracture</a></h3>
+  <p>Run 890k-particle Material Point Method sims with Voronoi-cell fracture in Blender. Trigger when faking fracture at scale.</p>
+</article>
+<article class="card" data-search="blueprint-construction-effect author a reverse-erosion construction effect: blueprint preview, climbing rim shader, ember particle finish. trigger when building grow-in vfx.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/blueprint-construction-effect/SKILL.md">blueprint-construction-effect</a></h3>
+  <p>Author a reverse-erosion construction effect: blueprint preview, climbing rim shader, ember particle finish. Trigger when building grow-in VFX.</p>
+</article>
+<article class="card" data-search="chaos-flesh-dataflow-soft-body build a ue 5.8 chaos flesh soft-body asset with dataflow: mesh prep rules, static-to-tet-mesh template, tet density tuning, the missing set-flesh-default-properties fix, and deformable solver wiring. trigger when adding...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/chaos-flesh-dataflow-soft-body/SKILL.md">chaos-flesh-dataflow-soft-body</a></h3>
+  <p>Build a UE 5.8 Chaos Flesh soft-body asset with DataFlow: mesh prep rules, Static-to-Tet-Mesh template, tet density tuning, the missing Set-Flesh-Default-Properties fix, and deformable solver wiring. Trigger when adding...</p>
+</article>
+<article class="card" data-search="corridor-key-2-ai-chroma-keyer pull production-grade chroma keys with corridor key 2.0, the open-source ml keyer: drag the shot in and press go, add a rough alpha-hint matte only for hard shots, pipe a magic mask into the hint channel, manage...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/corridor-key-2-ai-chroma-keyer/SKILL.md">corridor-key-2-ai-chroma-keyer</a></h3>
+  <p>Pull production-grade chroma keys with Corridor Key 2.0, the open-source ML keyer: drag the shot in and press go, add a rough alpha-hint matte only for hard shots, pipe a Magic Mask into the hint channel, manage...</p>
+</article>
+<article class="card" data-search="houdini-net-break-topo-wedge break a net in slow motion for commercial vfx: curve-spline knot modeling, glue constraints to kill jitter and untangling, procedural art-directed cuts, tops wedge runs to dial stretch/stress breakage limits. cheap...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/houdini-net-break-topo-wedge/SKILL.md">houdini-net-break-topo-wedge</a></h3>
+  <p>Break a net in slow motion for commercial VFX: curve-spline knot modeling, glue constraints to kill jitter and untangling, procedural art-directed cuts, TOPs wedge runs to dial stretch/stress breakage limits. Cheap...</p>
+</article>
+<article class="card" data-search="surface-turbulence-wave-detail add fine surface waves to a cached particle-based liquid simulation without rerunning it: build a fine surface point set, track it with an advection plus repair loop (insert/delete, bend constraint, normal and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/surface-turbulence-wave-detail/SKILL.md">surface-turbulence-wave-detail</a></h3>
+  <p>Add fine surface waves to a cached particle-based liquid simulation without rerunning it: build a fine surface point set, track it with an advection plus repair loop (insert/delete, bend constraint, normal and...</p>
+</article>
+<article class="card" data-search="tideglass-fluid-sim build a target-driven real-time gpu fluid sim. trigger when fluid must hit art-directed targets in real time.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/tideglass-fluid-sim/SKILL.md">tideglass-fluid-sim</a></h3>
+  <p>Build a target-driven real-time GPU fluid sim. Trigger when fluid must hit art-directed targets in real time.</p>
+</article>
+<article class="card" data-search="weta-bubbles-solver implement a two-way coupled bubbles solver from the weta fx whitepaper in vanilla houdini nodes. trigger when building a production fluid solver from a paper.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/weta-bubbles-solver/SKILL.md">weta-bubbles-solver</a></h3>
+  <p>Implement a two-way coupled bubbles solver from the Weta FX whitepaper in vanilla Houdini nodes. Trigger when building a production fluid solver from a paper.</p>
+</article>
+</div></section>
+<section><h2>Automation and pipelines <span class="count">7</span></h2>
+<div class="grid">
+<article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
+  <p>Drive Blender as an agent subroutine to build game-ready 3D assets: screenshot-measure-execute-assess loop via Blender MCP, per-asset ASSESSMENT.md files, non-destructive fit studies, human-in-the-loop mechanical...</p>
+</article>
+<article class="card" data-search="hblink-blender-houdini-bridge bridge blender and houdini with a live socket link and a smart cache: live geometry/uvs/attributes/materials into sops or solaris, rbd caching via rest-fracture plus per-frame transform/velocity point files (35x smaller...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/hblink-blender-houdini-bridge/SKILL.md">hblink-blender-houdini-bridge</a></h3>
+  <p>Bridge Blender and Houdini with a live socket link and a smart cache: live geometry/UVs/attributes/materials into SOPs or Solaris, RBD caching via rest-fracture plus per-frame transform/velocity point files (35x smaller...</p>
+</article>
+<article class="card" data-search="houdini-jewelry-saas productize procedural generation: headless houdini engine behind an async queue and server pool with a web ui. trigger when serving procedural systems as a product.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/houdini-jewelry-saas/SKILL.md">houdini-jewelry-saas</a></h3>
+  <p>Productize procedural generation: headless Houdini Engine behind an async queue and server pool with a web UI. Trigger when serving procedural systems as a product.</p>
+</article>
+<article class="card" data-search="houdini-mops-blender drive blender/cycles rendering with houdini motion operators. trigger when bridging houdini motion design into blender.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/houdini-mops-blender/SKILL.md">houdini-mops-blender</a></h3>
+  <p>Drive Blender/Cycles rendering with Houdini motion operators. Trigger when bridging Houdini motion design into Blender.</p>
+</article>
+<article class="card" data-search="itch-publish publish and update a game on itch.io: create the project page and upload builds with the butler cli (butler push) to named channels. use for itch.io publishing, butler push, channel naming for windows/macos/linux/html5...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/itch-publish/SKILL.md">itch-publish</a></h3>
+  <p>Publish and update a game on itch.io: create the project page and upload builds with the butler CLI (butler push) to named channels. Use for itch.io publishing, butler push, channel naming for Windows/macOS/Linux/HTML5...</p>
+</article>
+<article class="card" data-search="nomad-blender-live-link verify and use the nomad sculpt live link to blender and other pc apps: install the link, round-trip a sculpt ipad-to-pc and back, and check the update&#x27;s tube tool, brush stroke editing, lattice tool, and saved undo...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/nomad-blender-live-link/SKILL.md">nomad-blender-live-link</a></h3>
+  <p>Verify and use the Nomad Sculpt live link to Blender and other PC apps: install the link, round-trip a sculpt iPad-to-PC and back, and check the update&#x27;s tube tool, brush stroke editing, lattice tool, and saved undo...</p>
+</article>
+<article class="card" data-search="steam-publish publish or update a game on steam with steamworks and steampipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release checklists. use for steam publishing...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/steam-publish/SKILL.md">steam-publish</a></h3>
+  <p>Publish or update a game on Steam with Steamworks and SteamPipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release checklists. Use for Steam publishing...</p>
+</article>
+</div></section>
+<section><h2>Characters and rigging <span class="count">7</span></h2>
+<div class="grid">
+<article class="card" data-search="ai-character-pipeline turn an ai character concept into a rigged, game-ready 3d asset, two methods from the thread&#x27;s top chains: (1) tripo p2.0 generate-then-repair (recommended): clean 4-view turnaround, smart mesh generation, gpt astra...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-character-pipeline/SKILL.md">ai-character-pipeline</a></h3>
+  <p>Turn an AI character concept into a rigged, game-ready 3D asset, two methods from the thread&#x27;s top chains: (1) Tripo P2.0 generate-then-repair (recommended): clean 4-view turnaround, Smart Mesh generation, GPT Astra...</p>
+</article>
+<article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
+  <p>Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for...</p>
+</article>
+<article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
+  <p>Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers...</p>
+</article>
+<article class="card" data-search="minimax-h3-refmod-identity-comfyui generate images of your own character with minimax h3 in comfyui without lora training: bake identity into a refmod file from 8 photos with refmod custom nodes, then prompt scenes, outfits, poses, and environments. 8...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-identity-comfyui/SKILL.md">minimax-h3-refmod-identity-comfyui</a></h3>
+  <p>Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod custom nodes, then prompt scenes, outfits, poses, and environments. 8...</p>
+</article>
+<article class="card" data-search="omnichar-portable-characters ship consistent ai characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the comfyui-omnichar custom nodes, then decode the same file into minimax h3...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/omnichar-portable-characters/SKILL.md">omnichar-portable-characters</a></h3>
+  <p>Ship consistent AI characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the ComfyUI-Omnichar custom nodes, then decode the same file into Minimax H3...</p>
+</article>
+<article class="card" data-search="revive-ancient-model revive a legacy 3d model: retexture, rig, animate, let the original forms carry it. trigger when refurbishing old assets.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/revive-ancient-model/SKILL.md">revive-ancient-model</a></h3>
+  <p>Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. Trigger when refurbishing old assets.</p>
+</article>
+<article class="card" data-search="substance-painter-characters texture game characters in substance painter: bake mesh maps, build materials in layers, keep the stack editable. trigger when building a character texturing pipeline.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/substance-painter-characters/SKILL.md">substance-painter-characters</a></h3>
+  <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
+</article>
+</div></section>
+<section><h2>Materials and shaders <span class="count">7</span></h2>
+<div class="grid">
+<article class="card" data-search="handdrawn-foliage-alpha-cards hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in photoshop, masked-opacity material in-engine for crisp hard leaf edges. no separate leaf geometry unless you simulate real...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/handdrawn-foliage-alpha-cards/SKILL.md">handdrawn-foliage-alpha-cards</a></h3>
+  <p>Hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in Photoshop, masked-opacity material in-engine for crisp hard leaf edges. No separate leaf geometry unless you simulate real...</p>
+</article>
+<article class="card" data-search="leather-patch-generator generate leather patch materials with a parametric substance generator. trigger when authoring reusable material generators.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/leather-patch-generator/SKILL.md">leather-patch-generator</a></h3>
+  <p>Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators.</p>
+</article>
+<article class="card" data-search="procedural-building-shader fill a cyberpunk skyline with a procedural building shader instead of geometry. trigger when a city must scale cheaply.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/procedural-building-shader/SKILL.md">procedural-building-shader</a></h3>
+  <p>Fill a cyberpunk skyline with a procedural building shader instead of geometry. Trigger when a city must scale cheaply.</p>
+</article>
+<article class="card" data-search="realistic-rust-materials author realistic rust as a layered procedural material system with exposed parameters. trigger when weathering materials in substance.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/realistic-rust-materials/SKILL.md">realistic-rust-materials</a></h3>
+  <p>Author realistic rust as a layered procedural material system with exposed parameters. Trigger when weathering materials in Substance.</p>
+</article>
+<article class="card" data-search="substance-painter-3dspace-blur-filter remove uv seam artifacts in substance painter with a custom 3d-space blur filter that samples neighbors by 3d proximity from a baked position map instead of uv adjacency; bake the result down on low-end machines...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/substance-painter-3dspace-blur-filter/SKILL.md">substance-painter-3dspace-blur-filter</a></h3>
+  <p>Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map instead of UV adjacency; bake the result down on low-end machines...</p>
+</article>
+<article class="card" data-search="toon-2d-in-3d-dynamic-texture render a classic dbz cel look in 3d with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md">toon-2d-in-3d-dynamic-texture</a></h3>
+  <p>Render a classic DBZ cel look in 3D with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...</p>
+</article>
+<article class="card" data-search="ue58-gradient-animated-materials build four gradient-driven animated materials in unreal engine 5.8&#x27;s material editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ue58-gradient-animated-materials/SKILL.md">ue58-gradient-animated-materials</a></h3>
+  <p>Build four gradient-driven animated materials in Unreal Engine 5.8&#x27;s Material Editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...</p>
+</article>
+</div></section>
+<section><h2>Capture and reconstruction <span class="count">5</span></h2>
+<div class="grid">
+<article class="card" data-search="adaptive-frame-extractor feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. trigger when extracting frames for sfm pipelines.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/adaptive-frame-extractor/SKILL.md">adaptive-frame-extractor</a></h3>
+  <p>Feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. Trigger when extracting frames for SfM pipelines.</p>
+</article>
+<article class="card" data-search="fix-lumpy-photogrammetry-meshes fix lumpy photogrammetry meshes in blender the planer way: detect planar regions, snap vertices to fitted planes and intersections, prove fidelity with a deviation report. trigger when cleaning scan meshes.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/fix-lumpy-photogrammetry-meshes/SKILL.md">fix-lumpy-photogrammetry-meshes</a></h3>
+  <p>Fix lumpy photogrammetry meshes in Blender the Planer way: detect planar regions, snap vertices to fitted planes and intersections, prove fidelity with a deviation report. Trigger when cleaning scan meshes.</p>
+</article>
+<article class="card" data-search="greenscreen-plate-production-keying produce pro-level greenscreen plates for keying/compositing practice or demoreels: stage shoot, cinema camera, prores raw capture, in-frame tracking markers, deliberately kept motion-blur/defocus plates, planned...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/greenscreen-plate-production-keying/SKILL.md">greenscreen-plate-production-keying</a></h3>
+  <p>Produce pro-level greenscreen plates for keying/compositing practice or demoreels: stage shoot, cinema camera, ProRes RAW capture, in-frame tracking markers, deliberately kept motion-blur/defocus plates, planned...</p>
+</article>
+<article class="card" data-search="spirula-3dgs-anti-floater-capture produce clean 3d gaussian splats with spirula: plan phone capture around the actual camera moves (4k60), enable normal and depth estimation at sfm time, and use mild training-time floater suppression. reconstructs...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/spirula-3dgs-anti-floater-capture/SKILL.md">spirula-3dgs-anti-floater-capture</a></h3>
+  <p>Produce clean 3D Gaussian splats with Spirula: plan phone capture around the actual camera moves (4K60), enable normal and depth estimation at SfM time, and use Mild training-time floater suppression. Reconstructs...</p>
+</article>
+<article class="card" data-search="vathography-depth-remap turn a photograph&#x27;s hidden depth pass into the artwork: estimate a detailed depth map from a single photo with marigold v2 (apache 2.0, commercial ok), then remap it in the blender compositor with a color ramp to...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/vathography-depth-remap/SKILL.md">vathography-depth-remap</a></h3>
+  <p>Turn a photograph&#x27;s hidden depth pass into the artwork: estimate a detailed depth map from a single photo with Marigold V2 (Apache 2.0, commercial OK), then remap it in the Blender compositor with a Color Ramp to...</p>
+</article>
+</div></section>
+<section><h2>No tooling (negative examples) <span class="count">2</span></h2>
+<div class="grid">
+<article class="card" data-search="ragnarok-woe-gameplay no-tooling: gameplay footage with no extractable workflow. kept as a negative example of what the scout skips. no trigger.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/no-tooling/ragnarok-woe-gameplay/SKILL.md">ragnarok-woe-gameplay</a></h3>
+  <p>NO-TOOLING: gameplay footage with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
+</article>
+<article class="card" data-search="topology-rendering-advice no-tooling: beginner modeling q&amp;a with no extractable workflow. kept as a negative example of what the scout skips. no trigger.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/no-tooling/topology-rendering-advice/SKILL.md">topology-rendering-advice</a></h3>
+  <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
+</article>
+</div></section>
+  <footer>Generated 2026-10-23 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+</main>
+<script>
+  const box = document.getElementById('search');
+  box.addEventListener('input', () => {
+    const q = box.value.trim().toLowerCase();
+    document.querySelectorAll('.card').forEach(card => {
+      card.style.display = !q || card.dataset.search.includes(q) ? '' : 'none';
+    });
+    document.querySelectorAll('section').forEach(section => {
+      const visible = [...section.querySelectorAll('.card')].some(c => c.style.display !== 'none');
+      section.style.display = visible ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>

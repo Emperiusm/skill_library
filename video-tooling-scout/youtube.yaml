@@ -1,0 +1,28 @@
+# YouTube scan config for the video-tooling-scout.
+# Hand-editable like subreddits.yaml. The scout's step 1b runs
+# bin/scan_youtube.py over these channels: each channel's newest videos,
+# metadata only. Deep analysis uses the video-summarizer skill, and the
+# comment thread is mined for corrections the same way Reddit threads are.
+#
+# Why channels, not search (measured 2026-10-23): relevance search
+# surfaces years-old popular videos (a 30-day filter over the top
+# candidates yielded zero), yt-dlp's --dateafter silently returns
+# nothing on search results, and this yt-dlp build has no date-sorted
+# search. Channel feeds are newest-first and list in ~2s; the scanner
+# fully extracts only the newest few per channel and checks upload dates
+# itself. Add a channel only after verifying the handle resolves.
+window_days: 14
+per_channel_newest: 6
+min_duration_secs: 240
+channels:
+  - RyanKingArt
+  - DefaultCube
+  - Ducky3D
+  - JoshGambrell
+  - MaxHayArt
+  - BlenderSecrets
+  - GDQuest
+  - KaizenTutorials
+  - Brackeys
+  - Entagma
+  - OlivioSarikas

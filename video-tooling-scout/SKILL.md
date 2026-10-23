@@ -21,6 +21,21 @@ it on the side as known.
    video posts (YouTube / Vimeo / native Reddit video), scores them by
    tooling relevance x engagement (zero-tooling-signal posts are downweighted
    regardless of engagement), and prints ranked JSON to stdout.
+1b. **Scan YouTube** (`scripts/scan_youtube.py [days]`): walks the channels in
+   `youtube.yaml` with yt-dlp (metadata only, no media downloads). Channel
+   feeds are newest-first, so it lists each channel's newest few, extracts
+   those, and keeps videos inside the window (default 14 days) at or above
+   the minimum duration. Search-based discovery does not work for this
+   (relevance search surfaces old videos; see the header of youtube.yaml),
+   so the channel list is the source: propose new channels to Ehsan rather
+   than adding them silently. Deduplicates against the Reddit scan by video
+   ID; candidates enter the same pipeline at step 2, and the video's
+   comment thread is mined for corrections and parameters the same way
+   Reddit threads are. A technique found on both platforms is
+   corroborated: cite both sources in the audit. If every channel fails
+   (warnings non-empty, zero videos), report the YouTube source as down
+   for this run and continue with Reddit only; a dead source never blocks
+   a run.
 2. **Summarize** each top video with the deepened pipeline FIRST (the
    Cinematic Cavern recovery on 2026-09-27 proved this is what reaches
    FULL depth; captions/metadata are the fallback, not the default).
