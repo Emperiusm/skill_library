@@ -53,3 +53,13 @@ match the tree, and that `.claude-plugin/marketplace.json` lists every
 skill. The daily pipeline runs it as part of publishing; a red validator
 means the push does not happen until it is green or the rule is changed
 here, in the open.
+
+## Catalog site
+
+`tools/generate_catalog.py` builds the browsable catalog (one
+self-contained HTML page: every skill as a searchable card, grouped by
+category, install commands up top) into `site/index.html`. Regenerate it
+whenever the library changes. Hosting is a Vercel project rooted at
+`site/`; creating that project needs the Vercel connection to have access
+to the owner's team (emperiusms-projects), which was still pending as of
+2026-10-23.
