@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Generate the browsable catalog site from the skills tree.
 
-Emits a single self-contained site/index.html (inline CSS/JS, no build
+Emits a single self-contained docs/index.html (inline CSS/JS, no build
 step, no external assets): every skill as a card under its category, with
 a client-side search filter, the one-line install commands up top, and
 links to each SKILL.md on GitHub. Regenerate after the library changes:
 
     python3 tools/generate_catalog.py
 
-Deploy the site/ folder with any static host (we use Vercel).
+Hosting: GitHub Pages serves the docs/ folder from main, so the
+catalog rebuilds and republishes on every push, no deploy step.
 """
 
 from __future__ import annotations
@@ -131,7 +132,7 @@ claude plugin install skill-library@skill-library</code>
 </body>
 </html>
 """
-    out = ROOT / "site" / "index.html"
+    out = ROOT / "docs" / "index.html"
     out.parent.mkdir(exist_ok=True)
     out.write_text(page, encoding="utf-8")
     print(f"wrote {out.relative_to(ROOT)}: {total} skills in {len(categories)} categories")

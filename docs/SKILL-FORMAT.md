@@ -58,8 +58,11 @@ here, in the open.
 
 `tools/generate_catalog.py` builds the browsable catalog (one
 self-contained HTML page: every skill as a searchable card, grouped by
-category, install commands up top) into `site/index.html`. Regenerate it
-whenever the library changes. Hosting is a Vercel project rooted at
-`site/`; creating that project needs the Vercel connection to have access
-to the owner's team (emperiusms-projects), which was still pending as of
+category, install commands up top) into `docs/index.html`. GitHub Pages
+serves the `docs/` folder from main at
+https://emperiusm.github.io/skill_library/, so the catalog republishes on
+every push with no deploy step; regenerate it whenever the library
+changes (the daily push job does). A Vercel project was the original plan
+and is still possible, but creating it needs the Vercel connection to
+have access to the owner's team (emperiusms-projects), pending as of
 2026-10-23.
