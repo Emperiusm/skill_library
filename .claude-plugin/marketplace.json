@@ -22,6 +22,7 @@
         "./skills/ai-video/konte-multishot-ai-video",
         "./skills/ai-video/minimax-h3-character-swap-comfyui",
         "./skills/ai-video/minimax-h3-character-swap-nomask-lowvram",
+        "./skills/ai-video/minimax-h3-reference-video-character-swap",
         "./skills/ai-video/minimax-h3-selflift-long-video",
         "./skills/ai-video/minimax-h3-synctile-long-video",
         "./skills/ai-video/moss-image-comfyui-recipe",
@@ -45,6 +46,7 @@
         "./skills/characters/layered-vellum-proxy-colliders",
         "./skills/characters/minimax-h3-refmod-identity-comfyui",
         "./skills/characters/omnichar-portable-characters",
+        "./skills/characters/reallusion-rigger-apex-rig",
         "./skills/characters/revive-ancient-model",
         "./skills/characters/substance-painter-characters",
         "./skills/engine-runtime/ascii-raymarched-world-grid",
@@ -82,6 +84,7 @@
         "./skills/materials-shaders/ue58-gradient-animated-materials",
         "./skills/no-tooling/ragnarok-woe-gameplay",
         "./skills/no-tooling/topology-rendering-advice",
+        "./skills/procgen-worlds/branch-propagation-tree-generator",
         "./skills/procgen-worlds/cinematic-cavern",
         "./skills/procgen-worlds/godot-procgen-city-glb-export-schema",
         "./skills/procgen-worlds/minecraft-world-one-block",
@@ -95,6 +98,7 @@
         "./skills/procgen-worlds/procgen-racing-track-generator",
         "./skills/procgen-worlds/raup-shell-morphospace",
         "./skills/procgen-worlds/recursive-tree-spawner-parameter-space",
+        "./skills/procgen-worlds/ring-world-shader-curvature",
         "./skills/procgen-worlds/runevision-voronoi-terrain-stack",
         "./skills/simulation-vfx/armor-simulation-mode",
         "./skills/simulation-vfx/baradur-env-breakdown",
@@ -103,6 +107,7 @@
         "./skills/simulation-vfx/chaos-flesh-dataflow-soft-body",
         "./skills/simulation-vfx/corridor-key-2-ai-chroma-keyer",
         "./skills/simulation-vfx/houdini-net-break-topo-wedge",
+        "./skills/simulation-vfx/houdini-ocean-emergence-shot",
         "./skills/simulation-vfx/surface-turbulence-wave-detail",
         "./skills/simulation-vfx/tideglass-fluid-sim",
         "./skills/simulation-vfx/weta-bubbles-solver"
@@ -122,6 +127,7 @@
         "./skills/ai-video/konte-multishot-ai-video",
         "./skills/ai-video/minimax-h3-character-swap-comfyui",
         "./skills/ai-video/minimax-h3-character-swap-nomask-lowvram",
+        "./skills/ai-video/minimax-h3-reference-video-character-swap",
         "./skills/ai-video/minimax-h3-selflift-long-video",
         "./skills/ai-video/minimax-h3-synctile-long-video",
         "./skills/ai-video/moss-image-comfyui-recipe",
@@ -169,6 +175,7 @@
         "./skills/characters/layered-vellum-proxy-colliders",
         "./skills/characters/minimax-h3-refmod-identity-comfyui",
         "./skills/characters/omnichar-portable-characters",
+        "./skills/characters/reallusion-rigger-apex-rig",
         "./skills/characters/revive-ancient-model",
         "./skills/characters/substance-painter-characters"
       ]
@@ -238,6 +245,7 @@
       "description": "The procgen-worlds skills.",
       "strict": false,
       "skills": [
+        "./skills/procgen-worlds/branch-propagation-tree-generator",
         "./skills/procgen-worlds/cinematic-cavern",
         "./skills/procgen-worlds/godot-procgen-city-glb-export-schema",
         "./skills/procgen-worlds/minecraft-world-one-block",
@@ -251,6 +259,7 @@
         "./skills/procgen-worlds/procgen-racing-track-generator",
         "./skills/procgen-worlds/raup-shell-morphospace",
         "./skills/procgen-worlds/recursive-tree-spawner-parameter-space",
+        "./skills/procgen-worlds/ring-world-shader-curvature",
         "./skills/procgen-worlds/runevision-voronoi-terrain-stack"
       ]
     },
@@ -267,6 +276,7 @@
         "./skills/simulation-vfx/chaos-flesh-dataflow-soft-body",
         "./skills/simulation-vfx/corridor-key-2-ai-chroma-keyer",
         "./skills/simulation-vfx/houdini-net-break-topo-wedge",
+        "./skills/simulation-vfx/houdini-ocean-emergence-shot",
         "./skills/simulation-vfx/surface-turbulence-wave-detail",
         "./skills/simulation-vfx/tideglass-fluid-sim",
         "./skills/simulation-vfx/weta-bubbles-solver"

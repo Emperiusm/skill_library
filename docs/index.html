@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="92 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="97 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,13 +31,13 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">92 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">97 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 92 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+  <input id="search" type="search" placeholder="Search 97 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
 <section><h2>Engine and runtime <span class="count">26</span></h2>
 <div class="grid">
 <article class="card" data-search="ascii-raymarched-world-grid build a single-file raymarched web game world on a 2048x2048 one-byte-per-cell material grid: place settlements first, bake roads with a dijkstra slope-cost path search, then render every feature as a dumb per-ray...">
@@ -145,67 +145,12 @@ claude plugin install skill-library@skill-library</code>
   <p>Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">14</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">16</span></h2>
 <div class="grid">
-<article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
-  <p>Produce multi-shot AI video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit NOT-ALLOWED-TO-CHANGE lock lists, dispatch via a ComfyUI front-end plus GPU-rental queue, run...</p>
+<article class="card" data-search="branch-propagation-tree-generator generate tree species in c++ from per-level branch propagation rules (end-only vs mid-branch splits, palmate or simple leaves, species and level angle intervals with upward biases), rendered as low-memory cylinder...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/branch-propagation-tree-generator/SKILL.md">branch-propagation-tree-generator</a></h3>
+  <p>Generate tree species in C++ from per-level branch propagation rules (end-only vs mid-branch splits, palmate or simple leaves, species and level angle intervals with upward biases), rendered as low-memory cylinder...</p>
 </article>
-<article class="card" data-search="avatar-model-comparison-harness evaluate lip-synced ai avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/avatar-model-comparison-harness/SKILL.md">avatar-model-comparison-harness</a></h3>
-  <p>Evaluate lip-synced AI avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed...</p>
-</article>
-<article class="card" data-search="blender-mcp-camera-minimax direct ai video camera moves in 3d first: block the move with codex cli plus blender mcp, render a reference clip, assign role-based inputs in minimax h3 reference-to-video. trigger when ai video needs a deliberate...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/blender-mcp-camera-minimax/SKILL.md">blender-mcp-camera-minimax</a></h3>
-  <p>Direct AI video camera moves in 3D first: block the move with Codex CLI plus Blender MCP, render a reference clip, assign role-based inputs in MiniMax H3 reference-to-video. Trigger when AI video needs a deliberate...</p>
-</article>
-<article class="card" data-search="claude-cinematic-trailer direct an ai agent to cut a cinematic trailer from your game, then curate its output. trigger when generating trailers with agents.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/claude-cinematic-trailer/SKILL.md">claude-cinematic-trailer</a></h3>
-  <p>Direct an AI agent to cut a cinematic trailer from your game, then curate its output. Trigger when generating trailers with agents.</p>
-</article>
-<article class="card" data-search="flux-3-klein-comfyui-19-workflows run flux 3 klein (black forest labs) in comfyui for text-to-image, image editing, and multi-image combining using pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, layout boxes, inpaint crop/stitch...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/flux-3-klein-comfyui-19-workflows/SKILL.md">flux-3-klein-comfyui-19-workflows</a></h3>
-  <p>Run FLUX 3 Klein (Black Forest Labs) in ComfyUI for text-to-image, image editing, and multi-image combining using Pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, Layout Boxes, inpaint crop/stitch...</p>
-</article>
-<article class="card" data-search="konte-multishot-ai-video run multi-shot ai video like a software project: declare shots in a typescript dsl, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive comfyui...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/konte-multishot-ai-video/SKILL.md">konte-multishot-ai-video</a></h3>
-  <p>Run multi-shot AI video like a software project: declare shots in a TypeScript DSL, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive ComfyUI...</p>
-</article>
-<article class="card" data-search="minimax-h3-character-swap-comfyui swap a character in video with minimax h3 in comfyui: mask with sam3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-comfyui/SKILL.md">minimax-h3-character-swap-comfyui</a></h3>
-  <p>Swap a character in video with MiniMax H3 in ComfyUI: mask with SAM3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the...</p>
-</article>
-<article class="card" data-search="minimax-h3-character-swap-nomask-lowvram swap a character in video with minimax h3 + character swap lora in comfyui with no masking: 0.4 mp at 8 steps, runs on 6 gb vram. reference-video latent injection, qwen2.1 start-frame trick, and the wan2gp low-vram...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-nomask-lowvram/SKILL.md">minimax-h3-character-swap-nomask-lowvram</a></h3>
-  <p>Swap a character in video with MiniMax H3 + Character Swap LoRA in ComfyUI with no masking: 0.4 MP at 8 steps, runs on 6 GB VRAM. Reference-video latent injection, Qwen2.1 start-frame trick, and the wan2gp low-VRAM...</p>
-</article>
-<article class="card" data-search="minimax-h3-selflift-long-video stitch seamless long videos with minimax h3 in comfyui without color shift: selflift dual-sampling context mode, differential 0.1 noise at seams, color transfer pinned per segment, h3_upscaler_lms_v0.1, int8 vae. fix...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-selflift-long-video/SKILL.md">minimax-h3-selflift-long-video</a></h3>
-  <p>Stitch seamless long videos with MiniMax H3 in ComfyUI without color shift: SelfLift dual-sampling context mode, differential 0.1 noise at seams, Color Transfer pinned per segment, h3_upscaler_lms_v0.1, int8 VAE. Fix...</p>
-</article>
-<article class="card" data-search="minimax-h3-synctile-long-video generate long minimax h3 videos in comfyui (tested 600 frames / 25 s at 4k) with zero clip chaining: synctile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-synctile-long-video/SKILL.md">minimax-h3-synctile-long-video</a></h3>
-  <p>Generate long MiniMax H3 videos in ComfyUI (tested 600 frames / 25 s at 4K) with zero clip chaining: SyncTile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising...</p>
-</article>
-<article class="card" data-search="moss-image-comfyui-recipe run openmoss moss-image (5b dit, apache 2.0) in comfyui: starter settings, vram/quant options, layout-json text rendering, and the community lora/tooling wave. trigger when generating text-bearing images, posters, or...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/moss-image-comfyui-recipe/SKILL.md">moss-image-comfyui-recipe</a></h3>
-  <p>Run OpenMOSS MOSS-Image (5B DiT, Apache 2.0) in ComfyUI: starter settings, VRAM/quant options, layout-JSON text rendering, and the community LoRA/tooling wave. Trigger when generating text-bearing images, posters, or...</p>
-</article>
-<article class="card" data-search="resistance-sci-fi-short direct an ai-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable comfyui nodes, keep prompt writing manual, edit and grade in an nle. trigger when producing ai video with a human...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/resistance-sci-fi-short/SKILL.md">resistance-sci-fi-short</a></h3>
-  <p>Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. Trigger when producing AI video with a human...</p>
-</article>
-<article class="card" data-search="syf-motion-blur-pro add motion blur with a free ofx plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. trigger when adding motion...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/syf-motion-blur-pro/SKILL.md">syf-motion-blur-pro</a></h3>
-  <p>Add motion blur with a free OFX plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. Trigger when adding motion...</p>
-</article>
-<article class="card" data-search="ue58-video-in-materials route real video into unreal materials: media framework pipeline, procedural scanlines, crt glass, mosaic uv math, subuv flipbooks, yaw-only billboards, light-function projectors. trigger when putting video on screens...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/ue58-video-in-materials/SKILL.md">ue58-video-in-materials</a></h3>
-  <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
-</article>
-</div></section>
-<section><h2>Procedural generation and worlds <span class="count">14</span></h2>
-<div class="grid">
 <article class="card" data-search="cinematic-cavern build a cinematic cave/pool/waterfall scene end to end: blender blockout, zbrush sculpt, decimation to game mesh, substance bake and pbr materials, unreal export, scripted repairs, a c++ height-field water solver...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/cinematic-cavern/SKILL.md">cinematic-cavern</a></h3>
   <p>Build a cinematic cave/pool/waterfall scene end to end: Blender blockout, ZBrush sculpt, decimation to game mesh, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver...</p>
@@ -258,12 +203,79 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/recursive-tree-spawner-parameter-space/SKILL.md">recursive-tree-spawner-parameter-space</a></h3>
   <p>Drive procedural tree generation by sweeping parameter ranges (not the algorithm): one recursive branch spawner yields one species or many depending on range width; ship via prefab, AutoLOD decimation, GPUInstancer plus...</p>
 </article>
+<article class="card" data-search="ring-world-shader-curvature fake a ring world without building one: lay out a flat strip holding every biome, then bend space with a curved-space shader so it reads as a ring. rendering is cheap; interaction and lighting agreement are the debts...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/ring-world-shader-curvature/SKILL.md">ring-world-shader-curvature</a></h3>
+  <p>Fake a ring world without building one: lay out a flat strip holding every biome, then bend space with a curved-space shader so it reads as a ring. Rendering is cheap; interaction and lighting agreement are the debts...</p>
+</article>
 <article class="card" data-search="runevision-voronoi-terrain-stack drive large-scale procedural terrain with voronoi macro-cells for level-design control over noise: layerprocgen framework, fast erosion filter, gpu instancer pro instancing + occlusion culling, microsplat, amplify...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/runevision-voronoi-terrain-stack/SKILL.md">runevision-voronoi-terrain-stack</a></h3>
   <p>Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU Instancer Pro instancing + occlusion culling, Microsplat, Amplify...</p>
 </article>
 </div></section>
-<section><h2>Simulation and VFX <span class="count">10</span></h2>
+<section><h2>AI video <span class="count">15</span></h2>
+<div class="grid">
+<article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
+  <p>Produce multi-shot AI video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit NOT-ALLOWED-TO-CHANGE lock lists, dispatch via a ComfyUI front-end plus GPU-rental queue, run...</p>
+</article>
+<article class="card" data-search="avatar-model-comparison-harness evaluate lip-synced ai avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/avatar-model-comparison-harness/SKILL.md">avatar-model-comparison-harness</a></h3>
+  <p>Evaluate lip-synced AI avatar models with a fixed-input comparison harness: same portrait plus same driving audio, one fixed prompt template, a persistent reference cell, per-cell setting labels, natural-speed...</p>
+</article>
+<article class="card" data-search="blender-mcp-camera-minimax direct ai video camera moves in 3d first: block the move with codex cli plus blender mcp, render a reference clip, assign role-based inputs in minimax h3 reference-to-video. trigger when ai video needs a deliberate...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/blender-mcp-camera-minimax/SKILL.md">blender-mcp-camera-minimax</a></h3>
+  <p>Direct AI video camera moves in 3D first: block the move with Codex CLI plus Blender MCP, render a reference clip, assign role-based inputs in MiniMax H3 reference-to-video. Trigger when AI video needs a deliberate...</p>
+</article>
+<article class="card" data-search="claude-cinematic-trailer direct an ai agent to cut a cinematic trailer from your game, then curate its output. trigger when generating trailers with agents.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/claude-cinematic-trailer/SKILL.md">claude-cinematic-trailer</a></h3>
+  <p>Direct an AI agent to cut a cinematic trailer from your game, then curate its output. Trigger when generating trailers with agents.</p>
+</article>
+<article class="card" data-search="flux-3-klein-comfyui-19-workflows run flux 3 klein (black forest labs) in comfyui for text-to-image, image editing, and multi-image combining using pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, layout boxes, inpaint crop/stitch...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/flux-3-klein-comfyui-19-workflows/SKILL.md">flux-3-klein-comfyui-19-workflows</a></h3>
+  <p>Run FLUX 3 Klein (Black Forest Labs) in ComfyUI for text-to-image, image editing, and multi-image combining using Pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, Layout Boxes, inpaint crop/stitch...</p>
+</article>
+<article class="card" data-search="konte-multishot-ai-video run multi-shot ai video like a software project: declare shots in a typescript dsl, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive comfyui...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/konte-multishot-ai-video/SKILL.md">konte-multishot-ai-video</a></h3>
+  <p>Run multi-shot AI video like a software project: declare shots in a TypeScript DSL, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive ComfyUI...</p>
+</article>
+<article class="card" data-search="minimax-h3-character-swap-comfyui swap a character in video with minimax h3 in comfyui: mask with sam3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-comfyui/SKILL.md">minimax-h3-character-swap-comfyui</a></h3>
+  <p>Swap a character in video with MiniMax H3 in ComfyUI: mask with SAM3 text prompts, invert colors inside the mask as the repaint signal, save characters as image-plus-description units, trim in-workflow, describe the...</p>
+</article>
+<article class="card" data-search="minimax-h3-character-swap-nomask-lowvram swap a character in video with minimax h3 + character swap lora in comfyui with no masking: 0.4 mp at 8 steps, runs on 6 gb vram. reference-video latent injection, qwen2.1 start-frame trick, and the wan2gp low-vram...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-nomask-lowvram/SKILL.md">minimax-h3-character-swap-nomask-lowvram</a></h3>
+  <p>Swap a character in video with MiniMax H3 + Character Swap LoRA in ComfyUI with no masking: 0.4 MP at 8 steps, runs on 6 GB VRAM. Reference-video latent injection, Qwen2.1 start-frame trick, and the wan2gp low-VRAM...</p>
+</article>
+<article class="card" data-search="minimax-h3-reference-video-character-swap swap a character in video with minimax h3&#x27;s reference-to-video workflow in comfyui: source footage supplies motion and performance, krea 2 and qwen image supply the replacement character&#x27;s references, no motion capture...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-reference-video-character-swap/SKILL.md">minimax-h3-reference-video-character-swap</a></h3>
+  <p>Swap a character in video with MiniMax H3&#x27;s Reference-to-Video workflow in ComfyUI: source footage supplies motion and performance, Krea 2 and Qwen Image supply the replacement character&#x27;s references, no motion capture...</p>
+</article>
+<article class="card" data-search="minimax-h3-selflift-long-video stitch seamless long videos with minimax h3 in comfyui without color shift: selflift dual-sampling context mode, differential 0.1 noise at seams, color transfer pinned per segment, h3_upscaler_lms_v0.1, int8 vae. fix...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-selflift-long-video/SKILL.md">minimax-h3-selflift-long-video</a></h3>
+  <p>Stitch seamless long videos with MiniMax H3 in ComfyUI without color shift: SelfLift dual-sampling context mode, differential 0.1 noise at seams, Color Transfer pinned per segment, h3_upscaler_lms_v0.1, int8 VAE. Fix...</p>
+</article>
+<article class="card" data-search="minimax-h3-synctile-long-video generate long minimax h3 videos in comfyui (tested 600 frames / 25 s at 4k) with zero clip chaining: synctile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-synctile-long-video/SKILL.md">minimax-h3-synctile-long-video</a></h3>
+  <p>Generate long MiniMax H3 videos in ComfyUI (tested 600 frames / 25 s at 4K) with zero clip chaining: SyncTile blends overlapping spatial tiles x temporal windows at every model call so there is a single denoising...</p>
+</article>
+<article class="card" data-search="moss-image-comfyui-recipe run openmoss moss-image (5b dit, apache 2.0) in comfyui: starter settings, vram/quant options, layout-json text rendering, and the community lora/tooling wave. trigger when generating text-bearing images, posters, or...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/moss-image-comfyui-recipe/SKILL.md">moss-image-comfyui-recipe</a></h3>
+  <p>Run OpenMOSS MOSS-Image (5B DiT, Apache 2.0) in ComfyUI: starter settings, VRAM/quant options, layout-JSON text rendering, and the community LoRA/tooling wave. Trigger when generating text-bearing images, posters, or...</p>
+</article>
+<article class="card" data-search="resistance-sci-fi-short direct an ai-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable comfyui nodes, keep prompt writing manual, edit and grade in an nle. trigger when producing ai video with a human...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/resistance-sci-fi-short/SKILL.md">resistance-sci-fi-short</a></h3>
+  <p>Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. Trigger when producing AI video with a human...</p>
+</article>
+<article class="card" data-search="syf-motion-blur-pro add motion blur with a free ofx plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. trigger when adding motion...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/syf-motion-blur-pro/SKILL.md">syf-motion-blur-pro</a></h3>
+  <p>Add motion blur with a free OFX plugin: match the algorithm to the motion type (estimation vs analytic linear/rotating/zooming), tune length vs strength, stack instances for complex shots. Trigger when adding motion...</p>
+</article>
+<article class="card" data-search="ue58-video-in-materials route real video into unreal materials: media framework pipeline, procedural scanlines, crt glass, mosaic uv math, subuv flipbooks, yaw-only billboards, light-function projectors. trigger when putting video on screens...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/ue58-video-in-materials/SKILL.md">ue58-video-in-materials</a></h3>
+  <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
+</article>
+</div></section>
+<section><h2>Simulation and VFX <span class="count">11</span></h2>
 <div class="grid">
 <article class="card" data-search="armor-simulation-mode simulate armor impacts with sph fracture and contact modeling. trigger when adding destruction sims to games.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/armor-simulation-mode/SKILL.md">armor-simulation-mode</a></h3>
@@ -293,6 +305,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/houdini-net-break-topo-wedge/SKILL.md">houdini-net-break-topo-wedge</a></h3>
   <p>Break a net in slow motion for commercial VFX: curve-spline knot modeling, glue constraints to kill jitter and untangling, procedural art-directed cuts, TOPs wedge runs to dial stretch/stress breakage limits. Cheap...</p>
 </article>
+<article class="card" data-search="houdini-ocean-emergence-shot sell a creature emerging from the ocean in houdini + nuke: spectrum amplitude down and high-frequency detail up, a pre-emergence bulge with bow shock, an upward custom velocity field, foam as a separate pass, slow...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/houdini-ocean-emergence-shot/SKILL.md">houdini-ocean-emergence-shot</a></h3>
+  <p>Sell a creature emerging from the ocean in Houdini + Nuke: spectrum amplitude down and high-frequency detail up, a pre-emergence bulge with bow shock, an upward custom velocity field, foam as a separate pass, slow...</p>
+</article>
 <article class="card" data-search="surface-turbulence-wave-detail add fine surface waves to a cached particle-based liquid simulation without rerunning it: build a fine surface point set, track it with an advection plus repair loop (insert/delete, bend constraint, normal and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/surface-turbulence-wave-detail/SKILL.md">surface-turbulence-wave-detail</a></h3>
   <p>Add fine surface waves to a cached particle-based liquid simulation without rerunning it: build a fine surface point set, track it with an advection plus repair loop (insert/delete, bend constraint, normal and...</p>
@@ -304,6 +320,41 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="weta-bubbles-solver implement a two-way coupled bubbles solver from the weta fx whitepaper in vanilla houdini nodes. trigger when building a production fluid solver from a paper.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/weta-bubbles-solver/SKILL.md">weta-bubbles-solver</a></h3>
   <p>Implement a two-way coupled bubbles solver from the Weta FX whitepaper in vanilla Houdini nodes. Trigger when building a production fluid solver from a paper.</p>
+</article>
+</div></section>
+<section><h2>Characters and rigging <span class="count">8</span></h2>
+<div class="grid">
+<article class="card" data-search="ai-character-pipeline turn an ai character concept into a rigged, game-ready 3d asset, two methods from the thread&#x27;s top chains: (1) tripo p2.0 generate-then-repair (recommended): clean 4-view turnaround, smart mesh generation, gpt astra...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-character-pipeline/SKILL.md">ai-character-pipeline</a></h3>
+  <p>Turn an AI character concept into a rigged, game-ready 3D asset, two methods from the thread&#x27;s top chains: (1) Tripo P2.0 generate-then-repair (recommended): clean 4-view turnaround, Smart Mesh generation, GPT Astra...</p>
+</article>
+<article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
+  <p>Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for...</p>
+</article>
+<article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
+  <p>Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers...</p>
+</article>
+<article class="card" data-search="minimax-h3-refmod-identity-comfyui generate images of your own character with minimax h3 in comfyui without lora training: bake identity into a refmod file from 8 photos with refmod custom nodes, then prompt scenes, outfits, poses, and environments. 8...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-identity-comfyui/SKILL.md">minimax-h3-refmod-identity-comfyui</a></h3>
+  <p>Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod custom nodes, then prompt scenes, outfits, poses, and environments. 8...</p>
+</article>
+<article class="card" data-search="omnichar-portable-characters ship consistent ai characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the comfyui-omnichar custom nodes, then decode the same file into minimax h3...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/omnichar-portable-characters/SKILL.md">omnichar-portable-characters</a></h3>
+  <p>Ship consistent AI characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the ComfyUI-Omnichar custom nodes, then decode the same file into Minimax H3...</p>
+</article>
+<article class="card" data-search="reallusion-rigger-apex-rig turn a character creator 5 / iclone 8 character into a shaded, animatable, render-ready solaris character in houdini 22+ with one click: usd/fbx import, karma cpu/xpu materials in lops, expression wrinkles, and a full...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/reallusion-rigger-apex-rig/SKILL.md">reallusion-rigger-apex-rig</a></h3>
+  <p>Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials in LOPs, expression wrinkles, and a full...</p>
+</article>
+<article class="card" data-search="revive-ancient-model revive a legacy 3d model: retexture, rig, animate, let the original forms carry it. trigger when refurbishing old assets.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/revive-ancient-model/SKILL.md">revive-ancient-model</a></h3>
+  <p>Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. Trigger when refurbishing old assets.</p>
+</article>
+<article class="card" data-search="substance-painter-characters texture game characters in substance painter: bake mesh maps, build materials in layers, keep the stack editable. trigger when building a character texturing pipeline.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/substance-painter-characters/SKILL.md">substance-painter-characters</a></h3>
+  <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
 </article>
 </div></section>
 <section><h2>Automation and pipelines <span class="count">7</span></h2>
@@ -335,37 +386,6 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="steam-publish publish or update a game on steam with steamworks and steampipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release checklists. use for steam publishing...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/steam-publish/SKILL.md">steam-publish</a></h3>
   <p>Publish or update a game on Steam with Steamworks and SteamPipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release checklists. Use for Steam publishing...</p>
-</article>
-</div></section>
-<section><h2>Characters and rigging <span class="count">7</span></h2>
-<div class="grid">
-<article class="card" data-search="ai-character-pipeline turn an ai character concept into a rigged, game-ready 3d asset, two methods from the thread&#x27;s top chains: (1) tripo p2.0 generate-then-repair (recommended): clean 4-view turnaround, smart mesh generation, gpt astra...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-character-pipeline/SKILL.md">ai-character-pipeline</a></h3>
-  <p>Turn an AI character concept into a rigged, game-ready 3D asset, two methods from the thread&#x27;s top chains: (1) Tripo P2.0 generate-then-repair (recommended): clean 4-view turnaround, Smart Mesh generation, GPT Astra...</p>
-</article>
-<article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
-  <p>Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for...</p>
-</article>
-<article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
-  <p>Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers...</p>
-</article>
-<article class="card" data-search="minimax-h3-refmod-identity-comfyui generate images of your own character with minimax h3 in comfyui without lora training: bake identity into a refmod file from 8 photos with refmod custom nodes, then prompt scenes, outfits, poses, and environments. 8...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-identity-comfyui/SKILL.md">minimax-h3-refmod-identity-comfyui</a></h3>
-  <p>Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod custom nodes, then prompt scenes, outfits, poses, and environments. 8...</p>
-</article>
-<article class="card" data-search="omnichar-portable-characters ship consistent ai characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the comfyui-omnichar custom nodes, then decode the same file into minimax h3...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/omnichar-portable-characters/SKILL.md">omnichar-portable-characters</a></h3>
-  <p>Ship consistent AI characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the ComfyUI-Omnichar custom nodes, then decode the same file into Minimax H3...</p>
-</article>
-<article class="card" data-search="revive-ancient-model revive a legacy 3d model: retexture, rig, animate, let the original forms carry it. trigger when refurbishing old assets.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/revive-ancient-model/SKILL.md">revive-ancient-model</a></h3>
-  <p>Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. Trigger when refurbishing old assets.</p>
-</article>
-<article class="card" data-search="substance-painter-characters texture game characters in substance painter: bake mesh maps, build materials in layers, keep the stack editable. trigger when building a character texturing pipeline.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/substance-painter-characters/SKILL.md">substance-painter-characters</a></h3>
-  <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
 </article>
 </div></section>
 <section><h2>Materials and shaders <span class="count">7</span></h2>
@@ -433,7 +453,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-10-23 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-10-24 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
