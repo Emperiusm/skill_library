@@ -13,17 +13,17 @@ skill.
 
 ## The skills
 
-92 skills in 9 categories, growing with every daily scout run. The full grouped
+97 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
 | Category | Skills | What it covers |
 |---|---|---|
 | [`capture`](skills/capture/) | 5 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
-| [`characters`](skills/characters/) | 7 | Character pipelines, consistent identities, rigging, cloth and hair |
-| [`procgen-worlds`](skills/procgen-worlds/) | 14 | Procedural generation: terrain, cities, creatures, whole games from a seed |
-| [`ai-video`](skills/ai-video/) | 14 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
-| [`simulation-vfx`](skills/simulation-vfx/) | 10 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
+| [`characters`](skills/characters/) | 8 | Character pipelines, consistent identities, rigging, cloth and hair |
+| [`procgen-worlds`](skills/procgen-worlds/) | 16 | Procedural generation: terrain, cities, creatures, whole games from a seed |
+| [`ai-video`](skills/ai-video/) | 15 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
+| [`simulation-vfx`](skills/simulation-vfx/) | 11 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 7 | Material authoring, shaders, texturing |
 | [`engine-runtime`](skills/engine-runtime/) | 26 | Engine systems, runtime and render tech, browser and WebGPU |
 | [`automation`](skills/automation/) | 7 | Agent-driven pipelines, DCC bridges, productized generation |

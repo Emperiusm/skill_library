@@ -23,6 +23,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`omnichar-portable-characters`](characters/omnichar-portable-characters/SKILL.md) | Ship consistent AI characters across image and video models: encode face/body/wardrobe into a portable .char once (sface + DINOv2 scored), decode per model into Minimax H3, Krea2, Flux2 dev, or klein 9B/4B. |
 | [`revive-ancient-model`](characters/revive-ancient-model/SKILL.md) | Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. |
 | [`substance-painter-characters`](characters/substance-painter-characters/SKILL.md) | Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. |
+| [`reallusion-rigger-apex-rig`](characters/reallusion-rigger-apex-rig/SKILL.md) | Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials, full APEX rig, face puppet and muscle tools, LookAt auto-animation. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -42,6 +43,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`raup-shell-morphospace`](procgen-worlds/raup-shell-morphospace/SKILL.md) | Generate every seashell from three numbers: David Raup's morphospace (flare, verm, spire), built as a Blender geometry-nodes / TouchDesigner. |
 | [`recursive-tree-spawner-parameter-space`](procgen-worlds/recursive-tree-spawner-parameter-space/SKILL.md) | Drive procedural tree generation by sweeping parameter ranges (not the algorithm): one recursive branch spawner yields one species or many depending. |
 | [`runevision-voronoi-terrain-stack`](procgen-worlds/runevision-voronoi-terrain-stack/SKILL.md) | Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU. |
+| [`ring-world-shader-curvature`](procgen-worlds/ring-world-shader-curvature/SKILL.md) | Fake a ring world without building one: flat strip holding every biome, curved-space shader bends it into a ring; interaction and lighting agreement are the debts. |
+| [`branch-propagation-tree-generator`](procgen-worlds/branch-propagation-tree-generator/SKILL.md) | Generate tree species in C++ from per-level branch propagation rules (end-only vs mid-branch splits, leaf types, angle intervals with upward biases), rendered as low-memory cylinder primitives in custom Vulkan. |
 
 ## AI video and film (`ai-video/`)
 
@@ -61,6 +64,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`syf-motion-blur-pro`](ai-video/syf-motion-blur-pro/SKILL.md) | Add motion blur with a free OFX plugin: match the algorithm to the motion type, tune length vs strength, stack instances for complex shots. |
 | [`ue58-video-in-materials`](ai-video/ue58-video-in-materials/SKILL.md) | Route real video into Unreal materials: Media Framework, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, light-function projectors. |
 | [`minimax-h3-synctile-long-video`](ai-video/minimax-h3-synctile-long-video/SKILL.md) | Generate long MiniMax H3 videos (tested 600 frames / 25 s at 4K) with one denoising trajectory: SyncTile blends overlapping tiles x 124-frame windows at every model call; 0.5 MP draft, 3D latent upscale, 4K refine. |
+| [`minimax-h3-reference-video-character-swap`](ai-video/minimax-h3-reference-video-character-swap/SKILL.md) | Swap a character in video with MiniMax H3's Reference-to-Video workflow in ComfyUI: source footage supplies motion, Krea 2 and Qwen Image supply references, no mocap; watch for smearing in fast motion and missing facial detail in wide shots. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -76,6 +80,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`tideglass-fluid-sim`](simulation-vfx/tideglass-fluid-sim/SKILL.md) | Build a target-driven real-time GPU fluid sim. |
 | [`weta-bubbles-solver`](simulation-vfx/weta-bubbles-solver/SKILL.md) | Implement a two-way coupled bubbles solver from the Weta FX whitepaper in vanilla Houdini nodes. |
 | [`corridor-key-2-ai-chroma-keyer`](simulation-vfx/corridor-key-2-ai-chroma-keyer/SKILL.md) | Pull production chroma keys with Corridor Key 2.0: one-click key, rough alpha-hint mattes only for hard shots, Magic Mask into the hint channel, despill discipline, IBK core-matte edge pass, train-your-own-model recipe. |
+| [`houdini-ocean-emergence-shot`](simulation-vfx/houdini-ocean-emergence-shot/SKILL.md) | Sell a creature emerging from the ocean in Houdini + Nuke: spectrum amplitude down and high-frequency detail up, pre-emergence bulge with bow shock, upward custom velocity field, foam as a separate pass, slow drainage, VEX stepping fix. |
 
 ## Materials and shaders (`materials-shaders/`)
 
