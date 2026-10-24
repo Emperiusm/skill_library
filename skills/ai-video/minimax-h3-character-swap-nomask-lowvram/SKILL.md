@@ -171,6 +171,115 @@ obtain it; (Labelled: dependency requested, not explained by the author)).
 - The tooling around H3 moves in weeks; a LoRA trained today can be
   obsolete-by-convention before the model you trained it for matters.
 
+## AAA studio practice
+
+No named AAA studio publishes seed-lottery character swaps at 0.4 MP, 8
+steps; studios attack the same identity problem (keep who it is, change
+what they do) with far more control points:
+
+- **ILM FaceSwap on *Indiana Jones and the Dial of Destiny*: blending,
+  never one recipe.** VFX sup Robert Weaver told befores & afters that
+  FaceSwap spans "shooting a separate plate and tracking it in" all the
+  way to "fully replacing the face with a CG asset." On Dial: Flux
+  (proprietary IR cameras flanking the main camera) plus tracking dots and
+  witness cameras for rigid tracking; a full-motion CG head built with
+  Medusa (ILM/DisneyResearch|Studios) driven through the complete FACS
+  expression set as a base expression library; and ML used to search
+  archival Ford footage for past frames matching each shot's orientation,
+  frame by frame, as an identity target. Review discipline: low-res renders
+  with bounding boxes so reviewers make "informed decisions." Studio
+  lesson the pack adopts wholesale: identity is a per-shot blend decision,
+  not a single node.
+  Source: https://80.lv/articles/see-how-industrial-light-magic-made-harrison-ford-40-years-younger?amp=1
+- **Lola VFX 2.5D on *Captain Marvel* / *Avengers: Endgame*: consistency as
+  the acceptance discipline.** 200+ de-aging/aging shots on *Endgame*; all
+  done in 2D comp (Flame), no head cams, actors free to move. Sup Trent
+  Claus: "easy to get one shot approved, but to have all the other shots
+  in a sequence... be consistent is harder" — the face must read as the
+  same person (e.g., Sam Jackson circa 1995) regardless of angle, lighting,
+  or which artist touched the shot. Lola's rule: modify the actor's actual
+  on-screen performance, treating "each and every frame like a painting."
+  This is the production version of the pack's Phase 4 seed hunt: the
+  acceptance is identity consistency across the whole take, not one good
+  frame.
+  Source: http://www.cgw.com/Publications/CGW/2019/Winter-2019/Face-Lift.aspx
+- **Digital Domain Charlatan on *Free Guy*: neural face-swap as
+  performance re-animation.** The studio's deep-learning renderer analyzes
+  the source performance "down to the minutia," artists hand-build the new
+  face, the network matches and replaces the original, and artists can then
+  alter expressions. Previously used on a Super Bowl "Coach Lombardi" spot
+  and the Beckham "Malaria Must Die" campaign; on *Free Guy* it re-animated
+  dialogue to avoid reshoots. The studio analog of the pack's latent
+  injection (Phase 5): the motion source is sacred, the face is the
+  replaceable layer.
+  Source: http://beforesandafters.com/2021/08/26/vfx-futures-how-a-deep-learning-renderer-was-used-to-re-animate-a-characters-lines-in-free-guy/?amp
+- **Lucasfilm / *The Mandalorian* S2 Luke: deepfake as a likeness guide,
+  hired from the community.** Lucasfilm's Landis Fields ran deepfake R&D as
+  a likeness guide; the shipped shot used Lola's 2.5D craft over a body
+  double blended with Hamill's own on-set performance, plus "The Egg" LED
+  rig for high-res facial texture capture. When YouTuber Shamook's deepfake
+  looked better than the studio's, Lucasfilm hired him, and his work shipped
+  in *The Book of Boba Fett*.
+  Sources: https://screenrant.com/mandalorian-luke-skywalker-mark-hamill-no-cgi-deepfake-look/ and https://www.starwarsnewsnet.com/2021/07/lucasfilm-hires-deepfake-making-fan.html
+- **Head replacement over stunt doubles (*Terminator: Dark Fate*
+  opening).** VFX sup Jeff White: the stunt-heavy opening "was to replace
+  the heads." Same coverage notes Gradient Effects/Secret Lab's markerless
+  approach: 180 de-aging shots in six weeks, extracting facial muscle
+  movement without tracking markers — the industrial cousin of the pack's
+  "skip the mask" instinct (Phase 2): fewer setup constraints, more
+  algorithmic load.
+  Source: https://digital.copcomm.com/i/1192296-winter-2019/23
+- **Disney Research FRAN (SIGGRAPH Asia 2022): identity-safe re-aging with
+  artist control as a production requirement.** A U-Net predicts per-pixel
+  RGB deltas overlaid on the input so identity is preserved rather than
+  regenerated, built for temporal stability across expressions, viewpoints,
+  and lighting; the paper explicitly ships artist-localized control and
+  fine-tuning tools, noting that is "largely important in real production
+  pipelines and often overlooked in related research."
+  Source: https://studios.disneyresearch.com/2022/11/30/production-Ready-Face-Re-Aging-for-Visual-Effects/
+
+Notes on what the sources do NOT establish: no named-studio source was found
+for seed management or deterministic-seed discipline in stochastic AI VFX
+(the closest is thin vendor marketing urging seed/prompt/control-map/model
+version tracking, labeled as such); render-farm batch sweeps specifically
+for AI face generations are undocumented in public production sources. The
+pack's Phase 4 seed lottery is an inference from community evidence, not a
+documented studio practice.
+
+## Agent automation
+
+1. **Treat the seed hunt as a batch job, not a lottery.** Convert Phase 4
+   into a seed sweep: JSON manifest listing the character record (identity
+   carrier file, expected gender, hair, distinguishing marks), the prompt,
+   and a seed range. Queue N jobs via the ComfyUI API, extract one face
+   crop per output, and score each with a face-embedding distance against
+   the reference crops. Keep only takes under the failure threshold (calibrate
+   the threshold from one known-good take, recorded in the manifest), and
+   record the winning seed. fsocietyARG's "write the number somewhere"
+   becomes the manifest.
+2. **Log every take.** One JSONL row per generation: seed, identity carrier,
+   reference video, output path, pass/fail with the failure mode quoted
+   from the commenters ("poor facial likeness", "identity drift to a
+   stranger", "mouth lag"). The log is what makes a week-old "which seed
+   was it" question answerable.
+3. **Automate the Lola consistency check.** Lola's rule is identity
+   consistency across the whole shot: extract frames at the start, middle,
+   and end of each take, compute face-embedding distances between them, and
+   fail the take if the spread exceeds the calibrated threshold. One good
+   frame is not a passing take.
+4. **Gate the start frame before spending samples (Phase 6).** Before
+   queueing the seed sweep, render one frame from the Qwen Image 2.1
+   start-frame trick and verify pose and background against the source.
+   If the start frame is wrong, no seed will fix it.
+5. **Run the failure-mode decision tree as checks, not prose.** Encode the
+   failure modes as ordered checks in the agent loop: identity drift to a
+   stranger → check the identity carrier actually loads (wrong/blank
+   sheet = stranger output); poor facial likeness → seed sweep continues;
+   mouth/body lag → verify the reference-video latent injection (Phase 5)
+   is wired before sampling; out-of-sync motion → re-run with the
+   reference latent as the sampler input. Stop and report which check
+   failed rather than burning seeds blindly.
+
 ## The human method, distilled
 
 1. **Drop the mask, keep the identity carrier.** No masking cuts VRAM and

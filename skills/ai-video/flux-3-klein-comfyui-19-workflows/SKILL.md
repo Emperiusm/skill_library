@@ -510,6 +510,88 @@ floor, relative heights, and per-hand jobs are all stated.
 Input order is semantic: the first picture anchors the world; the
 framing sentence is what makes the product the subject.
 
+## AAA studio practice
+
+Studios do not run Flux 3 Klein publicly, but the pack's conventions map
+directly onto documented production AI-image pipelines:
+
+- **Prompt engineering as a hiring gate (Round8 Studio / *Lies of P*,
+  reported May 2026).** Their "AI Creator" role builds a pipeline of Stable
+  Diffusion and Midjourney concept drafts, AI texturing, project-specific
+  LoRA/ControlNet training, and post-processing (inpainting, outpainting,
+  high-resolution upscaling) "to ensure AI-generated assets meet production
+  standards." Candidates must demonstrate "excellent prompt engineering and
+  parameter control skills." This is the closest AAA-adjacent analog to the
+  pack: prompt discipline plus inpaint/outpaint/upscale passes treated as
+  production criteria, not optional polish.
+  Source: https://www.invenglobal.com/articles/21761/round8-studio-launches-major-recruitment-drive-introduces-ai-creator-role
+- **Batch runs with low-res review passes (Moment Factory, official ComfyUI
+  case study, 2026).** The production studio runs custom ComfyUI workflows
+  generating 20+ artistic directions at 20-40 iterations per direction,
+  reviewing deliberately low-resolution passes for art-direction decisions
+  ("not about polish... about validation and decision-making"), then
+  inpaints approved regions, preserves composition, and upscales selects to
+  18K. One operator drives the workflow while teammates tune prompts and
+  select. Matches the pack's "Prompt each" batch rows (Phases 13, 14, 16)
+  and the Z-Image realism pass (Phase 5), except the studio separates
+  generation from upscaling by approval stage.
+  Source: https://blog.comfy.org/p/case-study-how-moment-factory-reimagined
+- **Proprietary diffusion as a launch point, never the finish (Blizzard
+  Entertainment, reported by The New York Times, May 2023).** "Blizzard
+  Diffusion" trained only on Blizzard-owned imagery so artists could turn
+  prompt text into Blizzard-style concept launches for characters, outfits,
+  and environments; it was used to fit cosmetic headpieces to WoW player
+  models. Studio framing: remove repetitive manual work so artists spend
+  time on creativity, with AI supplementary to human art direction.
+  Source: https://www.gameshub.com/news/news/blizzard-entertainment-ai-concept-art-may-2023-2617179/
+- **AI output confined to low-stakes surface area (Squanch Games, *High on
+  Life*, shipped Dec 2022).** The studio confirmed Midjourney use for in-game
+  movie posters and "finishing touches" to world set decoration; most art
+  stayed hand-drawn. The production discipline: novel tools ship in the
+  safest surface area first.
+  Source: https://www.gamedeveloper.com/business/justin-roiland-revealed-i-high-on-life-i-features-ai-art-and-voice-acting
+
+Notes on what the sources do NOT establish: no named AAA studio was found
+publishing Flux-family use in a production pipeline (documented Flux-derived
+pipelines are vendor and freelancer work so far); quoted-text prompts,
+end-of-prompt preserve-lists, and box-scoped edits instead of masks are the
+pack's original workflow contributions, not documented studio conventions,
+and are stated as such.
+
+## Agent automation
+
+1. **Drive the pack through the ComfyUI API, not the canvas.** Convert each
+   workflow's JSON to a queue payload: blue-node values become a parameter
+   dict, everything else stays fixed. POST the payload to
+   `http://<host>:8188/prompt` and poll `/history` for the output image
+   path. This turns "touch only the blue nodes, in order" (Phase 2) into an
+   executable manifest instead of mouse discipline.
+2. **Run batch rows as a seed sweep with an acceptance log.** For every
+   "Prompt each" workflow, write one JSON job per row per seed
+   (rows x 3 seeds), recording for each: workflow name, row prompt,
+   quoted words, expected spelling, seed, output path, pass/fail with the
+   failure mode quoted from the author ("wrong letter", "duplicate
+   turnaround view", "logo lost its base", "blurry paw"). Failures go back
+   into the queue with a new seed; the sweep stops when every row passes or
+   the budget (set it before running) is spent.
+3. **Verify rendered words automatically.** The pack's text workflows
+   (Phases 7, 12, 20) make spelling the acceptance gate; an agent can OCR
+   the output region (any OCR tool, or zoomed visual inspection) and
+   compare the recognized string to the quoted target word list from the
+   manifest before marking the row passed.
+4. **Match the Moment Factory review ladder.** Generate review-size first,
+   inspect, pick winners, then run only the winners through the Z-Image
+   realism pass (Phase 5) at 0.2. Never generate full-size on a first
+   prompt: the author's honest limits (hands, far faces, drift) are cheapest
+   to find at review size.
+5. **Keep the honest-limit checks machine-readable.** Add one check per
+   author failure mode to the manifest schema: hand count vs. expected
+   (visual count), face-size-in-frame for realism eligibility
+   (faces too small = full-body warning, Phase 5), every word quoted in the
+   prompt spelled in the output (Phase 12/20), center-frame pixels
+   identical to the source after Outpaint Stitch (Phase 17). A workflow run
+   is done only when all checks pass, not when an image appears.
+
 ## The human method, distilled
 
 1. **Touch only the blue nodes, in order.** The color convention is the
