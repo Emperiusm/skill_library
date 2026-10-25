@@ -199,6 +199,32 @@ and I guess the job of a filmmaker is to keep pursuing it anyway" (creator reply
 A one-person multi-tool pipeline breaks down without explicit asset and version
 tracking.
 
+## AAA studio practice
+
+The RESISTANCE workflow is a one-person version of disciplines AAA cinematic teams run at full scale. The upgrades below import the discipline, not the headcount:
+
+- **Previz before the expensive shoot.** Every Uncharted 4 scene started in previsualization: digital previz with crude models to plan camera angles, sets, and movement, plus live-action previz shot with real people standing in for characters, used as reference to plan story and gameplay sequences. Naughty Dog blocked scenes digitally before booking the mocap studio precisely because studio time is expensive, and even put the studio's dimensions into the game scenes so the team knew how much space it had to work with. The RESISTANCE equivalent: keyframes and storyboard panels are the previz, and they are cheap; video generation is the mocap session, and it is where the time goes. Never spend generation budget before the keyframe is locked. Source: https://gamesbeat.com/how-planning-and-technology-helped-naughty-dog-animate-uncharted-4-a-thiefs-end/
+- **Storyboard, then animatic, then rough 3D, then refine.** Blizzard's cinematics process runs storyboards into animated storyboards (by a storyboard team who are also trained animators) complete with temporary music to set tone and pacing, then a rough 3D version of the final animation, with animation and models refined together as production proceeds. The RESISTANCE equivalent is already in the skill (Nano Banana keyframes, then storyboard panels, then H3 clips); the AAA addition is the animatic step in between: cut the keyframes to temp music/sound at target pacing before generating a single clip, so pacing problems are found in the edit, not after a 40-minute render. Source (Slashdot summary of the Blizzard cinematics team process): https://games.slashdot.org/story/09/05/27/049224/speaking-with-the-blizzard-cinematics-team?sdsrc=nextbtmnext
+- **The camera is a physical object, even when it is virtual.** On The Mandalorian, ILM's StageCraft LED volume renders its backgrounds from live camera-position data, and the director of photography described seeing the photoreal background through the viewfinder as giving power back to the cinematographer, versus green screen where things get changed drastically in post. Naughty Dog's camera layout role makes the same point from the game side: create previs for shoots, then turn shoot data into cinematic sequences, working from rough layout to final camera polish, with staging, blocking, and camera motion figured out before polish. The RESISTANCE rule (place the camera like a physical set) is the solo version of both: constrain the camera to what a real rig could do, and lock staging and blocking in the keyframe before any clip is generated. Sources: https://www.starwars.com/news/the-mandalorian-stagecraft-feature and https://gamejobs.co/Camera-Layout-Artist-Contingent-at-Naughty-Dog
+- **Spatial continuity is an edit problem at every scale.** Naughty Dog's Uncharted 4 team planned scenes around physical studio dimensions and gray-block stand-ins for in-game geometry so actors could interact with a physical environment mimicking the game one. When the geometry cannot be shared between shots, continuity has to be constructed in the edit. That is exactly the RESISTANCE montage solution (Phase 7), and it is why the montage needs an establishing shot per location, not just good clips: the edit can only establish space the footage actually shows.
+
+## Agent automation
+
+These upgrades automate tracking, logging, and gating only. They deliberately do NOT automate prompt writing: Phase 6 keeps prompt writing manual because the creator treats it as the filmmaker's remaining craft, and automating it would break the skill's own principle. Automate everything around the prompt instead:
+
+**Do**
+1. Write a shot-list JSON before generating: one entry per shot with `shot_id`, `location`, `keyframe_path`, `camera_constraint` (e.g. dolly, handheld, locked off, plus what the camera may not do), `model` (H3 or Seedance 2 Fast, chosen by scene type per Phases 4-5), `expected_duration`, and `known_risk` (e.g. bullet casings, wrong-side ejection, H3 shot-to-shot drift). No shot generates without a shot-list entry.
+2. Cut an animatic first: assemble the locked keyframes in Resolve at target pacing with temp music/sound, and get the pacing approved from the animatic. Regenerate keyframes, not video clips, when the pacing is wrong.
+3. Keep a per-shot generation log (JSONL, one line per attempt): `shot_id`, `seed_or_job_id`, `model`, `steps`, `render_minutes`, `cost`, `verdict` (keeper / cut / retry), and `cut_reason` (artifact named exactly, e.g. "strange bullet casings"). Trial and error is the norm for action (Phase 4); the log is what turns it from thrashing into a measurable process, and it records which character version went into which model so nothing regresses (Phase 9).
+4. Enforce the location-establishing rule in the shot list: every location's first shot must be an establishing shot that shows the room layout and character positions, and the montage for that location may not be declared done until that shot exists as a keeper. This is the agent-executable version of Phase 7's "montage must establish space, action, and story."
+
+**Check**
+- Every keeper clip traces to a shot-list entry, a locked keyframe, and a log line; any clip without all three is unreviewed footage, not a keeper.
+- The animatic's pacing survives into the final edit: if a sequence's pacing changed, the change is traceable to a named shot, not to a pile of regenerated clips.
+
+**Why**
+AAA cinematic teams do not get continuity from better models; they get it from previz, shot lists, and edit discipline applied before the expensive frames are made. The shot list and the log give a one-person pipeline the same property: every expensive minute is spent on a planned shot, and every failure teaches the next attempt.
+
 ## The human method, distilled
 
 1. **Every clip begins with the frame.** Spend the time on keyframes before video
