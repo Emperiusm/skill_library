@@ -75,3 +75,17 @@ maps, bakes, or export settings are named anywhere in the source).
 Anything not stated by the sources is marked [inference].
 
 ---
+
+## AAA studio practice (refinement 2026-10-24)
+
+**Do**
+1. Bake mesh maps before painting anything. The standard production order is high poly sculpt, low poly retopology and UV layout, then bake normal, ambient occlusion, and curvature maps into Painter, then texture. The original skill named baking in its description but never spelled it out; make it Phase 0, with maps named explicitly: Normal, AO, Curvature, plus an ID map from material colors so each garment or body part can be masked separately. Source for the order: https://assist-software.net/blog/game-character-production-applying-industry-standards-across-production-pipeline
+2. Build the procedural base as a reusable Smart Material, not a one off layer stack. One 80 Level production breakdown baked all maps in Painter, built a Smart Material from a modified curvature mask plus dirt and snow masks packed with baked AO, then reused it across every remaining stone structure by baking, applying the Smart Material, and exporting. For characters, the equivalent is one Smart Material per material family (skin, cloth, leather, metal) reused across characters, with hand painting only on top. Source: https://80.lv/articles/veturheim-ruins-environment-production-pipeline?amp=1
+3. Hold the stack to AAA pipeline constraints, as Ubisoft's AAA texture roles state them: PBR standards, surface consistency across lighting scenarios, and optimized material systems with variants, wear, and blending, built in partnership with Technical Art and Rendering against memory budgets and streaming cost. Source: https://jobs.smartrecruiters.com/ubisoft2/744000103580304-principal-artist-textures
+
+**Check**
+- Automated export gate [inference]: after painting, export with a fixed preset (Base Color, Roughness, Metallic, Normal), then run a script that checks every texture set has the same resolution, no missing channel, and a texture budget total under the project's per character budget. Fail the export if any set is missing a baked AO or curvature map, since the procedural masks depend on them.
+- Keep the procedural layers live until final export: if a layer has been flattened or baked into Base Color before art direction sign off, the non-destructive claim in the original skill is broken; re-open the .spp and confirm the generator layers are still editable.
+
+**Why**
+The original skill's core claim (non-destructive workflow) only pays off when the base is reusable and the bake is explicit. AAA practice makes both mechanical: bake first, Smart Material second, hand paint last, export gated by budget.

@@ -212,3 +212,25 @@ theoretical.
   prompt with "in every frame".
 - **Old node pack conflicts:** delete `ComfyUI-SyncTile-H3` before
   installing v5.5.
+
+## AAA studio practice
+
+No AAA studio is documented as shipping on MiniMax H3 SyncTile itself, so this section does not claim one. What is documented is the production-grade principle SyncTile implements, and it comes from the research lineage studios and vendors build on. Google's Lumiere paper extends MultiDiffusion to the temporal domain precisely because the naive alternative, splitting a video into non-overlapping segments and stitching them, "can lead to inconsistencies in appearance at the boundaries between windows"; its fix is to compute super-resolution on temporal windows and aggregate them into one globally coherent solution over the whole clip. FrescoDiffusion (2026) makes the same architectural point for 4K: it performs tiled denoising directly on a large latent canvas and fuses per-tile noise predictions with a low-resolution global prior at every diffusion timestep via a weighted least-squares objective, so tiles keep local detail without breaking global layout. SyncTile's one-trajectory blend at every model call is the ComfyUI implementation of that same idea: blend inside the denoising step, never after it.
+
+- Source: https://arxiv.org/html/2401.12945v1 (Lumiere, space-time diffusion; MultiDiffusion temporal extension)
+- Source: https://arxiv.org/html/2603.17555 (FrescoDiffusion, prior-regularized tiled diffusion for 4K video)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the Phase 1 grid check before any render: compute valid lengths from the `17n+5` rule (124, 243, 362, 600, ...) and reject an off-grid frame count with the nearest valid lengths, instead of letting the workflow truncate or pad silently.
+2. Automate the Phase 2/Phase 4 consistency check: read `window_frames`, `window_overlap_frames`, and `carry_frames` from both SyncTile conditioning nodes and fail the run if any value differs between them; a mismatch is the cheapest defect to catch and the most expensive to render through.
+3. Automate the seam acceptance pass after render: extract one frame either side of every window join, plus a mid-window control frame, and log them for visual comparison. Do not declare a long video seamless without inspecting a join frame.
+
+**Check**
+- Frame count is on the `17n+5` grid; window/overlap/carry values match across conditioning nodes.
+- Join frames show no ghosting, double exposure, or camera jump versus the control frames.
+- The 4K refine pass touched only texture (sigmas `0.878, 0.8, 0.6316, 0`); composition matches the 0.5 MP draft frame-for-frame in layout.
+
+**Why**
+- In the research lineage, seams are a sampling-architecture defect, not a rendering accident. Catching them at the parameter level (grid, matching windows) is cheaper than re-rendering 600 frames at 4K, and inspecting join frames is the only acceptance test that actually tests the claim.

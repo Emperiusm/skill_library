@@ -145,3 +145,66 @@ disclosed.
 **Depth status:** PARTIAL (full post text + comments with exact step/time/MP
 figures; no node graph, no RefMod node parameters, YouTube tutorial metadata
 unretrieved due to the missing `yt_extract.py` script).
+
+## AAA studio practice
+
+Character consistency in production is a spectrum from light (reference
+image per generation) to heavy (trained LoRA), and the choice is made by
+commitment length, not by which tool is newest. RefMod sits in the middle
+of that spectrum: a baked identity file, lighter than training, heavier
+than passing a photo each time. Framing it that way resolves the thread's
+open LoRA question into a decision rule.
+
+- **Reference-first consistency practice.** The current practitioner
+  consensus is: upload a reference image with every generation, repeat a
+  written character spec in each prompt, and name the clothing every
+  time; train a LoRA only if you need tighter consistency than
+  references give.
+  Source: https://lovino.ai/blog/how-to-create-consistent-ai-characters
+- **LoRA vs reference methods, quantified.** LoRA training is described
+  across guides as the tightest method (10-20 high-quality reference
+  images, varied angles and lighting, 30-60 minutes on a mid-range GPU,
+  reusable indefinitely via a trigger word), while IP-Adapter-style
+  reference conditioning with no training reaches roughly 80% of LoRA
+  quality with none of the setup time, which is why it wins for quick
+  projects and loses for long series where every frame must match.
+  Source: https://www.promptspace.in/blog/how-to-create-consistent-ai-characters-complete-guide-for-2026
+
+**Do (agent-executable, automation upgrade)**
+1. Add a decision gate before Phase 1: if the character is needed for
+   under ~20 generations or a one-week project, use reference-image
+   conditioning per generation and skip RefMod; if the character is a
+   long-running cast member (dozens of generations, months of reuse),
+   build the RefMod file once and amortize it, and only graduate to a
+   trained LoRA if identity drift is measured across a test batch (see
+   step 3). Record which tier was chosen and why.
+2. Automate the character spec the reference guides require: write a
+   fixed character sheet (face, build, hair, signature clothing items,
+   art style) as a text file, and inject it verbatim into every
+   generation prompt. Never paraphrase the spec per prompt; drift in
+   wording is drift in identity.
+3. Automate the identity QA the thread never ran: generate a fixed test
+   batch (same character, 5 prompts spanning pose, outfit, lighting,
+   angle, and environment changes), and score identity hold per image
+   (face match against the reference set, clothing match against the
+   spec). If more than 1 in 5 drifts, the fix order is: reference set
+   first (count, resolution, angle coverage), then generation settings,
+   then graduate to LoRA. Log the score per batch so RefMod-vs-LoRA
+   stops being an argument and becomes a measurement.
+4. Script the cost ledger: log steps, megapixels, and wall-clock minutes
+   per generation (the author's baseline is 8 steps/6 min and 25 steps/
+   14 min at 1.8 MP) alongside the identity score, so the speed/quality
+   tradeoff the thread debated is visible per project.
+
+**Check**
+- The character spec file exists and is identical across the batch;
+  a batch generated from paraphrased specs is not a valid identity test.
+- The identity score and cost ledger are attached to the RefMod file
+  version; a rebuilt RefMod (new references) resets both.
+
+**Why**
+The thread's unanswered question ("what's the benefit, is it because you
+don't need a LoRA?") is unanswerable without a tier rule and a measured
+test batch. Reference-first for short projects, RefMod for recurring
+cast, LoRA for maximum fidelity is the decision rule the wider practice
+supports, and the test batch is what tells you when to move up a tier.

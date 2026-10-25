@@ -126,6 +126,23 @@ creatures, not noise."
    proyect" at a reddit video link — unverified parallel implementation,
    not evaluated here.)
 
+## AAA studio practice
+
+**Do**
+1. Treat the seed as the whole save file, the way Hello Games describes No Man's Sky: one seed defines a planet and everything on it, so a player can note the seed and return to the same place, and two players with the same seed find the same features. Source: https://www.nomanssky.com/2014/08/no-mans-sky-at-gamescom/
+2. Build creatures from a fixed body template plus swappable parts, the way Maxis built Spore: start from a spine/body, add parts (legs, arms, eyes, mouths) that change both look and behaviour, then apply paint procedurally from the creature topology instead of hand painting each variant. Source: https://www.gamespot.com/articles/spore-e3-2005-impressions/1100-6125451/
+3. Automate the seed pipeline as an agent-executable check, do not hand verify one creature at a time:
+   - Write a script that takes a seed list, generates each creature at the smallest and largest size, and writes a contact sheet with the seed printed under each sprite.
+   - Assert in the script: same seed in, byte identical pixel grid out (or identical hash of the grid); different seed, different grid; every exported PNG, GIF, and strip carries its seed in the filename (for example `creature_<seed>_64px.png`).
+   - Fail the run if any export cannot be regenerated from its filename seed alone. That is the executable version of "the link keeps every setting."
+
+**Check**
+- Regenerate the full sheet from seeds only, with no saved creature files present. If any creature differs, the generator is not deterministic and the seed is not the save file.
+- Confirm part swaps change behaviour or stats, not only pixels, or label the part as decorative (the Spore distinction: some parts affect abilities, some are purely decorative).
+
+**Why**
+- Hello Games and Maxis both ship the same lesson: store the rule and the seed, not the asset. That is what makes a creature system shareable, testable, and small enough to ship at scale. The automation step above turns that lesson into a regression test instead of a slogan.
+
 **Depth status:** PARTIAL — exact design-space numbers (35 body types, 8
 sizes 8–1024 px, 8 animations, 7 palettes), export formats, and the
 shareable-seed architecture are all in the author's own words; the

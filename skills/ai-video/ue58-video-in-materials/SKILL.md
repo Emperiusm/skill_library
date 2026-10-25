@@ -133,3 +133,26 @@ Tools used: Unreal Engine 5.8; Media Framework (Media Player, File Media Source,
 ## Depth status
 
 FULL (complete captions, 1013 segments, + 14 reviewed frames).
+
+## AAA studio practice
+
+Production studios do not treat video-on-a-screen as a tutorial trick; they treat it as a packaging and playback contract. Epic's own Media Framework team confirmed the rule that decides whether a screen works outside the editor: a movie must live inside the project's `Content/Movies` directory to be packaged with the game, and the Media Player references the texture and sound assets rather than embedding the file itself (Epic Developer Community Forums, Media Framework Roadmap thread, staff reply by gmpreussner, 2016-08-08). The classic shipped-game failure is the reverse: screens that play in PIE and go black in a packaged build because the video was never in `Content/Movies` (Epic Developer Community Forums, "Movie Texture doesn't work after package" and "Video is not included in packaged game file" threads). In virtual production, the same Media Framework plumbing scales up: a Media Bundle carries the media player and texture into a Composure comp, where a Media Plate element composites live or pre-recorded video with CG elements in-camera, rather than in post (Motion Forge Pictures, Unreal virtual-production and Composure guide).
+
+- Source: https://forums.unrealengine.com/t/media-framework-roadmap/25203?page=6
+- Source: https://forums.unrealengine.com/t/video-is-not-included-in-packaged-game-file/157133
+- Source: https://www.motionforgepictures.com/unreal-engine-virtual-production-and-composure-in-depth-set-up-guide/
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Before any material work, enforce the packaging contract with a file check the agent can run without opening the editor: confirm every referenced video file exists under `Content/Movies/` and that the File Media Source path is relative (`./Movies/<file>.mp4`), not an absolute path on the author's machine. Move the file and re-point the source if either check fails.
+2. Convert the Phase 4 mosaic into a data table, not hand-made instances: one row per screen (`ScreenName, Columns, Rows, Index, MediaPlayer`), and create one material instance per row from the single mosaic master material. No screen gets its own material.
+3. Add a packaged-build smoke test to the end of every video-screen task: package, launch the packaged build (not PIE), stand in front of each screen, and confirm video, loop, and (where applicable) spatial audio all play. Record pass/fail per screen in the task log.
+
+**Check**
+- `Content/Movies/` contains every video the level references; no absolute paths remain in any File Media Source.
+- Packaged build: every screen plays video; a screen that only works in PIE is a failed task, not a finished one.
+- Mosaic indices 0..(Columns*Rows-1) are all covered by instances; a missing index is a blank tile, not a cosmetic issue.
+
+**Why**
+- The editor lies about video playback: PIE resolves paths and assets the packaged build does not. Studios ship the packaged check, not the editor check, as the acceptance test.

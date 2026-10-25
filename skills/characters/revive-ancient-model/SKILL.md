@@ -86,3 +86,19 @@ The revival is only complete when the model moves inside its project; the clip i
 ---
 
 # World-scale procgen: reconstructions
+
+## AAA studio practice (refinement 2026-10-24)
+
+This skill was DEPTH-LIMITED (a two sentence demo). The AAA practice below does not fill in the missing software choices; it adds the decision gate studios use before reviving anything, so the next revival is executable instead of anecdotal.
+
+**Do**
+1. Decide remaster versus remake before touching the mesh. Bluepoint's HD remasters imported the original models designed for standard definition and boosted fidelity through a preexisting pipeline plus hand touch-ups; its Shadow of the Colossus remake instead broke the old game down to a skeleton and rebuilt every asset fresh against the original as guideline. Source: https://www.theringer.com/2018/02/06/video-games/bluepoint-games-master-of-video-game-remasters-shadow-of-the-colossus
+2. If the call is remaster, keep the original code and art and fix what time broke first. Nightdive defines a remaster as original source (or reverse engineered) code plus original art assets, and describes its Shadow Man work as bringing the game back cleaner: fixing UV seams and repeating textures, then restoring cut levels the original team had planned but could not ship. Source: https://nc.inverse.com/gaming/nightdive-remakes-remasters-star-wars-system-shock
+3. Apply that gate to this skill's sequence: (a) archive the 2013 file read only, (b) retexture first, (c) rig and animate second, (d) only rebuild geometry if the old topology fails the target fidelity test. That order is the Bluepoint remaster order, not a rebuild order.
+
+**Check**
+- Automated pre-flight script [inference]: copy the original file to an archive folder, verify it still opens, log its triangle count and texture resolution, and write a one line verdict (revive or rebuild) with the reason. No step in Phase 2 to 4 starts until that verdict file exists.
+- After retexturing, render the model at the target game's camera distance and compare it side by side with the original texture at the same distance; if the new texture does not read better at that distance, the texture pass failed, regardless of how it looks close up.
+
+**Why**
+Revival economics are the whole point: a 2013 model is worth reviving only when its forms survive the target fidelity. Studios make that call explicitly (remaster pipeline versus ground up rebuild) instead of discovering it halfway through rigging.

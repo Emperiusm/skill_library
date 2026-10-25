@@ -246,6 +246,24 @@ keep the benchmark comparable.
 5. **Benchmark with stated boundaries.** Transfers in, cache I/O out; FLIP
    times labeled as estimated from cache timestamps.
 
+## AAA studio practice
+
+**Do**
+1. Keep the track-once, iterate-waves-cheaply split, because Weta FX used the same split on Avatar: The Way of Water: a post-process that took a finished simulation as input and increased its apparent resolution by simulating detailed Lagrangian water waves on top of it, with wave packets attached to spline curves evolving over the bulk surface to produce high-frequency ripples with dispersive behavior customized to the underlying sim.
+2. Automate the iteration loop the skill already implies: cache the tracked surface once, then run a parameter sweep over wave speed and sourcing strength with the wave cache disabled, rendering a short preview per setting. Do not re-track for any wave-setting change; if a change forces a re-track, it belongs in a different pass with its own budget.
+3. Automate the cost accounting from the paper: log per-frame seconds split into advection, regularization, curvature, Laplacian, and wave stages (the Mercier et al. 2015 paper reports exactly this split, with regularization dominating at roughly half the total), and flag any stage whose share doubles between runs, since that signals a spacing or neighborhood-radius regression rather than a wave-design choice.
+
+**Check**
+- Wave-setting previews are produced from the single cached track with no re-tracking step in the log.
+- The per-stage timing split is stored with each preview, and regularization remains the expected dominant cost.
+
+**Why**
+The production argument for surface detail as a post-process is economic, not aesthetic: the base sim is the expensive part, and detail that can be layered on top without touching bulk motion is detail you can afford to iterate. Weta's wave-curve method and Mercier's surface-turbulence method are two instances of that same argument, and both keep coarse dynamics untouched by design.
+
+Sources:
+- https://unity.com/blog/industry/technology-behind-avatar-the-way-of-water
+- http://www.thuerey.de/ntoken/download/Mercier_2015_surfaceWaves.pdf
+
 ## Depth status
 
 FULL. Source video downloaded (720p), frames reviewed directly, all 946

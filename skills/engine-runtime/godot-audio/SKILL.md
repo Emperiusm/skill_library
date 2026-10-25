@@ -120,3 +120,23 @@ func get_playback_time() -> float:
 - `audio-design` — engine-agnostic adaptive music, mixing, and ducking practice.
 - `godot-animation` — syncing animation/Tween to `get_playback_position()`.
 - `godot-ui-control` — volume sliders wired to `AudioServer`.
+
+## AAA studio practice
+
+Sources:
+- Game Developer, Game Audio Theory: Ducking (bus hierarchy practice): sounds are grouped into a bus hierarchy (Master, then Music/SFX/Voice sub-buses, then finer groups such as weapons under SFX) so a whole class of sounds can be adjusted, ducked, or troubleshot in one place instead of per sound, and ducking rules mix channels interactively at runtime. https://www.gamedeveloper.com/audio/game-audio-theory-ducking
+- Ovani Sound, AAA Game Audio Hacks: Ducking (Godot-specific ducking write-up): the ducking pattern is a separate bus plus a transition that lowers the ducked bus and raises the priority bus over a time, triggered by gameplay state, usable for dialogue, cutscenes, and priority sounds. https://ovanisound.com/blogs/news/aaa-game-audio-hacks-ducking
+
+**Do**
+1. Adopt the bus hierarchy as a rule, not a suggestion: Master, then Music, SFX, Voice, then sub-buses (for example, Weapons and Footsteps under SFX). Agent-executable step: define the full bus layout once in the project's default bus layout resource, and route every new AudioStreamPlayer to a named bus at creation, never to Master directly except for the bus outputs themselves.
+2. Automate the bus-name check from the Pitfalls: script a scan of all .tscn files and scripts for bus name strings, compare against the bus layout, and fail on any name that returns bus index -1, instead of discovering quiet buses at runtime.
+3. Add side-chain style ducking as a standard pattern (from the references' ducking note): when Voice plays, tween the Music and SFX buses down by a fixed dB amount over a short time, and restore them when Voice ends. Reuse the existing crossfade tween pattern (Pattern 3) for the duck, so the implementation stays in one idiom.
+4. Automate the volume-mapping check: script a test that sets each volume slider to 0, 0.5, and 1.0 and asserts the bus dB values follow linear_to_db (with 0 clamped, not -inf), catching the linear-vs-dB pitfall before it ships.
+
+**Check**
+- No AudioStreamPlayer routes directly to Master except bus outputs.
+- The bus-name scan passes with zero unmatched names.
+- Voice playback ducks Music/SFX and restores them, verified by logged bus dB values before, during, and after.
+
+**Why**
+Production audio is a hierarchy with rules, not a pile of per-sound volumes. The bus layout is what makes mixing, ducking, muting, and troubleshooting possible at scale, and every one of those operations in this skill already goes through AudioServer, so the hierarchy is free once it is enforced by script.

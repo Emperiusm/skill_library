@@ -170,3 +170,24 @@ quiet.
 - mechatui: how far has DOTS animation tooling come — "I was missing stuff
   that you needed for animation" three years ago; no authoritative answer in
   the thread.
+
+## AAA studio practice
+
+Sources:
+- Ubisoft Montreal, Assassin's Creed Unity (GDC Vault talk, Massive Crowd: AI Recycling): with a limit of 40 real AIs and 120 high-resolution models, the team pooled and recycled NPCs between low-resolution and high-resolution representations without the player noticing, reaching 10,000 crowd NPCs on screen at once with a simplistic AI brain for the masses. https://www.gdcvault.com/play/1022411/Massive-Crowd-on-Assassin-s
+- Epic Games, Unreal Engine MassEntity (Matrix Awakens demo, 2021): Mass is an ECS framework built for large-scale crowd simulation, representing each character as a lightweight entity id over data fragments so thousands can be processed in parallel with a cache-friendly layout, with expensive visuals layered only near the camera. https://irendering.net/unreal-engine-5-5-how-ai-breathes-life-into-thousands-of-digital-characters/
+- Epic Games City Sample / TerraCrowds (Unreal crowd plugin reporting): 100,000 agents simulated and visualized in real time by adapting rendering detail to camera distance, from skeletal animation down to vertex-based and simplified models. https://ucrowds.com/blog/2025-09-17-introducing-terracrowds-for-unreal-engine/
+
+**Do**
+1. Add the Assassin's Creed Unity pooling rule to Phase 3: budget real AI separately from rendered bodies (Unity's 40 real AIs vs 10,000 on screen is the precedent). Agent-executable step: count active AI brains, active high-resolution models, and total rendered agents in the profiler, and log all three; a crowd that needs one brain per body has not applied the lesson.
+2. Automate the LOD and silhouette checks: script a camera dolly from far to near across the crowd, capture frames at each LOD switch distance, and diff silhouettes; popping or synchronized silhouettes fail the run (this automates the existing Phase 2 check).
+3. Automate the per-agent budget gate: script an asset audit that fails the build if any crowd mesh exceeds 1000 triangles, lacks 3 LOD levels, or carries a runtime armature, instead of checking meshes by hand.
+4. Apply the MassEntity separation explicitly: simulation data in arrays (Stack B) must be a separate system from the baked-animation rendering system, so either side can be profiled and swapped without touching the other.
+
+**Check**
+- AI brain count, high-resolution model count, and total agent count are three separate logged numbers.
+- Camera dolly frames show no LOD popping and no synchronized silhouettes.
+- The asset audit passes before any crowd scene is accepted.
+
+**Why**
+Every production crowd system at this scale is the same three moves: pool and recycle bodies, LOD the brain as well as the mesh, and bake what repeats. The Unity DOTS recipe in this skill already does the baking; the AAA addition is the separate AI budget and the automated asset gate.

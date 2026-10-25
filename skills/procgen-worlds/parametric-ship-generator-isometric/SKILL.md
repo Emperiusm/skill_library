@@ -58,6 +58,14 @@ Fit rules — count and layout keyed to the segment they mount on — are what m
 **Why**
 Isometric projection plus custom shading is the whole aesthetic: it reads as illustration, not as a 3D render, while the underlying geometry stays consistent. Seed determinism makes every output shareable and reproducible.
 
+## AAA studio practice
+
+- **Bethesda Game Studios, Starfield: modular ships built on attachment nodes with mandatory slots and stat consequences.** Starfield's ship builder is modular: parts attach at visible connection nodes, every ship needs a fixed set of mandatory components (one cockpit, one reactor, one grav drive, one docker, one bay, engines capped, landing gear at minimum two), and every external change affects the vessel's stats (maneuverability, crew room, cargo). Sources: https://www.polygon.com/starfield-guide/23852180/ship-builder-upgrade-hab-engine-reactor-fuel-cockpit/ and https://gamerant.com/starfield-ship-customization-depth-accessibility-good/
+  - **Agent step (analogy, labeled):** Starfield is a player-facing builder, not a procedural generator, so borrow its contract, not its UI: turn the skill's fit rules into a machine-checked attachment graph. Each segment exposes named attach points (rear, side-long, nose); each part declares which attach point types it accepts and its mandatory/optional status; the generator may only place a part on a compatible point.
+  - **Agent step (automation):** add a ship validation script that runs on every generated ship and fails it if: the hull chain is disconnected, engine count exceeds what the rear segment's width supports (the skill's existing rule, now checked in code), a wing sits on a short segment, or a mandatory slot (engines, nose) is empty. Log the failed rule by name so a bad seed is debuggable, not just rejected.
+  - **Agent step:** derive a small stat block from the generated ship (engine count -> thrust class, hull length -> mass class, wing presence -> maneuver class) and print it with the seed. (Inference: Starfield ties layout to stats; the exact stat formulas here are the agent's design choice, not Bethesda's, and must be documented as such in the generator.) Check: two ships with the same stat block still differ in silhouette, so stats summarize the ship without replacing the visual rules.
+- **What this does not change:** the grid-snapped segment chain, taper profile, and isometric projection stay. The AAA addition is a checked attachment graph plus a validation script, so "looks designed" becomes a testable property.
+
 ## Phase 4: Grow one rule system into a world
 
 **Do**

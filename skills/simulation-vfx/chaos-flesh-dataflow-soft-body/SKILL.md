@@ -111,6 +111,25 @@ The flesh asset is inert until a solver runs it, and the material lives on the s
 4. One solver per interacting group; save often (experimental).
 5. If the mesh rockets, it is intersecting the floor — raise Z.
 
+## AAA studio practice
+
+**Do**
+1. Follow the production split Epic documents for Chaos Flesh: simulate low-resolution geometry at runtime and cache high-resolution cinematic-quality results offline, rather than asking the runtime solver to carry hero detail. The tutorial workflow in this skill (tune Num Cells to the minimum that preserves the silhouette) is the asset-authoring side of that same split.
+2. Automate the density and cell-count sweep: build a DataFlow test asset at 1 m scale, sweep Num Cells (for example 10, 20, 30) and density (for example 1.0, 0.1, 0.01), and record a short playblast per combination with its parameters burned into the frame. Pick the cheapest combination that holds the silhouette, and store that pair as the asset default. This replaces hand-tweaking with a reviewable matrix, the same discipline as the TOPs wedge in the net-break skill.
+3. Plan for the shipped-game muscle path, not only the toy path: in the State of Unreal 2025 The Witcher 4 tech demo, Epic and CD Projekt Red showed the Chaos Flesh Solver physically simulating muscle movement under skin on Kelpie the horse, running on a base PlayStation 5, and Epic's 5.6 learning material then taught the same workflow as a Chaos Flesh muscle simulation based on a Witcher character asset. For character work, prefer the skeletal-mesh muscle route (offline sim baked or ML deformer) over a free-standing soft-body prop asset, and keep the free-standing route for props like the tutorial gummy bear.
+
+**Check**
+- The sweep playblasts exist with parameters visible, and the chosen Num Cells and density are the cheapest passing pair, not the highest.
+- For character assets, the flesh asset is driven by skeletal animation, and its solver budget is measured on the target console or minimum-spec PC, not only in the editor.
+
+**Why**
+Epic's own framing is that Chaos Flesh's main focus is muscle deformation during skeletal animation. A prop demo proves the solver runs; a muscle asset proves it ships. [inference] The sweep step is the automation bridge between the two: it makes the tutorial's hand-found values (30 cells, 0.01 density) reproducible for any new mesh.
+
+Sources:
+- https://hothardware.com/news/witcher-4-unreal-engine-5-6-demo
+- https://forums.unrealengine.com/t/community-tutorial-chaos-flesh/1134001
+- https://www.unrealengine.com/learning/julys-free-learning-content-non-human-digital-characters-motion-capture-and-more
+
 ## Depth status
 
 FULL — 287 caption lines and 12 video frames reviewed; description metadata (project files, docs links, creator rig) captured. Project files linked but not downloaded.

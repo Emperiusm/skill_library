@@ -119,6 +119,24 @@ Shipping the roadmap publicly is how a solo whitepaper implementation becomes a 
 6. **No synthetic buoyancy is the test of correctness.** If upward motion does not emerge from the pressure gradient, you have rebuilt the one-way solver.
 7. **Benchmark on real shots, optimize what varies.** 1h43m, 1h35m, and ~30m on an M4 Max; the scene-dependent spread is where the optimization lives.
 
+## AAA studio practice
+
+**Do**
+1. Follow Weta's production decomposition, not just its paper: split the shot into a grid-based fluid solver coupled with bubbles plus an SPH foam solver constrained to the water surface, with bubbles transitioning into wet foam particles as they reach the surface. Weta's Avatar: The Way of Water team built exactly this in its Loki framework, and its senior research engineer credits Loki's declarative solver framework with making such coupled systems supportable in production without building new solvers from scratch.
+2. Automate the collective-effect check that justifies two-way coupling: run the same shot with one-way coupling (bubbles advected, water untouched) and with two-way coupling, and compare rise speed of bubble clusters against single bubbles. Weta reports that groups of bubbles rise faster than single bubbles due to combined buoyancy, and that the collection of bubbles measurably moves the water; if your two-way run shows no cluster speedup, the coupling is not actually active, regardless of what the node graph claims.
+3. Automate the local re-sim pattern Weta used for hero bubbles: re-simulate only a narrow band of water around the region of interest for the coupled pass, instead of re-solving the whole ocean, and cache that band separately so the hero pass can iterate without invalidating the bulk cache. Before-and-after reporting on Avatar notes Weta re-simulated portions of bulk water to capture accurate coupling, including collective effects, while background elements stayed on the cheaper path.
+
+**Check**
+- Bubble clusters rise measurably faster than isolated bubbles in the two-way run, and not in the one-way run.
+- The hero band cache is separate from the bulk cache, and the no-synthetic-buoyancy test from Phase 5 still passes on the band.
+
+**Why**
+Two-way coupling is only worth its cost where the bubbles are the subject. Weta's split (hero bubbles fully coupled, diffuse bubbles as a cheaper counterpart, foam as surface SPH) is a budget allocation, and this skill's theta = 0 vanilla-node solver is the low-cost end of that same allocation: ship the coupled hero path first, keep background bubbles on the native one-way solver.
+
+Sources:
+- https://unity.com/blog/industry/technology-behind-avatar-the-way-of-water
+- http://beforesandafters.com/2023/02/16/the-water-droplets-on-the-kids-fighting-on-the-beach-in-avatar-the-way-of-water-took-8-days-to-simulate/
+
 ## Depth status
  DEPTH-LIMITED (the clip's node graph and exact parameter values beyond f@pscale are unseen; the reconstruction is grounded in the unusually detailed comment thread, but sim internals, the foam solver, and the inertia-aware path are not visible in the sources. [inference] marks the thin spots).
 

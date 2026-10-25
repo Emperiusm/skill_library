@@ -150,6 +150,27 @@ Gradient animation only loops cleanly if the field tiles and time wraps.
 This is the single most common defect in gradient-driven motion, and it is
 always caught at the loop point, never in the middle.
 
+## AAA studio practice
+
+The chapter's gradient-as-animation-source pattern is the same mechanism production Unreal materials use for dissolves and wipes, with parameter discipline that turns four demo materials into reusable ones:
+
+- The standard dissolve construction (documented in the Martiancraft UE4 dissolve walkthrough) samples a grayscale field where black is 0.0 and white is 1.0, compares it against a threshold parameter driven from Blueprint or C++, and discards or swaps texels below/above the threshold; swapping the grayscale texture changes the dissolve character without touching the graph. Source: https://Martiancraft.com/blog/2015/02/disintegrating-baddies/
+- The production parameter set for that mechanism (Unreal essential-materials reference) is: a Dissolve Amount parameter from 0.0 (fully visible) to 1.0 (fully dissolved), an Edge Width parameter typically 0.0-0.2 for the emissive edge glow near the threshold, and an edge color, all under a masked blend mode with a dynamic opacity-mask threshold. Source: https://deepwiki.com/motionforge/Unreal_Engine_Essential_Materials_UE5/3.8-special-effects-materials
+- The same masked-threshold mechanism is what makes the chapter's wipe and dissolve-swap loop-safe: the field must tile and the time input must wrap, which the skill's Phase 6 already names as the most common defect.
+
+**Do (agent-executable, adds to Phases 2-6)**
+1. Convert each of the four materials into a Material Instance workflow: the base material exposes scalar parameters (Threshold/Time, Edge Width, Glow Strength) and the instance, not the base graph, carries per-use values, so one graph yields many timed effects.
+2. Drive Threshold from a Material Parameter Collection or a Timeline curve, never from a hand-keyed constant per frame, and record the curve's start/end values; verify at Threshold 0 and 1 the output is purely source A / purely source B, per the skill's Phase 3 check.
+3. Add the emissive edge to the dissolve-swap and wipe: texels within Edge Width of the threshold emit the edge color, which is what makes the transition read as an effect rather than a hard cut.
+4. Automate the loop-point check from Phase 6: render the first and last frames of one loop cycle and diff them; a non-zero diff is a pop, and the fix is to tile the gradient field and wrap the time input so end state equals start state, before the material ships.
+5. Name every material and instance after its effect (the chapter's own rule), and store the gradient texture pack path in the material's comments so a second artist can rebuild the pack dependency.
+
+**Check**
+- All four materials have exposed Threshold/Edge parameters, drive from a curve or collection, pass the 0/1 extremes test, and pass the first/last-frame loop diff.
+
+**Why**
+- A gradient material without exposed parameters and a loop check is a demo; with them it is a production effect that level and cinematic teams can retime without touching the graph.
+
 ## The human method, distilled
 
 1. Teach one primitive until it yields four effects: the chapter's pedagogy

@@ -209,3 +209,25 @@ BuildID. The build is NOT live yet; set it live per the workflow above.
 
 - `itch-publish` — the same game shipped on itch.io with `butler` (often done alongside Steam).
 - `game-jam` / `prototype-fast` — earlier stages of the same project's lifecycle.
+
+## AAA studio practice
+
+Valve's own Steamworks documentation is the production standard this skill operationalises, and it confirms the two rules that most often break releases. First, a build is a point-in-time representation of one or more depots, uploaded via the SDK command-line tool, and manifests (file list plus size, SHA1 hash, and flags per file) are output during the depot build and viewable from the Your Builds page. Second, for a released game, setting a build live on the default branch requires an additional authorisation step (Steam Mobile Authenticator prompt, or SMS), which is a deliberate human gate on the customer-facing branch, not a CI inconvenience. The skill's existing discipline (beta branch first, `Preview` before `SetLive`, never auto-set-live on `default`, least-privilege build account, secrets out of the repo) is exactly Valve's model: automation uploads and validates, humans authorise the customer branch. The Steamworks features documentation likewise frames branches as the workflow for development, testing, major updates, and multiplayer balancing, with CI integration as the automated-build path.
+
+- Source: https://partner.steamgames.com/doc/store/application/builds
+- Source: https://shared.fastly.steamstatic.com/community_assets/images/steamworks_docs/danish/Steamworks_Features_SF_2025.pdf (Valve Steamworks features deck: branches, depots, CI integration)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the existing check script as a CI gate, not a manual step: run `python scripts/check_steam_build.py <app_build.vdf> --json --strict` on every build-script change and fail the job on any ERROR (or warning under `--strict`), so a LocalPath that matches nothing or a depot that would upload zero files never reaches steamcmd.
+2. Automate the branch discipline: CI uploads with `"Preview" "1"` first and logs the manifest, then sets live only on a beta branch via `"SetLive" "beta-qa"` (or the project's beta branch name); the `default` branch is set live only by the manual, authorised step in App Admin, after the beta build has been played. Encode that `default` is never a `SetLive` target in any script.
+3. Automate the post-upload verification: after steamcmd reports a BuildID, fetch the build's depot manifests from the Your Builds page (or CI log of the build output) and confirm file count and total size are within expected bounds of the previous build; a sudden size collapse is a missing-content defect, not a compression win.
+
+**Check**
+- CI gate passes (`check_steam_build.py` exit 0) before any upload attempt.
+- No script contains `"SetLive" "default"`; beta branch set live first, `default` set live manually with authorisation.
+- New BuildID's manifest counts/sizes logged and compared with the previous build.
+
+**Why**
+- Valve's authorisation gate on `default` exists because a bad customer build cannot be un-shipped, only patched. Automation should own everything up to that gate (validation, preview, beta) and stop exactly there.

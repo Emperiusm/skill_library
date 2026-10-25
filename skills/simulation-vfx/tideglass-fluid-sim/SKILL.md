@@ -132,6 +132,24 @@ say?" was the thread's top question) and mirrors the film's own pacing.
    glyphs; "Offer weapon" and "there is no linear time" carry their own
    weight.
 
+## AAA studio practice
+
+**Do**
+1. Structure the GPU sim as the standard stable-solver pipeline NVIDIA documents for real-time fluids: advect velocity by itself, add forces (including the target-driving force), compute divergence, solve pressure iteratively, subtract the pressure gradient, then advect dye. Keep the target force as one force term inside that pipeline, not as a post-process warp, so the glyph shape and the fluid motion stay in one consistent solve.
+2. Automate the frame-budget guard: measure milliseconds per frame for the full pipeline at the shipping resolution, and assert it stays under the ambient-app budget (for a second-monitor companion, well under 16.6 ms at 60 fps, with headroom for the user's other work). If the target force or the grain random walk pushes the frame over budget, lower the grid resolution before weakening the target pull, since a soft glyph at frame rate beats a sharp glyph that stutters.
+3. Treat the target the way Fattal and Lischinski's target-driven smoke work treats it: the target is a guiding field the fluid is pulled toward continuously, never a snap, and the pull strength is a tunable parameter with a named default per glyph. Store one pull-strength value per glyph plate so the fifty plates do not need per-plate hand-tuning at runtime.
+
+**Check**
+- The pipeline stages run in the documented order, and the target force appears in the force stage, not after rendering.
+- Frame time is logged per stage, and the per-glyph pull strength is stored in data, not hard-coded in the shader.
+
+**Why**
+Real-time GPU fluid work succeeds by keeping per-frame cost constant and unconditionally stable, which is why interactive GPU Eulerian solvers are designed around fixed-cost steps. A target-driven ambient app inherits that constraint twice over: it must hold frame rate while the machine is otherwise in use, which is exactly the skill's stated product constraint.
+
+Sources:
+- https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch30.html
+- https://history.siggraph.org/learning/target-driven-smoke-animation-by-fattal-and-lischinski/
+
 ## Depth status
  FULL (author selftext gives the full method: travelling
 pen, fluid-carried ink, target-driving force per Fattal and Lischinski

@@ -111,6 +111,27 @@ func _ready() -> void:
 - **`mouse_filter`** on a full-rect Control can swallow clicks meant for nodes beneath it;
   set `MOUSE_FILTER_IGNORE` on purely decorative panels.
 
+## AAA studio practice
+
+Shipped cross-platform UI practice converges on three rules this skill's workflow should enforce mechanically:
+
+- Console makers require HUD and dialog content inside a safe region (Microsoft's Xbox requirement cited in the GameDeveloper cross-platform UI guide is the middle 85% of the screen), because TV overscan crops edges unpredictably. Source: https://www.gamedeveloper.com/design/cross-platform-user-interface-development
+- Controller navigation must be cyclable and fast: with no pointer, the player seeks each control by stepping through focus, so menus must avoid scrolling to see all contents and must never leave focus nowhere. Same source as above.
+- Godot's own GUI guide builds interfaces from reusable components (a life bar, an energy bar, counters) composed from a small container set (Margin, HBox, VBox), then reuses them by scene inheritance across screens. Source: https://docs.godotengine.org/en/3.3/getting_started/step_by_step/ui_game_user_interface.html
+
+**Do (agent-executable, adds to the core workflow)**
+1. Wrap every screen's root Control in a MarginContainer whose margins reserve the safe region (at least 7.5% per edge as the conservative bound implied by the 85% rule), and verify at 16:9, 21:9, and a portrait phone aspect that no readable element leaves that margin.
+2. Add a focus audit script: walk the UI tree, list every focusable Control, assert exactly one has initial focus via `grab_focus()` on screen entry, assert no focusable control has `FOCUS_NONE` unless deliberately decorative, and assert focus neighbors form a cycle with no dead ends (pressing down from the last item returns to the first or to a defined neighbor).
+3. Build each repeated element (health bar, counter, button row) once as its own scene, then instance it into screens, instead of rebuilding containers per screen; theme overrides stay on the shared Theme, not per instance.
+4. Set `mouse_filter = MOUSE_FILTER_IGNORE` on every full-rect decorative panel as part of the audit, since the skill's existing Pitfalls note shows one such panel silently swallowing clicks.
+
+**Check**
+- The focus audit passes with zero dead ends and one initial focus per screen.
+- A screenshot diff at three aspect ratios shows no element outside the safe margin and no text overflow (longest localized string, not just English).
+
+**Why**
+- Focus and safe-area failures are certification failures on console, not polish issues, so they are checked by script at build time rather than discovered in a playtest.
+
 ## References
 
 - For the anchor/offset math, every Container type, building/extending Theme and StyleBox

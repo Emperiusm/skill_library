@@ -139,6 +139,24 @@ work survived a Godot 3.6 move for exactly this reason.
 4. Port the math, not the engine — engine-agnostic algorithms survive engine
    changes.
 
+## AAA studio practice
+
+**Do**
+1. Add the drivability validation pass that published track generation research uses: after building the spline, check turn sharpness against track width, because a turn too sharp for the current width lets walls intrude on the track and can block it. The research recipe fixes this by "steamrolling" (painting a thick stroke along the spline centre) and by iterating angle fixes and separation passes (10 iterations in the published example). Source: https://www.gamedeveloper.com/programming/generating-procedural-racetracks and https://www.researchgate.net/publication/28765026_Towards_automatic_personalised_content_creation_for_racing_games
+2. Borrow the shipped-game road building lesson from Playground Games' Forza Horizon 5 Hot Wheels EventLab work: snap together track pieces with build stubs into the base map, so a new piece always connects to an existing road instead of floating free. The AAA version of "intersections work" is a connection contract, not a mesh trick. Source: https://www.gamesradar.com/making-of-forza-horizon-5-hot-wheels-dlc-playground-games-interview/
+3. Automate the validation as agent-executable steps, appended to Phase 4:
+   - Sample the closed spline at fixed arc length intervals; at each sample compute curvature and the distance to the nearest non adjacent spline segment.
+   - Fail any track where curvature exceeds the car's minimum turning radius (a parameter the agent must read from the vehicle setup, never invent) or where two non adjacent segments come closer than one track width.
+   - For intersections and interchanges, assert every junction node has a matching entry and exit segment with the same road width and profile, and log every junction that fails instead of silently dropping it.
+   - Re-run the whole check after any seed change; a track that passes once and is never rechecked is not a generator, it is a lucky seed.
+
+**Check**
+- Drive the generated track end to end in the engine (or run an AI follower along the spline) and confirm no wall intrusion, no blocked passage, and no junction with a missing exit.
+- Confirm the same seed reproduces the same track after the port or refactor (the skill's existing Phase 5 rule); the new validation pass must also reproduce identically.
+
+**Why**
+- The original skill separates interest (displacement) from drivability (bezier). The AAA and research practice adds a third separation: generation from validation. A track that looks smooth but blocks the car is not a track, and the validation pass is cheap compared with hand checking every generated loop.
+
 ## Depth status
 
 FULL (author-disclosed workflow with exact operations and quoted principles;

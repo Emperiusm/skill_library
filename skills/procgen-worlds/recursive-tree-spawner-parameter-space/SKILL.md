@@ -147,5 +147,23 @@ preserves that identity better than any mesh operation.
 3. The production path is always bake, decimate-or-regenerate, instance,
    impostor, share textures: in that order, no skips.
 
+## AAA studio practice
+
+**Do**
+1. Define trees as curves plus numbers, the way SpeedTree's makers describe it: artists input curves and numbers into an algorithm that generates the tree, and hitting randomize produces a tree similar to the last but not identical, so a forest can be populated quickly without carbon copies. That is the production version of this skill's range sweep: the range is the species, the randomize button is the variation. Source: https://www.pcgamer.com/from-the-elder-scrolls-to-the-us-secret-service-where-videogame-trees-come-from
+2. Place vegetation by rule at runtime, the way Guerrilla Games did on Horizon Zero Dawn: a GPU based procedural placement system, driven by a graph editor where artists define placement rules, assembles full environments around the player on the fly, not just rocks and trees but sounds, effects, wildlife, and gameplay elements. Source: https://www.guerrilla-games.com/read/gpu-based-procedural-placement-in-horizon-zero-dawn
+3. Prove scale the way Sucker Punch did on Ghost of Tsushima: the game contains three million trees, which no team hand places, so the placement technology is the deliverable, not the individual tree. Source: https://www.thegamer.com/gaming-detail-3-million-trees-in-ghost-of-tsushima/
+4. Automate the range sweep as agent-executable steps, replacing hand eyeballing of batches:
+   - Script the sweep: for each parameter range setting (narrow, medium, wide), generate a fixed batch of trees from fixed seeds, and record per tree the triangle count, height, and canopy radius in a CSV.
+   - Assert species coherence in code: within a narrow range batch, the standard deviation of height and canopy radius must stay below a threshold the agent reads from the art direction doc (never invent one here); across a wide range batch it must exceed it. Log any batch that fails instead of judging it by eye.
+   - Automate the Phase 4 production stack check: after baking to prefab and decimating, re-run the same CSV measurement at each kept LOD and assert the silhouette metric (height and canopy radius) stays within tolerance of the source tree; if it does not, fall back to the Phase 5 recipe LOD path automatically.
+
+**Check**
+- Same seed, same tree, at every LOD, after decimation or recipe regeneration. If the low LOD reads as a different individual, the LOD path is wrong.
+- Draw call and triangle totals after instancing plus impostors must be logged per batch, not estimated; the skill's Phase 3 raw cost is the baseline the log must beat.
+
+**Why**
+- SpeedTree, Guerrilla, and Sucker Punch all converge on the same production rule: parameters and placement rules are the asset, individual trees are outputs. Automating the sweep measurement turns Lara_the_dev's talk thesis (ranges matter more than the algorithm) into a pass/fail gate a pipeline can run on every change.
+
 **Depth status:** PARTIAL (author's thesis + conference context + full
 commenter production stack quoted; exact spawner parameters not published).

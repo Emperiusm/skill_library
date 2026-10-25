@@ -121,3 +121,23 @@ func pop_in(node: Control) -> void:
 - `godot-ui-control` — UI that Tweens animate.
 - `godot-3d-essentials` — 3D character scenes driven by AnimationTree.
 - `game-ai` — state machines that mirror animation states.
+
+## AAA studio practice
+
+Sources:
+- Naughty Dog, The Last of Us Part II (co-director Anthony Newman, via GameSpot/Eurogamer reporting): the studio replaced its distinct state machine ("play run, then play turn left, then play turn right") with motion matching, a system that chops hundreds of captured animations into small pieces and blends the pieces matching the player's current path frame by frame, applied to player characters, NPCs, horses, and dogs. https://www.eurogamer.net/digitalfoundry-2018-the-last-of-us-part-2-e3-2018-demo-tech-analysis
+- Naughty Dog, The Last of Us Part II (PlayStation Lifestyle/GameSpot reporting): Newman describes motion matching as the traversal system for running, walking, and jumping, chosen because it keeps responsiveness while removing the visible state-machine seams. https://www.playstationlifestyle.net/2019/09/30/the-last-of-us-part-2-animations-improvements
+
+**Do**
+1. Keep AnimationTree state machines as the baseline (this skill's core), but audit every state transition for the seam Naughty Dog removed: script a playback test that travels through each state pair (idle to run, run to turn, run to stop) and logs transition time and any foot slide or pop. A transition that visibly pops is a candidate for a blend-space or intermediate state, not an accepted seam.
+2. Automate the parameter-path check from the Pitfalls: script a scan of the .tscn AnimationTree node names against every `parameters/...` string in code, and fail on any path that does not match a node name, instead of discovering silent no-ops at runtime.
+3. Add a blend-space coverage rule [inference from motion matching, adapted to Godot scale]: for locomotion, place blend points for every direction the character can actually move (not just forward/back), and drive blend_position from the real movement vector (already Pattern 3), so diagonal movement never falls back to a single forward clip.
+4. Drive animation from movement state with a single owner: the movement script sets one locomotion vector and one state per physics frame, and the AnimationTree consumes only those, so animation bugs are traceable to one input.
+
+**Check**
+- Every state pair has a logged transition test with no pop.
+- The parameter-path scan passes with zero unmatched paths.
+- Diagonal movement blends, it does not snap to a cardinal clip.
+
+**Why**
+Naughty Dog's move was not "use a fancier tool," it was "remove the seams between states." At Godot scale the equivalent discipline is smaller: blend spaces driven by real vectors, every transition tested, and parameter paths verified by script rather than by eye.

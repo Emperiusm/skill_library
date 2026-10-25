@@ -92,3 +92,19 @@ exact slider value 0.35, the smoothness-vs-delay trade-off, and the backend
 confirmation are stated in the post and comments)
 
 ---
+
+## AAA studio practice (refinement 2026-10-24)
+
+This skill's three settings (Rigidbody Interpolate, network rigidbody checkboxes, network transform interpolation at 0.35) are the indie surface of a netcode pattern every shipped shooter uses. The AAA practice below names the full pattern so the next tuning step is principled, not trial and error.
+
+**Do**
+1. Separate the three jobs, and never collapse them into one slider. Client side prediction (pioneered by John Carmack for QuakeWorld, incorporated into Unreal's networking by Tim Sweeney) runs the local player's movement immediately on the client without waiting for the server round trip. Server reconciliation rewinds and replays: keep a circular buffer of past character state and input, discard buffered state older than the server correction, and replay from the corrected state to the present predicted time using stored inputs, holding the rest of the world fixed. Entity interpolation, the third job, buffers snapshots and draws remote players between known states, trading delay for smoothness. Source: http://vodacek.zvb.cz/archiv/690.html
+2. Budget interpolation delay explicitly, as Valve's Source networking documentation does: entity interpolation causes a constant view lag (100 milliseconds by default in the documented example), and the interpolation system can survive one dropped snapshot by interpolating across the gap, falling back to linear extrapolation only for a short window (0.25 seconds in the documented example) before prediction errors grow too large. Set the interpolation value from that budget, not from feel alone, and record it next to the genre reason, as the original skill does for 0.35 (coop rage game, delay cannot be big). Source: https://www.scribd.com/document/239946087/3g-Compensation-Socket-3g
+3. Keep the server authoritative even while the client predicts, as the GDC 2011 Networked Physics talk states it: the local player runs the same simulation code as the server for his own object to advance without waiting for the round trip, while the server remains authoritative over position and orientation, which is what makes cheating hard. Examples cited there include Halo competitive mode, Quake, Unreal, and all Valve games. Source: https://www.slideshare.net/slideshow/gdc-networked-physics-2011-7663974/7663974
+
+**Check**
+- Automated netcode test matrix [inference]: test the movement at four conditions and log the result for each: (a) local prediction on, server correction off (should diverge), (b) prediction on, correction on (should converge with no visible snap on a clean connection), (c) one snapshot dropped (interpolation should bridge it), (d) interpolation slider at 0.35 versus a higher value (higher must read smoother and measurably later). If (b) snaps visibly on a clean connection, the bug is in the replay buffer or determinism, not in the slider.
+- Genre tune check: write the chosen interpolation value and the reason in one line (for example, 0.35 because a coop rage game cannot afford big delay). Any later change to that value must update the reason line, or the tuning history is lost.
+
+**Why**
+Smoothness is not one setting; it is prediction for the local player, interpolation for remote players, and reconciliation to repair the difference, all under an authoritative server. Tuning only the interpolation slider, as the original demo does, works until prediction and reconciliation diverge, and then no slider value fixes the snap.

@@ -207,3 +207,19 @@ commenters, but judge the output yourself.
 with method detail and VRAM benchmarks) for the `.char` format; PARTIAL for
 the voice recipe (author + two commenter reports, one quality complaint
 unaddressed).
+
+## AAA studio practice (refinement 2026-10-24)
+
+AAA and production practice converges on the same rule this skill already states: identity is a locked file, not a retyped prompt.
+
+**Do**
+1. Build a character bible before generating any shot: one locked description plus a canonical reference set (face, body, wardrobe, in that order). The AI filmmaking guide that codifies this practice recommends defining 15 to 20 specific physical attributes and generating 8 to 10 reference images before scene work starts, then tagging that same character element into every shot prompt. Source: https://www.cinemadrop.com/blog/how-to-create-consistent-ai-characters-the-complete-guide-for-ai-filmmakers-in-2026
+2. Enforce the bible in code, not by memory: ShotBible's stated model is one approved description and reference image per character, location, and prop, enforced into every prompt automatically, so a character described once stays the same across scenes. Source: https://theshotbible.com
+3. Treat the .char file as the production equivalent of Epic's reusable digital human: Epic's MetaHuman work (with 3Lateral and Cubic Motion) ships a fully rigged character whose animations run on other MetaHumans, so one performance is reusable across characters and projects. The .char equivalent is one scored identity decoded into many models, not one prompt rewritten per model. Source: https://www.inverse.com/gaming/unreal-engine-metahuman-creator-trailer
+
+**Check**
+- Run an automated consistency gate before a batch: a script that (a) lists every .char in ComfyUI/models/characters/, (b) confirms each has face, body, and wardrobe references present, (c) confirms the locked description text is identical across the decode prompts in the workflow JSON, and (d) fails the batch if any prompt re-describes the face in free text instead of referencing the .char slot. [inference: automation step derived from the bible practice above, not a vendor feature]
+- Score a test render at encode time (sface plus DINOv2, per the original skill) and keep the score with the .char file; a later decode that drops below that score is a regression, not a taste difference. [inference]
+
+**Why**
+Studios do not solve consistency by describing better each time. They solve it by locking one canonical asset and forcing every downstream step to consume it. The .char file is that lock for generative models.

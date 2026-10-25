@@ -115,3 +115,65 @@ gone, no manual retopology.
 
 FULL (the creator's own breakdown; no node names or solver parameter values exist in the
 source, and none are invented here)
+
+## AAA studio practice
+
+SideFX's own Vellum documentation endorses the exact mechanism in this
+skill: VDB/SDF collision geometry as a first-class collider type, with
+the solver's substeps and constraint iterations as the tuning dials you
+touch only after collision geometry is right.
+
+- **SideFX Vellum product docs.** The Vellum Solver supports VDB
+  collisions created by the VDB Colliders SOP, with a Minimal mode that
+  supports VDB collisions with a limited feature set but runs faster,
+  suited to grain and fluid simulations.
+  Source: https://www.sidefx.com/products/houdini/vfx/vellum/
+- **SideFX Vellum tips (collisions).** In DOPs, VDB/SDF collision works
+  via a Static Object with Collision Detection set to Use Volume, and
+  the tips page warns that simulating far from the origin (10,000+ units)
+  makes cloth look crinkled and hair tangled, a precision failure that
+  mimics a solver failure.
+  Source: http://www.sidefx.com/docs/houdini/vellum/vellumtips.html
+- **SideFX forum, cloth-as-collider practice.** When hair collides
+  against a cloth sim's output, the collider is purely passive (it is not
+  affected by anything), and the recommended fixes are a gap between
+  cloth and ground so hair can bend and fit, correct hair thickness
+  (checked with Visualize Thickness), and sane gravity for the scene
+  scale; mutual interaction requires simming both layers in a single
+  solver.
+  Source: https://www.sidefx.com/ja/forum/topic/91006/
+
+**Do (agent-executable, automation upgrade)**
+1. Turn Phase 4 into an explicit node chain an agent can build: settled
+   cloth mesh > VDB From Polygons (voxel size = a project parameter,
+   start at roughly the tassel thickness and coarsen from there) >
+   Convert VDB (back to polygons) > use as the collider input of the
+   Vellum hair solver. Record the voxel size per collider; it is the
+   tuning parameter, and "finer" is not automatically better.
+2. Automate the proxy-vs-fidelity check: after each proxy rebuild,
+   measure the maximum surface deviation between proxy and settled cloth
+   (Houdini Measure SOP or equivalent) and require it to stay under the
+   tassel thickness. A proxy that deviates more than a tassel is thick
+   floats visibly; a proxy that deviates far less kept the snagging
+   detail it was meant to delete.
+3. Add the two pre-flight checks the forum practice implies, before any
+   solver tuning: (a) confirm scene scale and gravity match (default
+   gravity for meter-scale scenes) and the sim sits near the origin;
+   (b) confirm hair thickness is visualized and non-degenerate at the
+   tips (no infinitely tapering tips). Only after both pass may
+   substeps or constraint iterations change, and then one at a time:
+   the documented trade is 1 substep at 100 iterations roughly equals 2
+   substeps at 50, with the former solving more accurately but slower.
+
+**Check**
+- Voxel size, proxy deviation, and solver settings are logged together
+  per run, so a good tassel pass is reproducible instead of lucky.
+- The single-solver alternative is named explicitly when layers must
+  mutually interact; a passive collider can never push back on the cloth.
+
+**Why**
+The skill's "proxy first, tune second" rule is SideFX's rule too, but
+only a measured proxy (deviation under tassel thickness) makes it
+enforceable. Without the measurement, artists oscillate between a proxy
+too coarse (floating tassels) and one too fine (snags return), and blame
+the solver for a geometry problem.

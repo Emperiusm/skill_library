@@ -119,6 +119,55 @@ func open_chest() -> void:
 - **Signal args must match.** Emitting with the wrong arg count/types raises an error;
   declare typed params and emit exactly those.
 
+## AAA studio practice
+
+- **Observer pattern: producers must not know their consumers.** The
+  observer pattern's production value is that subjects register observer
+  callbacks and notify them when an event occurs, without the subject knowing
+  who is listening; a gate, a UI element, and a quest tracker can all react
+  to "player entered arena" independently, and deregister when they no longer
+  care (e.g. after the boss is defeated, the gate stops locking).
+  Source: https://shaggydev.com//2022/06/01/observer-pattern/
+- **Event contracts are APIs: breaking one silently breaks unknown consumers.**
+  Event-driven-architecture guidance stresses that producers publish events
+  without knowing whether one, ten, or zero consumers listen, that adding a
+  consumer requires no producer code change, and that once an event is
+  published it becomes an API, so changing its arguments can silently break
+  downstream consumers the publisher does not know about. Debugging also
+  gets harder because cause and effect are separated in time.
+  Source: https://www.conduktor.io/glossary/event-driven-architecture
+- **Apply Rare's test discipline to events (cross-reference).** Rare's
+  Sea of Thieves automated-testing practice (see
+  `godot-gdscript-headless-testing`) ran tests constantly so regressions in
+  behaviour were caught the day they appeared; the same discipline applies
+  to signal contracts, which otherwise rot silently.
+  Source: https://www.gamedeveloper.com/production/-i-sea-of-thieves-i-devs-share-automated-testing-tips-at-gdc-2019
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: treat every signal declaration as a versioned contract: typed
+  parameters (Pattern 1), a comment stating what the signal means and when
+  it fires, and no argument changes without updating every connected handler
+  in the same change. Renaming a signal or changing its args is a
+  breaking-change commit, labelled as such.
+- Do: prefer signals over `call_group` whenever the contract matters
+  (Pitfalls already warns `call_group` silently ignores missing methods):
+  use groups only for best-effort broadcast ("pause all enemies"), and
+  signals for anything where a missed delivery is a bug ("player died").
+- Do: add a headless test that instantiates the emitter, connects a counting
+  handler, triggers the event, and asserts the handler fired exactly once
+  with the expected arguments; add a second test that disconnects (or frees)
+  the listener and asserts no duplicate or stale firing on a second trigger.
+  This catches the duplicate-connection pitfall as a regression, not as a
+  playtest anecdote.
+- Check: (1) grep for `call_group` uses and confirm each is best-effort, not
+  contractual; (2) every signal has typed params and a contract comment;
+  (3) the event test suite passes, including the disconnect case.
+- Why: decoupling only pays off if the contract is stable and tested.
+  Untyped, undocumented signals plus silent `call_group` failures give you
+  the debugging cost of event-driven architecture with none of its
+  independence.
+
 ## References
 
 - For connection flags, deferred connections, custom signal arguments, awaiting with

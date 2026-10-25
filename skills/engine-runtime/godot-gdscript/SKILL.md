@@ -117,6 +117,48 @@ func get_first_name(d: Dictionary) -> String:
 - **`class_name` must be unique** project-wide and is required to use the type name in
   other scripts or as an Inspector type.
 
+## AAA studio practice
+
+Godot-specific production evidence here comes from shipped Godot titles, not
+from AAA studios on other engines; the transferable discipline is the same one
+those teams describe (small teams, locked scope, porting discipline).
+
+- **Ship on Godot at commercial scale, then protect the release date.** Bytten
+  Studio's Cassette Beasts (published by Raw Fury, also publisher of Dome
+  Keeper) shipped on Godot for Windows, Linux, and Steam Deck, and its team
+  advises not announcing release dates until final builds are locked, because
+  "the unexpected can and does happen", and aligning third-party schedules and
+  budgets before committing to a port.
+  Source: http://godotengine.org/article/godot-showcase-cassette-beasts/
+- **Split responsibilities by file, not by feature sprawl.** A shipped Godot
+  4.7.2 browser strategy game described in production notes splits its source
+  into recognizable responsibilities (`game.gd` owns simulation and saves,
+  `world.gd` rendering/animation selection, `hud.gd` interface, `data.gd` unit,
+  building, and story definitions) rather than one god-script.
+  Source: https://dev.to/spriteship/we-built-a-browser-strategy-game-with-codex-spriteship-and-godot-1h2
+- **Adding multiplayer late is a rewrite-class decision.** Dome Keeper shipped
+  single-player in 2022 and only later took on multiplayer, with a dedicated
+  Godot-focused studio brought in for that work.
+  Source: https://softwareengineeringdaily.com/podcasts/developing-multiplayer-games-in-godot/
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: enforce the split above as a lintable rule: one script owns simulation
+  state, one owns presentation, one owns HUD, one owns static data (a Resource
+  or data script, see `godot-resources`). When a new script starts touching two
+  of those, split it before adding features.
+- Do: keep every public function statically typed (Pattern 1) and run the
+  headless test runner on every change to a simulation script; untyped
+  `Variant` parameters are allowed only at a system boundary (loaded data,
+  network payloads) and must be validated on entry.
+- Check: `grep -rn "func .*(" --include="*.gd" .` for untyped parameters in
+  simulation scripts, and confirm no script exceeds a team-agreed line budget
+  without a split note. If a script mixes save/load, rendering, and HUD code,
+  it fails this check.
+- Why: shipped Godot teams succeed with small codebases by keeping ownership
+  obvious. Static types plus the file split are what let a second agent (or a
+  porting partner) read and change the code without breaking hidden coupling.
+
 ## References
 
 - For the full annotation list, advanced typing, and style conventions, read

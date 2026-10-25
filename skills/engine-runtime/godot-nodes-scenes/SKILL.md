@@ -118,6 +118,52 @@ func go_to_level_2() -> void:
   tree, and `get_tree().current_scene` isn't the new scene until next frame. Don't read the new
   scene's nodes on the same line; do it from the new scene's `_ready()`.
 
+## AAA studio practice
+
+- **Build in passes: greybox, then lookdev, then lighting, never one asset to
+  completion first.** A production scene workflow (Safari & Felix, Unreal
+  production scenes) iterates Greybox to Lookdev to Lighting to Feedback to
+  Adjust and back to Greybox, agreeing layout and camera early, because
+  agreeing shots early beats chasing perfection asset by asset.
+  Source: https://www.safariandfelix.com/ourblog/our-3-step-process-for-building-production-ready-ue-scenes
+- **Populate from a modular kit at 60-70 percent coverage, not 100 percent.**
+  An Unreal environment-art production guide warns that waiting for 100
+  percent kit completion before set dressing is a common mistake: early set
+  dressing reveals kit gaps, scale problems, and missing trim variants far
+  faster than any spreadsheet review. Its three dressing layers are primary
+  structures (modular kit), secondary fill (furniture, debris, vegetation),
+  and tertiary detail (decals, small scatter, grunge).
+  Source: https://retrostyle-games1.artstation.com/blog/64oO9/environment-art-workflow-in-unreal-engine-full-guide
+- **Block out small, then grow, and check performance constantly.** The same
+  production guidance summarized in Unreal scene best practice is to start
+  with a simple scene and add detail as needed, use level loading/unloading
+  so only the needed part is in memory, and check performance after every
+  major change.
+  Source: https://www.packtpub.com/en-us/product/architectural-visualization-in-unreal-engine-5-9781837639762/chapter/chapter-12-optimizing-the-scene-15/section/best-practices-ch15lvl1sec89
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: structure each level as a composition pass, in order: (1) greybox scene
+  with placeholder instanced scenes and no final art; (2) replace placeholders
+  with modular kit scenes (primary, then secondary, then tertiary) via
+  `PackedScene.instantiate()` (Pattern 1), keeping each kit piece a small
+  reusable scene with `@export` config; (3) run
+  `python scripts/check_godot_project.py <project-dir>` (Core workflow step 7)
+  after each pass and fix every ERROR before the next pass.
+- Do: do not wait for a complete kit: start set dressing when roughly two
+  thirds of the planned kit scenes exist (the 60-70 percent figure above,
+  labelled as borrowed guidance, not a Godot rule), and log missing kit pieces
+  as named TODO scenes so gaps are visible in the project, not in a
+  spreadsheet.
+- Check: after dressing, verify (1) the checker exits 0, (2) no scene uses
+  deep `$Path` references that break on rename (use `%UniqueName` per Pattern
+  2), and (3) no level scene directly embeds a kit piece's internals instead
+  of instancing it. A level that duplicates kit geometry inline fails this
+  check.
+- Why: composition plus early dressing is how large teams find scale and kit
+  gaps while they are still cheap to fix. Godot's instancing and unique names
+  are the mechanisms; the pass order is the discipline.
+
 ## References
 
 - For scene inheritance, `owner`/ownership when saving scenes from code, groups vs

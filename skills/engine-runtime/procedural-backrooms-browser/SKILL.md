@@ -97,3 +97,24 @@ Frustum-gated movement is what makes the scare work: the creature advances only 
 Full-depth workflow reconstructions of audited videos, in the style of the cinematic-cavern workflow guide. Each section: source line, tools used, phased Do / Check / Why, distilled principles, depth status. No per-repo have-vs-need judgments. [inference] marks anything not stated in the sources.
 
 ---
+
+## AAA studio practice
+
+Sources:
+- Hello Games, No Man's Sky (GDC 2017 session, as reported): the universe is generated from mathematical rules and a seed, and content is generated only as the player approaches it, so only the local area is tracked. https://expertbeacon.com/how-can-no-mans-sky-be-so-big/
+- Minecraft chunk generation (as analyzed): each chunk derives its randomness deterministically from the world seed combined with its (x, z) coordinates, so chunks generate independently and in any order with identical results. https://weptune.vercel.app/maths/mcseed-1.pdf
+- Guerrilla Games, Horizon Zero Dawn (GDC 2017 session, as reported): a GPU-based procedural placement system assembles full environments around the player on the fly, from artist-authored placement rules in a graph editor, not from hand-placed content. https://www.playstationlifestyle.net/2016/12/12/horizon-zero-dawn-ps4-will-harness-procedural-tech-to-render-environment
+
+**Do**
+1. Derive every section from a pure function of (seed, section coordinates), never from generation order or a global RNG stream. This is the Minecraft chunk rule applied to the 57m sections: a section regenerated later must match the section generated first.
+2. Encode the shared boundary hash as that same function evaluated on the shared edge (seed + edge coordinates), so both neighbors compute identical doorways without storing each other.
+3. Automate the seam check: script a walk of every doorway in a generated 3x3 window and log any mismatch, instead of hand-walking doorways. Agent-executable check: for a fixed list of seeds, generate the window, regenerate each section independently, and diff doorway positions; any diff fails the run.
+4. Automate the streaming budget check: log active section count and draw calls while teleporting the player across section boundaries; the count must stay at the 3x3 window (9 sections) regardless of distance travelled.
+
+**Check**
+- Same seed plus same coordinates reproduces the same section after a full reload (Hello Games/Minecraft rule).
+- Doorway diff across independent regeneration is zero.
+- Active section count stays flat as distance travelled grows.
+
+**Why**
+AAA procedural worlds ship as code plus rules, not as stored content. The seed-plus-coordinates function is what makes regeneration safe, streaming bounded, and a bug report reproducible as a seed plus a location.

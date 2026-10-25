@@ -191,3 +191,23 @@ The training recipe is the product as much as the plugin.
   sections.
 - **Blue screen underperforms green:** known 1.0 weakness; verify against
   the 2.0 build before concluding the shot is unkeyable.
+
+## AAA studio practice
+
+**Do**
+1. Treat the key as an unmixing problem, not a color-threshold problem: the production lesson from CorridorKey's release coverage is that the model reconstructs the true un-multiplied foreground color plus a clean linear alpha per pixel, which is why motion blur, wispy hair, and semi-transparent edges survive where binary masks destroy them. In your pipeline, always export straight color plus linear alpha (16-bit or 32-bit float EXR for Nuke, Fusion, and Resolve) and never bake a premultiplied composite as the deliverable.
+2. Automate the hint pipeline: generate the alpha hint automatically for every shot (built-in chroma keyer or a segmentation model), run the ML key, and only route shots to manual hint painting when an automated quality check fails. The community After Effects port documents exactly this split: auto-generate mode by default, manual hint layer only for full control, with post-processing (despill, despeckle, refiner, matte cleanup) re-applied without re-running the model.
+3. Automate the stress suite from Phase 5 as a regression test: keep the four hard cases (green-on-green wardrobe, motion-blurred foliage, refractive liquid on blue screen, depth-of-field falloff) as a permanent test set, and re-run them whenever the model, host, or hint generator changes. A model update that passes the easy shots but fails a stress case is a regression, not an upgrade.
+
+**Check**
+- Deliverables are straight-color EXR with linear alpha, and the comp rebuilds the composite from them without color shift at the edges.
+- The stress suite runs end to end after any model change, with per-case pass or fail recorded.
+
+**Why**
+The studio value of an ML keyer is throughput on the shots that used to need roto, and throughput only holds if the easy shots are fully automatic and the hard shots are routed by a check, not by an artist opening every shot. Corridor Digital's own production use (400 shots on Son of a Dungeon, per the skill's source) is the proof that the one-click-first, hint-only-when-hard discipline scales.
+
+Sources:
+- https://www.vp-land.com/stories/corridor-crew-open-sources-corridorkey-a-neural-network-tool-that-solves-green-screen-s-hardest-prob
+- https://nofilmschool.com/corridorkey-ai-chroma-keyer
+- https://github.com/iamjoshuadavies/corridorkey-ae
+

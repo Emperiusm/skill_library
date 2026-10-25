@@ -95,6 +95,27 @@ game engine of choice (masked-opacity / alpha-cutout material).
   other is when you simulate real tree physics, but I can't imagine who
   needs it in the game :D."
 
+## AAA studio practice
+
+The hand-drawn card method matches production foliage practice, with two production corrections that sharpen it:
+
+- Cut cards close to the leaf silhouette to cut overdraw, and prefer more small cards over fewer large transparent ones: 80 Level's vegetation production interview states the rule as triangles over overdraw, because a pixel redrawn many times by overlapping transparent cards is the dominant cost, while small cards are cheap. Source: https://origin.80.lv/articles/tips-on-utilizing-vegetation-in-game-scenes/
+- Bend, twist, and mirror branch cards so no flat plane reads from any angle, and instance branch assemblies so one edit propagates: the 80 Level alpha-card workflow builds a branch from cut planes with bend/FFD/twist modifiers, checks it from every angle, then instances the branch pieces into the final plant. Source: https://80.lv/articles/human-emotions-creating-vegetation-with-alpha-cards
+- In Godot specifically, masked rendering should use alpha scissor (discard) rather than the translucent alpha pass, which the Godot forum foliage thread identifies as the slow path for overlapping alpha cards. Source: https://forum.godotengine.org/t/geometry-vs-alpha-for-detailed-pine-tree/130869
+
+**Do (agent-executable, adds to Phases 2-3)**
+1. After drawing the texture, trim each card's geometry to the leaf silhouette (no rectangular planes with mostly transparent pixels) and record the transparent-pixel fraction per card; reject cards whose transparent area dominates, since that is pure overdraw.
+2. Build 3-4 branch variants (the production count from the 80 Level workflow) with bent/twisted cards, mirror two of them for reuse, and instance them into the canopy instead of placing unique cards.
+3. In-engine, set the material to masked/cutout (the skill's Phase 3) and, where the engine offers it, alpha scissor/hash rather than blended transparency; verify the choice in the material, not by eye alone.
+4. Budget check, automated: face count stays at the author's 1300-face budget for the tree, and a fullscreen-canopy screenshot shows no visible card edge-on plane (rotate the camera 360 degrees around the tree and inspect silhouettes).
+
+**Check**
+- Transparent-pixel fraction per card is low, branch count is 3-4 variants, and the material is masked, not blended.
+- Rotating the camera shows volume, not flat planes.
+
+**Why**
+- The production rule is not "cards are cheap" but "cards are cheap when trimmed and masked"; an untrimmed blended card is the expensive case this method exists to avoid.
+
 ## The human method, distilled
 
 1. **Crispness is a brush setting.** The default hard-edge brush is the

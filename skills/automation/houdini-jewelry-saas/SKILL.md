@@ -104,3 +104,26 @@ The go-to-market matches the architecture. "Strictly B2B" means each account is 
  FULL (post numbers and the licensing thread are concrete; the asset internals shown in the clip are unseen, but the SaaS-architecture reconstruction is fully grounded in the creator's stated figures and the comment discussion).
 
 ---
+
+## AAA studio practice
+
+This skill is a SaaS product, not a game, so the AAA analogue is the Houdini Engine pattern that shipped games already proved: procedural tools as HDAs inside the tool artists already use, with deterministic output as a hard requirement. Ubisoft Montreal's Far Cry 5 pipeline ran Houdini Engine tools inside the Ubisoft editor and required deterministic generation (same inputs, same outputs, on any build machine) for map junctions and nav-mesh generation. Embark Studios' THE FINALS Building Creator took the same idea further: a modular set of interoperable HDAs, each generating one building element from a shared blockout mesh, reused across projects (THE FINALS, then ARC Raiders' Buried City map). The jewelry product's own portfolio page confirms the same architecture in its own terms: JewelCore is described as a fully procedural platform generating production-ready jewelry designs, calculating material costs, and exporting manufacturing assets in real time, combining Houdini procedural geometry with dependency-driven architecture, automated manufacturing constraints, adaptive stone-fitting logic, and live bill-of-materials analytics. The production lesson transfers directly: the HDA (or headless asset) is the product, the queue is the scaling mechanism, and deterministic output plus a manufacturing feedback loop are what make it shippable rather than demo-able.
+
+- Source: https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html (Far Cry 5 determinism + nightly rebuilds)
+- Source: https://80.lv/articles/how-embark-studios-built-procedural-environments-for-the-finals-using-houdini (THE FINALS Building Creator)
+- Source: https://beka3d.com/ (JewelCore portfolio description: procedural geometry, manufacturing constraints, live BOM analytics)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the determinism check from Phase 1: cook the same asset twice with identical inputs on two runs and diff the output geometry (vertex counts, bounding box, exported file hash). A non-identical result fails the asset, however good it looks, because downstream tolerances depend on it.
+2. Automate the Phase 2/Phase 3 capacity model: log every cook with tier (base vs production), cook seconds, and license-seconds consumed, and recompute the license-pool size weekly from measured p50/p95 cook times, not from the launch-day <1s/~3s figures. If the base tier's p95 slips past 1 second, flag it as a product regression, not a scaling footnote.
+3. Automate the Phase 5 manufacturing loop: every production run that changes a tolerance must record the shop-floor result (pass/fail, deviation) against the asset version that produced it, so tolerance tuning is a versioned feedback loop rather than an oral history.
+
+**Check**
+- Two identical cooks produce identical output (hash match).
+- Weekly capacity report exists, computed from measured cook times; license pool sized from concurrent cooks, not user count.
+- Every tolerance change traces to a recorded production result and an asset version.
+
+**Why**
+- Far Cry 5's determinism rule exists for exactly this reason: when output feeds another system (nav mesh there, casting/milling here), a non-deterministic generator is a defect, not a feature. And the queue math only holds if cook times are measured continuously, since every second of cook time is a slice of license cost.

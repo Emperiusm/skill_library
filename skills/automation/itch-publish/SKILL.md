@@ -134,3 +134,26 @@ butler push ./build leafy/my-game:windows --dry-run
 - `steam-publish` — the same game on Steam via SteamPipe (often shipped alongside itch.io).
 - `game-jam` — most jams are hosted on itch.io; this skill handles the upload step.
 - `prototype-fast` — share an early prototype on a Draft/restricted itch page for playtesting.
+
+## AAA studio practice
+
+itch.io publishing at production scale is a CI problem, not a manual-upload problem, and the published record shows the same pattern across engines. A Godot project documented on DeepWiki runs GitHub Actions on version tags that build multi-platform exports and distribute them to itch.io, producing both an unarchived build directory for direct Butler upload and zipped archives for GitHub Releases. A separate Rust project wires its release workflow the same way: platform builds upload via Butler to project channels named by platform (`wasm`, `linux`, `windows`, `mac`). The practitioner guide by jdno makes the discipline explicit: a release tag (or pre-release tag) selects the channel (`linux-beta` for pre-releases, `linux-stable` for releases), Butler is installed in CI, and the push uses `--userversion` from the release version with `BUTLER_API_KEY` from secrets, because an automated build is reproducible in a way a local build is not ("your local development environment cannot break the build"). That is the studio-grade version of this skill's core workflow: tags drive channels, CI owns the build, Butler owns only the diff upload.
+
+- Source: https://deepwiki.com/100-Devs-1-Game/Sixwaystosuffer/11-development-and-deployment
+- Source: https://deepwiki.com/cryscan/bounce/6-development-and-deployment
+- Source: https://jdno.dev/automate-building-and-publishing-a-game-on-itch-io/
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the tag-to-channel mapping: a release tag pushes to the stable channel for each platform; a pre-release tag pushes only to a `-beta` channel. Encode this in CI, never as a manual decision at push time, so a test build can never land on the public channel by typo.
+2. Automate the pre-push gate from this skill's own commands: run `butler push-preview` (and `butler status`) in CI and fail the job if the preview shows unexpected NEW/DELETED files versus the previous build; a surprise deletion in a patch is a release-blocking defect.
+3. Automate versioning end to end: derive `--userversion` from the git tag (or `--userversion-file` from a version file bumped by the release job), never from a hand-typed string, so the version players and the update API see always matches the tag that built it.
+
+**Check**
+- CI log shows the channel chosen by tag type (stable vs beta) with no manual override.
+- `butler push-preview` output reviewed (or auto-checked) before the real push; no unexpected deletions.
+- Pushed version string equals the release tag.
+
+**Why**
+- Butler's diff patching is only safe if the channel, the version, and the file set are all deterministic. Manual pushes break all three at once; tag-driven CI fixes all three at once.

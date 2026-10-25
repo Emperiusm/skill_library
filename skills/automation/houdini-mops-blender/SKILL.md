@@ -101,3 +101,26 @@ Nothing below invents transcript lines, parameters, or tool names. Anything
 inferred beyond the sources is tagged [inference].
 
 ---
+
+## AAA studio practice
+
+MOPs itself is documented by its author as a free, open-source HDA toolkit built because Houdini lacked Maya MASH / Cinema 4D MoGraph-style motion-graphics tools, and as used by many VFX companies large and small to speed up traditional FX work, not only motion graphics; it operates natively in Houdini, interchangeably with native SOPs, and its core is manipulation of packed primitives. That framing is the production practice: MOPs is a force multiplier inside Houdini's native toolset, not a closed motion system, and SideFX links to the project from its own homepage. The Blender/Cycles half of this skill follows the same split-by-strength pattern AAA pipelines use everywhere: author motion where the motion tools are strongest, render where the look is cheapest to iterate. The skill's own depth limit still applies: the Houdini-to-Blender transfer mechanism, file format, and material conversion were not stated in the source, so no transfer recipe is claimed here.
+
+- Source: https://www.toadstorm.com/projects/mops/ (MOPs origin, packed-primitive core, SideFX linkage)
+- Source: https://www.sidefx.com/forum/post/399234/ (MOPs author thread: VFX-company use, native SOP interchangeability, free/open-source status)
+- Source: https://irendering.net/using-mops-magical-operators-for-houdini-with-irender/ (MOPs as HDA toolkit for local transforms, path motion, masking; falloff tools as masks/multipliers)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Make the motion pass explicit and repeatable: record the MOPs operator chain per shot (which MOPs nodes, in order, with their falloff/mask inputs) in a text file next to the render, so a second agent can rebuild the motion without reverse-engineering a .hip file. MOPs falloff outputs used as masks or multipliers elsewhere must be named in that file.
+2. Automate the transfer gate the source leaves open: before rendering, write down the chosen transfer mechanism and format (Alembic, USD, FBX, or other) and verify with a test frame that geometry, motion, and (where applicable) material assignments survive the round trip into Blender. Do not render a full sequence off an unverified transfer.
+3. Automate the Light Wrangler lighting pass: save the lighting rig (lights, gobo textures, aim targets) as a reusable Blender asset/preset, and render a lighting-only test frame per shot before the full Cycles render, so a lighting regression is caught in seconds, not after a full render.
+
+**Check**
+- MOPs chain file exists and matches the scene; falloff masks/multipliers named.
+- Test frame survives the Houdini-to-Blender transfer with motion and materials intact.
+- Lighting preset saved; lighting test frame approved before full render.
+
+**Why**
+- MOPs' value is that it is native and interchangeable with SOPs, which means its setups are rebuildable from a node list. Writing that list down turns a demo into a pipeline, and verifying the transfer before rendering is the only guard against the skill's own stated gap (unstated transfer mechanism) becoming a wasted render.

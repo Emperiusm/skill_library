@@ -181,6 +181,23 @@ getting a lot of funding in the Netherlands these days."
 6. **Admit what's left out, with its cost** ("museums aren't exactly getting
    a lot of funding").
 
+## AAA studio practice
+
+**Do**
+1. Ship the parametric tool inside the editor as an ecosystem, the way Ubisoft did on Far Cry 5: Houdini tools for freshwater, cliffs, biomes, and vegetation were integrated into the game editor through Houdini Engine, and the tools were linked so one tool's output (for example a water mask) fed the next tool (for example the biome tool). A morphospace generator should work the same way: flare, verm, and spire are inputs to a tool, not numbers typed into a standalone script. Source: https://blog.playstation.com/archive/2018/03/22/how-the-stunning-open-world-of-far-cry-5s-hope-county-montana-was-created and https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html
+2. Bake the pigment pattern as a compute pass, not a hand painted texture. Reaction-diffusion (Gray-Scott) is the production route for organic skin, rust, moss, and coral patterns: two chemicals diffusing at different rates, with feed and kill parameters selecting spots, stripes, or labyrinths, computed on a double buffered grid. That is the continuous process the skill's Phase 5 says real shells need, made executable. Source: https://gamedev.net/shaderlab/49-reaction-diffusion-patterns/
+3. Automate the morphospace walk as agent-executable steps:
+   - Script a sweep that samples flare, verm, and spire on a grid, generates one shell per grid point, and writes a contact sheet labelled with its three parameters.
+   - Assert the snug fit rule in code: flag any sample where verm is above 1/flare (gaps expected) or below it (overlap expected) and label the flag, so empty or impossible regions stay visible instead of being silently dropped (the skill's Phase 4 honesty rule, enforced by a script).
+   - For pigment, run the Gray-Scott pass at two parameter settings (one spot regime, one stripe regime; pick feed/kill values from the cited Gray-Scott reference, never invent a "shell" preset) and store the parameters alongside the texture so the pattern regenerates from its parameters alone.
+
+**Check**
+- The contact sheet must show the empty regions, not only the pretty shells; if the sweep script hides failures, the morphospace is a demo.
+- A second agent, given only the parameter grid and the pattern parameters, must regenerate the identical sheet.
+
+**Why**
+- Raup's cube is a design space, and Ubisoft's Far Cry 5 pipeline is what a design space looks like in production: linked tools inside the editor, each feeding the next, with parameters as the art direction. The Gray-Scott pass gives the pigment half of the shell the same treatment: a rule with parameters, not a texture painted per shell.
+
 ## Failure modes
 
 - Hiding the empty regions: a morphospace with only the pretty corners is a

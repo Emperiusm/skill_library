@@ -119,3 +119,25 @@ firsthand poster verification; no captions exist and the media download was
 skipped under the run's bandwidth budget, so the install UI and tool
 behavior were not frame-reviewed). A download + frame pass of the 0:15 and
 tool chapters would reach FULL. Do not present install steps as verified.
+
+## AAA studio practice
+
+No AAA studio is documented as running production on Nomad Sculpt's live link, and this section does not claim one; Nomad's documented production-adjacent role is the concept-to-finishing split. CG Channel's original coverage describes Nomad as a tablet sculpting app whose completed sculpts export in OBJ or glTF to be refined in other DCC software, with dynamic tessellation, voxel remesh, and layer-based sculpting and painting, and notes glTF (not OBJ) preserves paint and layer information. The University of Newcastle's MakerSpace guide states the same pipeline explicitly: finish the full sculpt in Nomad, export it, and bring it into Blender or Maya to retopologize, unwrap, texture, and print. The live link upgrades that split from export to loop, but it does not change the division of labour: gestural concept speed on the tablet, retopology and finishing on the PC. Treat "works decently" (the firsthand Reddit verification quoted in this skill) as the honest baseline: functional, not lossless, and therefore always verified by the both-directions round trip in Phase 2 before any production dependency.
+
+- Source: https://www.cgchannel.com/2020/08/check-out-nomad-a-neat-new-ios-and-android-sculpting-app/
+- Source: https://libguides.newcastle.edu.au/makerspace-resources/nomadsculpt
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the Phase 2 round-trip proof as a regression test, not a one-off: keep a small reference sculpt (a known shell count and vertex count) and, on every link setup or app update, push it iPad-to-PC and back and log shell count, vertex count, and whether paint/layer data survived. A count change is a failed test, even if the mesh "looks fine".
+2. Automate the export fallback: if the live link fails mid-session, export glTF (preferred, preserves paint/layers) or OBJ to the PC target and log the fallback, so a link outage never strands a sculpt on the tablet.
+3. Automate the Phase 4 undo test on every update: sculpt, save, fully close, reopen, and attempt undo through the pre-save history, logging pass/fail. Persistent undo is only real if it survives a restart after each update.
+
+**Check**
+- Reference sculpt round-trips with identical shell/vertex counts both directions; paint/layer survival logged per format.
+- glTF fallback export verified and its file location recorded.
+- Post-restart undo test passes after the current app version.
+
+**Why**
+- A bridge that is only tested once will fail silently after the next app update. The concept-to-retopo pipeline only works if the tablet side is provably lossless enough for the PC side to finish, and counts (not eyeballing) are the proof.

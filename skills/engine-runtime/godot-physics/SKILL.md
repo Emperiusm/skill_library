@@ -152,6 +152,51 @@ func ground_under(global_from: Vector2) -> Dictionary:
 - **`Area3D` now fires `body_entered` for `SoftBody3D`** under Jolt (GodotPhysics3D never
   did). Filter soft bodies out with layers/masks if the old behavior is expected.
 
+## AAA studio practice
+
+- **Guerrilla Games (Horizon Forbidden West): choose the physics engine for
+  streaming and multithreading, then measure.** For Horizon Forbidden West,
+  Guerrilla switched from a commercial engine to Jolt Physics, saving memory
+  and executable size and doubling simulation frequency while using less CPU
+  time. The previous engine bottlenecked while streaming data and while
+  interacting with the multithreaded game-object update; Jolt was architected
+  with a lock-free broadphase and lock-free simulation-island building to
+  solve exactly those two problems. This is directly relevant here because
+  Godot 4.6+ projects already default to Jolt in 3D.
+  Source: https://www.guerrilla-games.com/read/architecting-jolt-physics-for-horizon-forbidden-west
+- **Havok (Helldivers 2, Doom: The Dark Ages): determinism is a production
+  guarantee, and profiling is built in.** Havok's production page states its
+  physics guarantees identical output across all supported platforms (for the
+  SDK itself, when integrated into a deterministic engine), and its Visual
+  Debugger includes a heatmap viewer for objects causing performance
+  problems. Arrowhead (Helldivers 2) and id (Doom: The Dark Ages) are quoted
+  there as production users.
+  Source: https://www.havok.com/havok-physics/
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: record the physics engine in the project before tuning anything:
+  check `project.godot` for `3d/physics_engine` (Core workflow step 1) and
+  write it in the scene's tuning notes. Never copy a Jolt-specific or
+  GodotPhysics-specific workaround into a project running the other engine.
+- Do: run physics gameplay on the fixed `_physics_process` tick only, and add
+  a headless test that steps a known RigidBody scenario for a fixed number of
+  ticks and asserts the final position/velocity within a small tolerance
+  (exact equality is not claimed: Havok's own determinism guarantee is
+  platform- and integration-dependent, and Godot's Jolt integration is not
+  claimed here to be bit-identical across platforms). A test that drifts
+  beyond tolerance across runs on the same machine fails.
+- Do: profile before optimizing: enable continuous CD only on fast bodies
+  that actually tunnel (Pitfalls), and check collision-layer/mask pairs with
+  a scripted audit (list every body's layers and masks and flag pairs that
+  can never interact) instead of hand-inspecting scenes.
+- Check: (1) engine recorded, (2) fixed-tick test passes twice in a row on the
+  same machine, (3) no RigidBody is moved by setting `position` outside
+  `_integrate_forces` (grep for such assignments in physics scripts).
+- Why: Guerrilla's win came from matching the engine to streaming and
+  threading, not from tuning constants harder. Recording the engine first
+  prevents the class of bug this skill's Jolt section already documents.
+
 ## References
 
 - For `_integrate_forces`, joints, one-way collision, `PhysicsServer` direct access,

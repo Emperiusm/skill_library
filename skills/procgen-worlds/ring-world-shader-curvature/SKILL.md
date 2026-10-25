@@ -110,6 +110,24 @@ proposals, labeled as such.
   shader-driven skyline-fill pattern (unmodeled buildings as shader
   output) and must not be cited as evidence for it.
 
+## AAA studio practice
+
+**Do**
+1. Use the shipped game version of this trick, not only the prototype version. Nintendo's Animal Crossing uses the "rolling log" world bending effect: terrain bends and rolls beneath the player so ground and sky are visible at once, a technique the producer described as chosen for the DS to show sky on the upper screen. Subway Surfers uses the same family of effect, curving the world exponentially with distance from the player. Source: https://notslot.com/tutorials/2020/04/world-bending-effect and https://www.rigormortistortoise.com/how-to-make-a-curved-world-shader-graph-subway-surfers/
+2. Apply the production rules from the Curved World shader documentation: every bending effect has a pivot point (the origin for the bending algorithm, updated from a controller script, usually the player), meshes need enough vertices to bend smoothly (a 4 vertex ground plane will never bend), and meshes can disappear from early culling unless a curved world camera handling step is added. Source: https://amazing-assets.gitbook.io/curved-world/tutorial-2-little-planet-part-1
+3. Automate the shader illusion as agent-executable steps, which directly address this skill's Phase 3 debts:
+   - Vertex density check: script a scan of every mesh using the bend shader and flag any mesh whose vertex spacing is coarser than the bend radius tolerance (read the tolerance from the shader's curvature parameter, never invent it); subdivide flagged meshes or exclude them from bending and log the exclusion.
+   - Pivot check: assert the bend pivot follows the player every frame, and that all bent materials share one bend type and bend ID; log any material that still uses a default shader (the equivalent of the original thread's unbent bullet mesh problem, where runtime spawned meshes missed the bend shader).
+   - Interaction agreement check: place a test target at a known curved position, fire a test projectile in flat space, and record the miss distance; if the miss exceeds one target radius, the interaction debt is open and the feature must not ship as playable (this turns the skill's "cannot be shot correctly" warning into a measured gate).
+   - Culling check: move the camera through the full FOV range and log any mesh that pops in or out; the high FOV "looks strange" observation in the original thread is the symptom this check catches.
+
+**Check**
+- Looking up shows the ring overhead with no popping, no unbending meshes, and no flat shader leftovers. Shooting, throwing, and teleporting either agree with curved positions or are explicitly disabled in curved zones, with the decision logged.
+- Lighting is either agreed with curved positions or explicitly deferred in the same way the original author deferred it, never silently wrong.
+
+**Why**
+- Animal Crossing and Subway Surfers prove the trick ships, but only when the production rules are obeyed: pivot follows the player, vertices are dense enough, every material (including runtime spawned ones) uses the bend shader, and culling is handled. The prototype's debts (interaction, lighting) are exactly the places where a shipped game either pays the cost or scopes the feature down, and the checks above make that decision measurable instead of hopeful.
+
 **Depth status:** PARTIAL (post text + 29 comments; engine, shader code,
 and parameters undisclosed; commenter fixes are proposals, not
 author-confirmed).

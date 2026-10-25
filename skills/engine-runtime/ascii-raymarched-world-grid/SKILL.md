@@ -139,3 +139,17 @@ a known aesthetic, not open exploration.
 
 FULL (author-disclosed grid size, byte budget, Dijkstra recipe, and no-SDF
 rationale; all parameters quoted; no values invented).
+
+## AAA studio practice (refinement 2026-10-24)
+
+**Do**
+1. Write the road cost function down before running Dijkstra, with slope as a first class term and a hard cutoff. The procedural road generation literature defines the global cost as a sum of weighted functions over terrain and trajectory characteristics, where the slope transfer function returns infinity above a threshold so paths cannot climb unrealistically steep slopes, and otherwise charges a function of slope controlled by a maximum cost. That is the formal version of this skill's slope cost. Source: https://www.academia.edu/79198548/Procedural_Generation_of_Roads
+2. Keep the layer order the skill already states (locations, then paths, then terrain flattening) and make each layer a separate, re-runnable pass. The LayerProcGen contextual generation design does exactly this: a GeoGrid layer generates coarse height data and flattens around locations, a Cultivation layer runs pathfinding between connected locations with cost based on terrain heights, and a Landscape layer flattens terrain around both locations and paths. Source: https://runevision.github.io/LayerProcGen/md_ContextualGeneration.html
+3. Automate the bake as a script, not a manual paint: input is the heightmap plus settlement coordinates, output is the material array plus a road mask. [inference: automation step derived from the two sources above]
+
+**Check**
+- Automated validation script [inference]: after the bake, assert (a) every settlement is connected by at least one road cell path, (b) no road cell sits on a slope above the cutoff, (c) total road cells and the 4 MB grid budget (2048 x 2048 x 1 byte) are logged, and (d) re-running the script with the same seed produces a byte identical material array. A road that disconnects a settlement or climbs the cutoff slope fails the bake, even if it looks fine.
+- Render check: walk one road end to end in the raymarched view and confirm the glyph and color change only at material boundaries, never mid cell. Mid cell changes mean the renderer is doing per ray work the bake was supposed to remove.
+
+**Why**
+Baked world generation is only cheap if the bake is deterministic and testable. The AAA and academic pattern is the same: cost function on paper, layers in order, bake once, render by lookup, and a validation pass that proves the bake before anyone plays on it.

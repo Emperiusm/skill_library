@@ -104,6 +104,25 @@ forgives modeling imperfections, so mesh perfection is the wrong place to
 spend effort. This is an independent corroboration route (different app,
 different author) that the style is paint-led.
 
+## AAA studio practice
+
+The target-point trick is a deliberate inversion of the shipped-production standard for anime looks, and naming that standard sharpens when to use this skill versus the conventional route:
+
+- Arc System Works' Guilty Gear Xrd (GDC talk "Guilty Gear Xrd's Art Style: The X Factor Between 2D and 3D," presented by technical artist Junya Christopher Motomura) built custom cel shaders in Unreal Engine 3 so 3D models read as hand-drawn 2D, with hundreds of bones per model to control silhouettes and shading, limited tweening to mimic 2D animation timing, and a team whose strength was 2D animation familiarity rather than 3D expertise. The same pipeline carried into Dragon Ball FighterZ and Guilty Gear Strive. Sources: https://www.dcgameblog.com/2015/03/cognition-dissemination-a-sign-for-non-photorealistic-rendering/ and https://happygamer.com/guilty-gear-xrd-sign-turns-13-arcsys-changed-fighting-games-153854/
+- The production lesson that transfers: the cel look is decided in the shading and animation rules (the "toon law"), not in the lighting rig. ArcSys kept shading art-directable per character and per shot, which is exactly what this skill's target point does by separating light-direction control from real lights.
+
+**Do (agent-executable, adds to Phases 1-2)**
+1. Write the toon law before building: one page stating the cel band count, the outline rule (if any), the shadow-shape rule, and what the target point is allowed to move; ArcSys-style, the law is the asset, and every character follows it.
+2. Automate the dynamic check from Phase 2: script a target-point sweep (move the point through a fixed path), capture frames at fixed intervals, and diff consecutive frames to confirm cel shapes actually move; a zero-diff frame pair means the texture drive is broken, not that the scene is static.
+3. Automate the zoom acceptance test from Phase 1: render the same closeup at 100%, 200%, and 400% zoom and confirm no pixelation appears at any level, since the dynamic texture's resolution, not the geometry, is the bottleneck the skill names.
+4. Rule out the standard recipes first, as the skill already requires: test inverted-hull outlines and grease-pencil-style line work against the toon law, record why each fails for this look, and only then commit to the custom target-point texture.
+
+**Check**
+- The toon law exists in writing, the sweep diff is non-zero across the path, and all three zoom levels pass without pixelation.
+
+**Why**
+- Production cel shading succeeds because the rules are written and checked mechanically per character; a custom texture without a law drifts into a muddy hybrid the moment a second artist touches it.
+
 ## The human method, distilled
 
 1. **Fake the light, draw the truth.** A target point simulates light

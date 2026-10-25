@@ -114,6 +114,16 @@ haha. But definitely helpful seeing what people respond to!").
   public is what surfaced the export design; the method is
   generate → show → let the audience's questions design the export.
 
+## AAA studio practice
+
+- **Insomniac Games, Marvel's Spider-Man (GDC 2019): a procedurally-authored open world, not a fully procedural one.** Principal technical artist David Santiago's talk describes an open-world pipeline where each procedural system was designed to support iteration and dependencies, used to author, modify, and monitor content, including procedural tools for marking up Manhattan, with pedestrians, traffic, street vignettes, and random crimes growing from humble beginnings into a living city. Sources: https://www.gamedeveloper.com/programming/video-procedurally-creating-manhattan-for-i-marvel-s-spider-man-i- and https://www.gamedeveloper.com/design/video-insomniac-s-technical-postmortem-of-i-marvel-s-spider-man-i-
+  - **Agent step:** structure the Godot generator as systems with declared dependencies (streets before buildings before props before traffic markup), each re-runnable independently. Check: changing the street layout regenerates only its dependents, and a dependency list can be printed from the generator without running a full export.
+  - **Agent step:** keep a manual-edit layer on top of generated output (Insomniac's pipeline mixed procedural markup with hand tuning; the summary of its approach notes JSON used for data interchange between procedural content and manual edits). Check: a hand edit to one building survives a regeneration of its block, or is reported as overwritten by name.
+- **glTF `extras` is the standard carrying case for custom properties, and it has no namespace by default.** The Blender glTF manual states custom properties are stored in the `extras` field on the corresponding object, and that unlike glTF extensions, `extras` have no defined namespace and may be used for any application-specific purpose. Source: https://docs.blender.org/manual/de/3.6/addons/import_export/scene_gltf2.html
+  - **Agent step:** namespace every custom property in the schema (for example `ultrapolis:building_type`, not bare `building_type`) so a third-party importer can tell your properties apart from another tool's. (Inference: the manual says there is no namespace; prefixing is the agent's fix, not a Blender requirement.)
+  - **Agent step (automation):** add an export validation script that loads the exported `.glb` as JSON, asserts every node carrying a custom property has all schema-required keys, asserts every `extras` key uses the chosen prefix, and asserts the schema doc's "won't round-trip" section names decals and interior mapping. Fail the export if any assertion fails; do not ship a glb whose schema doc and file disagree.
+- **What this does not change:** the schema-first philosophy stays. The AAA addition is that the schema becomes machine-checked (a validation script) and dependency-aware (systems declare what they feed), instead of a document a human eyeballs.
+
 ## The human method, distilled
 
 1. **The generator is the product; the export is a view.** Keep generation

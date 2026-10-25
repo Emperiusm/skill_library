@@ -68,6 +68,23 @@ the ramp or accept the default.
    colors, and further modulation ("weirder and weirder sounds"); the author
    answered all three as doable.
 
+## AAA studio practice
+
+**Do**
+1. Build cables from curves, not from hand placed meshes. SideFX documents a Houdini Cable Generator that takes a curve of high pin points and low sag points and generates sagging cables with user definable cable count, shape, and colour. Source: https://media.sidefx.com/uploads/tutorial/foundations/houdini_foundation_overview_01.pdf
+2. Ship the cable tool inside the editor artists already use, the way Ubisoft did on Far Cry 5: Houdini tools (including power lines, freshwater, cliffs, and biomes) were integrated into the game editor through Houdini Engine so artists crafted the world with Houdini tools from inside their familiar editor. Source: https://blog.playstation.com/archive/2018/03/22/how-the-stunning-open-world-of-far-cry-5s-hope-county-montana-was-created
+3. Automate the Blender version as explicit agent-executable steps (this converts the skill's confirmed but manual "adjustable ends" property into a testable tool):
+   - Create a curve object with two endpoint empties as the control handles; drive the cable mesh from the curve with a bevel profile, so moving an endpoint re-solves the cable instead of breaking it.
+   - Expose, as named parameters, cable count, sag amount, twist, and a colour ramp seed; never leave the ramp on an unadjusted default in a shipped asset (the original thread's red cables were an unadjusted default, not a design choice).
+   - Write a regeneration script: move each endpoint by a fixed offset, regenerate, and assert the cable still connects both endpoints and the mesh has no zero length segments. Log the seed used for each regeneration.
+
+**Check**
+- Move an endpoint after generation: the cable must follow without manual remodelling. If it does not, the system is a static mesh with a generator story, not a procedural tool.
+- Regenerate with a new seed: cable paths, lengths, and twists change; endpoint positions do not drift.
+
+**Why**
+- The AAA pattern is curve in, tool out, editor integrated. Ubisoft's Far Cry 5 team used procedural tools to remove tedious hand work so artists could focus on the world, and the Houdini cable generator shows the exact input shape (pin and sag points on a curve) that makes that work. A cable tool that cannot survive an endpoint move fails the only workflow property the original author confirmed.
+
 ## Depth status
  DEPTH-LIMITED (author confirms "Blender 3D", procedural
 system, random unadjusted colors, and adjustable ends, but no node setup,

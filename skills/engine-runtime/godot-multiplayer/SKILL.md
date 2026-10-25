@@ -138,6 +138,50 @@ func _ready() -> void:
   `multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()`.
 - **Android needs INTERNET permission** in the export preset or all networking is blocked.
 
+## AAA studio practice
+
+- **Riot Games (Valorant): server-authoritative, high tick rate, server-side
+  combat resolution.** Valorant runs on 128-tick dedicated servers (a server
+  update every ~7.8 ms), with all combat decisions living on the server: when a
+  player shoots, the server rewinds game state to the exact simulation time
+  the shooter saw, to give near-perfect hit registration, and caps how far
+  back it will rewind so extreme latency cannot become a weapon. Riot also
+  enforced fixed 128 Hz physics timesteps on server and client so movement
+  ticks align regardless of frame rate.
+  Sources: https://www.pcgamer.com/uk/valorant-peekers-advantage-interview/ and https://edgegap.com/blog/game-backend-deep-dive-valorant-riot-games
+- **Never trust the client, and never leak what a player should not know.**
+  Independent anti-cheat guidance for small multiplayer games states the same
+  rule this skill already gives: the authoritative server validates movement
+  against maximum speed and collision, enforces cooldowns/ammo/resources, and
+  calculates damage and rewards; wallhacks work because the client knows
+  things the player should not see, so only send positions of enemies a player
+  can actually perceive.
+  Source: http://dev.to/aplusgamesstudio/anti-cheat-for-small-multiplayer-games-what-works-4a6g
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: implement the Valorant-shaped checklist as code review gates, not
+  aspirations: (1) every RPC that changes health, position, currency, or
+  score is `any_peer` to the server only and validated server-side (speed
+  cap, cooldown, ammo, line-of-sight where applicable) before any broadcast;
+  (2) the server runs movement/physics on `_physics_process` (fixed tick),
+  never `_process`, so server and client timesteps do not drift with frame
+  rate; (3) the synchronizer's visibility flags hide private or
+  not-yet-visible state (Pattern 4) instead of syncing everything to everyone.
+- Do: add a headless netcode test (see `godot-gdscript-headless-testing`) that
+  starts a server peer and two client peers in one process where possible, or
+  as a scripted two-process run, sends an illegal input (teleport beyond max
+  speed, fire during cooldown), and asserts the server rejects it and the
+  broadcast state is unchanged. This is the Godot analogue of Riot's
+  server-rewind/validation discipline, at a scale a small team can run.
+- Check: grep all `@rpc` declarations and confirm none of them directly sets
+  authoritative state from a client-supplied value without a server-side
+  validation call in the same function. Any such RPC fails review.
+- Why: Riot's fairness comes from the server being the only decider, at a
+  fixed tick, with bounded forgiveness for latency. Godot's authority and
+  synchronizer flags are the tools that implement that same contract; using
+  them only for movement and trusting clients for damage defeats the design.
+
 ## References
 
 - For `MultiplayerSpawner` setup, transfer modes/channels, `SceneMultiplayer`

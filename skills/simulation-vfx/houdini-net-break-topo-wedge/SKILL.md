@@ -125,3 +125,23 @@ it and review the matrix instead of hand-tuning.
 no solver values, wedge counts, substep counts, or frame numbers were
 given, and none were invented. The wedge matrix structure (which
 parameters were wedged beyond stretch/stress limits) is not specified.
+
+## AAA studio practice
+
+**Do**
+1. Build the wedge network exactly as SideFX documents it: one Wedge TOP per varied parameter (stretch limit, stress limit), chained for multi-parameter sweeps, feeding a ROP Geometry TOP for caching and a render TOP per work item, with output filenames using the work-item index so every take is uniquely cached and comparable. SideFX's own PDG FX workflow tutorial varies pyro force and source size this way, then compares the variations side by side.
+2. Automate the review matrix: composite the wedge renders into a single contact sheet with the parameter values burned into each frame (the particle-effects wedging workflow uses a text overlay plus an ImageMagick montage and an FFmpeg encode), so the director picks a take from one image instead of opening N takes.
+3. Automate the glue-constraint sanity check before any wedge runs: run a zero-tear pre-roll and assert knot positions stay within a small tolerance of their rest positions. If that check fails, fix the curve geometry (Phase 1) instead of widening the wedge range, which would only hide a modeling defect behind more takes.
+
+**Check**
+- Every wedge output filename contains its work-item index and its parameter values are visible on the contact sheet.
+- The pre-roll knot-drift check passes before the wedge cook starts.
+
+**Why**
+Wedging is SideFX's documented production answer to un-tunable parameters: the Wedge TOP creates work items whose attributes override node parameters at cook time without touching the saved HIP file, so the sweep is reproducible and the file stays clean. That is the same reason the commercial net-break recipe works: the tear is a parameter, and parameters get swept, not guessed.
+
+Sources:
+- https://www.sidefx.com/docs/houdini/nodes/top/wedge
+- https://www.sidefx.com/docs/houdini/tops/tutorial_pdgfxworkflow.html
+- http://www.particle-effects.com/2020/01/
+

@@ -125,3 +125,17 @@ parameters, no Movie Maker settings disclosed.
 
 **Depth status:** PARTIAL (full post text + all comments with quoted
 architecture; no code, no shader parameters, no Movie Maker settings).
+
+## AAA studio practice (refinement 2026-10-24)
+
+**Do**
+1. Keep the engine, the rules, and the content in three separate layers with data as the only bridge. Cornell's data driven design teaching states the pattern plainly: the engine determines the space of possibilities, the actual possibilities are data and scripts, with object data in JSON data file formats as the example. That is the academic statement of this skill's Phase 1 and 2. Source: https://www.cs.cornell.edu/courses/cs3152/2021sp/lessons/lesson12/slides-12.pdf
+2. Prove content iteration needs no recompile. Gaijin's Dagor Engine (described in a production architecture writeup) builds game objects from components configured entirely through data files (its blk format, the equivalent of JSON), so designers can change object parameters, effects, and behavior by editing data, and during an internal tournament admins spawned objects mid game by dropping data files into the level folder, without recompiling or restarting. Mirror that test for Burgero style rules: add a new ingredient JSON, reload, and confirm the new rule fires with no code change and no engine restart if the loader supports it. Source: https://pvs-studio.com/en/blog/posts/1390/
+3. Make the trailer a deterministic build artifact. Godot's Movie Maker mode records non-real-time video and audio, and its documented advantages are perfect frame pacing (never dropped frames or stuttering) and identical visual output regardless of hardware speed, plus higher than target framerate rendering for motion blur and temporal effects. The automation step is to script the re-shoot: one command that runs the scripted run at fixed fps, writes the movie file, and names it with the build version, so the trailer in the repo always matches the build in the repo. Source: https://docs.godotengine.org/en/4.7/tutorials/animation/creating_movies.html
+
+**Check**
+- Automated rules test [inference]: a headless test harness that loads the plain rules library (no Godot reference), feeds it every ingredient JSON in the content folder, and asserts (a) every rule name in JSON has a builder in the dictionary, (b) every builder has at least one JSON entry or is flagged unused, and (c) adjacency scoring matches a hand computed case (cheese on patty, onion next to patty). A JSON file that references an unregistered rule fails the build.
+- Trailer drift check [inference]: after every content change, re-run the Movie Maker command and diff the output frame count and duration against the previous trailer; if they differ and the scripted run did not change, the run is no longer deterministic and the trailer step is broken.
+
+**Why**
+Data driven design is not a style preference; it is who can change the game without a programmer. When rules are a library, content is JSON, and the trailer is a scripted re-shoot, designers iterate content, programmers iterate rules, and marketing never ships footage of a build that no longer exists.

@@ -139,3 +139,53 @@ in Phase 1, so there are no "we never shot that angle" emergencies.
 **Depth status:** PARTIAL (author's full settings quoted from comments;
 exact Spirula version and training iteration counts not published; Blender
 5.3's compositing role not detailed).
+
+## AAA studio practice
+
+Floater suppression is now a research-backed production concern, not just
+a Spirula toggle. The literature agrees with this skill's diagnosis
+(floaters are under-constrained depth) and adds two automatable layers:
+prune by evidence across views, and constrain depth during training.
+
+- **SparseGS (sparse-view 3DGS).** Floaters are misplaced Gaussians from
+  alpha-blending depth rendering; SparseGS constrains depth convergence
+  and adds a floater-pruning heuristic that deletes misplaced low-opacity
+  Gaussians, sharpening both image and depth map.
+  Source: https://arxiv.org/html/2312.00206v3
+- **Clean-GS (semantic mask-guided pruning).** Clean-GS removes background
+  clutter and floaters with as few as 3 segmentation masks (1% of views),
+  combining whitelist filtering by projection to masked regions,
+  depth-buffered color validation, and neighbor-based outlier removal,
+  achieving 60-80% model compression while preserving object quality.
+  Source: https://arxiv.org/html/2601.00913v1
+
+**Do (agent-executable, automation upgrade)**
+1. Add a post-training pruning pass after Phase 4, in this order:
+   (a) delete Gaussians seen by fewer than N training views (evidence
+   check; start with N=2 and raise only if floaters persist);
+   (b) delete low-opacity, spatially isolated Gaussians (neighbor check:
+   no neighbor within the scene's median nearest-neighbor distance);
+   (c) if a subject mask exists, whitelist-project Gaussians to masked
+   regions and drop the rest. Record counts removed at each step.
+2. Automate the Phase 4 acceptance check: render the trained splat from
+   every planned camera move plus one unplanned 15-degree orbit offset,
+   and flag any frame where disconnected blobs appear outside the subject
+   silhouette. The planned moves passing while the offset orbit fails
+   means coverage, not suppression, is the gap, per Phase 4's own rule.
+3. Script the capture-coverage check from Phase 3: after SfM, export the
+   sparse point cloud density along each planned move's frustum and list
+   any move segment with no points within the subject depth range. Those
+   segments get re-shot before training, never after.
+
+**Check**
+- Pruning counts are logged per step, so over-pruning (detail loss) can
+  be traced to a specific rule and rolled back by re-running without it.
+- The offset-orbit render is clean, not just the planned moves; a splat
+  that only survives its rehearsed moves is a demo, not an asset.
+
+**Why**
+Spirula's Mild suppression is a training-time prior; pruning is a
+post-training audit. Studios pair them because training-time suppression
+cannot know which Gaussians earned their keep across views, while
+evidence-based pruning can measure exactly that. The combination is what
+makes a splat survive a camera move nobody rehearsed.

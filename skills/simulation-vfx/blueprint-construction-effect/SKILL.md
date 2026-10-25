@@ -90,6 +90,24 @@ Commenter RagingPsychoBandit (score 9) suggested moving away from the "futuristi
 4. **Highlight the frontier, not the result.** A separate climbing shader marks the build edge without touching final materials.
 5. **Finish is cheap, structure is not.** Ember particles sell the moment; the build order came from the system itself.
 
+## AAA studio practice
+
+**Do**
+1. Drive the whole grow-in from one build-progress parameter, exposed as a single scalar (0 to 1) on a Material Parameter Collection or equivalent global parameter, so every part, the rim shader, and the ember pass read the same value. Virtuos's procedural FX pipeline for Age of Empires II: Definitive Edition shows why this matters at shipped-game scale: destruction and construction effects had to stay smooth in frame rate and hold up under close zoom across many structure types, which is only possible when the effect is procedural and parameter-driven rather than hand-animated per building.
+2. Automate the part ordering: assign each stone and beam a build index from its structural role (foundation first, then walls, then timber and roof), store it as a per-instance attribute, and reveal parts by comparing build index against build progress. Do not hand-key reveal order per building.
+3. Automate the blueprint preview swap: when build progress is below 1, swap the part material to the transparent blueprint material with specular blending; at progress 1, swap to the final material in the same material function, so preview and final can never drift apart.
+
+**Check**
+- Scrubbing the single build-progress parameter from 0 to 1 builds the structure in foundation-first order with no part appearing out of sequence.
+- The same parameter drives the rim position and the ember emission window, so all three layers stay in sync.
+
+**Why**
+RTS placement systems use the same separation in production: a semi-transparent placement material, with collisions disabled while placing, is applied to the ghost and removed on confirm. The blueprint ghost in this skill is that placement state, and the grow-in is the confirm animation; keeping them on one parameter keeps the two states consistent.
+
+Sources:
+- https://www.sidefx.com/community/building-a-high-quality-procedural-effects-pipeline-with-houdini/
+- https://gameidea.org/2024/12/13/making-building-placement-system-in-rts-game/
+
 ## Depth status
  DEPTH-LIMITED (demo clip, not tutorial; no engine, parameter values, or shader code given; the author describes the *concept*, not the implementation. No Check/Why detail beyond what the post text supports.)
 

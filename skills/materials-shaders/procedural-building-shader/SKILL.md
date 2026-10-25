@@ -28,6 +28,25 @@ Tools used: Not stated. A shader language in some 3D engine (which engine, which
 **Why**
 Background buildings buy depth cheaply; no viewer will inspect them, so they can be pure shader output.
 
+## AAA studio practice
+
+Production cities separate hero buildings from background massing, and the shader's job is the second category, with two shipped-production patterns:
+
+- Embark Studios' procedural buildings for THE FINALS (and ARC Raiders' Buried City), built with Houdini's Building Creator: blockout to fractured asset in 4-6 minutes per change, over 100 unique buildings produced, with collision and occluders automated, and a consistent interior ruleset (for example, Monaco's ground-floor hallway with stairs left, exit right) so players can read any building fast. Source: https://80.lv/articles/how-embark-studios-built-procedural-environments-for-the-finals-using-houdini
+- Interior mapping for background facades, as analyzed for Insomniac's Marvel's Spider-Man: windows show raymarched fake interiors with correct parallax and no interior geometry, so a city gains depth at very small rendering and storage cost; the technique dates to a 2007 thesis and is explicitly a backdrop technique, not something players scrutinize up close. Source: https://www.gamedeveloper.com/programming/interior-mapping-rendering-real-rooms-without-geometry
+- A third production pattern from the same 80 Level city coverage: randomized window interiors behind facades, where a shader varies lit/dark windows per building across a large city area. Source: https://80.lv/articles/custom-shader-showcasing-randomized-interiors-behind-windows
+
+**Do (agent-executable, adds to Phases 2-3)**
+1. Split the city into tiers before writing shader code: hero buildings (authored meshes), mid-ground buildings (instanced boxes with the facade shader), background skyline (the pure shader fill this skill covers). The shader tier never receives hero detail work.
+2. Drive the facade shader from per-instance parameters, not one global look: building seed, floor count, window grid density, and lit-window ratio, so one material yields the whole skyline and no two adjacent buildings share a seed.
+3. Add the interior-mapping fallback for mid-ground facades: windows sample a fake interior (cubemap or procedural room) with view-dependent parallax, instead of flat lit rectangles, and verify by moving the camera laterally that window interiors shift with parallax rather than sliding as decals.
+4. Add a distance rule: beyond a chosen camera distance, swap shader buildings for matte-painting/backdrop cards (the City of Thousand Temples production pattern of replacing distant buildings with matte painting), since shader detail is wasted where no viewer inspects it. Source: https://80.lv/articles/city-of-thousand-temples-city-building-techniques/
+5. Automate the variation check: render the skyline from 3 camera angles and confirm no repeated facade pattern is visible at a glance, and that lit windows read as varied, not uniform.
+
+**Check**
+- Tier split is documented, per-instance seeds differ, parallax moves with the camera, and the distance swap triggers without a visible pop at its threshold.
+- [Inference, labeled]: exact shader node names and parameter values remain unrecovered from the original demo; the steps above are the production pattern, not the author's code.
+
 ## Phase 1: Define the skyline's role [inference]
 
 ## Phase 2: Author buildings as shader code, not meshes [inference]

@@ -234,3 +234,17 @@ iClone 8, full APEX rig.
 **Depth status:** FULL (594 caption segments + full description with
 chapter timestamps + full post text + comments; no frames reviewed, no
 parameters beyond those the author states on camera).
+
+## AAA studio practice (refinement 2026-10-24)
+
+**Do**
+1. Build rigs from reusable components, not bespoke node graphs per character. SideFX describes KineFX (powered by APEX) as procedural rigging where tagging joints assigns ready rig components, while advanced riggers can extend them with APEX scripting. That is the production version of this skill's sidecar pattern: one rig graph, components swapped per body part, custom nodes only after the component. Source: https://www.sidefx.com/products/houdini/characters/
+2. Treat retargeting as a versioned, tested step. Houdini 22's character updates list reusable rig templates, enhanced retargeting, and rig inversion as the headline rigging improvements, and its facial rig combines FACS blend shapes with wrinkle deformation and flexible 2D controls. Mirror that in this workflow: save the retarget mapping as a named template per source skeleton, test it on a walk and a reach pose, and only then apply it to a shot. Source: https://www.sidefx.com/products/whats-new-in-h22/characters/
+3. Prove the rig on a short film scale before a series. The Tumblehead team adopted APEX and KineFX for a full short film after finding KineFX could build advanced setups quickly with nodes and a bit of VEX, and chose Houdini for rigging and animation end to end once APEX expanded KineFX for shot workflow with multiple characters. Source: https://www.sidefx.com/tech-demos/turbulence/making-of-turbulence-interview/
+
+**Check**
+- Automated rig smoke test [inference]: after Build Character with APEX on, run a scripted pose pass (rest pose, walk pose, reach pose, one facial expression preset) and log build time, any missing controls, and any deformation warning. Compare build time against the skill's budget (seconds without APEX, 1 to 2 minutes with it, 20 to 30 seconds saved by dropping the facial rig). A rig that passes only in the viewport and fails the pose pass is not done.
+- Keep the approximation warning in the retarget output itself: any cross skin retarget must write a note into the scene (source skeleton, target skeleton, date) stating retarget is approximate, per Phase 4 of the original skill. If that note is absent, the retarget step is incomplete.
+
+**Why**
+Production rigging is a template library plus a test pass, not a single successful build. APEX's value in studio practice is that the rig graph is procedural and re-runnable, so the same character can be rebuilt after a model change instead of re-rigged by hand.

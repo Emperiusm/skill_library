@@ -154,3 +154,26 @@ This is the vault-door workflow, the most demanding part. Parts: ornate frame/ri
 - The Mixamo rigging/animation session itself (prepared but not demonstrated in the capture).
 - Unity import of the final assets.
 - UV unwrapping as a dedicated pass (materials were matched, not unwrapped on camera).
+
+## AAA studio practice
+
+Two production patterns from shipped games map directly onto this pipeline. First, Ubisoft Montreal's Far Cry 5 team built its procedural world pipeline in Houdini with Houdini Engine integrated into the Ubisoft game editor, so artists used Houdini tools inside the editor they already worked in; the team ran nightly builds on build machines that fully refreshed the world daily, and required deterministic generation (identical results from identical inputs on any build machine) because seamless map junctions and nav-mesh generation depended on it. Second, Blender Studio's own asset pipeline (used on Blender Studio productions) enforces the same discipline at the asset level with pre/post push and pull hooks: production-level Python hooks run automatically around every asset push/pull, so validation and processing are not left to an artist remembering to run them. The agent lesson from both: the loop is only production-grade when validation is automatic, deterministic, and runs on every handoff, not when a human remembers to check.
+
+- Source: https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html (notes on Etienne Carrier, Ubisoft Montreal, Far Cry 5 procedural pipeline)
+- Source: https://consolebang.com/threads/the-procedural-world-generation-of-far-cry-5.66431/ (Carrier's own account of the Houdini/Houdini Engine pipeline)
+- Source: https://studio.blender.org/tools/addons/asset_pipeline (Blender Studio asset pipeline hooks)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Turn Phase 3's ASSESSMENT.md into a machine-checked gate, not a prose file alone: after every agent pass, run a headless Blender check (via `blender --background --python`) that reports object count, material count, missing textures, non-manifold geometry flags, and whether the fit-study scene left the original `.blend` unmodified (compare file hash before/after). Append the machine report to ASSESSMENT.md; a prose assessment without it is incomplete.
+2. Automate the Phase 4 mechanical rule that the human had to enforce by hand: before any fit fix, record which part is allowed to change (door, not swing arm; hinges mount on the stated side) as a constraint line in the task, and require the agent's pass report to name the part it changed. If the changed part is not the constrained part, revert and re-prompt.
+3. Automate Phase 6's export gate: after FBX export, verify the file exists in the `mixamo/` subfolder, textures are embedded (no external texture dependencies), and the master `.blend` was saved before export (timestamp order). Fail the export step if any check fails.
+
+**Check**
+- Headless report present in ASSESSMENT.md; original `.blend` hash unchanged after a fit study.
+- Agent pass report names the changed part and it matches the stated constraint.
+- FBX exists, textures embedded, master saved before export.
+
+**Why**
+- Far Cry 5's determinism requirement and Blender Studio's hook pattern agree: a pipeline that depends on a human remembering a check will eventually ship the unchecked asset. The agent's job is to make the check run itself on every pass.

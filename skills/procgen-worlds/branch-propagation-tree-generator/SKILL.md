@@ -149,5 +149,23 @@ commenter discussion, labeled as such.
 - **Not an L-system, no attraction points**: do not cite this generator
   as either; the author explicitly disclaims both.
 
+## AAA studio practice
+
+**Do**
+1. Define species as rules plus numbers, the way SpeedTree's makers describe it: curves and numbers into an algorithm generate the tree, and randomize produces a similar but not identical tree, so a forest populates quickly without carbon copies. This skill's per-level angle intervals and upward biases are the same control surface, expressed as species rules instead of a single global distribution. Source: https://www.pcgamer.com/from-the-elder-scrolls-to-the-us-secret-service-where-videogame-trees-come-from
+2. Give each species its own growth conditions, the way Ubisoft did on Far Cry 5: each vegetation species had its own growth condition requirements and species fought for space in suitable areas (forests thicker where soil humidity was protected from direct sunlight, grasslands thriving on exposed slopes). A species rule set that ignores where it grows will read as decoration, not ecology. Source: https://blog.playstation.com/archive/2018/03/22/how-the-stunning-open-world-of-far-cry-5s-hope-county-montana-was-created
+3. Use curve branching tools for organic growth, the way SideFX documents Houdini's Curve Branches: scatter curves over curves with controls from clean branches to organic vines, chainable for recursive growth approximating L-systems with more control. That is the production tooling analogue of this skill's mid-branch split rule. Source: https://media.sidefx.com/uploads/tutorial/foundations/houdini_foundation_overview_01.pdf
+4. Automate the species rule set as agent-executable steps:
+   - Encode each species as a data file (per-level: propagation mode end-only or mid-branch, angle interval min/max, upward bias, leaf type palmate or simple, taper rate). The generator reads the file; no species parameter lives only in code comments.
+   - Script a species batch: generate a fixed set of trees per species from fixed seeds, and record per tree the branch count, max height, and canopy radius in a CSV. Assert in the script that trees from different species files differ in at least one recorded metric beyond seed noise, and that trees from the same species file cluster together; log any species pair that fails as "rules do not distinguish species" instead of judging by eye.
+   - Automate the Phase 4 scaling decision: generate the same forest three ways (fully unique trees, instanced variants with scale and colour variation, parts based combinations) and log memory per tree and draw calls per forest for each; choose the shipping path from the log, not from the isolated tree demo. This makes the skill's "forests are the proof" rule a measurement.
+
+**Check**
+- A tree generated from species file A must read as species A by its recorded metrics, not only by its seed, and must still read as species A after the cylinder primitive representation and low-res render.
+- The taper tuning note from the original thread (branches thin out and lengthen more before leaves appear) must be recorded as a parameter change in the species file, with before and after CSV measurements, not as an anecdote.
+
+**Why**
+- SpeedTree and Far Cry 5 both treat species as data: rules, intervals, and growth conditions that a tool can sweep, compare, and ship. Encoding this skill's rules as data files with measured batches turns "rules are the species" from a thesis into a pipeline that can prove two species actually differ and that a forest actually fits its budget.
+
 **Depth status:** PARTIAL (post text + comments; no code, parameters,
 or forest renders retrieved this run).

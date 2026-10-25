@@ -132,6 +132,54 @@ $Sprite2D.material.set_shader_parameter("amount", 0.7)
 - **`discard` is costly** on some hardware and breaks early-Z; prefer setting `ALPHA`/
   `COLOR.a` when you can.
 
+## AAA studio practice
+
+- **Enforce a per-pixel budget, even at the cost of blending.** A GDC 2026
+  rendering-optimization excerpt describes a CryEngine character-material team
+  that prototyped in Unreal and found blending multiple material layers
+  (metal, fabric, leather) caused excessive texture sampling and calculation;
+  their solution was a one-pixel-one-material rule, sacrificing blending for
+  rendering performance.
+  Source: https://daily.dev/posts/rendering-optimization-techniques---gdcrewind-gdc2026-wvsmya2eu
+- **Pack channels and cut texture samples; sampling is the expensive
+  instruction.** Unreal material-optimization guidance (UE4 Materials 101)
+  shows packing specular, roughness, metalness, and ambient occlusion into
+  one texture's channels, cutting a shader from 102 instructions to one
+  texture sample in the demonstrated case, and lists four optimization
+  methods: remove unused work, refactor the math, pipeline data together,
+  and pack textures.
+  Source: https://www.summarize.tech/www.youtube.com/watch?v=D8E47BJOE6E
+- **Layering is powerful, but it is budgeted, not free.** A survey of modern
+  AAA rendering techniques notes material layering blends multiple PBR sets
+  per pixel using masks and triplanar projection, and cites GDC 2014
+  material layering in The Order: 1886, alongside deferred decals and virtual
+  texturing for surface variation.
+  Source: https://app.cinevva.com/blog/2026-05-03-aaa-rendering-techniques
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: for every new shader, write a budget line at the top as a comment:
+  texture samples, `discard` use (yes/no), and target platform. A shader
+  with more than one screen-texture sample, or with `discard` on a
+  commonly-drawn surface, must justify itself in that comment; otherwise
+  prefer alpha (see Pitfalls) or a cheaper variant.
+- Do: pack grayscale masks into channels of a single texture (roughness,
+  metalness, AO, emissive mask) instead of four separate textures, and sample
+  once; document the channel packing in the shader comment so a later agent
+  does not "fix" it by splitting the texture.
+- Do: create a low variant for every expensive shader (fewer samples, no
+  screen read, no `discard`) behind a uniform or a separate material, and
+  switch variants by platform/quality setting rather than shipping one
+  shader for all hardware.
+- Check: (1) every shader file has a budget comment, (2) no shader samples
+  the screen texture more than once per pixel without a written reason,
+  (3) the low variant exists for any shader flagged expensive in profiling.
+  Profiling, not intuition, decides which shaders are expensive.
+- Why: AAA teams do not get performance by writing cleverer shaders; they
+  get it by budgeting samples, packing channels, and shipping variants.
+  Godot's `hint_screen_texture` and `repeat_enable` make the expensive
+  patterns easy to write, which is exactly why they need a budget.
+
 ## References
 
 - For built-in variables per shader type, render modes, `varying`, custom `light()`,

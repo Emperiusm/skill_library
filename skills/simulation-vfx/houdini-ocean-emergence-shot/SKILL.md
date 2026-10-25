@@ -131,3 +131,22 @@ foreground.
 
 **Depth status:** PARTIAL (post text + comments; no node graph,
 simulation parameters, or render settings disclosed).
+
+## AAA studio practice
+
+**Do**
+1. Build the shot the way The Gnomon Workshop's large-scale water course builds a sea-creature breach: define the large ocean surface first, simulate creature interaction with the FLIP solver, generate and blend the fluid mesh with the rest of the ocean, then define a custom whitewater emission source from the mesh surface properties. That ordering (ocean, interaction, mesh blend, whitewater) replaces the skill's ad-hoc foam attempt with a pass structure where foam has its own emission logic.
+2. Automate the spectrum-to-FLIP handoff with SideFX's guided-ocean pattern: drive FLIP particles from an Ocean Spectrum through an Ocean Evaluate node into the FLIP solver's fourth input, choosing Pressure Driven for a more turbulent, splashy emergence or Velocity Driven for a calmer one, and turning off the solver Waterline option when external velocity or pressure sources are present. This makes the Phase 1 spectrum fix (lower amplitude, higher high-frequency detail) a parameter change on the spectrum node, not a re-authoring of the sim.
+3. Automate the foam budget as its own line item: set a separate particle-count target for the whitewater pass, render a foam-only preview, and only accept the shot when foam reads at hero resolution in that preview. The Gnomon course notes its final FLIP and whitewater sims ran in under an hour on a single computer, which sets the practical bar: a foam pass that cannot be previewed quickly is a foam pass that will be skipped, which is exactly the failure mode in this skill's source thread.
+
+**Check**
+- The FLIP solver's fourth input carries the ocean guide, and switching Pressure Driven versus Velocity Driven visibly changes splashiness without rebuilding the network.
+- A foam-only preview exists at its own budgeted particle count, separate from the bulk water preview.
+
+**Why**
+Creature-emergence shots fail on water behavior, not creature modeling, and water behavior at this scale is a layered system (spectrum ocean, FLIP interaction, whitewater), not a single solver toggle. Splitting the layers and budgeting each one is what lets a single-artist shot reach the production shape the course demonstrates.
+
+Sources:
+- https://demo.thegnomonworkshop.com/workshops/large-scale-water-fx-in-houdini
+- http://www.sidefx.com/docs/houdini/fluid/sopoceanwaves.html
+

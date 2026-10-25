@@ -446,6 +446,16 @@ for the full 15-phase workflow; the video frames above are now
 video-observed rather than guide-supported. Still missing: the spoken
 narration (no transcript obtainable) and the final ~2.75 minutes.
 
+## AAA studio practice
+
+- **Naughty Dog, Uncharted (GDC 2012 / SIGGRAPH): split water by body type, do not run one solver for everything.** Naughty Dog's water talk describes separate procedural render systems: calm/semi-moving bodies (rivers, lakes, puddles) on non-LOD meshes, a hierarchical LOD system with displacement for open water such as the ocean, and a skinning-plus-particles system for flooding events, with a flow shader and mesh generation per type. Sources: https://www.naughtydog.com/blog/naughty_dog_at_gdc_2012 and https://history.siggraph.org/learning/from-a-calm-puddle-to-a-stormy-ocean-rendering-water-in-uncharted-by-gonzalez-ochoa-holder-and-cook/
+  - **Agent step:** classify each water body in the scene before building it (pool = calm body, waterfall landing = impact/foam body, open water = LOD body). Give each class its own mesh, shader, and acceptance test instead of scaling one height-field solver to cover all three. Check: the pool still settles after the player leaves (Phase 15 test); the waterfall landing still reads as foam/crests/droplets/mist from the side and the entrance.
+  - **Agent step:** add a flow pass to the pool/waterfall shader as a separate, named layer (flow direction texture or flow vector field), rather than baking flow into the base color. Check: turning the flow layer off leaves a still, correctly shaped water surface; turning it on moves foam and highlights downstream only.
+- **Guerrilla Games, Horizon Forbidden West: budget years of iteration on waves, and make the water mesh follow the terrain.** Guerrilla's engineers spent years on water rendering and wave techniques for Forbidden West, including a wave system built from sequences of images holding 3D vector displacement so waves can break and collapse on themselves, and a water mesh that deforms with terrain with foam blending in. Sources: https://www.playstationlifestyle.net/2021/06/05/horizon-forbidden-west-water-tech and https://www.gamesradar.com/horizon-forbidden-west-dev-explains-why-its-water-looks-so-unbelievably-good/
+  - **Agent step:** when a waterfall or wave meets a bank, author the foam as a blend band tied to the waterline (foam intensity driven by water depth at the bank), not as a fixed decal ring. Check from the player's view: foam hugs the bank where water is shallow and disappears where the bed drops away.
+  - **Agent step (automation):** script a waterline audit in Blender/Unreal: sample the bed mesh along the bank, list every vertex where water height minus bed height changes sign unexpectedly (dry gap bridged, or wet face over dry ground), and fail the build if the list is non-empty. This turns the Phase 8 "verify against the bank" check into a repeatable gate.
+- **What this does not change:** the cavern's custom height-field solver and cached-waterfall-plus-live-pool split stay as taught. The AAA lesson is organizational, not a replacement solver: separate systems per water type, flow as its own layer, and a scripted bank/waterline gate before assembly.
+
 ## Operating rules
 
 - Never invent parameters: every number above comes from the source video or

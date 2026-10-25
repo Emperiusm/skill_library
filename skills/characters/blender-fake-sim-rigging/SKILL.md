@@ -129,3 +129,65 @@ the author's quoted formula. Stretch To numeric values, Blender version, and
 engine export path were not published. Failure modes and fixes beyond
 "overshoot means too high" are [inference]; the native demo clip itself was
 not reviewed (no frames extracted for v.redd.it in this pipeline).
+
+## AAA studio practice
+
+Every real-time engine solves this same problem (cheap secondary motion
+without a full sim) with the same answer: spring/damped skeletal controls
+or baked jiggle, chosen by whether the motion must react live or can be
+baked. The Blender constraint pattern in this skill is the authoring side
+of that same trade.
+
+- **Unreal Engine animation guidance (Epic staff).** Epic's animation
+  team notes that Maya ART jiggle joints only jiggle in Maya and must be
+  baked into animation for export, while for real-time Unreal work the
+  cheaper route is a skeletal control such as the spring controller (later
+  Anim Dynamics) rather than a full physics asset, explicitly because
+  physics-asset collision is more costly when collision is not the point.
+  Source: https://forums.unrealengine.com/t/animation-and-rigging-tools-faq-known-issues-and-feature-roadmap/2200?page=51
+- **Blender soft-body manual.** Blender's own manual defines soft-body
+  simulation as primarily for adding secondary motion to animation, such
+  as jiggle for body parts of a moving character, and lists jiggle on
+  moving characters as the first typical scenario, ahead of cloth or
+  elastic objects.
+  Source: https://docs.blender.org/manual/pt/4.1/physics/soft_body/introduction.html
+- **Wiggle-2 (Blender jiggle addon).** Wiggle-2 pins wiggling bones to
+  targets with Damped Track, Track To, or Locked Track constraints (the
+  same constraint family as this skill), and its baking step converts
+  dynamic wiggle into keyframes so the result renders without real-time
+  physics cost.
+  Source: https://deepwiki.com/shteeve3d/blender-wiggle-2/3-user-guide
+
+**Do (agent-executable, automation upgrade)**
+1. Add an explicit export decision after Phase 4, with two scripted
+   paths: (a) live path, export the constraint rig as-is and re-create
+   the jiggle in-engine with a spring skeletal control, accepting that
+   Blender constraint values will not transfer numerically; (b) baked
+   path, bake the constraint-driven motion to keyframes on the deform
+   bones (Pose > Animation > Bake Action, visual keying on, only
+   selected bones) and export the baked animation, which is the only
+   path that preserves the exact authored jiggle in-engine.
+2. Script the tuning loop the skill leaves to the eye: for each deform
+   bone, sweep Stretch To influence over a small range (start 0.05-0.2,
+   labeled as a starting range to tune, not a published value), bake a
+   test range of motion, and measure maximum vertex displacement against
+   the rest silhouette. Reject any value whose displacement exceeds the
+   project's silhouette tolerance; record the accepted value per bone.
+3. Automate the full-range check: pose the base rig through its extremes
+   (the same extreme-pose test studios use for weight painting) and
+   confirm no deform bone overshoots or collapses; log the worst-case
+   displacement per bone in the rig notes.
+
+**Check**
+- The export path is named in the rig notes (live spring control vs
+  baked keyframes); an unbaked constraint rig exported blind is a known
+  failure, not an open question.
+- Every Stretch To value is recorded per bone with its measured
+  displacement, replacing "low values" folklore with a repeatable tune.
+
+**Why**
+Constraint jiggle is only cheap if its export story is decided up front.
+Engines either re-implement jiggle with springs (live, approximate) or
+play baked keys (exact, non-reactive). Picking the path after authoring
+wastes the tuning work; picking it before authoring tells you whether to
+tune for feel or bake for fidelity.

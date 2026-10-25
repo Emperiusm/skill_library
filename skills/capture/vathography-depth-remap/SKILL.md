@@ -125,3 +125,60 @@ depth output.
 
 **Depth status:** FULL (manual captions for the intro + 80-segment tutorial
 captions with exact Blender steps).
+
+## AAA studio practice
+
+Production compositing has always treated depth as a first-class control
+signal, not a hidden pass. Vathography's move (show the depth map) is the
+artistic inversion of the studio move (drive focus, fog, and layer order
+from the depth map). Both depend on the same discipline: clean,
+high-bit-depth depth, and an explicit mapping from depth value to effect.
+
+- **Foundry Nuke ZDefocus.** Nuke's GPU-accelerated ZDefocus node creates
+  camera defocusing from a depth pass: choose a focus point and blur the
+  image according to the depth map channel, which is how studios match
+  lens characteristics between CGI and plate and animate rack focus in
+  post without re-rendering.
+  Source: https://www.foundry.com/products/nuke-family/nuke/features?ref=discover-the-rookies
+- **Marigold depth pipeline (official).** Marigold's depth pipeline
+  outputs predictions in [0, 1] with an ensemble mode that improves
+  accuracy and yields uncertainty estimates from variance across
+  predictions, and exports 16-bit PNG depth (values mapped linearly to
+  [0, 65535]), which is the format that survives a compositing round trip
+  without banding.
+  Source: https://huggingface.co/docs/diffusers/main/en/api/pipelines/marigold
+- **Depth-driven layer ordering (See-through pipeline).** Production-style
+  layered pipelines mask a global depth map by each layer's alpha, take
+  the median depth of the non-transparent pixels, and sort layers back to
+  front by that median, splitting a layer when one label spans two
+  disconnected depth ranges.
+  Source: https://deepwiki.com/jtydhr88/ComfyUI-See-through/2.3-marigold-depth-estimation-pipeline
+
+**Do (agent-executable, automation upgrade)**
+1. Add a depth-QC step after Phase 1: export both the 16-bit depth PNG
+   and the ensemble uncertainty map. Flag any subject edge where
+   uncertainty is high and depth is discontinuous; those edges will
+   halo under any remap or defocus, and the fix is a better photo or a
+   tighter mask, not a wider Color Ramp stop.
+2. Extend Phase 3 with the studio mapping discipline: before colorizing,
+   record the depth-value range of each subject (sample the median depth
+   inside a mask per subject, as the See-through pipeline does), then
+   place Color Ramp stops at those measured values instead of by eye.
+   Save the stop positions with the artwork so the remap is reproducible.
+3. Add a second, production use for the same depth map as a check: run
+   the depth through a ZDefocus-style blur (focal plane at the hero
+   subject's median depth) and confirm the subject stays sharp while
+   foreground and background fall off. If the hero does not separate
+   under defocus, it will not separate under a color remap either.
+
+**Check**
+- Depth values for each subject are numbers in the project notes, not
+  slider positions remembered by feel.
+- The 16-bit depth export, not an 8-bit preview, is the file that enters
+  Blender; 8-bit depth banding is visible in any smooth mist gradient.
+
+**Why**
+A depth map shown as art is judged like any other image: banding, halos,
+and mushy subject separation read as defects, not style. The studio
+discipline (measure depth per subject, keep 16-bit precision, check with
+defocus) is what keeps a vathograph from being a posterized gradient.

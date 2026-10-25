@@ -90,6 +90,24 @@ bar; the Voronoi fake is honest about not clearing it yet.
 4. **Free add-on, public roadmap**: "Squishy Volumes" is free now, with
    actual fracture announced as upcoming.
 
+## AAA studio practice
+
+**Do**
+1. Treat the Voronoi fake as a placeholder with an exit criteria, not a final method: record in the asset notes the exact test that would replace it, namely fracture that matches experiments and is independent of mesh resolution. That is the bar the original MPM researchers set, and it is why Disney Animation integrated MPM into its production framework for Frozen, Big Hero 6, and Zootopia, where large deformation, fracture, and self-collision had to be handled without mesh distortion breaking the solve.
+2. Automate the scale test: run the same break at two particle counts (for example the demo 890k and a half-resolution pass) and diff the fragment size distribution. If the distribution shifts strongly with resolution, flag the shot as resolution-dependent and do not ship it as true fracture.
+3. Script the Voronoi setup so it is reproducible: generate cells from a seeded Voronoi fracture node or script, store the seed and cell count with the asset, and re-run from those two values alone. SideFX's production MPM toolset in Houdini follows the same pattern, offering named material presets (snow, water, honey, rubber, jello, metal, concrete, soil, mud, sand) so a material change is a preset switch, not a rebuild.
+
+**Check**
+- The two-resolution diff is saved with the shot, and the seed plus cell count regenerate the identical pre-fracture.
+- No shot note claims true fracture while the Voronoi path is in use.
+
+**Why**
+MPM's production value is exactly the failure mode it removes: because particles carry the material through a fixed grid, topology change and large deformation do not invert a mesh. The Voronoi fake is useful only while it is honest about not clearing that bar.
+
+Sources:
+- https://alexey.stomakhin.com/research/siggraph2016_mpm.pdf
+- http://www.sidefx.com/docs/houdini/news/20_5/mpm.html
+
 ## Depth status
  DEPTH-LIMITED (empty selftext; only 5 short comments; no sim setup parameters, no Voronoi workflow steps, and no render details stated)
 

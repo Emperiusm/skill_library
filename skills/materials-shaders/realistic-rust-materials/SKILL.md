@@ -163,6 +163,26 @@ toolbox is what makes it approachable.
 **Why**
 Shared, parametrized, readable materials compound; locked black boxes do not.
 
+## AAA studio practice
+
+The skill's Ubisoft-centred method gains a second shipped-production anchor from Naughty Dog, plus the author's own GDC session:
+
+- Naughty Dog's The Last of Us Part I material pipeline (GDC session by Senior Environment Texture Artist Jonathan Benainous and Principal Environment Artist Jared Sobotta) used procedural generators in Substance 3D Designer to speed up authoring a large material count, with man-made architectural materials (Boston Capitol Building) and natural/organic work (Tommy's Dam) both driven by Designer generators married to sculpting where needed. Source: https://www.gdcvault.com/play/1029357/Adobe-Developer-Summit-The-Material
+- 80 Level's coverage of the same TLOU Part I work confirms every material shown was made in Substance 3D Designer and rendered in Marmoset Toolbag, with detailed breakdowns and before/after shots. Source: https://80.lv/articles/a-look-at-the-last-of-us-part-i-s-materials
+- The rust collection's own author, Loic Anquetil, presented with Jean-Baptiste Rollin at GDC 2024 on Substance tools for Ubisoft's Prince of Persia: The Lost Crown, the same stylized-environment context the collection grew from. Source: https://www.behance.net/gallery/244793593/Desirable-Patina-the-Anatomy-of-Rust
+
+**Do (agent-executable, adds to Phases 5-7)**
+1. Convert the foundation material (Phase 2) into a generator, not a one-off: expose breakup scale, pitting density, rust-stage blend, and water-streak strength as named parameters, so art direction can ask for "earlier corrosion" without reopening the graph.
+2. Batch-verify the generator: render the same asset at 3 corrosion stages (early, mid, advanced) and confirm the height-to-roughness relationship from Phase 2 holds at each stage, rather than checking only the hero stage.
+3. Run a graph-readability pass before publishing: every node group labeled, no unlabeled spaghetti, matching the skill's Phase 4 rule, and have a second artist open the graph cold and locate the breakup, height/roughness, and color nodes without guidance.
+4. Publish as a collection with the same contract as Anquetil's: clean graphs, parametrized outputs, and a note of which reference photos drove each noise, so the next artist can extend rather than reverse-engineer.
+
+**Check**
+- Three corrosion stages render correctly from one generator, parameters are named and exposed, and the cold-open readability test passes.
+
+**Why**
+- Naughty Dog's payoff is the same as Anquetil's: the generator, not the single material, is what lets a team cover a game's worth of weathered surfaces on schedule.
+
 ## The human method, distilled
 
 1. Study before building: understand the material structurally

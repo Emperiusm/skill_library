@@ -164,3 +164,17 @@ FULL (reconstructed from the creator's own comments + the Fab product descriptio
 video file itself was not retrievable: captions unavailable, download blocked by
 YouTube's 429/bot challenge. Vendor performance claims marked unverified; inferences
 labeled.)
+
+## AAA studio practice (refinement 2026-10-24)
+
+**Do**
+1. Start from Epic's own crowd reference, not from a blank Mass project. The Matrix Awakens (Epic, Unreal Engine 5) ran a simulated city with 35,000 walking pedestrians that keep functioning procedurally as the camera moves, plus a freeway chase, as a demonstration that a whole city can be simulation driven rather than hand animated. Source: https://toptech.news/epic-games-shows-off-unreal-engine-5-with-stunning-simulated-city-in-the-matrix-awakens-demo/
+2. Use the City Sample as the working template: thousands of MetaHuman agents driven by AI systems, with procedural Houdini city generation and World Partition managing the vast environment, and Chaos physics simulating vehicles, clothing, and destruction in engine. That is the production shape of this skill's Phase 1 to 3: Mass entities for brains, procedural city for context, GPU particles or VATs for bodies at distance, hero skeletal meshes only near camera. Source: http://www.cgw.com/Press-Center/In-Focus/2021/The-Matrix-Awaits-in-The-Matrix-Awakens-An-Unrea.aspx
+3. Automate the sim to render bridge as a per frame data contract [inference]: a processor that writes transform arrays plus a per agent state id, and a Niagara system that reads exactly that contract. Add a frame validator that asserts array count equals live agent count and that every state id maps to a VAT frame range; stale or unmapped entries fail the frame in the editor instead of rendering a frozen agent.
+
+**Check**
+- Distance LOD gate: at far distance, agents must render as Niagara particles with VATs; at near distance, compare one agent against a skeletal mesh reference for animation correctness, per the original skill's Phase 3 check. If far agents are skeletal meshes, the crowd budget is broken even if frame rate currently holds.
+- Reproduce the vendor numbers before quoting them: run the scene on stated hardware, with CPU particle emitters present and a detailed textured scene, and log agent count at a locked frame time. The original skill already warns that 100,000 agents at 60fps is a vendor claim; Epic's 35,000 pedestrian city is the independently reported reference point, not a replacement claim for this framework.
+
+**Why**
+Epic's crowd work proves the architecture (data oriented entities, procedural city, GPU bodies) at city scale, and it proves the discipline that matters: near camera heroes, far camera particles, simulation always CPU inspectable, rendering always GPU parallel. The skill's Mass to Niagara bridge is that discipline applied to battle crowds.

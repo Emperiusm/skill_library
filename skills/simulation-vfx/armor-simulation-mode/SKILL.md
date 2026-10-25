@@ -101,6 +101,25 @@ tuning by eye is the honest method for that contract.
    accuracy bar the toy is measured against; citing it keeps the scope
    honest.
 
+## AAA studio practice
+
+**Do**
+1. Pre-fracture with artist control, the way Epic's Chaos destruction system does: pre-fracture geometry with Voronoi, radial, or planar fracturing, control how sub-fractures cluster, anchor individual pieces so they are unaffected by simulation, and apply forces through a Fields system. Simulations can also be calculated in advance and cached for real time playback. That is the production ladder above this skill's constraint tuning by eye: same fracture idea, with clustering and caching as the controls. Source: http://www.cgchannel.com/2019/09/epic-games-releases-unreal-engine-4-23/
+2. Treat destruction as a core engine feature with embedded performance work, the way DICE and the Frostbite team did on Battlefield 6: the engine was built for destruction and for combat with vehicles, and the Frostbite team embedded with the game team to optimise performance in the engine itself when performance issues appeared. If destruction is a mode, its performance budget must be owned by the engine team, not patched per scenario. Source: https://www.tweaktown.com/news/107400/battlefield-6s-technical-director-tells-us-why-frostbite-is-the-perfect-engine-for-the-game/index.html
+3. Learn from the shipped voxel destruction reference, Teardown (Tuxedo Labs): a fully destructible voxel world where every object needs an inside with its own materials, and where a structural integrity prototype (reported by 80 Level) aims to make destruction feel more physically believable. The lesson for an armor mode is that believable failure needs structure, not just breakage: supports must matter before the plate fails. Source: https://80.lv/articles/this-real-time-voxel-building-demolition-is-so-satisfying
+4. Automate the armor mode as agent-executable steps, converting "tune by eye" into a repeatable test:
+   - Build a standard test rig in script: a fixed spaced armor layout (same plate thicknesses, gaps, and projectile, every run) built with the box and circle tools, so results are comparable across constraint changes.
+   - Run the penetration at the mode's real time target and log: frames per second, number of fragments, and penetration depth (in plate count, not in invented millimetres). Assert the APFSDS plausibility note from the original thread as a check: a penetrator should leave a hole a few times its width, not blast the final plate apart; log a failure when the final plate shatters on contact.
+   - Sweep constraint settings in script (one setting at a time, fixed seed and layout) and record the same three metrics per setting in a CSV, so the "settings of the constraints" tuning the author describes becomes a table the next agent can reproduce instead of a feeling.
+   - Label the result honestly in the output: if the rig was tuned by eye with arbitrary values, the log header must say so, preserving the author's accuracy disclaimer instead of upgrading a toy into a claim.
+
+**Check**
+- The same layout and projectile, run twice, must produce the same fragment count and penetration depth within a tolerance the script states; if it does not, the simulation is not deterministic enough to tune.
+- Real time performance must be logged per run, not remembered: the original headline fact is roughly 28fps, and any constraint change that drops below that target must be flagged even if the breakage looks better.
+
+**Why**
+- Chaos, Frostbite, and Teardown all show the same production shape: fracture is authored (Voronoi, clustering, anchors, cached sims), structure matters (supports, insides, integrity), and performance is measured in engine, not hoped for. The test rig above gives the Galaxy Engine armor mode the smallest version of that shape: one fixed layout, three logged metrics, and an honesty label, so tuning by eye becomes tuning by table.
+
 ## Depth status
  FULL (source is a devlog demo, not a tutorial; everything
 stated is captured: >1 year of development, open source, engine reuse,

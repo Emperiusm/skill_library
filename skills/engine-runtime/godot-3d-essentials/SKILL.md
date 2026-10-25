@@ -135,3 +135,23 @@ func build_floor(width: int, depth: int, item_id: int) -> void:
 - `camera-systems` — third-person orbit / first-person look rigs, framing, and collision.
 - `performance-optimization` — keep 3D scenes within frame budget (draw calls, lights, LOD).
 - `fps-shooter` — composes 3D movement, input, and AI into a game.
+
+## AAA studio practice
+
+Sources:
+- Guerrilla Games, Horizon Zero Dawn (80 Level interview with lead lighting artist Roderick van der Steen): Horizon used per-pixel lighting with GGX as the BRDF, plus a dynamic skylight that lights everything based on sky color from all angles, building on the Killzone Shadow Fall lighting pipeline. https://80.lv/articles/horizon-zero-dawn-interview-with-the-team
+- Guerrilla Games, Horizon Zero Dawn (GDC 2017 session, as reported): a GPU-based procedural placement system dynamically creates the world around the player on the fly, assembling full environments (not just rocks and trees) from artist-defined placement rules, so painting a tree line or redirecting a road is as easy as moving a mountain. https://www.playstationlifestyle.net/2016/12/12/horizon-zero-dawn-ps4-will-harness-procedural-tech-to-render-environment
+
+**Do**
+1. Treat the WorldEnvironment as a lighting system, not a backdrop, following Guerrilla: drive ambient light from the sky (ambient source sky in the existing Pattern 2), and verify that changing the sky changes the scene lighting, not just the background color.
+2. Automate the "renders black" diagnosis from the Pitfalls: script a scene audit that lists every 3D scene missing a light or a WorldEnvironment with ambient, and fails the scene check until one is present. Agent-executable step: parse the .tscn for DirectionalLight3D/OmniLight3D/SpotLight3D and WorldEnvironment nodes and report missing ones per scene.
+3. Automate the GridMap blockout check: script a build of a test floor with the Pattern 4 code, then verify every cell has a mesh-library item and no cell is placed with a missing item id, instead of eyeballing the grid in the editor.
+4. For large scenes, adopt the Horizon placement idea at Godot scale [inference]: generate GridMap or scattered placement from rules (a placement function plus a seed) rather than hand-placing every prop, and keep the hand-placed hero elements separate from the rule-placed dressing.
+
+**Check**
+- The scene audit reports zero scenes without lights plus ambient.
+- Changing the sky material visibly changes ambient lighting on a test mesh.
+- The GridMap test build places every requested cell with a valid item.
+
+**Why**
+Guerrilla's pipeline separates what artists author (rules, skies, placement graphs) from what the engine computes (lighting from sky, placement around the player). The Godot essentials in this skill map directly: WorldEnvironment plus lights is the lighting system, GridMap plus rules is the placement system, and both deserve an automated audit, not a visual glance.

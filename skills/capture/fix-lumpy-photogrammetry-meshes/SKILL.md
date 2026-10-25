@@ -226,3 +226,56 @@ which were fully captured, so this gap is narrow.
 ---
 
 # Full-depth audits, continued
+
+## AAA studio practice
+
+Studios do not ship raw scan geometry. The production pattern is: keep the
+raw scan untouched, rebuild clean geometry over it, and prove fidelity by
+baking and measuring, which is exactly the discipline Planer's report line
+formalizes.
+
+- **Happy Mushroom (scan to Unreal).** A typical asset is scanned, solved,
+  simplified, then ingested into Unreal Engine 4, with the simplification
+  stage explicitly rebuilding clean geometry rather than shipping the dense
+  solve. Where architectural scans come back noisy, the same studio
+  practice is to trace around the noisy geometry in a modelling program
+  and reproject the photos onto the new clean mesh and UVs, preserving
+  light and texture while fixing featureless flat surfaces, which scan
+  worst and model easiest.
+  Source: https://beforesandafters.com/2020/11/12/getting-photogrammetry-assets-into-unreal-a-guide-from-happy-mushroom/?amp
+- **Scan-to-game-ready cleanup pipeline.** The standard cleanup order is:
+  clean the scan, retopologize or repair into a manifold mesh (Select
+  Non-Manifold check, consistent normals), create new UVs, then bake
+  normals, AO, curvature, and the original phototexture as albedo from the
+  high-poly scan onto the low-poly mesh, finishing with LOD variants.
+  Source: https://www.tripo3d.ai/blog/explore/photogrammetry-asset-cleanup-pipeline-for-sale
+
+**Do (agent-executable, automation upgrade)**
+1. After every Planer run, automate the fidelity gate the report line
+   enables: parse mean/p95/max deviation from the status-bar line and
+   fail the run if mean deviation exceeds the project budget (the skill's
+   own benchmarks are ~0.02 m for a single ~55 m building, ~0.07 m for a
+   full city block). Log the line verbatim next to the mesh name; do not
+   paraphrase numbers.
+2. Add the manifold gate Planer does not provide (it explicitly does not
+   fix holes or non-manifold edges): in Blender, run Select Non-Manifold
+   on the `REFINED_` mesh, record open-edge and non-manifold counts from
+   the report line, and route any mesh with non-zero counts to a repair
+   pass (hole fill, merge by distance) before export. Never silently ship
+   a mesh whose report line shows non-manifold edges.
+3. Automate the bake-back check: bake the source mesh's texture onto the
+   refined mesh's UVs (Selected to Active) and diff the result against the
+   source texture. UV or texture drift after a refine pass is a regression,
+   since Planer's contract is topology and UV preservation.
+
+**Check**
+- Deviation numbers, face counts, and manifold counts are recorded per
+  run in the same row, so runs are comparable across parameter changes.
+- The baked texture matches the source within the project's tolerance;
+  a refine pass that moves UVs has broken Planer's core promise.
+
+**Why**
+Planer's deviation report is only client-reportable if it is gated, not
+just read. Studios pair a geometry fix with a manifold check and a
+bake-back check because each catches a failure the others cannot: deviation
+catches drift, manifold catches export breakage, bake-back catches UV loss.

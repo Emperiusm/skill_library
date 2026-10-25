@@ -168,3 +168,25 @@ private void OnDied() => GD.Print("entity died");
 - `godot-signals-groups` — signal/event architecture (language-neutral).
 - `godot-resources` — data resources; the C# `[Export]` + `Resource` pattern.
 - `unity-csharp-scripting` — C# in Unity, for developers coming from there.
+
+## AAA studio practice
+
+Note on scope: no AAA studio production case study for Godot C# specifically was found in this research pass, so no such claim is made here. The practices below are drawn from shipped Godot titles and from the C# discipline that production C# codebases share, with sources cited. Do not present this section as a Godot-C# AAA case study.
+
+Sources:
+- W4 Games / Godot ecosystem reporting (VentureBeat): Godot titles on Steam grew by more than 50 percent year on year in both 2024 and 2025, and Godot titles earning over $1 million annually rose from two to more than 50 in three years, with W4 (founded by Godot creator Juan Linietsky and core maintainers) providing enterprise tooling and support for studios shipping with the engine. https://venturebeat.com/business/w4-games-raises-18-million-to-accelerate-international-presence
+- Shipped Godot titles (Godot 2022 retrospective, as reported): Brotato, Dome Keeper, and The Case of the Golden Idol are named as hit games published with Godot, showing the engine's production path from indie hit to console and multiplayer ports (Dome Keeper was ported to Godot 4 for multiplayer and console releases). https://dev.to/wlz/why-brotato-bet-on-godot-and-gdscript-the-free-2d-engine-behind-a-1-million-copy-potato-4ip7
+
+**Do**
+1. Treat the .NET build as a CI gate, not a local habit: script `dotnet build` for the project in CI (or as a pre-push check) so a missing `partial`, a wrong lifecycle signature, or a mismatched .NET SDK fails before it reaches another machine. This is the executable version of the Pitfalls list.
+2. Automate the signal-naming check: script a scan of all .cs files for `[Signal]` delegates and fail any delegate whose name does not end with `EventHandler`, and any `EmitSignal` call using a string literal instead of the generated `SignalName.X`.
+3. Automate the struct-mutation check [inference, from the value-type pitfall]: grep for direct component assignment on engine properties (for example, `Velocity.X =`) in .cs files and flag each hit for rewrite to the local-copy pattern from Pattern 1, since the direct form fails to compile or persist.
+4. Keep the GDScript interop boundary explicit: list every C# to GDScript call site (Call/Get/Set/Connect by name) in one audit pass, and verify each target method and property name exists on the GDScript side, since those calls are stringly typed and fail only at runtime.
+
+**Check**
+- `dotnet build` passes clean on a fresh checkout with the Godot .NET editor build and .NET 8 SDK.
+- The signal scan and the struct-mutation scan pass with zero hits.
+- Every interop call site names a method or property that exists on the target script.
+
+**Why**
+Production C# in games is won or lost on the same three things this skill already warns about: the source generator contract (`partial`, `EventHandler`), the value-type discipline, and the stringly-typed interop boundary. Automating those three checks turns the Pitfalls list from advice into a gate, which is what a shipping studio's pipeline does with any language binding.

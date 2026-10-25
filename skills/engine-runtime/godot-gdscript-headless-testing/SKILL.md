@@ -181,6 +181,47 @@ Pitfalls), not a substitute for backing every `await` with a timeout node.
   the job forever — always back an `await` with a timeout node as a fallback, and
   set `timeout-minutes` on the CI step as a backstop.
 
+## AAA studio practice
+
+- **Rare: automate from day one, at every level, and gate check-ins on it.**
+  Rare's GDC 2019 talk on Sea of Thieves describes a framework built so team
+  members could easily create automated tests, multiple test types (unit,
+  integration, and actor tests that treat engine concepts as first-class
+  dependencies), and a practice of requiring tests with every check-in, running
+  a core set before every check-in and longer suites periodically, across
+  platforms and configurations. The project reached about 10,000 tests run
+  remotely via TeamCity.
+  Sources: https://www.gamedeveloper.com/production/-i-sea-of-thieves-i-devs-share-automated-testing-tips-at-gdc-2019 and https://mariusratzka.de/2021/04/10/automated-testing-of-gameplay-featuresin-sea-of-thieves/
+- **BioWare: automation is not free, and the trap is automating the wrong
+  thing.** BioWare's GDC 2012 "Automation Trap" account (summarized by its
+  author) found elaborate automation that ran diligently yet detected
+  laughably few defects, because tests derived from existing test plans could
+  not keep up with designer changes and testers spent their time fighting
+  false positives. The lesson is to automate stable, high-value checks, not
+  to chase coverage for its own sake.
+  Source: https://www.gamedeveloper.com/production/pitfalls-in-automation
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: mirror Rare's tiering in the CI job from Pattern 3: a fast core suite
+  (pure-logic SceneTree tests, Pattern 1) runs on every push and gates the
+  merge; a slower suite (frame/timer/signal tests, Pattern 2, plus the
+  exported-build smoke test) runs nightly. Do not put the slow suite on the
+  merge gate, or developers will bypass it.
+- Do: add a flaky-test rule borrowed from Rare's practice of handling
+  intermittent failures explicitly: a test that fails intermittently is
+  quarantined (moved to the nightly suite with a tracking note) instead of
+  being re-run until green, and a test that has not caught a defect and
+  breaks on every designer change is deleted, per the BioWare lesson, not
+  kept for coverage numbers.
+- Check: after each run, record (1) total tests, (2) pass/fail counts from the
+  runner's own output, (3) wall-clock time, and (4) any quarantined test. If
+  the fast suite exceeds the merge-gate time budget the team set, split it
+  rather than raising the budget silently.
+- Why: Rare's value came from tests that ran constantly and cheaply; BioWare's
+  failure came from tests that cost more to maintain than the defects they
+  found. Tiering plus quarantine keeps the Godot runner in the first category.
+
 ## Related skills
 
 - `godot-gdscript` — the language syntax and node lifecycle this pattern's

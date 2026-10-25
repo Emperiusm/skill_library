@@ -107,6 +107,14 @@ parameters are a consequence, not an input.
 The engine importer reads a contract, not the artist's memory. Exporting the
 manifest with the art is what makes procedural art engine-consumable.
 
+## AAA studio practice
+
+- **Maxis, Spore: let the animation system do the procedural lifting, and expose expressive controls to the animator, not code.** Spore's final procedural animation system was redesigned so it implicitly handled the proceduralism as much as possible and exposed familiar animator controls for the expressive parts, letting a creature with nine legs touching the ground walk naturally and letting animators get emotional expression to read even on wildly shaped creatures; its lead procedural-animation engineer Chris Hecker described the earlier script-based system as too linear for anticipation and intent. Sources: http://uoem.com/forums/threads/ask-maxis-interview-with-spore%E2%80%99s-chris-hecker-answers-here.17329/ and https://www.gamedeveloper.com/audio/developing-i-spore-i-an-oral-sporal-history-10-years-on
+  - **Agent step:** split the rigging engine into two layers: a procedural layer that derives gait, foot placement, and frame counts from the body and movement type (the skill's existing Phase 3 rule), and an expressive layer with a small set of hand-tunable curves (anticipation, overshoot, squash on hit reactions). Check: changing an expressive curve changes the feel of the animation without changing its frame count or foot contacts.
+  - **Agent step (automation):** add a manifest validation script that loads every exported PNG sheet plus its JSON manifest and fails the export if any sheet lacks directions, frames, pivots, or timing, if any pivot falls outside its frame bounds, or if frame counts differ between directions that the movement type says should match. This is the Phase 4 contract made executable.
+  - **Agent step:** add a seed-regression test for creatures: regenerate a fixed seed set, hash each sheet and manifest, and fail the build on any hash change. Check: a rig change that alters old creatures is a deliberate, documented breaking change, not a silent drift.
+- **What this does not change:** seeds as source of truth, rig-derived frame counts, and PNG-plus-JSON export stay. The AAA addition is the two-layer animation split (procedural base, expressive top) and scripted manifest and seed-regression gates.
+
 ## The human method, distilled
 
 1. **Seeds are the source of truth** ("Everything is generated procedurally

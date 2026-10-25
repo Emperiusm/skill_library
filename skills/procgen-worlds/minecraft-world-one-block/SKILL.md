@@ -76,6 +76,16 @@ A separate dimension keeps the fake far-field rendering isolated from real chunk
 **Why**
 Height is the zoom control: the demo proves the LOD pyramid is continuous from ground level to whole-planet view in one unbroken shot.
 
+## AAA studio practice
+
+- **Hello Games, No Man's Sky (GDC 2017): derive everything from a position-seeded chain, and generate continuously in real time.** Innes McKendrick's GDC 2017 talk describes a generation pipeline from voxel-based world generation through polygonization and texturing to population and simulation, built so planets transition seamlessly from space down to interactive terrain. The game's seed design derives each level from the previous one: a founding seed plots stars, pseudorandom numbers from a star's position define its system, and a planet's position seeds its features, so players can revisit the same planet and share it. Sources: https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i- and https://en.wikipedia.org/wiki/Development_of_No_Man's_Sky
+  - **Agent step:** replace ad-hoc sampling with a documented seed chain for the LOD bake: world seed -> region seed (from region coordinates) -> tile seed (from tile coordinates). Check: re-baking one tile from its tile seed alone reproduces the same pixels, without re-baking the world.
+  - **Agent step (automation):** add a seed-regression test: bake a fixed set of tiles from a fixed seed, hash the outputs, and fail the build if any hash changes. This is the LOD equivalent of Hello Games' guarantee that the same seed rebuilds the same world.
+- **Distant Horizons (Minecraft LOD mod): simplify distant terrain, and lower the near-field render distance to pay for it.** Distant Horizons renders distant chunks as simplified low-detail models, letting view distance stretch to hundreds of chunks while the player lowers the vanilla render distance (8-12 chunks recommended) so the simplified far field, not full chunks, carries the horizon. Source: https://blog.curseforge.com/distant-horizons-frequently-asked-questions/
+  - **Agent step:** set an explicit two-budget rule for the demo: a near budget (real chunks / high-res tiles only within a stated radius of the viewer) and a far budget (baked LOD planes/tiles beyond it). Check: raising the far view distance never increases the near budget.
+  - **Agent step:** bake the LOD pyramid offline as a build artifact with a manifest (LOD level, tile bounds, source seed, bake timestamp) instead of generating it during the demo flight. Check: the flight loads tiles from the manifest and reports any tile whose bounds do not tile the world edge-to-edge.
+- **What this does not change:** the one-plane-plus-local-tiles design and the Y=500 handoff stay. The AAA addition is seed-chain discipline and a baked, hashed, manifest-driven pyramid instead of an undocumented bake.
+
 ## The human method, distilled
 1. **Query, don't generate.** If the generator is deterministic, the cheapest representation of the world is a function call, not geometry.
 2. **Average-per-pixel is a legitimate LOD strategy.** Each texel summarizing its footprint keeps the far view honest instead of aliased.

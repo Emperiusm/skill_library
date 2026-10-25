@@ -166,3 +166,19 @@ Procedural cave layouts plus scanned real-rock textures split the problem: ficti
  DEPTH-LIMITED (no captions obtainable: yt_summarize returned no transcript, captions-only fetch blocked by YouTube rate-limit/bot challenge; video download not attempted per hard rule. Verified layer: video metadata, the author's Reddit post 1wbwrns selftext + author comments, Steam listing details cited by the post. "Full depth would require a media download, which needs the operator's explicit approval per the skill's interactive exception.")
 
 ---
+
+## AAA studio practice (refinement 2026-10-24)
+
+Note: the original skill flags most of its numeric claims as prior audit claims, unverified against captions. The AAA practice below does not re-verify those numbers; it adds the production pattern those claims belong to, with sources that are independently verifiable.
+
+**Do**
+1. Stream geometry and textures by visibility, not by loading everything. Epic's Nanite virtualized micropolygon geometry imports film quality source art (hundreds of millions or billions of polygons) and streams and scales it in real time, removing polygon count budgets, polygon memory budgets, and draw count budgets, with no need to bake details to normal maps or manually author LODs. Cave Expedition's inverse Nanite (start coarse, add detail near camera) is the indie mirror of the same principle: resolution follows the camera. Source: https://www.live-production.tv/news/products/epic-games-unveils-first-look-unreal-engine-5.html
+2. Stream textures the same way. id Tech 5's virtual texturing (MegaTexture, used in RAGE) streams textures in as required across whole levels, with megatextures up to 128,000 x 128,000 pixels, freeing RAM otherwise spent loading textures and freeing level design from repeating textures. The lesson for this skill's virtual texturing phase is to budget streaming and disk footprint together: RAGE's implementation cost a very large install footprint, so a virtual texture win on VRAM can lose on install size if pages are not pruned. Source: https://www.bit-tech.net/reviews/gaming/pc/rage-technical-analysis/3/
+3. Treat photogrammetry as raw input that must be optimized, not as shippable geometry. Epic's own demo discussion notes photogrammetry scans are usually far too complicated to bring directly into a game and historically required optimizing, scaling back detail, and authoring LODs; Nanite removes that manual step, but the underlying discipline (measure scan density, decimate or virtualize, verify at play distance) is what this skill's Steam Deck target demands. Source: https://www.pcworld.com/article/399154/epics-unreal-engine-5-demo-looks-stunning-but-how-the-new-tech-works-might-be-more-important.html
+
+**Check**
+- Automated budget gate [inference]: on the Steam Deck class target, log per frame (a) resident texture pages versus total pages, (b) vertex bytes per frame against the three 32-bit integer vertex claim, and (c) frame time with headlamp lighting on. If any stage exceeds budget, the failing stage is named in the log; do not average the budget across stages, since the original skill's point is that each stage is held to its own budget.
+- Keep the unverified flags: any number in Phases 1 to 9 still marked prior audit, unverified must stay marked until it is re-verified from captions or source. Do not promote it because a AAA source describes a similar technique.
+
+**Why**
+AAA render tech is a budgeting discipline, not a feature list. Nanite and MegaTexture both won by moving the budget decision from authoring time (hand LODs, tiled textures) to runtime streaming (visible clusters, visible pages). Cave Expedition's pipeline is the same bet at indie scale, and it only holds if each stage is measured on the weakest target device.

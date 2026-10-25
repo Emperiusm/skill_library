@@ -97,3 +97,23 @@ A symmetric 2v2 removes roster excuses. The decisive win establishes the current
  DEPTH-LIMITED (demo clip, not tutorial; no network architecture, training regimen, reward function, Godot implementation details, or match count given. The experimental method is fully reconstructable from the post text; everything beneath the match description is [inference] or community suggestion.)
 
 ---
+
+## AAA studio practice
+
+Sources:
+- Ubisoft, For Honor (GDC 2025 session, as listed): scripted bots traditionally took around four weeks per hero to define; the production team trained reinforcement-learning bots by self-play against existing scripted bots and themselves, combined RL with behavior trees into hybrid bots, added action masking for designer control, and shipped the hybrid bots after testing them against their scripted counterparts. https://thetoolsmiths.org/2025/03/12/gdc-2025-toolsmiths-guide/
+- Embark Studios, ARC Raiders (GDC talk, as reported by 80 Level): enemy AI blends learned locomotion with behavior trees, with reinforcement learning used for the physics-driven movement problem while higher-level behavior stays authored and controllable. https://80.lv/articles/inside-the-magic-of-machine-learning-that-powers-enemy-ai-in-arc-raiders
+
+**Do**
+1. Keep the scripted baseline as the shipping yardstick, exactly as For Honor did: do not retire Team A when Team B exists; every RL checkpoint must play the symmetric match against Team A and log win/loss, not just loss curves.
+2. Train in simulated time, not real time (the community advice in this skill, now backed by the For Honor self-play pattern): run headless matches at accelerated tick rate with rendering disabled, and log matches per hour as the training throughput metric.
+3. Automate the benchmark harness: script N symmetric matches per checkpoint (same roster, same map, seeds varied), write results to a CSV with checkpoint id, seed, winner, and match length, and fail the checkpoint if it regresses against Team A.
+4. Hybridize before shipping, following both studios: keep behavior-tree roles (CC/debuff into kill) as the outer structure and let the learned policy choose within masked actions, so designers keep an inspectable, tunable layer.
+
+**Check**
+- The harness reproduces the original finding on demand: Team A beats the early Team B checkpoint.
+- Training throughput is measured in matches per hour, and it rises when rendering is disabled and tick rate is accelerated.
+- No checkpoint is promoted on loss curves alone; promotion requires match wins against Team A.
+
+**Why**
+Both production cases converge on the same lesson: learned policies do not replace authored behavior, they are measured against it and then hybridized with it. The symmetric match in this skill is already the right benchmark; automation turns it from a one-off demo into a repeatable gate.

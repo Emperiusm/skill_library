@@ -106,6 +106,56 @@ func load_config() -> Resource:
   to avoid errors on missing files.
 - **Don't put secrets in `.tres`** — they ship in plain text inside the export.
 
+## AAA studio practice
+
+Unity's ScriptableObject is the direct analogue of a Godot Resource (a data
+asset independent of any scene), so its production guidance transfers almost
+one-to-one; no claim is made that a named AAA studio uses Godot Resources.
+
+- **One shared data asset, not a copy per instance.** ScriptableObject
+  guidance stresses that shared data lives as one project asset referenced by
+  many objects, so a designer tweak (e.g. an item's base damage from 10 to 15)
+  propagates everywhere with no recompile and no per-prefab edit, and adding
+  a new item means creating one asset and adding it to a database list, with
+  zero code changes.
+  Source: https://www.slashskill.com/how-to-use-scriptable-objects-in-unity-a-practical-guide-for-game-data/
+- **Separate runtime state from base data.** The same guidance puts base data
+  (damage, speed, scaling formula) on the data asset and runtime state
+  (current level, current health) on the behaviour script, and warns that
+  scaling data assets without that split leads to memory duplication and
+  harder debugging.
+  Source: https://app.studyraid.com/en/read/11767/373123/scaling-scriptable-objects-for-large-projects
+- **Validate data, because data-driven bugs are harder to debug.** General
+  data-driven-design guidance lists data validation as a required practice:
+  data files must be checked for well-formedness and valid values, or invalid
+  data fails at runtime in ways that look like code bugs.
+  Source: https://www.truegeometry.com/api/exploreHTML?query=Data-driven%20design%20in%20game%20development
+
+Agent-executable steps (Do / Check / Why):
+
+- Do: for every Resource type, add a companion validation function (in the
+  Resource script or a tool script) that checks ranges, required fields, and
+  referenced assets (icon not null, `max_stack >= 1`, `id` unique within its
+  database), and run it from the headless test runner on every `.tres` in
+  the database folder. A failing validation fails CI, the same way a failing
+  unit test does.
+- Do: build one database Resource per category (e.g. `ItemDatabase` holding
+  `Array[ItemResource]`, with a `get_by_id()` lookup) instead of scattering
+  `load()` calls through gameplay scripts; gameplay code looks up data by id
+  and never hard-codes stats.
+- Do: enforce the state split: a script that holds a Resource must call
+  `duplicate(true)` before writing any per-instance field (Pattern 3), and
+  runtime progress must go to `user://` via `ResourceSaver`, never back into
+  the shared `.tres`.
+- Check: (1) validation passes on all database assets, (2) grep finds no
+  hard-coded stat literals in gameplay scripts that duplicate a Resource
+  field, (3) no gameplay script writes to a shared Resource without
+  `duplicate()` first.
+- Why: the production win of data assets is designer-speed iteration with
+  zero code changes. That win disappears the moment data is duplicated,
+  mutated in place, or left unvalidated, because then every balance change
+  becomes a code hunt.
+
 ## References
 
 - For threaded/background loading (`load_threaded_request`), `@tool` resources with custom

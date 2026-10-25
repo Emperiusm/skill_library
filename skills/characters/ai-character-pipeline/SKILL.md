@@ -371,3 +371,56 @@ clockwork_blue were not reviewed, so visual claims rest on the comment text).
 sequence; the "about an hour" figure is the author's own estimate for his demo
 iteration; the 10-20 hour and one-day figures are commenter estimates, not
 measurements.
+
+## AAA studio practice
+
+Vendor and studio guidance now converges with this skill's verdict:
+AI generation buys silhouette and proportions; retopology, rig standards,
+and weight-paint validation are what make a game asset. The automation
+upgrade is to turn each of those gates into a scripted check.
+
+- **Tripo game-ready checklist (vendor production guidance).** Tripo's
+  own checklist requires checking an AI rig against the project's rigging
+  standard (bone names, logical hierarchy such as spine > chest >
+  shoulder > arm, fit to mesh), rebuilding the AI rig to the pipeline
+  standard more often than not, auto-skinning then manually refining
+  weights at shoulders, hips, and elbows, testing deformation with
+  extreme poses, and shipping a neutral T-pose/A-pose bind pose with
+  zeroed transform offsets.
+  Source: https://www.tripo3d.ai/blog/explore/game-ready-checklist-for-ai-generated-assets
+- **Reallusion AI-actor pipeline.** A published solo-studio pipeline runs
+  ComfyUI/Claude/Tripo for concept and rough 3D, then Character Creator
+  for production-ready heads and auto-rigging, ZBrush (ZWrap, ZRemesher)
+  for body and garment retopology into clean animatable topology, and
+  Substance Designer/Painter to transfer AI-generated detail onto
+  optimized assets via baking.
+  Source: http://magazine.reallusion.com/post_tag/face-tools/
+
+**Do (agent-executable, automation upgrade)**
+1. Script the Method 1 Phase 4 acceptance gate: after retopology, run an
+   automated mesh audit (no ngons, no non-manifold edges, tri count
+   inside the 5,000-10,000 budget, edge flow present at shoulders/hips/
+   hands by vertex-group inspection) and fail the asset if any check
+   fails. Do not let a pretty render override a failed audit.
+2. Script the Phase 6/7 rig gate from Tripo's checklist: verify bone
+   names against the project's rig standard list, verify a neutral
+   T-pose/A-pose bind pose with zeroed offsets, then run an extreme-pose
+   deformation test (arms overhead, deep squat, twist) and flag clipping
+   or volume loss at shoulders, hips, and elbows for weight-paint fixes.
+3. Automate the Phase 5 material gate: list every material on the asset
+   and require each to resolve to a CC0 or project-owned texture with a
+   sane UV island; any material still carrying an AI-projected texture
+   is flagged for replacement, not repair, per the skill's own rule.
+
+**Check**
+- The audit output (topology, rig standard, extreme-pose test,
+  material provenance) is a single report attached to the asset; an
+  asset without that report is not game-ready, however good it looks.
+- The "70% ready" ceiling is budgeted as a checklist, not a feeling:
+  generation, retopo, UV/material, rig, animation each have a pass/fail.
+
+**Why**
+Studios do not debate whether AI output is "good enough" in the abstract;
+they run it against rig standards, deformation tests, and material
+provenance. Scripting those gates is what converts this skill's hard-won
+thread wisdom into a repeatable pipeline an agent can execute alone.

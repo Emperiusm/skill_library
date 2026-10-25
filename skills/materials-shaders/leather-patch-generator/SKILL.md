@@ -39,6 +39,24 @@ https://www.artstation.com/a/56020938. The single comment is a reaction
 A generator post is a portfolio move: the tool is the artifact. With no
 tutorial content, the workflow cannot go deeper than this.
 
+## AAA studio practice
+
+The author's generator is thin on specifics, so this section adds only general, sourced Substance production practice, clearly labeled as such, not as the author's undisclosed parameters:
+
+- A production leather graph is built from a small node vocabulary: Adobe's leather tutorial builds from Cells 3 and BnW Spots noises, Levels filters, a Height to Normal filter, and a Gradient Map driving base color, with roughness and height derived from the same levels chain. Source: https://www.creativebloq.com/advice/create-a-leather-material-in-substance-designer
+- The generator pattern itself is Adobe's documented SBSAR workflow: expose chosen parameters (seed, grain, crack, wear) from the graph, publish the package as SBSAR, and downstream tools (Unity, Unreal via the Substance plugin) read those exposed parameters and regenerate variants without reopening Designer. Sources: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/manage-parameters/exposing-a-parameter and https://experienceleague.adobe.com/en/docs/substance-3d/ecosystem/game-engines/unity/changing-parameters
+- Naughty Dog's The Last of Us Part I material work (GDC session by Jonathan Benainous and Jared Sobotta) shows the production payoff: procedural generators in Substance Designer, authored once, speed up authoring a large material count across a team. Source: https://www.gdcvault.com/play/1029357/Adobe-Developer-Summit-The-Material
+
+**Do (agent-executable; general practice, not the author's values)**
+1. Expose, at minimum, a Random Seed parameter plus one parameter per visible variation axis (grain scale, crack density, wear amount); label each exposed parameter with a human-readable name, since exposed parameters are edited by other artists, not by the graph author.
+2. Publish as SBSAR and verify in a second application (engine or Substance Player) that changing the seed regenerates a new leather variant that still reads as leather, and that no exposed parameter is static-only (static parameters are hidden after cooking, per Adobe's docs).
+3. Batch-check: render the generator at 3 seeds and confirm grain, cracks, and pores survive in each variant, per the skill's existing Check, before calling the generator done.
+4. Keep the graph readable (grouped, labeled nodes), per the same cleanliness rule the realistic-rust skill documents from production practice; a generator other artists cannot open is not a reusable tool.
+
+**Check**
+- The SBSAR exposes seed plus variation parameters, regenerates distinct valid variants, and opens readably in Designer.
+- [Inference, labeled]: none of the above parameter names or values are claimed to be the original author's; they are the minimum set a production generator needs.
+
 ## Phase 1: Author a procedural leather material [inference: reconstruction]
 
 ## The human method, distilled

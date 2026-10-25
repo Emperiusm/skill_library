@@ -171,3 +171,61 @@ workflow.
   reference if one ever appears (post-production bucket, VFX side).
 - Watchlist row added 2026-10-20: "Greenscreen plate production library
   (VFXAssets by Compositing Academy)".
+
+## AAA studio practice
+
+Production keying is a pipeline, not a single keyer node. The studio
+pattern is: denoise, build a clean plate, pull a core key plus a separate
+edge/detail key, despill, and garbage-matte everything that is not the
+subject. The plate library in this skill is valuable precisely because its
+kept imperfections exercise every one of those stages.
+
+- **Foundry Nuke IBK workflow.** Foundry's reference guide defines the IBK
+  keyer as driven by a clean plate (IBKColor builds it from the
+  blue/greenscreen image; IBKGizmo pulls the key), recommends EXR for any
+  prerendered IBKColor output because it preserves full float data, and
+  prescribes viewing both nodes side by side while adjusting until the
+  clean plate shows nothing but background colors.
+  Source: https://thefoundry.s3.amazonaws.com/products/nuke/releases/16.0v9/Nuke16.0v9_ReferenceGuide.pdf
+- **Additive keying for fine detail (Keheka).** An additive key does not
+  replace IBK, Keylight, or Primatte; it complements them as a support key
+  that catches what standard keyers miss: fine hair, motion-blurred edges,
+  defocused edges, dust, and transparency. It must be masked with a
+  garbage matte, because it also picks up shadows, tracking markers,
+  C-stands, and other plate garbage.
+  Source: https://www.keheka.com/additive-keying-techniques-in-nuke/
+
+**Do (agent-executable, automation upgrade)**
+1. Extend Phase 5 into an explicit, scriptable Nuke node chain an agent
+   can build and check: Read (plate, EXR where available) > Denoise >
+   IBKColour (screen type green, tune Erode/Size/Darks until the clean
+   plate shows only screen) > IBKGizmo (core key) > additive/multiply key
+   branch for hair and motion-blurred edges > Keylight or despill pass >
+   garbage-matte Roto masking C-stands, tracking markers, and rigging >
+   Merge over the background. Save this chain as a reusable Nuke toolset
+   so every plate in the library runs the same graph.
+2. Make the kept imperfections into graded exercises with checks: for a
+   motion-blur plate, the acceptance check is hair/edge detail surviving
+   in the additive-key branch, not in the core key; for a defocus plate,
+   the check is a soft edge matte with no hard halo; for an
+   actor-crosses-C-stand plate, the check is a garbage matte that removes
+   the stand without eating the actor.
+3. Automate plate QC before keying: script a per-plate report (resolution,
+   bit depth, marker count visible, blur/defocus flag) so the 150+ clip
+   library can be filtered by difficulty (clean, blur, defocus, crossing)
+   instead of browsed by hand.
+
+**Check**
+- Every keyed plate has a core key, a detail key, a despill pass, and a
+  garbage matte; a plate missing any stage is incomplete, not "good
+  enough."
+- The clean plate contains only screen color before the key is judged;
+  judging a key against a dirty clean plate blames the keyer for a prep
+  failure.
+
+**Why**
+The library's thesis (imperfection is the curriculum) only pays off if
+the student has the full production chain to meet each imperfection with.
+A single-keyer workflow teaches the easy case even on hard plates; the
+core-plus-detail-plus-garbage-matte chain is what turns a blurred plate
+into a solvable problem.

@@ -148,3 +148,22 @@ func _physics_process(delta: float) -> void:
 - `godot-animation` — driving sprite/skeletal animation from movement state.
 - `camera-systems` — follow camera, deadzone, and look-ahead that track this character.
 - `platformer` / `input-systems` — full genre template and rebindable input.
+
+## AAA studio practice
+
+Sources:
+- Maddy Makes Games, Celeste (designer Maddy Thorson's forgiveness write-up): the shipped platformer widens timing and positioning windows in the player's favor with coyote time (jump still works shortly after leaving a ledge), jump buffering (a press shortly before landing fires on the landing frame), corner correction, and lift momentum storage. https://maddymakesgames.com/articles/celeste_and_forgiveness/
+- Game-feel practice in Godot (Manuel Sanchez, with Godot code): coyote time around 0.1 seconds and an input buffer around 0.12 seconds are the paired timers that solve the same "player was almost on time" problem from both sides, and values should be settled by playtesting feel, not by theory. https://www.manuelsanchezdev.com/blog/game-feel-principles-animated-godot
+
+**Do**
+1. Add jump buffering alongside the existing coyote-time pattern (Pattern 4): store a buffer timer on jump press, and fire the jump when either the buffer is alive and the body lands, or coyote time is alive. Agent-executable step: implement both timers as exported variables (coyote_time, jump_buffer) so tuning needs no code edit.
+2. Automate the forgiveness test: script a headless playtest that presses jump N frames after leaving a ledge and N frames before landing, for N across the window, and logs which presses produce a jump. The pass criterion is that presses inside the window always jump and presses outside never do.
+3. Add corner correction as a follow-up pattern [inference from Celeste, not in the original skill]: when a jump bonks a corner, nudge the body sideways by a small amount instead of stopping it dead, and verify with the same headless test at ledge corners.
+4. Tune by feel, Celeste style: record a short playtest with each timer value, keep the value only if testers report the jump feeling fair, and log the chosen values in the skill's pattern comments.
+
+**Check**
+- Jump buffering and coyote time are both present, both exported, and both covered by the headless timing test.
+- The timing test output lists the exact frame window that works, so a regression is visible as a changed window, not a vague "feels off."
+
+**Why**
+Celeste's lesson is that a platformer controller is judged by its forgiveness windows, not by its physics accuracy. The existing skill already has coyote time; the AAA addition is the paired buffer, the automated timing test, and tuning by playtest rather than by constant.

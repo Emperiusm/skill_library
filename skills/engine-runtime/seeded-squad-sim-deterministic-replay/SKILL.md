@@ -178,3 +178,24 @@ inference.
 
 **Depth status:** PARTIAL (full post text + all 9 comments with the complete
 decision architecture quoted; no code, no RNG/hash details, no thresholds).
+
+## AAA studio practice
+
+Sources:
+- Ensemble Studios, Age of Empires (GDC 2001, Bettner and Terrano, as summarized): multiplayer used deterministic lockstep, sharing only commands (not game state), with all clients simulating identically from a pre-agreed RNG seed; out-of-sync detection hashed relevant game data per turn and compared hashes across clients. https://samu.space/Age-of-Empires-and-networking/
+- Wube Software, Factorio (official forums/wiki): multiplayer uses deterministic lockstep, sending only user inputs; every client must simulate every tick identically, and any slight difference is a desync, reported with a full state comparison (desync report) so the divergence can be bisected. https://wiki.factorio.com/index.php?title=Desynchronization&direction=prev&oldid=199235
+- Wube Software, Factorio (developer guidance on desyncs): functions that are not safe for the lockstep simulation must be marked as such, and any data that is not part of the shared game state must never leak into simulation decisions. https://forums.factorio.com/viewtopic.php?p=399097
+
+**Do**
+1. Adopt the Age of Empires/Factorio hash cadence: hash the full simulation state (or the event log) every tick or every N ticks, not just at run end, and write the hash sequence to a file alongside the seed.
+2. Automate replay checking as a command, not a manual re-run: `replay --seed <seed> --compare <hash-file>` must exit non-zero on the first tick whose hash diverges, printing the tick and the per-system stream that diverged.
+3. Mark non-deterministic sources as forbidden in simulation code (wall clock, unseeded RNG, platform float behavior that differs across browsers) and add a lint or code-review checklist item for it, following the Factorio rule that unsafe functions must be marked.
+4. Automate the per-system isolation test: for each system stream, re-roll only that stream and confirm no other system's log entries change; this is the executable version of the Phase 2 check.
+
+**Check**
+- Two runs of the same seed produce identical hash sequences, tick by tick.
+- A deliberately injected nondeterministic read (for example, Date.now() in a decision) is caught at the first diverging tick, with the system named.
+- The replay command runs headless with no rendering, so determinism checks are fast enough to run on every change.
+
+**Why**
+In production lockstep games, determinism is not a property you assert, it is a hash you compare every turn, with a report that localizes the divergence. This skill's hashed event log is the same mechanism; the AAA addition is the cadence (per tick), the automated compare command, and the forbidden-source marking.

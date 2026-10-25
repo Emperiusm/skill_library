@@ -158,3 +158,22 @@ Nuke-style assembly; no transcript was available (the video's narration was
 not recoverable in this run), the author names no sim solver or exact
 render settings, and none were invented. A transcript would add the
 per-stage narration the frames imply.
+
+## AAA studio practice
+
+**Do**
+1. Keep the labeled-stage structure, but make each stage a separately cacheable comp branch: in Nuke, write each panel (Base, Tower, Lava, Eye) to its own disk cache node so a reviewer can toggle a panel without recooking the whole tree. Pixomondo's Hugo opening shot used the same discipline at feature scale, building the Paris environment in CG and engineering the camera and stereo reprojection in Nuke before passing the math to Maya artists for CG elements, so the comp, not a single render, was the reviewable document.
+2. Automate the cache budget from Phase 2: before simulating, run a script that sums per-sequence cache estimates (frames x bytes per frame x sequences) and writes the total to the shot's budget note, failing the submit if the total exceeds the disk quota. This turns the 100 GB per smoke sequence figure into a gate, not a surprise.
+3. Treat the breakdown export as a build target: one command that renders every labeled panel and assembles the breakdown grid, with panel completeness checked by file existence and frame count, not by eye.
+
+**Check**
+- Each stage branch can be disabled and re-enabled independently, and its cache file exists on disk with the expected frame range.
+- The budget script output is stored with the shot, and the breakdown grid rebuilds from cache without re-simulating.
+
+**Why**
+Large-environment work at Weta on The Lord of the Rings trilogy was staged the same way in physical form: 68 miniatures, called bigatures, including an 18-foot Barad-dur for a supposedly 3,000-foot tower, were built once at high detail so motion-control cameras could fly through them repeatedly. The lesson transfers directly: build the reviewable, reusable stage once, then reuse it for every shot and breakdown panel instead of rebuilding per view.
+
+Sources:
+- https://www.foundry.com/ja/insights/film-tv/hugo
+- https://en.wikipedia.org/wiki/Special_effects_of_The_Lord_of_the_Rings_film_trilogy?oldid=415748955
+

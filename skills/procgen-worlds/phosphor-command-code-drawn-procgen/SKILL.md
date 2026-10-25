@@ -118,6 +118,14 @@ Named failure mode from the community: procedural output without applied
 human taste reads as filler, and "spammy" posting of raw output actively
 hurts reception.
 
+## AAA studio practice
+
+- **Valve / Turtle Rock, Left 4 Dead: generate the operation's pacing, not just its map, with a director that tracks player state.** Left 4 Dead's AI Director monitors each survivor's emotional intensity, builds toward peaks by spawning hordes and specials when intensity is low, then deliberately enforces quiet valleys for recovery, and also modulates item placement and music, so the same campaign stays tense on repeat runs. Valve's developer commentary adds that a fully procedural, on-the-fly population approach replaced weeks of hand-placed spawn iteration with a roughly five-minute process that tolerated map changes and played better. Sources: https://www.gamedeveloper.com/design/the-discomfort-zone-the-hidden-potential-of-valve-s-ai-director and https://left4dead.fandom.com/wiki/Developer_Commentary_(Left_4_Dead)
+  - **Agent step:** give every generated operation a pacing budget, not just a map type: a peak/valley curve over the operation's expected length (for example, quiet insertion, one peak, recovery valley, final peak). The contract still names the map type; the director now also names the pacing shape. Check: two operations on the same map type with different pacing budgets play differently even if their terrain is similar.
+  - **Agent step (automation):** add a director log that records, per operation, the intensity signal it tracked (squad health, time since last contact, resources spent), each spawn/relief decision it made, and the resulting peak/valley timestamps. Check: replaying the log reproduces the same decisions from the same inputs; a director that cannot explain a spawn is not shippable.
+  - **Agent step:** make the persistent base layer feed the director: base upgrades unlock new contract types or shift the pacing budget (a stronger base earns harder peaks), and operation outcomes feed base resources. Check: the base state before and after an operation is logged as a delta, so a player can see exactly what the operation bought the base.
+- **What this does not change:** code-drawn visuals and the contract-names-the-map-type frame stay. The AAA addition is a director with a logged pacing budget, turning "generate operations" from map generation into experience generation.
+
 ## The human method, distilled
 
 1. **Generate operations, not terrain.** The contract names the map type;

@@ -122,3 +122,26 @@ hardware: **RTX 5070 Ti**.
 **Depth status:** PARTIAL (full post text + all 7 comments; the tutorial
 page's workflow, assets, and settings were not retrieved, and the native
 clip has no captions).
+
+## AAA studio practice
+
+Reference-to-video swapping is the low-budget cousin of a practice AAA/VFX houses run at full scale: keep the captured performance, replace the appearance, and supervise rather than re-animate. On The Irishman, ILM built Flux, which combined on-set HDRI and LIDAR capture to solve camera, lighting, and colour data and then deformed digital doubles frame by frame to match the captured performances, with no facial animator in the credits because the director did not want the performances changed; ILM additionally ran an AI Face Finder over a reference library of the actors at target ages as a sanity check on rendered shots. DNEG's Brahma division acquired Metaphysic (the team behind widely circulated AI face-swap demonstrations) to build a unified AI-driven content capability, and Pinscreen's neural-rendering face work was used for de-aging across multiple seasons of Manifest, where consistency over long-form storytelling, not a single good frame, was the requirement. The transferable discipline is the same in all three cases: the reference library is curated and permissioned, the source performance is never re-animated, and consistency is checked across a sequence, not a still.
+
+- Source: https://thehollywoodfeature.com/how-ai-de-aging-digital-face-replacement-vfx-works/
+- Source: https://vitrina.ai/blog/impact-of-ai-on-special-effects-in-film-tv/
+- Source: https://fliphtml5.com/kolectiv/ulvm/ (Pinscreen/Manifest account; secondary summary, treat its figures as reported, not verified)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Before generating, build a reference pack and freeze it: every reference image used, its generator (Krea 2 / Qwen Image), and the character traits it is meant to pin (face, hair, costume, proportions). A swap whose references change mid-iteration cannot be debugged.
+2. Automate the two author-reported failure checks as a shot list, not a vibe check: extract frames from (a) the fastest-motion 2 seconds of the source and (b) the widest shot in the take, and inspect exactly those frames for smearing and facial-detail loss before accepting any take.
+3. Log every take with: source clip, reference-pack version, prompt version, and pass/fail on both checks. A take without that row is not a candidate for delivery, however good it looks in a thumbnail.
+
+**Check**
+- Fast-motion frames: no smearing on hands, face, or costume edges.
+- Wide-shot frames: facial detail still reads; if it does not, the take fails even if close-ups pass.
+- Reference pack is versioned and unchanged between the accepted take and any re-render of it.
+
+**Why**
+- ILM's and DNEG's lesson is that appearance replacement is a sequence-consistency problem with a curated reference library, not a per-frame beauty problem. The two failure modes the author reports (smearing, wide-shot detail loss) are exactly where sequence consistency breaks first, so they become the automated gate.

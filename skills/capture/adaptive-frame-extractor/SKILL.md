@@ -120,3 +120,54 @@ Background masking is a pipeline step, not a quality score: it changes what SfM 
  FULL (post feature list is complete, comment thread is substantive; the native clip's screen-recorded steps are unseen, but the reconstruction is grounded in what the creator and commenters stated).
 
 ---
+
+## AAA studio practice
+
+Production capture teams treat frame selection as a coverage contract, not a
+sampling rate, and the numbers below are theirs, not this skill's defaults.
+
+- **Epic/Capturing Reality overlap targets.** Epic's RealityCapture guidance
+  for simulation creators asks for 80% forward/backward and side/height
+  overlap between images, the subject covering 60% or more of the frame, and
+  every point of the subject visible in at least two images, with motion
+  blur, shallow depth of field, and in-camera stabilization avoided.
+  Source: https://forums.unrealengine.com/t/photogrammetry-recommendations-for-simulations-creators/1387350
+- **Happy Mushroom's scan-to-Unreal pipeline.** Happy Mushroom shoots
+  photogrammetry stills (Sony a7R IV, 60 MP, 90 mm prime for controlled
+  props, plus drone and Leica RTC360 lidar where needed), color-corrects in
+  Lightroom before the solve because RealityCapture matches on color values,
+  then aligns and builds a ~40M-triangle model in RealityCapture before
+  simplifying for Unreal.
+  Source: https://beforesandafters.com/2020/11/12/getting-photogrammetry-assets-into-unreal-a-guide-from-happy-mushroom/?amp
+
+**Do (agent-executable, automation upgrade)**
+1. After extraction, compute an overlap report before any COLMAP run:
+   run COLMAP's sparse reconstruction on the extracted set, then count
+   registered cameras and mean track length. Treat "registered cameras <
+   95% of extracted frames" or "mean track length < 3 views" as a failed
+   coverage contract, not a solver setting to tune.
+2. Encode the Epic targets as extraction checks: flag any region whose
+   consecutive-frame overlap (estimated from matched features, not from
+   time spacing) falls below 60%, and flag any frame where the subject
+   fills under 60% of the frame for manual review.
+3. Automate the blur triage the original skill leaves to registration:
+   score every extracted frame with a Laplacian-variance sharpness metric
+   (e.g. `cv2.Laplacian(gray, cv2.CV_64F).var()`), write the score into the
+   existing per-frame CSV as a new `sharpness` column, and sort weakest
+   first for the human curation pass. Keep it advisory, per Phase 4: never
+   auto-delete on sharpness alone, because a blurry frame that still
+   registers costs only runtime.
+
+**Check**
+- The CSV now carries sharpness alongside selection reason, so a failed
+  reconstruction can be traced to coverage (registered-camera rate, track
+  length) or to quality (sharpness), not guessed at.
+- Any region below the 60% overlap floor is re-shot or re-extracted
+  denser before the long run, matching Phase 5's warn-before-COLMAP rule.
+
+**Why**
+Studios pay for coverage up front because a plausible-looking but
+under-constrained reconstruction is the expensive failure: it looks finished
+while carrying disconnected components and local distortion. The overlap
+contract plus an advisory sharpness score turns the extractor's motion
+model into a verifiable gate.

@@ -86,6 +86,26 @@ neighbors are defined by the model, not the unwrap.
 inherent, not a bug. The filter is a finishing move, not an interactive
 one. The author's honesty about the cost is the documentation: plan for it.
 
+## AAA studio practice
+
+The 3D-space blur is a special case of production seam practice, and the general rules from Adobe's own support channels and production forums strengthen the skill's checks:
+
+- Adobe's support answer on UV seam artifacts: hide seams where possible, use tri-planar projection where UV projection fails, and match UV padding to the baker's dilation setting (Substance Painter's default dilation is 32 pixels), because seams that survive in the material view (not just the normal view) are the ones that matter. Source: https://community.adobe.com/questions-59/artifacts-on-uv-seams-related-to-height-628252
+- Adobe's support answer on normal seams across UV islands: a visible seam in the normal view alone is expected (tangent-space orientation differs per island) and is not a defect; judge by the material view, and check the normal format (DirectX vs OpenGL) when seams appear only in a third-party app. Source: https://community.adobe.com/questions-59/normal-issue-in-different-uv-islands-in-substance-painter-629097
+- Production forum practice (Polycount) for the same artifact class: straighten UV borders and align them to the pixel grid, move seams to unobtrusive areas, and use edge padding sized to the lowest mip level. Source: https://polycount.com/discussion/comment/2782327/
+
+**Do (agent-executable, adds to Phases 1-3)**
+1. Before applying the filter, run the seam triage: check the material view, not the normal view, and record which seams are actually visible in the material; only those seams get the filter, so detail elsewhere is never softened.
+2. Set UV padding/dilation to match the export resolution's lowest mip (start from the 32-pixel default and scale with texture size), and place seams on hard edges or hidden areas first; the filter is the fix for seams that survive that placement, not a substitute for it.
+3. Add a before/after seam-band measurement: screenshot the seam region at fixed camera and lighting before and after the filter, and confirm the artifact band shrinks while non-seam detail at a fixed distance from the seam stays sharp; if detail loss is unacceptable, mask the filter to seam neighborhoods, per the skill's Phase 2 check.
+4. Automate the performance fallback from Phase 3: bake the filter result to a static layer and disable the live filter whenever editor brush latency is observed, and keep the baked layer named so the live filter can be re-enabled for rework.
+
+**Check**
+- Only material-visible seams are filtered, padding matches dilation, and the before/after pair shows seam reduction without collateral softening.
+
+**Why**
+- Production seam work is triage first (which seams matter, where they sit, how much padding they get) and filtering second; a filter applied blindly to every seam costs detail and performance for no gain.
+
 ## The human method, distilled
 
 1. Fix the seam at the sampling level, not with a wider 2D kernel: redefine

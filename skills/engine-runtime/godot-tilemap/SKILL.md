@@ -116,6 +116,26 @@ func find_spawns() -> Array[Vector2i]:
   physics layer with a polygon, and that the TileSet's physics layer mask matches your
   bodies.
 
+## AAA studio practice
+
+Production tile work treats the tile grid as data, not just art. Two shipped-title sources anchor this:
+
+- Motion Twin's Dead Cells level design (Sébastien Bénard, via Deepnight): levels are built from hand-authored room tiles arranged by a concept graph per biome (entrance, exit, special rooms, then combat/exploration tiles), and only then handed to a procedural generator that tests each candidate room against the graph's constraints (entrance count, type, position). Source: https://deepnight.net/tutorial/the-level-design-of-dead-cells-a-hybrid-approach/comment-page-1/
+- The Tiled editor workflow behind shipped 2D titles including Stardew Valley and Shovel Knight: maps are authored as tile layers with per-tile properties, and collision is driven by tile properties rather than by painting separate collision art. Source: https://teamtreehouse.com/library/game-development-with-phaser/create-a-level-using-tiled
+
+**Do (agent-executable, adds to the core workflow)**
+1. Before painting, declare the tile-data contract in the TileSet: one custom data layer per gameplay query the code will make (for example `damage`, `is_spawn`, `is_ladder`), with its type fixed, so no script reads a layer that does not exist.
+2. Mirror the Dead Cells split: author hand-made room/pattern scenes first, then write the generator to place them under graph constraints, never let the generator invent room shapes free-form.
+3. Add a validation script that runs before every playtest and fails loudly on: a TileMapLayer with `collision_enabled` true but a tile with no physics polygon; a script reference to a custom data layer name missing from the TileSet; a terrain set whose peering bits are incomplete (the skill's existing Pitfalls case).
+4. Keep one shared external `.tres` TileSet per tileset, as the core workflow already requires, so a data-layer rename propagates to every level instead of silently breaking one.
+
+**Check**
+- The validation script reports zero missing-data-layer references and zero collision-enabled layers with polygon-less tiles.
+- A generated level still satisfies its concept graph: entrance and exit present, special rooms present, room count within the graph's bounds.
+
+**Why**
+- In production, the tilemap is the level database. When gameplay reads custom data, a missing layer is a runtime error, not an art bug, so the contract is checked mechanically, not by eye.
+
 ## References
 
 - For TileSet setup (atlas sources, physics/navigation/custom-data layers, terrain

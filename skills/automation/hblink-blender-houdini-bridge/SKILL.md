@@ -168,3 +168,26 @@ Alembic (.abc), VDB, Mixamo clips (character transfer), free test rig
 
 **Depth status:** FULL (author's post text + 22 technical comments with
 quoted numbers; no transcript exists for native Reddit video).
+
+## AAA studio practice
+
+HBLink's live-for-iteration, cache-for-replay split is the same split AAA pipelines standardise on, with USD as the interchange layer. SideFX's Solaris documentation frames USD (via LOPs) as the infrastructure that lets multiple departments work on the same scene non-destructively, rather than just another geometry format like Alembic or OBJ, and SideFX's own Solaris workflow series builds a reusable scene template (import, lighting, Karma render) plus a clean USD asset library with variants and purpose settings. In shipped games, Embark Studios' THE FINALS team built its destructible buildings with a modular Houdini toolset (Building Creator: interoperable HDAs assembled from a shared blockout mesh, reused later for ARC Raiders' Buried City map), and Ubisoft's Far Cry 5 team ran Houdini Engine tools inside its game editor for biomes, freshwater, cliffs, and vegetation. The bridge lesson: the live link is for iteration speed, but the shippable artifact is a standard, versioned cache (Alembic/VDB/USD plus a rebuild sidecar), never a live socket session.
+
+- Source: https://www.sidefx.com/docs/houdini/solaris/jumpstart.html
+- Source: https://80.lv/articles/how-embark-studios-built-procedural-environments-for-the-finals-using-houdini
+- Source: https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the live-to-cache handoff: when a sim is declared final, run a scripted cache step that writes the Alembic/VDB files, the JSON material-rebuild sidecar, and a manifest listing every file with frame range and format, then re-imports from the cache (not the live link) and diffs object counts, UV presence, and material names against the live scene. A cache that has never been re-imported is unverified.
+2. Automate the Phase 4 RBD recipe as the default for fracture caches: rest-frame fracture cache once, per-frame transform/velocity point file thereafter, and a playback check that instances the point file in Blender. Log the per-frame size versus the equivalent Alembic hierarchy cache; the 35x figure in this skill is the author's test result, so measure your own rather than quoting it.
+3. Automate attribute selection: maintain an explicit attribute/group allow-list per transfer in a text file next to the cache, and have the transfer step log which attributes were sent. Unlisted attributes must not ride along silently.
+
+**Check**
+- Cache manifest exists; re-import from cache matches live scene on counts, UVs, and materials.
+- RBD playback uses rest + point file; size comparison logged.
+- Attribute log matches the allow-list; nothing unselected was transferred.
+
+**Why**
+- A live bridge optimises for iteration, which is the opposite of reproducibility. Studios ship caches plus sidecars because a cache can be versioned, re-imported, and diffed, while a socket session cannot be replayed.
