@@ -93,6 +93,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`substance-painter-3dspace-blur-filter`](materials-shaders/substance-painter-3dspace-blur-filter/SKILL.md) | Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map. |
 | [`toon-2d-in-3d-dynamic-texture`](materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md) | Render a classic DBZ cel look in 3D: fake light direction with a target point instead of a real light, drive drawn cel shapes on a dynamic texture, verify with extreme-zoom closeup animation. |
 | [`ue58-gradient-animated-materials`](materials-shaders/ue58-gradient-animated-materials/SKILL.md) | Build four gradient-driven animated materials in Unreal Engine 5.8's Material Editor (matrix-code streaks, dissolve-swap between two textures. |
+| [`ultratex-comfyui-ai-texturing`](materials-shaders/ultratex-comfyui-ai-texturing/SKILL.md) | Texture any untextured mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs; GGUF workflow for 6 to 8 GB cards, Klein BASE model required. |
 
 ## Engine and runtime (`engine-runtime/`)
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="97 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="98 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,13 +31,13 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">97 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">98 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 97 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+  <input id="search" type="search" placeholder="Search 98 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
 <section><h2>Engine and runtime <span class="count">26</span></h2>
 <div class="grid">
 <article class="card" data-search="ascii-raymarched-world-grid build a single-file raymarched web game world on a 2048x2048 one-byte-per-cell material grid: place settlements first, bake roads with a dijkstra slope-cost path search, then render every feature as a dumb per-ray...">
@@ -357,6 +357,41 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
 </article>
 </div></section>
+<section><h2>Materials and shaders <span class="count">8</span></h2>
+<div class="grid">
+<article class="card" data-search="handdrawn-foliage-alpha-cards hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in photoshop, masked-opacity material in-engine for crisp hard leaf edges. no separate leaf geometry unless you simulate real...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/handdrawn-foliage-alpha-cards/SKILL.md">handdrawn-foliage-alpha-cards</a></h3>
+  <p>Hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in Photoshop, masked-opacity material in-engine for crisp hard leaf edges. No separate leaf geometry unless you simulate real...</p>
+</article>
+<article class="card" data-search="leather-patch-generator generate leather patch materials with a parametric substance generator. trigger when authoring reusable material generators.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/leather-patch-generator/SKILL.md">leather-patch-generator</a></h3>
+  <p>Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators.</p>
+</article>
+<article class="card" data-search="procedural-building-shader fill a cyberpunk skyline with a procedural building shader instead of geometry. trigger when a city must scale cheaply.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/procedural-building-shader/SKILL.md">procedural-building-shader</a></h3>
+  <p>Fill a cyberpunk skyline with a procedural building shader instead of geometry. Trigger when a city must scale cheaply.</p>
+</article>
+<article class="card" data-search="realistic-rust-materials author realistic rust as a layered procedural material system with exposed parameters. trigger when weathering materials in substance.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/realistic-rust-materials/SKILL.md">realistic-rust-materials</a></h3>
+  <p>Author realistic rust as a layered procedural material system with exposed parameters. Trigger when weathering materials in Substance.</p>
+</article>
+<article class="card" data-search="substance-painter-3dspace-blur-filter remove uv seam artifacts in substance painter with a custom 3d-space blur filter that samples neighbors by 3d proximity from a baked position map instead of uv adjacency; bake the result down on low-end machines...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/substance-painter-3dspace-blur-filter/SKILL.md">substance-painter-3dspace-blur-filter</a></h3>
+  <p>Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map instead of UV adjacency; bake the result down on low-end machines...</p>
+</article>
+<article class="card" data-search="toon-2d-in-3d-dynamic-texture render a classic dbz cel look in 3d with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md">toon-2d-in-3d-dynamic-texture</a></h3>
+  <p>Render a classic DBZ cel look in 3D with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...</p>
+</article>
+<article class="card" data-search="ue58-gradient-animated-materials build four gradient-driven animated materials in unreal engine 5.8&#x27;s material editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ue58-gradient-animated-materials/SKILL.md">ue58-gradient-animated-materials</a></h3>
+  <p>Build four gradient-driven animated materials in Unreal Engine 5.8&#x27;s Material Editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...</p>
+</article>
+<article class="card" data-search="ultratex-comfyui-ai-texturing texture any untextured 3d mesh locally in comfyui with ultratex: one reference image in, 2k pbr textures out, free, on 6 to 16 gb gpus. trigger when texturing a mesh without a paid service or a large gpu.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ultratex-comfyui-ai-texturing/SKILL.md">ultratex-comfyui-ai-texturing</a></h3>
+  <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
+</article>
+</div></section>
 <section><h2>Automation and pipelines <span class="count">7</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
@@ -386,37 +421,6 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="steam-publish publish or update a game on steam with steamworks and steampipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release checklists. use for steam publishing...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/steam-publish/SKILL.md">steam-publish</a></h3>
   <p>Publish or update a game on Steam with Steamworks and SteamPipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release checklists. Use for Steam publishing...</p>
-</article>
-</div></section>
-<section><h2>Materials and shaders <span class="count">7</span></h2>
-<div class="grid">
-<article class="card" data-search="handdrawn-foliage-alpha-cards hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in photoshop, masked-opacity material in-engine for crisp hard leaf edges. no separate leaf geometry unless you simulate real...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/handdrawn-foliage-alpha-cards/SKILL.md">handdrawn-foliage-alpha-cards</a></h3>
-  <p>Hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in Photoshop, masked-opacity material in-engine for crisp hard leaf edges. No separate leaf geometry unless you simulate real...</p>
-</article>
-<article class="card" data-search="leather-patch-generator generate leather patch materials with a parametric substance generator. trigger when authoring reusable material generators.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/leather-patch-generator/SKILL.md">leather-patch-generator</a></h3>
-  <p>Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators.</p>
-</article>
-<article class="card" data-search="procedural-building-shader fill a cyberpunk skyline with a procedural building shader instead of geometry. trigger when a city must scale cheaply.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/procedural-building-shader/SKILL.md">procedural-building-shader</a></h3>
-  <p>Fill a cyberpunk skyline with a procedural building shader instead of geometry. Trigger when a city must scale cheaply.</p>
-</article>
-<article class="card" data-search="realistic-rust-materials author realistic rust as a layered procedural material system with exposed parameters. trigger when weathering materials in substance.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/realistic-rust-materials/SKILL.md">realistic-rust-materials</a></h3>
-  <p>Author realistic rust as a layered procedural material system with exposed parameters. Trigger when weathering materials in Substance.</p>
-</article>
-<article class="card" data-search="substance-painter-3dspace-blur-filter remove uv seam artifacts in substance painter with a custom 3d-space blur filter that samples neighbors by 3d proximity from a baked position map instead of uv adjacency; bake the result down on low-end machines...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/substance-painter-3dspace-blur-filter/SKILL.md">substance-painter-3dspace-blur-filter</a></h3>
-  <p>Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map instead of UV adjacency; bake the result down on low-end machines...</p>
-</article>
-<article class="card" data-search="toon-2d-in-3d-dynamic-texture render a classic dbz cel look in 3d with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md">toon-2d-in-3d-dynamic-texture</a></h3>
-  <p>Render a classic DBZ cel look in 3D with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...</p>
-</article>
-<article class="card" data-search="ue58-gradient-animated-materials build four gradient-driven animated materials in unreal engine 5.8&#x27;s material editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ue58-gradient-animated-materials/SKILL.md">ue58-gradient-animated-materials</a></h3>
-  <p>Build four gradient-driven animated materials in Unreal Engine 5.8&#x27;s Material Editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...</p>
 </article>
 </div></section>
 <section><h2>Capture and reconstruction <span class="count">5</span></h2>
@@ -453,7 +457,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-10-24 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-10-25 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');

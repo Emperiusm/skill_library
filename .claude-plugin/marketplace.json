@@ -82,6 +82,7 @@
         "./skills/materials-shaders/substance-painter-3dspace-blur-filter",
         "./skills/materials-shaders/toon-2d-in-3d-dynamic-texture",
         "./skills/materials-shaders/ue58-gradient-animated-materials",
+        "./skills/materials-shaders/ultratex-comfyui-ai-texturing",
         "./skills/no-tooling/ragnarok-woe-gameplay",
         "./skills/no-tooling/topology-rendering-advice",
         "./skills/procgen-worlds/branch-propagation-tree-generator",
@@ -226,7 +227,8 @@
         "./skills/materials-shaders/realistic-rust-materials",
         "./skills/materials-shaders/substance-painter-3dspace-blur-filter",
         "./skills/materials-shaders/toon-2d-in-3d-dynamic-texture",
-        "./skills/materials-shaders/ue58-gradient-animated-materials"
+        "./skills/materials-shaders/ue58-gradient-animated-materials",
+        "./skills/materials-shaders/ultratex-comfyui-ai-texturing"
       ]
     },
     {
