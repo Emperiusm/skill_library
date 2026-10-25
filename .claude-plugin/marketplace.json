@@ -20,6 +20,7 @@
         "./skills/ai-video/claude-cinematic-trailer",
         "./skills/ai-video/flux-3-klein-comfyui-19-workflows",
         "./skills/ai-video/konte-multishot-ai-video",
+        "./skills/ai-video/minimax-h3-chain-director",
         "./skills/ai-video/minimax-h3-character-swap-comfyui",
         "./skills/ai-video/minimax-h3-character-swap-nomask-lowvram",
         "./skills/ai-video/minimax-h3-reference-video-character-swap",
@@ -75,6 +76,7 @@
         "./skills/engine-runtime/seeded-squad-sim-deterministic-replay",
         "./skills/engine-runtime/unity-dots-fake-ragdoll-crowds",
         "./skills/engine-runtime/webgpu-black-hole-raytracer",
+        "./skills/materials-shaders/blender-inverted-hull-outline",
         "./skills/materials-shaders/handdrawn-foliage-alpha-cards",
         "./skills/materials-shaders/leather-patch-generator",
         "./skills/materials-shaders/procedural-building-shader",
@@ -107,11 +109,14 @@
         "./skills/simulation-vfx/blueprint-construction-effect",
         "./skills/simulation-vfx/chaos-flesh-dataflow-soft-body",
         "./skills/simulation-vfx/corridor-key-2-ai-chroma-keyer",
+        "./skills/simulation-vfx/flip-local-viscosity-fake-normals",
+        "./skills/simulation-vfx/houdini-crowd-archers-ragdoll",
         "./skills/simulation-vfx/houdini-net-break-topo-wedge",
         "./skills/simulation-vfx/houdini-ocean-emergence-shot",
         "./skills/simulation-vfx/surface-turbulence-wave-detail",
         "./skills/simulation-vfx/tideglass-fluid-sim",
-        "./skills/simulation-vfx/weta-bubbles-solver"
+        "./skills/simulation-vfx/weta-bubbles-solver",
+        "./skills/simulation-vfx/zenith-lens-flare-copernicus"
       ]
     },
     {
@@ -126,6 +131,7 @@
         "./skills/ai-video/claude-cinematic-trailer",
         "./skills/ai-video/flux-3-klein-comfyui-19-workflows",
         "./skills/ai-video/konte-multishot-ai-video",
+        "./skills/ai-video/minimax-h3-chain-director",
         "./skills/ai-video/minimax-h3-character-swap-comfyui",
         "./skills/ai-video/minimax-h3-character-swap-nomask-lowvram",
         "./skills/ai-video/minimax-h3-reference-video-character-swap",
@@ -221,6 +227,7 @@
       "description": "The materials-shaders skills.",
       "strict": false,
       "skills": [
+        "./skills/materials-shaders/blender-inverted-hull-outline",
         "./skills/materials-shaders/handdrawn-foliage-alpha-cards",
         "./skills/materials-shaders/leather-patch-generator",
         "./skills/materials-shaders/procedural-building-shader",
@@ -277,11 +284,14 @@
         "./skills/simulation-vfx/blueprint-construction-effect",
         "./skills/simulation-vfx/chaos-flesh-dataflow-soft-body",
         "./skills/simulation-vfx/corridor-key-2-ai-chroma-keyer",
+        "./skills/simulation-vfx/flip-local-viscosity-fake-normals",
+        "./skills/simulation-vfx/houdini-crowd-archers-ragdoll",
         "./skills/simulation-vfx/houdini-net-break-topo-wedge",
         "./skills/simulation-vfx/houdini-ocean-emergence-shot",
         "./skills/simulation-vfx/surface-turbulence-wave-detail",
         "./skills/simulation-vfx/tideglass-fluid-sim",
-        "./skills/simulation-vfx/weta-bubbles-solver"
+        "./skills/simulation-vfx/weta-bubbles-solver",
+        "./skills/simulation-vfx/zenith-lens-flare-copernicus"
       ]
     }
   ]
