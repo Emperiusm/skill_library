@@ -65,6 +65,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ue58-video-in-materials`](ai-video/ue58-video-in-materials/SKILL.md) | Route real video into Unreal materials: Media Framework, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, light-function projectors. |
 | [`minimax-h3-synctile-long-video`](ai-video/minimax-h3-synctile-long-video/SKILL.md) | Generate long MiniMax H3 videos (tested 600 frames / 25 s at 4K) with one denoising trajectory: SyncTile blends overlapping tiles x 124-frame windows at every model call; 0.5 MP draft, 3D latent upscale, 4K refine. |
 | [`minimax-h3-reference-video-character-swap`](ai-video/minimax-h3-reference-video-character-swap/SKILL.md) | Swap a character in video with MiniMax H3's Reference-to-Video workflow in ComfyUI: source footage supplies motion, Krea 2 and Qwen Image supply references, no mocap; watch for smearing in fast motion and missing facial detail in wide shots. |
+| [`minimax-h3-chain-director`](ai-video/minimax-h3-chain-director/SKILL.md) | Run multi-segment MiniMax H3 video in ComfyUI from one Director panel: Single or Chain modes, Motion Context continuity with trimmed seams, independent BASE and UPSCALE stages, 3D latent upscaling, KJNodes live preview; watch for prop drift, the xmarre upscaler keep_proportion bug, and the Motion-Context node conflict. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -81,6 +82,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`weta-bubbles-solver`](simulation-vfx/weta-bubbles-solver/SKILL.md) | Implement a two-way coupled bubbles solver from the Weta FX whitepaper in vanilla Houdini nodes. |
 | [`corridor-key-2-ai-chroma-keyer`](simulation-vfx/corridor-key-2-ai-chroma-keyer/SKILL.md) | Pull production chroma keys with Corridor Key 2.0: one-click key, rough alpha-hint mattes only for hard shots, Magic Mask into the hint channel, despill discipline, IBK core-matte edge pass, train-your-own-model recipe. |
 | [`houdini-ocean-emergence-shot`](simulation-vfx/houdini-ocean-emergence-shot/SKILL.md) | Sell a creature emerging from the ocean in Houdini + Nuke: spectrum amplitude down and high-frequency detail up, pre-emergence bulge with bow shock, upward custom velocity field, foam as a separate pass, slow drainage, VEX stepping fix. |
+| [`houdini-crowd-archers-ragdoll`](simulation-vfx/houdini-crowd-archers-ragdoll/SKILL.md) | Stage a Houdini crowd battle: archers aiming at live targets, Mixamo arrow re-attached to the hand, clean RBD arrow handoff into the crowd sim, sticky arrows, death after 1 to 3 hits, collapsing floor with ragdolls, Karma-to-Unreal render switch for iteration speed. |
+| [`zenith-lens-flare-copernicus`](simulation-vfx/zenith-lens-flare-copernicus/SKILL.md) | Build physically based lens flare in Houdini Copernicus with Zenith: ray-traced lens prescriptions (built-in 28/50/135/300mm or .zmx files), energy-calibrated plate lights, scene-light follow, mask/alpha occlusion, iris-shaped starburst, RGB or spectral color, CUDA GPU. |
+| [`flip-local-viscosity-fake-normals`](simulation-vfx/flip-local-viscosity-fake-normals/SKILL.md) | Finish a Houdini FLIP shot cheaply: raise viscosity only where the collider moves so strokes hold, relax after so the surface settles, fake sparkle by randomizing gel normals instead of adding geometry; budget the 8-hour cache. |
 
 ## Materials and shaders (`materials-shaders/`)
 
@@ -94,6 +98,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`toon-2d-in-3d-dynamic-texture`](materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md) | Render a classic DBZ cel look in 3D: fake light direction with a target point instead of a real light, drive drawn cel shapes on a dynamic texture, verify with extreme-zoom closeup animation. |
 | [`ue58-gradient-animated-materials`](materials-shaders/ue58-gradient-animated-materials/SKILL.md) | Build four gradient-driven animated materials in Unreal Engine 5.8's Material Editor (matrix-code streaks, dissolve-swap between two textures. |
 | [`ultratex-comfyui-ai-texturing`](materials-shaders/ultratex-comfyui-ai-texturing/SKILL.md) | Texture any untextured mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs; GGUF workflow for 6 to 8 GB cards, Klein BASE model required. |
+| [`blender-inverted-hull-outline`](materials-shaders/blender-inverted-hull-outline/SKILL.md) | Build a toon outline in Blender with the inverted hull method: Solidify Flip normals and Material Offset 1, black Emission outline material, Transparent BSDF mixed by Geometry Backfacing, second Mix Shader gated by Light Path Is Camera Ray (Ray Length for mirrors), 0.003 example thickness, transparent shadows ON; works in Cycles and Eevee. |
 
 ## Engine and runtime (`engine-runtime/`)
 
