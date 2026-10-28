@@ -146,6 +146,66 @@ only verdict that counts.
 5. Collision proxies, never render meshes, for physics.
 6. Profile the scene, not the asset.
 
+## AAA studio practice
+
+AAA optimization practice splits into two regimes this skill should
+name explicitly, because the budget rules differ between them:
+
+- **Virtualized geometry replaces manual LODs for static
+  hero-scale geometry.** Unreal's Nanite pre-builds meshes into a
+  hierarchy of clusters and selects clusters at runtime at the
+  resolution matching each pixel, using a visibility buffer that
+  stores only triangle IDs and resolves material parameters per
+  pixel later, which keeps overdraw cheap on dense geometry; the
+  practical result is film-quality assets in real time without LOD
+  authoring
+  (https://app.cinevva.com/blog/2026-05-03-aaa-rendering-techniques,
+  citing Karis, Stubbe, Wihlidal, "A Deep Dive into Nanite
+  Virtualized Geometry," SIGGRAPH 2021).
+  This skill's Phase 3 LOD chain remains the rule for everything
+  Nanite cannot take (skeletal meshes, deforming assets, and
+  platforms where Nanite is unavailable), and the Nanite exception
+  in Phase 3 should be decided by asset class, not per asset by
+  feel.
+- **Profiling is a named, repeatable command set, not a feeling.**
+  Production Unreal optimization monitors performance with `stat
+  unit`, `stat gpu`, `stat rhi`, and the Session Frontend profiler
+  to identify bottlenecks, alongside occlusion culling (precomputed
+  visibility volumes or hardware occlusion queries) and aggressive
+  cull distances
+  (https://88cars3d.com/2026/01/12/mastering-unreal-engine-lods-and-optimization-for-high-fidelity-automotive-visualization/).
+  This skill's Phase 5 should record those commands' outputs, not
+  just a verdict.
+- **Nanite versus hand-built LODs is a measured trade-off, not a
+  doctrine.** Community test results debated in Epic's own forums
+  argue that overdraw-focused LODs can outperform Nanite in some
+  scenes, while conceding that hand-building equivalent LODs costs
+  far more artist time
+  (https://forums.unrealengine.com/t/nanite-performance-is-not-better-than-overdraw-focused-lods-test-results-epics-documentation-is-dangering-optimization/1263218/502).
+  The automation implication: where both regimes are possible,
+  profile both on the target scene and keep the winner's numbers.
+
+**Do (automation additions, appended to the phases above)**
+1. In Phase 3, record the Nanite-versus-manual-LOD decision per
+   asset class (static, skeletal, deforming, platform-limited),
+   not per asset, and store it with the budget tiers from Phase 1.
+2. In Phase 5, capture a profiling report with the named commands
+   (`stat unit`, `stat gpu`, `stat rhi`, Session Frontend) at
+   gameplay distance and up close, on the target hardware class,
+   and attach the report to the level. The profile verdict is the
+   report's numbers against the target frame rate, not an
+   impression.
+3. Where both Nanite and manual LODs are viable for an asset
+   class, profile both on the real level and record which won and
+   by how much; the decision is data, and it is revisited when
+   the scene changes.
+
+**Check**
+- Is there a profiling report with named-command output for the
+  level, not just for one asset?
+- Is the Nanite decision recorded per asset class, with the
+  winning numbers where both regimes were tested?
+
 ## Depth status
 
 FULL (article text; substantive sections read, one final FAQ answer

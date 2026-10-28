@@ -68,6 +68,9 @@ wrong kind of quality.
 **Check**
 - Does it slice cleanly with no errors?
 - Is the scale in millimeters and verified in the slicer?
+- Is there a `print-validation.log` with pass/fail lines for the
+  validator, the slicer analysis, the layer-preview scroll, wall
+  thickness, and the dimension check?
 
 **Why**
 A slicer is the print world's engine import: the only proof that
@@ -111,6 +114,46 @@ cheap at the start and expensive to reverse.
 **Why**
 A bake-off settles routing with evidence instead of debate, and the
 record compounds: the second asset's routing decision is free.
+
+## Production practice (print and manufacturing anchor)
+
+This skill has no game-studio anchor: print acceptance is a
+manufacturing question, not a games question. The practices below
+come from print-production sources, and the automation is a
+validation log, not a new claim about printability:
+
+- **Two independent validators, then the slicer.** Run an automated
+  manifold/watertight check, get a second opinion from the slicer's
+  own analysis tool (different tools use different detection
+  algorithms), manually inspect boolean junctions, dense organic
+  detail, and joints in wireframe, then validate in the slicer
+  itself: slice at a standard layer height, scroll the layer preview
+  for missing layers or unexpected material islands, and confirm
+  physical dimensions against intent (unit-scale errors print a
+  100 mm part at 10 mm).
+  (Source: https://www.tripo3d.ai/blog/explore/3d-printing-model-marketplace-requirements-manifold-watertight)
+- **Manifold means exactly two faces per edge, normals outward.**
+  A watertight mesh has no holes, no gaps, and no edge shared by
+  fewer or more than two triangles; flipped patches read as voids
+  in the slice. Tessellation error should sit comfortably below
+  both the smallest meaningful feature and the process resolution;
+  past that point extra facets only slow every downstream step.
+  (Source: https://www.acsmaterial.com/blog-detail/preparing-files-for-3d-printing.html)
+- **Prefer 3MF where the pipeline supports it.** The 3MF container
+  enforces valid topology rules at the container level instead of
+  leaving slicers to guess inside versus outside, and a 3MF project
+  carries placement, supports, and filament profiles with the
+  geometry, so the next print reruns a tested process rather than
+  just a shape.
+  (Source: https://blog.fileformat.com/cad/3mf-vs-stl-why-3mf-could-replace-stl-for-modern-3d-printing-workflows/)
+- **Automation (agent-executable):** write a `print-validation.log`
+  per asset with one pass/fail line each for the automated
+  validator, the slicer analysis, the layer-preview scroll, wall
+  thickness versus printer/material, and the dimension check
+  (intended versus slicer-reported size in millimeters); keep the
+  richer screen-side source file alongside the STL/3MF so the
+  asymmetry rule stays enforceable. (Inference: the log format
+  applies the two sources' checks to this skill's Phase 2.)
 
 ## The human method, distilled
 

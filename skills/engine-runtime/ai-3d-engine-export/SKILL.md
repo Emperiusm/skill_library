@@ -136,6 +136,65 @@ moves. The fresh-scene loop is what makes the export portable.
 4. Fresh-scene re-import is the proof for every target. No exceptions.
 5. Record Nanite and naming decisions; ambiguity is how assets rot.
 
+## AAA studio practice
+
+Production export pipelines differ from this skill in one respect:
+they treat the export as a scripted, versioned, signed artifact, not
+as a checklist a human walks through each time:
+
+- **Headless, versioned, signed exports.** An automated
+  Blender-to-Unreal pipeline runs Blender headless
+  (`blender --background --python script.py`), exports FBX with
+  fixed, recorded options so every export is identical, validates
+  object names against a naming pattern (SM_/SK_/AN_ prefixes),
+  applies safe fixes only when flagged by policy, and produces a
+  signed artifact: name, MD5 hash, and metadata.json
+  (https://beefed.ai/en/automate-blender-to-unreal-asset-pipeline).
+  This is the automation form of this skill's shared gates: the same
+  gates, but enforced by the script, with the hash proving which
+  export was actually tested.
+- **The format must survive the full production loop, not one
+  open.** The production checklist for Unity and Unreal imports
+  stresses that the best format is not the one that opens once but
+  the one that survives revision and reimport consistently, and that
+  Unreal's FBX pipeline supports materials with textures, custom
+  collision, multiple UV sets, smoothing groups, vertex colors,
+  LODs, and multiple separate static meshes, so the exporter must
+  be matched to the target engine's documented pipeline rather than
+  assumed interchangeable
+  (https://blyth.ai/blog/ai-game-assets-for-unity-and-unreal-engine).
+  This confirms this skill's per-target settings tables and adds
+  the rule: record the engine version and exporter version with
+  every export, because a settings table without a version is a
+  guess after the next engine update.
+- **DCC preparation is part of the export, not a pre-step.** The
+  same checklist requires removing duplicate, hidden, floating, or
+  internal surfaces, repairing holes, separating moving parts, and
+  triangulating deliberately before either engine, since the
+  engine will not fix these
+  (https://blyth.ai/blog/ai-game-assets-for-unity-and-unreal-engine).
+
+**Do (automation additions, appended to the phases above)**
+1. Script the shared gates as an export script run headless (for
+   Blender: `blender --background source.blend --python
+   tools/export_fbx.py`), with fixed exporter options recorded in
+   version control, so two runs of the same asset produce
+   byte-identical settings.
+2. Emit an export manifest with every export: asset name, MD5 of
+   the exported file, engine and exporter versions, and the
+   naming-pattern validation result. The fresh-scene re-import
+   proof (Phase 1, step 5) runs against the hashed file, not
+   against a re-exported copy.
+3. Add a pre-export geometry sweep to the script: report
+   duplicates, hidden surfaces, holes, and invalid geometry, and
+   fail the export when the sweep finds any, rather than letting
+   the engine discover them.
+
+**Check**
+- Is there a manifest with a hash, and does the re-import proof
+  reference that exact hash?
+- Would a second run of the script produce the same export?
+
 ## Depth status
 
 FULL (article text; substantive sections read, one FAQ tail unseen).

@@ -138,6 +138,8 @@ wearing the generator's lighting forever.
 **Check**
 - Did it survive a real import, not a viewer preview?
 - Did it survive a real in-context review, not just a preview?
+- Is the import logged as a pass/fail record (scale, slots, normals,
+  warnings) rather than a screenshot?
 
 **Why**
 Viewer previews hide scale, slot, and lighting failures. The engine
@@ -168,6 +170,34 @@ import is the acceptance test; everything before it is preparation.
 Steps 1 through 5 made one prop. The saved recipe is what makes props
 two through thirteen cost a fraction of the first, which is where AI
 stops being a demo and starts being a budget line that goes down.
+
+## AAA studio practice
+
+Production prop pipelines are gated by written requirements and a
+blockout, not by the first good-looking mesh:
+
+- **Requirements before modeling.** A game-ready hero prop starts
+  from a requirements read (triangle budget, texture-set count,
+  reference photos of the exact model) and proceeds in order:
+  references, blockout, high-poly, low-poly, unwrap, bake, texture,
+  final presentation. Skipping the requirements read is how a prop
+  blows its budget after the texturing is done.
+  (Source: https://polycount.com/discussion/comment/2799864#Comment_2799864)
+- **The standard chain, with a library at the end.** The industry
+  workflow runs concept, sculpt (high-poly and low-poly), UV
+  mapping, baking and texturing, then lighting and editing in the
+  target editor, with finished models added to the team's asset
+  library for reuse.
+  (Source: https://www.perforce.com/blog/p4/game-asset-creation-workflow)
+- **Automation (agent-executable):** write a `prop-requirements.md`
+  before generating (engine, role, triangle budget, texture-set
+  count, format, deadline) and refuse to start without it; add a
+  blockout approval gate (silhouette and scale approved before any
+  high-poly or texture work); pack background props into shared
+  texture atlases to cut draw calls, following the atlas practice
+  in (Source: https://www.unboxfuture.com/2026/07/how-to-sculpt-bake-and-texture-stylized.html);
+  log the final engine import (scale, slots, normals, warnings) as
+  a pass/fail record, not a screenshot.
 
 ## The human method, distilled
 

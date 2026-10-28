@@ -93,6 +93,50 @@ same builder and settings family as the storyboard-grid skill).
 4. **The builder stays editable**: the project can be opened inside
    the video builder afterwards and any element changed by hand.
 
+## AAA studio practice
+
+- **The agent is its own critic, and the first draft is assumed
+  bad.** Wild Pines rebuilt a linear video pipeline as an agent
+  because linear pipelines have no feedback loop: a bad script
+  produced a bad video with no correction. Their agent runs
+  research, outline, draft, then a quality loop (analyze, critique,
+  rewrite, check again) before audio and video, on the premise that
+  the first draft will not be good enough.
+  Source: https://www.wildpines.ai/blog/agentic-video-generation/
+- **"Finished" means passing a defined threshold, judged by a
+  critic role.** The AIVS studio design carries a scene through
+  seven jobs (screenplay, director/cinematographer, storyboard and
+  reference generator, multi-model renderer, automatic film critic,
+  automatic film editor, finished scene). The critic evaluates
+  motion, acting, script fidelity, continuity, and cinematic
+  quality, and a scene is published only after meeting a defined
+  quality threshold, with multiple candidate takes compared.
+  Source: https://yapern.com/blog/aivs-the-ai-video-studio/
+- **Numbers and claims carry receipts.** An agent-made product film
+  (dev.to) kept a facts file captured from live pages before writing
+  any scene, and every figure on screen traced to that file; the
+  first review found four groups of numbers with no entry, each
+  traced or removed. The same discipline applies to lyrics and
+  story claims: nothing on screen without a source entry.
+  Source: https://dev.to/stockexpertai/an-ai-agent-made-our-84-second-product-film-heres-the-pipeline-4pd5
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Replace "review each scene" with a critic checklist per scene:
+   motion, acting, prompt compliance, continuity, cinematic
+   quality, each scored pass/fail with a one-line reason. Write it
+   to `scene-verdicts.json` (scene, retry count, failing checks,
+   final verdict).
+2. Define the ship threshold before the overnight run (for example:
+   no continuity failure, no prompt-compliance failure, at most one
+   minor motion issue). A scene that exhausts 3 retries without
+   meeting the threshold is logged as failed, not shipped silently.
+3. For any scene that fails twice, generate a second candidate with
+   a varied prompt and let the critic pick the better take by
+   checklist score, instead of re-rolling the same prompt a third
+   time.
+4. Keep a `facts.md` for the brief's claims (lyrics, story facts)
+   and check every on-screen claim against it before the final run.
+
 ## Failure modes
 
 - **Reference anchoring**: when using ref images for both characters

@@ -69,6 +69,8 @@ surface the generator invents.
 - Did the pick pass all three gaps, or is one gap doing hidden work
   that repair will have to pay for?
 - Is the decision recorded, so the team does not re-litigate it?
+- Is there a `prompt-manifest.md` with the exact prompt, the
+  candidate picked and why, and the three-gap result?
 
 **Why**
 Triage speed is the point of text-to-3D: range fast, decide fast. The
@@ -148,6 +150,47 @@ The best generator for production is the one that reduces total
 pipeline time, not the one that creates the fastest first preview. A
 tool that nails the first minute and leaves eight hours of finishing
 has relocated the work, not removed it.
+
+## AAA studio practice
+
+AAA production treats text-to-3D as a first pass inside a human-gated
+pipeline, not as a pipeline replacement:
+
+- **Hybrid workflow, generation versus assistance.** The industry
+  has adopted a hybrid workflow in which AI accelerates specific
+  labor-intensive sub-tasks such as retopology, texture upscaling,
+  and set dressing, while the dream of a text-to-world button
+  remains technically unfeasible for high-end production; roughly
+  half of studios have deployed AI in their pipelines, but the
+  distinction that matters is generation versus assistance, with
+  human oversight throughout.
+  (Source: https://davidasmith.medium.com/the-state-of-ai-in-aaa-game-production-b7d949df4daa)
+- **First pass for assets, fine-tuned for continuity.** Neowiz's
+  production AI-creator role uses generative AI to produce textures
+  and assets, Stable Diffusion and Midjourney for concept drafts,
+  and models fine-tuned on studio-owned data to hold visual
+  identity, with senior curation and cleanup as the quality gate;
+  without that gate, diffusion variance turns a set into patchwork.
+  (Source: https://vocal.media/futurism/neowiz-ai-creator-listing-exposes-generative-ai-normalization-in-aaa-production)
+- **Simple prompts win; heroes still get validated.** Simple,
+  clearly defined prompts beat vague or overloaded ones, and
+  complex mechanical assemblies, surface text, and anatomically
+  precise characters warp or show odd geometry; for hero assets or
+  a demanding AAA pipeline, topology, edge flow, textures, and
+  polygon count still get artist-validated, while background
+  assets and prototypes may ship with limited post-processing.
+  (Source: https://nerdbot.com/2026/10/21/meshy-ai-review-from-basic-text-input-to-functional-3d-models/)
+- **Automation (agent-executable):** write a `prompt-manifest.md`
+  per asset recording the exact prompt, the candidate picked and
+  why, the triage verdict, and the three-gap result, so a rerun
+  reproduces the decision instead of re-rolling it; tag every
+  generated asset `first-pass` until it clears the production pass,
+  and never let a first-pass tag enter source control as a hero;
+  log whole-path time (idea to usable asset, not time to first
+  preview) per tool so the buy decision uses the number this
+  skill's Phase 5 asks for. (Inference: the manifest and tagging
+  rules apply the hybrid-workflow sources above to this skill's
+  Phases 2-5.)
 
 ## The human method, distilled
 

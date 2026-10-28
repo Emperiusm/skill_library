@@ -143,6 +143,41 @@ forty times.
    review state, and repeatability.
 5. Price tools at batch scale. Forty SKUs expose what one asset hides.
 
+## AAA studio practice
+
+- **Review is attached to the check-in, not to a chat thread.**
+  ShotGrid (now Autodesk Flow Production Tracking) integrated with
+  Perforce so game studios could check assets in and out of source
+  control directly from within Maya, Photoshop, and other DCC
+  tools; art-tracking data (character art lists, tasks) links to
+  each check-in, reviewable media is created automatically with
+  check-in, and an update feed with thumbnails shows every team
+  member the latest version of any asset. Leads see review notes
+  connected to the checked-in asset, not scattered across tools.
+  Source: https://www.cgchannel.com/2014/03/shotgun-software-integrates-pipeline-toolkit-with-perforce/
+- **Track every step, review with versions and note history
+  attached.** Autodesk Flow Production Tracking tracks every step
+  of a project (shots and assets) through the pipeline, with media
+  playback and review tools, in-context notes and annotations, and
+  automatically tracked versions with note history, plus
+  integrations into Maya, 3ds Max, and Unreal Engine.
+  Source: https://www.autodesk.com/ae/products/flow-production-tracking/overview
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Make the publish step write one record per version: asset,
+   version, prompt and references, review state, and reviewer
+   notes, stored with the asset (a `versions.json` beside the
+   asset, not in a chat log). A version without its record is not
+   published.
+2. Turn the Phase 2 handoff test into a scripted check: recipe file
+   present, version history present, review state present, and all
+   three readable by a teammate who did not author the asset. Log
+   pass/fail per item; a failed item blocks handoff.
+3. Attach review to the asset record: every approval or rejection
+   is appended to the version record with the reviewer's note and
+   date, so the next batch can read why a variant was approved
+   without asking its author.
+
 ## Depth status
 
 FULL (article text; substantive sections read, one FAQ tail unseen).

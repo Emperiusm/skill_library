@@ -141,6 +141,61 @@ the inherited reference intact everywhere else.
    subjects cost more cleanup.
 5. Rerun one step, never restart the asset, for revisions.
 
+## AAA studio practice
+
+AAA photogrammetry practice is the production-scale version of this
+skill's reference rules, and it adds one automated step this skill
+previously left manual:
+
+- **Capture volume is a production input, not a guideline.** Studio
+  photogrammetry shoots 50 to 100-plus photos per object, covering
+  all angles, in diffuse lighting (cloudy days or controlled studio
+  light), because shadows baked into a capture become shadows baked
+  into the asset
+  (https://socialsocial.social/pin/how-to-use-photogrammetry-for-hyper-realistic-3d-game-environments/).
+  Ubisoft's scan data for Assassin's Creed: Unity was detailed
+  enough to aid the restoration of Notre Dame Cathedral
+  (http://www.kiriengine.app/blog/insight/aaa-games-photogrammetry-realism).
+  The automation implication: capture checklists should be enforced
+  as a shot list (angles, lighting condition, photo count) before
+  solving, not inspected after.
+- **De-lighting is now an automated pass, not hand cleanup.** Adobe
+  Substance 3D Sampler uses deep learning to identify light direction
+  and intensity in a source image and remove shadows and highlights,
+  producing a neutral albedo plus inferred normal, roughness, height,
+  and ambient occlusion maps; this has largely replaced multi-angle
+  photogrammetry setups for simple surfaces in AAA material work
+  (https://davidasmith.medium.com/the-state-of-ai-in-aaa-game-production-b7d949df4daa).
+  This is the automated answer to this skill's baked-lighting trap:
+  run a de-lighting pass before the PBR re-texture step, and check
+  the albedo under two different light directions instead of one.
+- **Keep the scan even when it never ships.** When a photogrammetry
+  model cannot be used directly as the game-ready model, it still
+  serves as scale, proportion, and color reference for the
+  hand-built replacement
+  (https://www.modsimworld.org/papers/2019/MODSIM_2019_paper_13.pdf).
+  This confirms Phase 4's rule: the original reference stays attached
+  to the asset, and the high-poly scan counts as a reference.
+
+**Do (automation additions, appended to the phases above)**
+1. Before Phase 1 generation, record the capture shot list as a
+   checklist file: angles covered, lighting condition, photo count,
+   and blurry-frame rejection. Reject the set automatically if any
+   structurally unique side has no reference.
+2. In Phase 3, insert a de-lighting pass before re-texturing: run
+   the albedo through a de-lighting tool (Substance 3D Sampler or
+   equivalent) and verify the result under two opposed light
+   directions; baked shadows that survive this check fail the
+   PBR-cleanliness point of the six-point sign-off.
+3. Extend the six-point sign-off with a seventh recorded field:
+   the path to the retained high-poly scan or reference set, so a
+   future revision starts from the approved evidence, not a new
+   guess.
+
+**Check**
+- Is there a shot-list file, a de-lighted albedo, and a recorded
+  scan path alongside the signed-off asset?
+
 ## Depth status
 
 FULL (article text; substantive sections read, one FAQ tail unseen).

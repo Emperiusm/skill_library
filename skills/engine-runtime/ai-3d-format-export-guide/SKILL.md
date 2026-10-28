@@ -110,6 +110,65 @@ format loss, and it is cheap compared with discovering it in a build.
    degrades look. Diagnose by failure shape.
 4. Import proof is mandatory. A file nobody imported is not an export.
 
+## AAA studio practice
+
+Production pipelines do not pick one format and defend it; they
+allocate formats to stages and write the allocation down as a
+contract:
+
+- **Hybrid pipelines are the technically correct allocation, not a
+  transitional failure.** FBX remains appropriate for compact
+  editable character and animation exchange, Alembic for stable
+  high-volume caches, glTF for runtime delivery and web-oriented
+  interactive publication, and USD when assets must be assembled,
+  revised, referenced, and shared across many departments
+  (https://accesson.kr/ijcon/assets/pdf/59585/journal-22-2-30.pdf).
+  This confirms this skill's destination-first rule and extends it:
+  a single asset may legitimately ship as FBX for the animators,
+  glTF for the web viewer, and USD for the assembled scene, and the
+  skill's decision table should be read per consumer, not per
+  asset.
+- **A production pipeline needs a documented format contract.**
+  Cross-compatibility is not semantic equivalence: FBX importers may
+  interpret rig constraints, units, or materials differently, and
+  USD may preserve scene description that a given DCC application
+  does not fully consume, so a pipeline needs a documented contract
+  specifying supported schemas, units, naming, coordinate systems,
+  materials, and validation rules
+  (https://accesson.kr/ijcon/assets/pdf/59585/journal-22-2-30.pdf).
+  The contract, not the format name, is what makes an export
+  repeatable.
+- **FBX versus GLB is a production-versus-deployment split.** FBX
+  remains the standard for DCC interoperability and game-engine
+  asset pipelines (editing and development), while GLB leads for
+  deployment in browsers and AR/VR runtimes, with smaller files,
+  faster parsing, and first-class standardized PBR material
+  definitions, at the cost of editability after export
+  (https://88cars3d.com/2026/03/26/fbx-vs-glb-choosing-the-best-3d-format-for-ar-vr-and-web-based-3d-experiences/).
+  This sharpens the skill's failure-mode table: a GLB that lost
+  editability did not fail; it was the wrong format for an editing
+  consumer.
+
+**Do (automation additions, appended to the phases above)**
+1. Write a one-page format contract per project
+   (`format_contract.md`): for each consumer (animators, engine,
+   web viewer, print), the format, the schema version, units,
+   coordinate system, naming rule, and material rules. Phase 1's
+   decision is then a lookup in this file, not a fresh judgment.
+2. Extend Phase 3's import proof with a contract check: does the
+   imported file match the contract's schema, units, and naming?
+   A file that imports but violates the contract fails the proof.
+3. When one asset serves multiple consumers, export once per
+   consumer from the same source and record all outputs in the
+   export manifest (see the engine-export skill), so no consumer
+   silently receives another consumer's format.
+
+**Check**
+- Does the project have a format contract, and does every export
+  name its consumer?
+- Did the import proof check the contract, or only that the file
+  opened?
+
 ## Depth status
 
 FULL (article text).

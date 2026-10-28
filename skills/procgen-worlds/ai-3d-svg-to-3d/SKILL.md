@@ -39,6 +39,8 @@ similar) for extrusion, beveling, materials, lighting, and export.
 **Check**
 - Zero open paths, zero live fonts, zero sub-0.5 px hairlines?
 - Does the path set preview as clean closed shapes?
+- Is the cleaned SVG saved as the source of truth, so the extrusion
+  can be regenerated from it instead of patched by hand?
 
 **Why**
 Extrusion amplifies path defects: an open path becomes a missing wall,
@@ -85,6 +87,36 @@ A vector conversion that skips material and lighting proof is a flat
 shape with a thickness parameter, not a 3D asset. The import proof
 closes the workflow the same way it closes every other skill in this
 set.
+
+## Production practice (broadcast and motion-design anchor)
+
+This skill is a logo/icon workflow, not a game pipeline, so its
+production anchor is broadcast and motion design rather than a game
+studio. The practices below come from vendor and practitioner
+workflows, labeled as such:
+
+- **Build the logo scene from the SVG, procedurally.** Maxon's
+  Autograph broadcast-graphics workflow builds a 3D logo scene
+  directly from an SVG with procedural controls and templates, so
+  one composition adapts to multiple formats, with materials,
+  dome lighting, and reflections applied to the extruded logo
+  rather than hand-tweaked per output.
+  (Source: https://www.youtube.com/watch?v=QJu1JGPaG2c)
+- **Extrude, bevel, finish per region, light to prove depth.** The
+  Blender SVG workflow imports the vector, extrudes it, adds
+  bevels, applies flat colors or metallic materials, sets a minimal
+  backdrop, and lights it; a camera pan or rotation turns the
+  static logo into a motion asset and doubles as a depth proof.
+  (Source: https://vagon.io/blog/how-to-turn-2d-icons-into-3d-renders-in-blender)
+- **Automation (agent-executable):** keep the cleaned SVG as the
+  source of truth and regenerate the extrusion from it whenever
+  the artwork changes, instead of patching the extruded mesh by
+  hand; record the face/wall/bevel material assignment per region
+  in a short manifest; render a rotation or camera-pan proof clip
+  (not just a still) and check bevels and counters frame by frame
+  before export. (Inference: the regenerate-from-source rule
+  applies the procedural-template practice above to this skill's
+  Phases 1-3.)
 
 ## The human method, distilled
 

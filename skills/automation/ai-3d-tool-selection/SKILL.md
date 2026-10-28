@@ -122,6 +122,50 @@ platform bought for concepting, is money spent on the wrong strength.
    published score as a dated test result.
 5. Decide by job first, score second, import proof always.
 
+## AAA studio practice
+
+- **Same inputs, measured dimensions, and no single winner.**
+  A stress test of Meshy 6, Tripo v3.1, and Rodin Gen-2.5 ran the
+  same five prompts through all three and compared latency, mesh
+  cost, geometry quality, and topology. No tool won across the
+  board: Meshy was fastest on text-to-3D but slowest on
+  image-to-3D, Tripo had the best geometry and cleanest topology,
+  and face count did not predict quality at all. The author's
+  conclusion is the method: test the input mode and the dimension
+  that actually matters to your pipeline.
+  Source: https://hackernoon.com/how-i-stress-tested-3-ai-3d-generators-on-the-same-inputs-what-the-numbers-actually-show
+- **Same sheet, measured price and time, per-subject results.**
+  A SceneOS comparison ran the same three subjects (a cartoon
+  character, a person, an object with small metal parts) through
+  Tripo, Meshy, Rodin, and TRELLIS on fal, measuring price and
+  time per model. Rodin was closest to the sheet on all three
+  subjects, Meshy was the only one that could return a rigged
+  animated character, Tripo was the cheapest multi-view option,
+  and single-image TRELLIS guessed the back and failed on
+  characters. The ranking changed by subject, which is the point.
+  Source: https://sceneos.io/kb/3d-generators-compared/
+- **Looks and mesh hygiene are separate scores.** A Pixazo
+  comparison of seven generators scored looks (Elo) and mesh
+  hygiene separately and found they do not track: Tripo ranked
+  sixth on looks but had the second-cleanest mesh, while Rodin
+  ranked second on looks with the lowest mesh score among the
+  leaders. Reading the two columns together, not just the rank,
+  is the whole exercise.
+  Source: https://www.pixazo.ai/blog/best-ai-3d-model-generators
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Build a comparison harness: run the shared brief through every
+   candidate tool and record latency, price, face count, and the
+   1 to 5 path scores in a `comparison.csv` (tool, brief, metric,
+   value). Rankings are computed from this file, never from notes.
+2. Score looks and mesh hygiene as separate columns in that file;
+   a tool that wins on looks but fails on hygiene cannot win the
+   overall ranking for a shipping job.
+3. Automate the second round: after round one, pick the brief that
+   stresses a different weakness (organic, hard-surface, or
+   multi-part) from a fixed list and rerun only the top tools,
+   appending round-two rows to the same file before any decision.
+
 ## Depth status
 
 FULL (article text; substantive sections read, one FAQ tail unseen).

@@ -77,6 +77,8 @@ and a sequence.
 - Do two shots from the same scene match on geography, light, and
   subject?
 - Can one element change without a full reroll of the sequence?
+- Is the element change recorded as a named override layer with the
+  shots it affects, not as a re-published scene?
 
 **Why**
 VFX is decided one constraint at a time: this camera, this lens, this
@@ -140,6 +142,46 @@ it is discovered after the tool was committed to a sequence.
 No single tool covers the stack, and pretending one does is how
 sequences end up with beautiful frames that cannot be comped, lit, or
 continued. The stack framing keeps each job's requirements visible.
+
+## AAA studio practice
+
+Production VFX and cinematic work stores the scene as composable
+data and edits it with sparse overrides, not full re-publishes:
+
+- **USD as the scene language.** USD is the core of Pixar's pipeline
+  and the first publicly available system for robustly interchanging
+  and augmenting whole scenes: assets assemble into sets, scenes,
+  shots, and worlds in a single scenegraph, and departments edit
+  non-destructively through overrides, with one consistent API
+  across modeling, shading, animation, lighting, FX, and rendering.
+  A controlled benchmark found a sparse USD update layer was only a
+  small fraction of the base file where FBX and Alembic updates
+  required republishing nearly complete files.
+  (Sources: https://openusd.org/release/intro.html?ref=confusing-acronym.com and https://accesson.kr/ijcon/assets/pdf/59585/journal-22-2-30.pdf)
+- **Dual-format assets and a modular real-time pipeline.** Milk
+  VFX built its real-time pipeline modularly so hybrid shots mix
+  Unreal-generated elements with Houdini USD-pipeline elements,
+  integrated at compositing; assets are designed dual-format
+  compatible so they move between Houdini and Unreal, scene
+  import/export runs through an in-house plug-in suite, and
+  rendering uses Lumen or path tracing per shot with final polish
+  in compositing.
+  (Source: https://vfxvoice.com/welcoming-the-cultural-shift-to-virtual-production/)
+- **The camera drives the scene, live.** ILM's StageCraft renders
+  the LED-volume environment live from tracked camera position and
+  orientation, so perspective, lighting, distortion, and depth of
+  field update as the camera moves; roughly half of The
+  Mandalorian's scenes were shot inside the volume.
+  (Source: https://techcrunch.com/2020/02/20/how-the-mandalorian-and-ilm-invisibly-reinvented-film-and-tv-production/)
+- **Automation (agent-executable):** store camera, lens, blocking,
+  and light values as USD layer data (never prompt text); make an
+  element change as a sparse override layer and log the layer name
+  plus the shots it affects, instead of re-publishing the scene;
+  run the dual-format import check (Houdini and Unreal both open
+  the asset with scale, axes, materials, and UVs intact) as a
+  pass/fail record; save the two-shot continuity captures as files
+  per shot pair. (Inference: these steps apply the USD and
+  dual-format practices above to this skill's Phases 1-2.)
 
 ## The human method, distilled
 

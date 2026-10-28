@@ -156,6 +156,63 @@ never actually ready.
 5. Topology first, rig second. No rig rescues bad edge flow.
 6. FBX for rigged characters, never OBJ. Engine proof is the verdict.
 
+## AAA studio practice
+
+Production character teams use AI meshes the way this skill does, as
+starting points, but they draw two harder lines than this skill
+previously did:
+
+- **Production topology is still hand work.** A real-time production
+  character studio reports that retopology is done by hand because
+  neural networks and automatic tools still do not produce
+  production-ready topology well enough for proper rigging and
+  animation, and that the technical stage is either completed
+  manually or carefully checked by hand
+  (https://www.renderhub.com/blog/andryuha-on-creating-game-ready-characters-for-real-time-production).
+  The automation implication is the reverse of the naive one: automate
+  the generation and the checks, but do not automate away the
+  retopology verdict. The 10-minute movement test stays a human
+  gate; what gets scripted is everything around it.
+- **End-to-end AI animation pipelines exist, but they are built
+  around defect correction.** Tencent Games' Motus pipeline analyzes
+  character topology and generates production-ready skeletons within
+  seconds plus skinning weights, then automatically detects and
+  corrects animation defects: jitter, mesh penetration, joint
+  anomalies, and foot sliding
+  (https://www.morningstar.com/news/pr-newswire/20260827cn35036/bringing-digital-characters-to-life-tencent-games-motus-makes-gamescom-debut-with-end-to-end-ai-animation-pipeline).
+  The lesson for this skill: an automated rig pass is only half a
+  pipeline. The other half is an automated defect report, and a
+  character that ships without one is unproven.
+- **Stages must stay separable.** Bake3D's workflow separates
+  generation, rigging, animation, and export so a failed rig pass can
+  be revisited without regenerating the model, and partial results
+  remain available when a later stage fails
+  (https://tech.asialogue.com/news/bake3d-introduces-ai-workflow-for-creating-rigged-and-animated-3d-characters/564743).
+  This confirms Phase 2's modularity rule and extends it to the
+  pipeline itself: never let one stage's failure destroy another
+  stage's approved output.
+
+**Do (automation additions, appended to the phases above)**
+1. After Phase 3's movement test, record the test as a checklist
+   file: classification, test result per joint (pinch, collapse,
+   tear, or pass), and the retopology-versus-regeneration verdict
+   with its reason. A character with no recorded verdict does not
+   enter Phase 4.
+2. After Phase 5's engine proof, run an automated animation-defect
+   report over the imported animation set: flag jitter, mesh
+   penetration, joint anomalies, and foot sliding per clip, and
+   attach the report to the character. Any flagged clip returns to
+   Phase 4; the engine proof is not signed off on a visual pass
+   alone.
+3. Store each stage's output separately (base mesh, retopology,
+   rig, skin weights, engine import) so a failed rig pass reruns
+   only the rig stage, never the generation stage.
+
+**Check**
+- Is there a recorded movement-test verdict and a defect report
+  for every shipped animation clip?
+- Can a failed rig be rerun without regenerating the mesh?
+
 ## Depth status
 
 FULL (article text; substantive sections read, a small FAQ tail

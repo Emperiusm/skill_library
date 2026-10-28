@@ -101,6 +101,64 @@ is how teams "fix" a broken hierarchy by rebuilding a pipeline, or
 3. Scene graph is the finished scene; node graph is the process.
    Diagnose which one is broken before repairing either.
 
+## AAA studio practice
+
+At production scale, the scene graph stops being a hierarchy to read
+and becomes an organization system with two named forms this skill
+should distinguish:
+
+- **The USD stage is the production scene graph.** A USD stage is
+  the root container that hosts all 3D data, aggregating multiple
+  files and layers into a single unified view; opening a .usd file
+  resolves layering and non-destructive overrides to present a
+  flattened view of the world, so animators and lighters interact
+  with the scene as if it were one coherent file even when composed
+  of thousands of subassets
+  (https://vectree.io/pdf/c/universal-scenedescription).
+  This is the skill's single-root rule scaled up: the root is a
+  stage, and the layers beneath it are the organization, not the
+  files.
+- **World Partition Data Layers are the runtime organization
+  equivalent.** In Unreal open worlds, Data Layers let teams
+  logically organize and control the visibility and streaming of
+  actors within one persistent world (for example a Night_Lighting
+  layer for streetlights, an Urban_Audio layer for city sounds),
+  so variants are toggled without separate levels, and different
+  teams work on distinct aspects of the world without interfering
+  with each other
+  (https://88cars3d.com/2026/01/08/understanding-unreal-engines-world-partition-system/).
+  This extends the skill's meaningful-parenting check: at scale,
+  grouping is also done by layer and streaming membership, not
+  only by parentage.
+- **Moving parts break the static-graph assumption.** World
+  Partition levels are static, so moving parts (for example meshes
+  on the same body part) cannot simply live in a partitioned level;
+  production workarounds convert them to Level Instances with
+  sub-World Partition streaming and forward bone transforms
+  (https://forums.unrealengine.com/t/best-practice-to-use-world-partition-with-moving-objects/2667836).
+  The automation implication: the health checklist must flag
+  moving assemblies inside static partitions as a repair item, not
+  pass them because the tree reads cleanly.
+
+**Do (automation additions, appended to the phases above)**
+1. Script the Phase 2 health checklist as a scene audit report:
+   orphans, unfrozen transforms, unnamed nodes, bad pivots, and
+   moving assemblies inside static partitions, each listed with
+   its node path. The report is the checklist's output; a scene
+   with no report has not been checked.
+2. Record layer or stage membership alongside parenting in the
+   audit: for each node, its parent, its Data Layer or USD layer,
+   and its streaming behavior. A node whose layer contradicts its
+   parent group is a repair item.
+3. Treat the audit report as a gate: any failure blocks the scene
+   from being marked finished, and the report is re-run after
+   repair rather than hand-waved.
+
+**Check**
+- Is there an audit report with node paths for every failure?
+- Does the report cover layers and moving assemblies, not just
+  parenting?
+
 ## Depth status
 
 FULL (article text).

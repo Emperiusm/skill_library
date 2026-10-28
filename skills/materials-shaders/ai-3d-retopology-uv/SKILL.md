@@ -109,11 +109,44 @@ stretching that no texture edit can fix.
 - Zero overlaps in the lightmap set, and no stretching in the primary
   set?
 - Do the maps bake cleanly from the high-poly onto this UV layout?
+- Is the mesh-cleanup pass logged (holes, n-gons, duplicated
+  vertices) with a pass/fail line per item?
 
 **Why**
 Overlaps in a lightmap set are not a cosmetic issue: they bake one
 surface's light onto another. The second set exists precisely because
 the texturing layout and the lighting layout have different rules.
+
+## AAA studio practice
+
+Production retopology and UV work is manual where it matters, and
+checked with tooling where it can be:
+
+- **Hand retopology for anything that rigs.** In a game-ready
+  character pipeline, retopology is done by hand because automatic
+  tools still do not produce production-ready topology for rigging
+  and animation; the mesh is then manually optimized, the UV layout
+  is created by hand, parts are fitted together in Maya with
+  intersections checked, and only then are high-poly details baked
+  onto the low-poly mesh.
+  (Source: https://www.renderhub.com/blog/andryuha-on-creating-game-ready-characters-for-real-time-production)
+- **Retopo baking-aware, seams on hard edges.** Frozenbyte's asset
+  workflow keeps the object's scale in mind during retopo (neither
+  needlessly dense nor angular), leaves small details flat for the
+  normal map to carry while keeping big forms in the low-poly
+  silhouette, puts a UV seam everywhere there is a hard edge, checks
+  texel density with a dedicated toolkit, and finishes with a mesh
+  cleanup pass verifying no holes and no n-gons.
+  (Source: https://wiki.frozenbyte.com/index.php/3D_Asset_Workflow:_Retopo_and_UVs)
+- **Automation (agent-executable):** write a `retopo-checklist.md`
+  per asset recording scale/budget, which details were left flat for
+  the normal map versus kept in the silhouette, the hard-edge/seam
+  list, and the texel-density value; run the mesh-cleanup pass as a
+  logged check (holes, n-gons, duplicated vertices) with a pass/fail
+  line per item, not a visual glance. For large characters, split
+  UVs across UDIM tiles rather than cramming everything into one
+  0-1 space, following the multi-UDIM character practice in
+  (Source: https://80.lv/articles/game-ready-3d-character-production-techniques)
 
 ## The human method, distilled
 

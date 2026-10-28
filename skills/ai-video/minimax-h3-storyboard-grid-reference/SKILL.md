@@ -128,6 +128,50 @@ like any other reference image).
 4. **Test whether the extra refs are needed**: the author suspects the
    grid alone may suffice, and says so rather than asserting it.
 
+## AAA studio practice
+
+- **Storyboards come first, and previz is built in-engine before
+  full production.** Epic's own cinematics documentation has scenes
+  designed with outlines, scripts, and storyboards first, with
+  content needs (characters, animations, audio, effects, props)
+  decided early because mistakes made early are cheapest. Previz
+  (animatics) is done in-engine by moving skeletal meshes in
+  T-poses timed to dialog, to get a feel for the scene before
+  committing to full production.
+  Source: https://docs.unrealengine.com/udk/Three/CreatingCinematics.html
+- **Storyboard first no matter how short the sequence, then a
+  top-down schematic.** A Rookies behind-the-scenes piece on
+  Unreal cinematography insists on storyboarding first even for
+  short sequences, then drawing a top-down schematic that clarifies
+  the spatial relationship between camera movement and actor
+  staging, so continuity holds and logistics stay feasible. For
+  composition control it uses a custom grid overlay (center plus
+  rule-of-thirds guides) applied through the camera's dirt mask,
+  instead of the default viewport grids.
+  Source: https://discover.therookies.co/2025/08/21/digital-cinematography-in-unreal-engine-the-work-behind-the-knights-templar-short-film/
+- **Storyboard the whole trailer on the wall, shot by shot.** The
+  Protege team's 80 Level piece on UE4 cinematics storyboarded
+  their trailer by sketching scenes on post-it notes stuck to a
+  wall, defining which shots went where and how long each held, so
+  the flow between shots stayed visible as one picture.
+  Source: https://80.lv/articles/protege-creating-environments-in-ue4-for-cinematics/?amp=1
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Before generating any grid, write a `shot-manifest.json`: one
+   entry per panel (panel index, shot description, framing, camera
+   move, duration, lyric cue). The grid is generated against this
+   manifest, and each panel is checked against its entry.
+2. Add a previz step: block the four shots as a still animatic
+   (the four panels in reading order with durations) and review it
+   for shot flow before spending video generation on the scene.
+3. Record a prompt-only fail log: for each scene that gets a grid,
+   note what the prompt-only or first/last-frame attempt failed on.
+   A scene with no recorded failure does not get a grid; this keeps
+   the "grids for hard scenes only" rule enforced by evidence.
+4. Score each generated shot against its panel (framing, camera
+   angle, poses) in a `panel-compliance.json` and re-run only the
+   panels that fail, rather than regenerating the whole grid.
+
 ## Failure modes
 
 - **Grid generation time**: a whole video this way costs significant

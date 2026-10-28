@@ -122,6 +122,54 @@ TTS), **RTX Video Super Resolution** (x2 upscale).
 4. **Batch units are fixed**: 10-second clips, one audio file per
    line, x2 on every clip, so failures stay local.
 
+## AAA studio practice
+
+Honesty note: no AAA studio publishes an equivalent AI-documentary
+batch pipeline, so the practices below come from published
+independent production pipelines, not from a named AAA studio. They
+are the closest documented equivalents, and they are labeled as such
+rather than presented as studio claims.
+
+- **Citations get a receipt check, not a trust check.** The AI Video
+  Factory pipeline (dev.to, 2026-09-20) found LLM-written scripts
+  invent citations that look legitimate but point nowhere, so every
+  cited URL now gets a real HTTP check and anything that does not
+  return 200 is cut or rewritten.
+  Source: https://dev.to/summitsingh/i-built-a-pipeline-that-turns-a-topic-into-a-20-30-minute-documentary-bfp
+- **Runtime is written in timed beats.** The same pipeline found a
+  "25 minute" script kept coming out at 14 minutes, so scripts are
+  now written in timed beats and underweight beats are extended at
+  roughly 150 words per minute until the target runtime holds.
+  Source: https://dev.to/summitsingh/i-built-a-pipeline-that-turns-a-topic-into-a-20-30-minute-documentary-bfp
+- **A QC gate runs before encoding, and it can fail the run.** The
+  gate fails on dark frames, digital silence, or wrong resolution,
+  with a single loudness pass to -16 LUFS and per-scene crossfades.
+  Content-addressed caching per stage means iterating on one scene
+  does not re-render the whole film.
+  Source: https://dev.to/summitsingh/i-built-a-pipeline-that-turns-a-topic-into-a-20-30-minute-documentary-bfp
+- **Queue-based production, narration as the timing spine.** A
+  reverse-engineered documentary workflow (saturaai) runs
+  queue-based production: while one scene renders, the next is
+  prepared and submitted. Narration is tested on short samples first
+  for pronunciation, pacing, and tone, and only then generated in
+  full and used as the timing spine for visuals.
+  Source: https://saturaai.com/blog/ai-documentary-youtube-workflow-reverse-engineered-system-that-scales-hu1ato
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. After Phase 1, run a citation check: extract every URL from the
+   script, request each one, and write a `citations.csv` (URL, HTTP
+   status, keep/cut). Fail the run if any citation is unverified;
+   do not ship a script with invented sources.
+2. Write a `runtime-manifest.json` before generation: one timed beat
+   per 10-second chunk with its target word count at 150 wpm. If a
+   beat is underweight, extend it before rendering, not after.
+3. Add a QC gate script after Phase 3: check every clip for dark
+   frames, digital silence, and resolution, and write a
+   `qc-report.json` (clip, check, pass/fail). A failed clip returns
+   to its stage; it never reaches the edit.
+4. Cache each stage by content hash (script, image, clip, narration
+   line) so a single-scene fix reruns only that scene's stages.
+
 ## Failure modes and commenter notes
 
 - **LLM QA is not human QA**: a commenter warns that an LLM judging

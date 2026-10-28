@@ -103,6 +103,69 @@ this?").
 5. Mixed scenes are normal: splats for environment, meshes for
    interaction.
 
+## AAA studio practice
+
+Production teams using splats in real-time engines treat them as one
+layer of a mixed scene, not as a replacement for meshes, and they
+budget renderer engineering, not just capture quality:
+
+- **Mixed-format scenes are the production shape.** Rotor Studios
+  augmented Unreal Engine's Procedural Content Generation framework
+  with Gaussian splats for rapid photorealistic environment creation
+  on two global car launches, under tight budgets and deadlines, while
+  keeping the rest of the pipeline in meshes
+  (https://forums.unrealengine.com/t/talks-and-demos-elevating-automotive-content-integrating-ue-with-gaussian-splats-and-ai-unreal-fest-orlando-2025/2672423.rss).
+  World Labs' image-blaster pipeline makes the same split explicit:
+  a splat environment plus meshed props (not splatted) so objects
+  collide
+  (https://www.top3d.ai/learn/gaussian-splatting-playable-game-engines-2026).
+  This confirms the skill's Phase 3 rule and sharpens it: the splat
+  layer must never carry anything that needs collision, because
+  collision comes from a mesh.
+- **Splat rendering is an engineering choice, not a viewer default.**
+  Moonshine Studio's Tim Chen built NanoGS, a free Unreal plugin that
+  renders large splats with Nanite-style LOD clusters, screen-space
+  error LOD selection, splat compaction, and GPU radix sort, because
+  naive splat rendering wastes GPU memory and frame time
+  (https://www.cgchannel.com/2026/03/free-plugin-nanogs-puts-nanite-style-gaussian-splatting-in-unreal-engine/).
+  Magnopus' custom Unreal renderer instead uses one instanced draw
+  call for all splats and reports roughly 7 million splats at 60 fps,
+  with no enforced upper bound on splat count
+  (https://www.magnopus.com/blog/how-i-ended-up-rendering-unlimited-gaussian-splats-in-unreal).
+  The automation implication: pick the renderer by measured splat
+  count and frame time, not by which plugin installed first.
+- **Splats do not collide, and do not take dynamic global
+  illumination.** The playable-splat assessment is blunt: you gain
+  photoreal capture and lose dynamic global illumination, and splats
+  render as alpha rather than a full PBR pass
+  (https://www.top3d.ai/learn/gaussian-splatting-playable-game-engines-2026).
+  Any scene that needs either must carry meshes alongside the splats.
+
+**Do (automation additions, appended to the phases above)**
+1. After Phase 2 inspection, generate a collision mesh from the
+   splat layer (the `splat-transform --collision-mesh` pattern) and
+   place it as the mesh layer's collider; never ship a walkable splat
+   with no collider
+   (https://www.top3d.ai/learn/gaussian-splatting-playable-game-engines-2026).
+2. Write a splat manifest next to the scene: splat count, file size,
+   renderer used, and measured frame time on the target hardware.
+   Gate the scene on it: if the count exceeds what the chosen
+   renderer holds at target frame rate, compact or re-cluster
+   before shipping.
+3. Automate the PLY-to-Unreal coordinate check on import: Magnopus
+   documents the conversion as position (x, -z, -y) times 100 in
+   Unreal units, with scale and opacity passed through a sigmoid
+   (https://www.magnopus.com/blog/how-we-wrote-a-gpu-based-gaussian-splats-viewer-in-unreal-with-niagara).
+   A scripted import check that verifies one known marker lands at
+   the expected Unreal coordinates catches the lying-down or
+   100x-off import before a human notices it.
+
+**Check**
+- Does the manifest exist, with a collider mesh present for every
+  walkable splat area?
+- Was the renderer chosen from measured frame time at the scene's
+  actual splat count?
+
 ## Depth status
 
 FULL (article text).

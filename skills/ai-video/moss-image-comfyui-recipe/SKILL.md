@@ -14,6 +14,7 @@ This skill reconstructs the recipe from the release post and its comment thread,
 - Post: "OpenMOSS released MOSS-Image, and it's now supported in ComfyUI." by crystal_alpine — https://www.reddit.com/r/comfyui/comments/1xa6wmo/ (score 130, 28 comments, 25 top-level retrieved)
 - Official workflow: https://huggingface.co/Comfy-Org/MOSS-Image
 - Evidence: full post selftext + 25 top-level comments, 2026-10-21 scout run
+- Expansion 2026-10-28: "MOSS Image in ComfyUI | Text to Image, Words & Layout (Ep40)" by pixaromadesign — https://youtu.be/l4R96NemQS8 (19 min, 13,752 views, full captions, 466 segments, + description); Reddit post https://www.reddit.com/r/comfyui/comments/1xgwtyb/ (score 39). ASR garbles brand names in places ("PixArt-Alpha" for Pixaroma nodes, "Laura" for LoRA); settings below are taken from the description and from caption passages where the meaning is unambiguous.
 
 ## Tools used
 
@@ -67,6 +68,91 @@ The 9B text encoder dominates the VRAM budget; quantization is the practical rou
 
 **Why**
 For intake-style pipelines the base model is the commodity; the surrounding workflow/quant/LoRA ecosystem is the real integration cost. Track it weekly, not daily, and pin working artifacts.
+
+## Expansion 2026-10-28: Pixaroma Ep40, nine free workflows
+
+The 2026-10-21 recipe covers the model; Ep40 covers how to actually use it for text-bearing images. The core method is: MOSS Image is not an edit model, it is a text-rendering model, so every workflow gives it exact words (quoted, boxed, or same-seed swapped) and never asks it to change a picture in place.
+
+### Phase E1: Install to the version gate, with the SFT checkpoint
+
+**Do**
+1. Check versions first: double-click the canvas, add a version check. MOSS Image needs ComfyUI 0.42 or newer and Pixaroma 1.4.219 or newer.
+2. Download models first (three files): the model goes in diffusion models in a MOSS folder (create it if missing); take the model with SFT in its name ("That's the finished model. The base files are made for training LoRAs"); the text encoder goes in text encoders; the VAE goes in the VAE folder (small FLUX 2 VAE, "a different file from the normal one").
+3. Restart ComfyUI or press R to refresh the lists.
+4. Learn the node colour convention, shared by all nine workflows: orange nodes load the models; blue nodes are the only ones you change, numbered in order; green nodes do the work; the red node saves. Outputs go to ComfyUI's output folder, each workflow in its own folder.
+5. Expect the first run to take longer: ComfyUI loads about 13 GB of models from disk; after that they stay loaded.
+
+**Check**
+- Version check shows ComfyUI 0.42+ and Pixaroma 1.4.219+ before any workflow runs; the SFT (not base) checkpoint is loaded.
+
+**Why**
+Most "MOSS doesn't work" failures are version or checkpoint failures, not model failures. The colour convention is what makes nine workflows learnable as one pattern.
+
+### Phase E2: Write text-to-image prompts the MOSS way
+
+**Do**
+1. Workflow 1, text to image: describe in order: kind of image, then the person and what each hand does, the place, the light, and the camera.
+2. Put words that must appear in the image in double quotes, e.g. "pizza cafe on the wall". Skip "masterpiece" / "best quality"; describe what to see instead.
+3. Seed control: F keeps the same image, R makes a new one every run. After the first run, about 9 seconds per image on the creator's card (card model not stated in captions; do not assume one).
+4. Workflow 2, prompt helper: type a short idea (creator's example: a poster for a summer jazz night on a rooftop); the helper (the same text encoder that reads the prompt) writes the long prompt in about 2 seconds. Toggle between the AI-written prompt and the prompt as typed. Read the shown text and put the words you want in the idea in double quotes, because the helper invents details: in the creator's run it invented a date ("I never asked for that date. The helper made it up"). Two seeds: the AI-prompt seed rerolls the written prompt; the image seed makes a new image from the same prompt without re-running the helper.
+5. RTX 30-series failure mode (creator): the run can stop with a CUDA error; restart ComfyUI, open the gear on the AI-prompt node, and turn off faster writing.
+
+**Check**
+- The sign on the wall is spelled right. For posters, every line reads right, not just the title.
+
+**Why**
+MOSS's differentiator is legible words, and words are only legible when specified: quoted, complete, and checked. Vague prompts produce made-up small text, which is the model's predictable failure, not bad luck.
+
+### Phase E3: Go fast with the 4-step speed LoRA, for drafts only
+
+**Do**
+1. Workflow 3: add the speed LoRA (the one new file in download models, in a LoRA folder under MOSS). Prompt and size work the same as workflow 1.
+2. On the K sampler, keep 4 steps and CFG 1: "The LoRA was made for exactly that."
+3. Expect about 1 second per run on the creator's card, a new version every run.
+
+**Check**
+- Speed is about 8x the full workflow; if a fast run is used as a final, its small-text errors are the user's fault, not the model's surprise: big words stay right, small lines can gain or lose a word, skin comes out a little smoother. "When every word counts, use workflow one for the final image. The same prompt and seed there give you a similar image, not the same one."
+
+**Why**
+Draft speed and final accuracy are different jobs. The LoRA buys the first and must never be mistaken for the second.
+
+### Phase E4: Put words in pictures, then lay them out in boxes
+
+**Do**
+1. Workflow 4, words in pictures: every word goes in double quotes; give each line its own quotes on its own line, and MOSS keeps the line breaks. Describe the letters (e.g. big, bold chalk letters) and what they are on (e.g. the chalkboard). Creator's checks: a chalkboard menu (title, today's menu, five lines each with a price) came out right on four seeds out of four. A book cover works only when the title is described as part of the painting ("hand-painted and lit by the lighthouse"), not pasted on.
+2. Rule: the smaller the letters, the more room for a mistake, so for a lot of words pick a bigger size. Things that usually carry words (books in the background) get made-up letters unless you give the words.
+3. Workflow 5, layout with boxes (Pixaroma layout-boxes node): a small canvas shaped like the image; each box is one thing (object or text). Click to select, drag a corner to resize, drag inside to move, undo steps back. Step 1 is size (box canvas takes the same shape); step 2 boxes for the creator's skincare ad: headline at top, bottle in middle, small line at bottom. A text box has its exact words plus a short description of the letters; an object box has one full description. Colours go in the words; box colour only helps you see them. Step 3 prompt describes the whole image (kind, background, colours, light); do not name the boxes there.
+4. Boxes are guides, not cutouts: "The bottle fills its box roughly with its own shape and shadow." For a person/character, type its box number in the character boxes on the MOSS node.
+5. Workflow 6, same picture, new words: same prompt, same seed (keep seed on F), changing words in square brackets split by a vertical bar (creator's example: Anna, Mark, Sophia, Leo). One run makes one image per name, about 9 seconds each, shown together in an image grid. Two bracket groups make every combination (two colours x two names = four images). Caveat: "It's not always exactly the same image though. Sometimes a small thing changes. The steam moves or an extra candle shows up."
+
+**Check**
+- Menu: every word and every price right, across seeds. Ad: headline, bottle, and small line all spelled right and each sitting in its box. Name swap: same cup, same light, new name on each.
+
+**Why**
+Quoted words control spelling; boxes control placement; same-seed brackets control variation. Each mechanism answers a different question (what words, where, which variant).
+
+### Phase E5: Know the three honest failures, then work with your own pictures
+
+**Do**
+1. Failure 1, words you did not give: a sign or poster in the background can come out with made-up letters. Fix: give the words in double quotes, or let the workflow-2 helper write them.
+2. Failure 2, editing: MOSS is not an edit model. "It does not change an image you give it." In the creator's edit/restyle tests it did not keep the image (hair and face changed). No edit workflow is in this episode; the creator points to FLUX 3 Klein (Ep39) or FLUX 2 for edits today.
+3. Failure 3, big sizes: asking for a big size directly gives a different image (same prompt and seed, 2048 gave a different person). Fix: find the image at normal size, then enlarge with workflow 8.
+4. Workflow 7, image to prompt to image: load an image; the text encoder writes a detailed prompt in about 2 seconds; pick 1536 when the image has small words so the AI sees them bigger. Result is a new image, not a copy. Add a change at the end of the idea in the AI prompt (e.g. "but at night with warm light in the window").
+5. Workflow 8, upscale 2x keeping the picture: make the image in workflow 1, paste the same prompt, same size, same seed; step 4 denoise for the second pass, 0.35 is a good start. About 50 seconds on the creator's card; the example goes to 2048x2560 with real detail in hair, beard, and latte art, sign staying right.
+6. Workflow 9, upscale any picture: load any image, pick the size before it doubles (1024 becomes 2048), denoise 0.25 is a good start (0.15-0.20 for small faces in a group photo). Needs one new file, an upscale model in upscale models. About 30 seconds. Caveats: it repaints lightly, so small details can change; it does not repair (scratches on an old photo stay); on photos skin and hair can come out too smooth; illustrations and 3D images benefit most.
+
+**Check**
+- Upscale check: same barista, same sign, more detail, not a different person. Edit check: if the face changed, you asked an edit question of a generation model; use the FLUX route instead.
+
+**Why**
+Every failure here has a named workaround that respects what the model is: generate at normal size then upscale, quote the words you want, and never ask MOSS to edit.
+
+### Ep40 human method, distilled
+
+1. Quote every word that must be spelled right; never let the model guess small text.
+2. Use boxes for placement, same-seed brackets for variants, and the full workflow (not the speed LoRA) for finals.
+3. Read the helper's shown text before running: invented dates and details are visible there, before they are baked into an image.
+4. Generate small, then upscale; never generate big directly, and never ask a generation model to edit.
 
 ## AAA studio practice
 

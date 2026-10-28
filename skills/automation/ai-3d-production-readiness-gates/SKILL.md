@@ -187,6 +187,45 @@ minutes; steps three through six are where production lives.
    cleanup is not fast.
 6. Buy by the asset's next step, never by preview beauty.
 
+## AAA studio practice
+
+- **QA is two script hooks, not a human checklist.** A published
+  automated-QA workflow for 3D assets (Tripo blog) runs
+  post-generation scripts immediately after an asset is created
+  and pre-export scripts before it leaves the DCC tool. The checks
+  are scripted: albedo tagged sRGB while roughness, metallic, and
+  normal maps are linear; UV seam-bleed sampled along texture
+  borders; mipmaps validated; roughness and metallic maps at the
+  same resolution as albedo; normal maps in the correct tangent
+  space; material files referencing textures that actually exist.
+  Source: https://www.tripo3d.ai/blog/explore/automated-qa-checks-for-meshes-and-textures
+- **Whole-library validation runs as a node network, not one
+  asset at a time.** A Game Developer piece on procedural
+  pipelines uses Houdini's Procedural Dependency Graph to check
+  an entire asset library for required attributes (UV, UV2 for
+  lightmaps and blending, vertex colors including alpha, vertex
+  normals), driven by a parameter any team member can change, and
+  distributable to a compute farm instead of waiting for someone
+  to complain after release.
+  Source: https://www.gamedeveloper.com/programming/streamline-your-pipeline-with-procedural-workflows-automation
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Convert the Phase 2 inspection list into two scripts:
+   `qa-post-generation` (runs on every raw output) and
+   `qa-pre-export` (runs before handoff). Each writes a
+   `qa-report.json` with one pass/fail entry per check, naming the
+   failing check; the gate verdict in Phase 3 reads this report,
+   not a human's impression.
+2. Add the scripted checks the sources name explicitly: color
+   space per map type, UV seam-bleed sampling, mipmap presence,
+   PBR map resolution parity, normal tangent space, and material
+   file path existence.
+3. Run the library-level check as a batch: the same check set over
+   every asset in the folder, with a summary report (asset, failed
+   checks) so one bad export cannot hide among good ones.
+4. Record the 20-minute usability test result in the gate log
+   (minutes spent, usable or not) instead of estimating it.
+
 ## Depth status
 
 FULL (article text).

@@ -133,6 +133,47 @@ graph is an operator whose work can be inspected like any teammate's.
 5. Agents need graphs: defined actions, visible output, human approval.
 6. Judge agent output by wireframe, not preview.
 
+## AAA studio practice
+
+- **Mundane validation becomes a node network that runs on a
+  farm.** A Game Developer piece on procedural pipelines describes
+  using Houdini's Procedural Dependency Graph to automate asset
+  validation: a simple network of nodes describing the steps
+  usually done by hand, processed locally or distributed to a
+  compute farm. The same article's point generalizes: a task done
+  by hand once becomes a node, and a node network gives
+  multithreading and parallel processing that a Python script
+  alone does not.
+  Source: https://www.gamedeveloper.com/programming/streamline-your-pipeline-with-procedural-workflows-automation
+- **Encapsulate networks into shareable digital assets, and let
+  changes cascade.** SideFX's Houdini model lets artists
+  encapsulate node networks into custom nodes (digital assets)
+  without writing code, share them across scenes, and open them
+  in host applications (Maya, 3ds Max, Unreal, Unity) through
+  Houdini Engine with procedural controls intact. Changes made to
+  nodes cascade through the network, so creative decisions can be
+  made deep into production and late changes stay cheap instead
+  of forcing a rebuild.
+  Source: https://www.sidefx.com/products/houdini/
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Add a validation node to every graph: attribute checks (UV,
+   UV2, vertex colors, normals, scale, poly budget) as a node in
+   the graph, not a manual step after it. A graph whose validation
+   node fails does not reach the export node.
+2. Package each finished graph as a shareable template asset with
+   its locked settings and a version number, so a teammate can
+   load it in their host application with procedural controls
+   intact instead of rebuilding it.
+3. Give agents an explicit action allowlist per graph: which nodes
+   an agent may run, which nodes need human approval, and which
+   nodes are locked. Log every agent action (node, inputs,
+   outputs, timestamp) to a `graph-run-log.json` so agent work is
+   auditable like any teammate's.
+4. Add a farm flag to batch graphs: when a batch exceeds a set
+   asset count, the graph's independent branches run in parallel
+   rather than sequentially.
+
 ## Depth status
 
 FULL (article text; game-art agent member is commentary level, labeled

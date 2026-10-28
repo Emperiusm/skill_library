@@ -68,6 +68,8 @@ forever.
 **Check**
 - Is there a 2K master to regenerate platform sizes from?
 - Are data maps linear and color maps sRGB, without exception?
+- Is there a `material-manifest.md` recording each map's
+  color-space role, channel packing, and normal convention?
 
 **Why**
 The 2K-master rule exists because downscaling is free and upscaling is
@@ -115,6 +117,41 @@ fine until a light moves, and then it looks inside out.
 A static preview cannot catch baked lighting; only a moving light can.
 This is the test that separates a texture from a material, and it costs
 minutes where a shipped failure costs days.
+
+## AAA studio practice
+
+Production material work treats the material as a regenerable system,
+not a set of exported images:
+
+- **Four-pass workflow, manifest included.** Describe the substance,
+  layers, physical scale, and target shader before authoring; build
+  clean canonical maps with shared masks and documented semantics;
+  translate to target-specific channel packs, inversions, and importer
+  settings; verify under controlled light and profile compression,
+  mips, motion, and memory in the target. Every delivery carries an
+  evidence packet: canonical maps, a material manifest (semantic,
+  color-space role, neutral value, channels, version, provenance),
+  review captures (unlit, neutral, grazing, alternate environment,
+  distance, and motion frames), a target preset (engine, shader,
+  normal convention, packing, format, importer flags), and a runtime
+  record. If a delivery cannot be regenerated from its canonical maps
+  and recorded preset, it is not yet a production system.
+  (Source: https://www.playtex.ai/downloads/the-game-developers-pbr-texture-handbook.pdf)
+- **Paint the bake cage, do not just widen it.** Substance 3D Painter
+  12.2's cage painting gives per-pixel brush control over projection
+  distance during baking, so a local projection problem gets fixed
+  where it occurs instead of by repeatedly changing the whole cage
+  and re-baking.
+  (Source: https://80.lv/articles/substance-3d-painter-12-2-lets-artists-paint-baking-cages-directly-on-models)
+- **Automation (agent-executable):** write a `material-manifest.md`
+  beside the maps recording each map's color-space role, channel
+  packing, normal convention, target engine/shader, and version;
+  save the review-capture set (unlit, neutral, grazing,
+  alternate-environment, distance, motion frames) as files, not
+  eyeballed previews; log cage-paint fixes per region so a re-bake
+  reproduces them. (Inference from the two sources above: the
+  manifest and capture set are the handbook's evidence packet
+  applied to this skill's pipeline.)
 
 ## The human method, distilled
 

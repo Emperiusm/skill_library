@@ -106,6 +106,45 @@ own drift.
 4. Scene is the unit of work for agency delivery.
 5. Test every revision against the lock, not the last render.
 
+## AAA studio practice
+
+- **One file, every option a switchable variant, never forty
+  drifting assets.** A configurator-pipeline deep dive (3D Artist)
+  describes the production pattern exactly: one USD file with every
+  option living inside it as a switchable variant, so design, the
+  configurator, and marketing all pull from the same source of
+  truth instead of maintaining forty separate assets that
+  inevitably drift out of sync. Nobody touches the model or
+  rewrites the configurator to add a variant; the variant is a
+  switch.
+  Source: https://3dartist.substack.com/p/3d-automotive-deep-dive-06-the-configurator
+- **Materials are separate shaders, not one painted look.**
+  Automotive rendering practice (88cars3d) builds a car from
+  dozens of distinct materials: a multi-layer paint shader (base
+  coat, metallic flake layer, clear coat), plus glass with correct
+  index of refraction, chrome, textured plastics, tire rubber,
+  brushed aluminum, and emissive headlights. Lighting comes from
+  HDRI image-based lighting matched to a backplate, with key,
+  fill, and rim lights, and cameras at 50 to 85 mm focal length
+  with shallow depth of field.
+  Source: https://88cars3d.com/2025/11/29/from-showroom-to-screen-a-technical-guide-to-automotive-rendering-and-game-asset-integration/
+
+**Automation upgrade (agent-executable, derived from the above)**
+1. Write a `variant-manifest.json` for the locked product: every
+   approved option (colorway, material, finish, environment,
+   camera, crop) as a named switch with its approved values. Any
+   deliverable whose option is not in the manifest is rejected
+   before rendering.
+2. Add a drift check after every revision: render the approved
+   reference angles and compare each against the lock reference
+   (proportions, materials, branding, finish), logging pass/fail
+   per angle to `drift-check.json`. A revision that fails any
+   angle returns to the layer that changed, not to a product
+   regeneration.
+3. Enforce a material-slot checklist per product (one slot per
+   material, no fused painted maps) as a gate before any campaign
+   imagery is generated.
+
 ## Depth status
 
 FULL (article text, strategy level by source design; no click-level
