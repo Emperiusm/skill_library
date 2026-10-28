@@ -11,6 +11,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`greenscreen-plate-production-keying`](capture/greenscreen-plate-production-keying/SKILL.md) | Produce pro-level greenscreen plates for keying practice: cinema camera, ProRes RAW, in-frame tracking markers, deliberately kept imperfect plates, shot planning for full 3D-world building. |
 | [`spirula-3dgs-anti-floater-capture`](capture/spirula-3dgs-anti-floater-capture/SKILL.md) | Produce clean 3D Gaussian splats with Spirula: plan phone capture around the actual camera moves (4K60), enable normal and depth estimation at SfM. |
 | [`vathography-depth-remap`](capture/vathography-depth-remap/SKILL.md) | Turn a photo's hidden depth pass into the artwork: Marigold V2 single-photo depth (Apache 2.0), then Blender compositor Color Ramp remap for volume, mist, and focus. |
+| [`ai-3d-gaussian-splats`](capture/ai-3d-gaussian-splats/SKILL.md) | Capture, inspect, and decide on Gaussian splats: COLMAP camera solve, the splat-versus-mesh decision rule, and a mixed-format workflow. |
+| [`ai-3d-image-to-3d-reconstruction`](capture/ai-3d-image-to-3d-reconstruction/SKILL.md) | Reconstruct usable assets from reference images: reference quality, multi-view coverage, hidden-side hunting, repair loop, six-point sign-off. |
 
 ## Characters and rigging (`characters/`)
 
@@ -24,6 +26,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`revive-ancient-model`](characters/revive-ancient-model/SKILL.md) | Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. |
 | [`substance-painter-characters`](characters/substance-painter-characters/SKILL.md) | Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. |
 | [`reallusion-rigger-apex-rig`](characters/reallusion-rigger-apex-rig/SKILL.md) | Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials, full APEX rig, face puppet and muscle tools, LookAt auto-animation. |
+| [`ai-3d-character-pipeline`](characters/ai-3d-character-pipeline/SKILL.md) | Take an AI character from clean A-pose reference through modular parts, rigging, skins, and animation prep to an engine proof. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -45,6 +48,11 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`runevision-voronoi-terrain-stack`](procgen-worlds/runevision-voronoi-terrain-stack/SKILL.md) | Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU. |
 | [`ring-world-shader-curvature`](procgen-worlds/ring-world-shader-curvature/SKILL.md) | Fake a ring world without building one: flat strip holding every biome, curved-space shader bends it into a ring; interaction and lighting agreement are the debts. |
 | [`branch-propagation-tree-generator`](procgen-worlds/branch-propagation-tree-generator/SKILL.md) | Generate tree species in C++ from per-level branch propagation rules (end-only vs mid-branch splits, leaf types, angle intervals with upward biases), rendered as low-memory cylinder primitives in custom Vulkan. |
+| [`ai-3d-game-prop-pipeline`](procgen-worlds/ai-3d-game-prop-pipeline/SKILL.md) | Take an AI game prop from constrained brief to in-engine verification, with the recipe saved so the next prop costs a fraction of the first. |
+| [`ai-3d-scene-cinematic-vfx`](procgen-worlds/ai-3d-scene-cinematic-vfx/SKILL.md) | Direct AI 3D for VFX and cinematic work from a scene, not a prompt: scene-as-source-of-truth, continuity across cuts, eight-question readiness checklist. |
+| [`ai-3d-text-to-3d-prompting`](procgen-worlds/ai-3d-text-to-3d-prompting/SKILL.md) | Turn text prompts into usable assets: specificity ladder, 60-second triage, three gaps, and the switch to a reference once a look is right. |
+| [`ai-3d-print-routing`](procgen-worlds/ai-3d-print-routing/SKILL.md) | Route AI output between printable STL shells and textured editable assets, with the asymmetry rule that screen-to-print is cheap and print-to-screen is nearly impossible. |
+| [`ai-3d-svg-to-3d`](procgen-worlds/ai-3d-svg-to-3d/SKILL.md) | Turn vector art into usable 3D: clean closed paths, extrude at 10 to 25 percent of shape width, bevel, material, light, export. |
 
 ## AI video and film (`ai-video/`)
 
@@ -66,6 +74,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`minimax-h3-synctile-long-video`](ai-video/minimax-h3-synctile-long-video/SKILL.md) | Generate long MiniMax H3 videos (tested 600 frames / 25 s at 4K) with one denoising trajectory: SyncTile blends overlapping tiles x 124-frame windows at every model call; 0.5 MP draft, 3D latent upscale, 4K refine. |
 | [`minimax-h3-reference-video-character-swap`](ai-video/minimax-h3-reference-video-character-swap/SKILL.md) | Swap a character in video with MiniMax H3's Reference-to-Video workflow in ComfyUI: source footage supplies motion, Krea 2 and Qwen Image supply references, no mocap; watch for smearing in fast motion and missing facial detail in wide shots. |
 | [`minimax-h3-chain-director`](ai-video/minimax-h3-chain-director/SKILL.md) | Run multi-segment MiniMax H3 video in ComfyUI from one Director panel: Single or Chain modes, Motion Context continuity with trimmed seams, independent BASE and UPSCALE stages, 3D latent upscaling, KJNodes live preview; watch for prop drift, the xmarre upscaler keep_proportion bug, and the Motion-Context node conflict. |
+| [`minimax-h3-storyboard-grid-reference`](ai-video/minimax-h3-storyboard-grid-reference/SKILL.md) | Steer MiniMax H3 reference-to-video through complex scenes with a 2x2 storyboard grid: GPT image 2 key-frame panels, shot-by-shot prompting (one panel = one full-frame shot, hard cuts, real-time speed), H3 Singularity two-pass settings. |
+| [`comfyui-ai-documentary-batch-pipeline`](ai-video/comfyui-ai-documentary-batch-pipeline/SKILL.md) | Produce AI history documentaries in batch: Claude visual bible + 10-second-chunk script, Qwen Image 2.1 batch images, Claude QA rewriting only bad prompts, MiniMax H3 10-second clips, Qwen3-TTS per-line narration, RTX VSR x2 to 2K. |
+| [`comfyui-video-builder-agent-music-video`](ai-video/comfyui-video-builder-agent-music-video/SKILL.md) | Let a Claude Sonnet agent build a full music video in ComfyUI through MCP from one prompt: Krea2 refs, YUE2 song, story and scene prompts, overnight run, frame review with up to 3 retries per scene, no post-edits. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -99,6 +110,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ue58-gradient-animated-materials`](materials-shaders/ue58-gradient-animated-materials/SKILL.md) | Build four gradient-driven animated materials in Unreal Engine 5.8's Material Editor (matrix-code streaks, dissolve-swap between two textures. |
 | [`ultratex-comfyui-ai-texturing`](materials-shaders/ultratex-comfyui-ai-texturing/SKILL.md) | Texture any untextured mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs; GGUF workflow for 6 to 8 GB cards, Klein BASE model required. |
 | [`blender-inverted-hull-outline`](materials-shaders/blender-inverted-hull-outline/SKILL.md) | Build a toon outline in Blender with the inverted hull method: Solidify Flip normals and Material Offset 1, black Emission outline material, Transparent BSDF mixed by Geometry Backfacing, second Mix Shader gated by Light Path Is Camera Ray (Ray Length for mirrors), 0.003 example thickness, transparent shadows ON; works in Cycles and Eevee. |
+| [`ai-3d-retopology-uv`](materials-shaders/ai-3d-retopology-uv/SKILL.md) | Repair AI meshes for production: retopology decisions by destination, wireframe checks, UV inspection with checker textures and overlap overlays. |
+| [`ai-3d-pbr-materials-textures`](materials-shaders/ai-3d-pbr-materials-textures/SKILL.md) | Author and verify PBR materials for AI assets: channel meanings, ORM packing, normal-map green-channel conventions, two-light and moving-light tests. |
 
 ## Engine and runtime (`engine-runtime/`)
 
@@ -130,6 +143,11 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`godot-signals-groups`](engine-runtime/godot-signals-groups/SKILL.md) | Build event-driven, decoupled Godot 4.7 gameplay with signals and node groups: declare and emit custom signals, connect with Callables (incl. bind/one-shot), and broadcast to. |
 | [`godot-tilemap`](engine-runtime/godot-tilemap/SKILL.md) | Build and edit tile-based 2D levels in Godot 4.7 with TileMapLayer and TileSet: paint layers, set up collision/navigation/custom-data on tiles, autotile with terrain sets. |
 | [`godot-ui-control`](engine-runtime/godot-ui-control/SKILL.md) | Build Godot 4.7 user interfaces with Control nodes: anchors and offsets for responsive layout, Container nodes (VBox/HBox/Grid/Margin) for automatic arrangement, Theme. |
+| [`ai-3d-game-optimization`](engine-runtime/ai-3d-game-optimization/SKILL.md) | Ship AI assets in games on a performance budget: role budgets, bake-before-reduce, ORM packing, LOD chains, collision proxies. |
+| [`ai-3d-format-export-guide`](engine-runtime/ai-3d-format-export-guide/SKILL.md) | Choose between GLB, FBX, OBJ, USD, and STL by destination, with each format's failure mode and post-export checks. |
+| [`ai-3d-engine-export`](engine-runtime/ai-3d-engine-export/SKILL.md) | Hand an AI asset to Unity, Unreal, or Blender: shared export gates plus per-target settings and a fresh-scene re-import proof. |
+| [`ai-3d-scene-graph`](engine-runtime/ai-3d-scene-graph/SKILL.md) | Read and repair scene graphs: parent-child transform trees, a five-point health checklist, and the distinction from node workflow graphs. |
+
 ## Automation and bridges (`automation/`)
 
 | Skill | What it teaches |
@@ -141,6 +159,13 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`nomad-blender-live-link`](automation/nomad-blender-live-link/SKILL.md) | Verify and use the Nomad Sculpt live link to Blender and other PC apps: install the link, round-trip a sculpt iPad-to-PC and back, and check the. |
 | [`steam-publish`](automation/steam-publish/SKILL.md) | Publish or update a game on Steam with Steamworks and SteamPipe: configure depots and packages, upload builds with steamcmd, set a build live on a branch, and run the release. |
 | [`itch-publish`](automation/itch-publish/SKILL.md) | Publish and update a game on itch.io: create the project page and upload builds with the butler CLI (butler push) to named channels. Use for itch.io publishing, butler push. |
+| [`url-to-skill`](automation/url-to-skill/SKILL.md) | Turn one Reddit post or YouTube video into a publishable library skill: summarize the source, extract the workflow at full depth, refine it with cited AAA studio practice and agent-automation upgrades, validate it, and submit it as a pull request. |
+| [`ai-3d-tool-selection`](automation/ai-3d-tool-selection/SKILL.md) | Choose text-to-3D and image-to-3D tools with a scored comparison method: one shared brief, 1 to 5 scoring, second-prompt retest, scores flagged as dated. |
+| [`ai-3d-product-agency-workflows`](automation/ai-3d-product-agency-workflows/SKILL.md) | Deliver client 3D work without drift: frozen-product and editable-scene workflows, product-readiness audit, revision-survival tests. |
+| [`ai-3d-production-readiness-gates`](automation/ai-3d-production-readiness-gates/SKILL.md) | Gate AI assets for handoff: five-level quality ladder, inspection list, decision matrix by asset type, pass, revise, and reject gates. |
+| [`ai-3d-studio-team-workflows`](automation/ai-3d-studio-team-workflows/SKILL.md) | Run AI 3D as a team discipline: provenance, style control, review gates, workspace selection, 40-SKU batch example. |
+| [`ai-3d-workflow-nodes-agents`](automation/ai-3d-workflow-nodes-agents/SKILL.md) | Build repeatable AI 3D work as node graphs and let agents operate them safely: typed ports, DAG re-execution, fake-editor test, guardrails. |
+
 ## No-tooling examples (`no-tooling/`)
 
 | Skill | What it teaches |

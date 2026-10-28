@@ -93,6 +93,31 @@ none are claimed here.
   proper crowd course, calling crowds "arguably one of the most useful
   things in Houdini for film/tv."
 
+## AAA studio practice
+
+This skill's exact mechanics are the production crowd mechanics. SideFX's crowd documentation describes sticky collisions as a first-class feature: arrows shot at agents stick instead of bouncing off, and the Crowd Trigger counts sticky collisions on an agent to trigger new behavior, with the documented example being agents that transition from walking to ragdoll after two sticky collisions. SideFX's crowds overview names the same state machine this skill uses: partial and full ragdoll states, where agents hand control to a rigid-body simulation for impacts, knockdowns, and death events, plus hero agents directed to stand out from the crowd. At blockbuster scale, the Battle of Winterfell in Game of Thrones (Rodeo FX) used Houdini crowd simulation for thousands of undead soldiers and human forces responding to shifting battle dynamics, running, falling, and fighting without per-soldier animation. The lesson that scales from that shot to this skill: the crowd solver owns behavior and transitions, the artist owns triggers and handoffs.
+
+- Source: https://www.sidefx.com/docs/houdini/crowds/ragdoll.html (SideFX: sticky collisions, Crowd Trigger counting sticky collisions to change state, walking-to-ragdoll after two hits)
+- Source: https://www.sidefx.com/products/houdini/characters/crowds/ (SideFX: partial/full ragdoll state transitions, hero agents)
+- Source: https://studioimageworks.com/houdini-crowdsimulation-smarter-dynamic-crowd/ (Battle of Winterfell: Houdini crowd simulation for thousands of agents in shifting battle dynamics)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Replace the Phase 2 hand-off description with the SideFX trigger pattern: configure sticky collisions on the arrow RBD and the agent states, and set the Crowd Trigger to count sticky collisions per agent (1 to 3 hits, per this skill) and transition the agent to the ragdoll state at the threshold. Log the hit count per agent that died, so the death rule is auditable.
+2. Automate the Phase 1 prop-attachment check: before the full sim, run one archer agent through draw and release and verify the arrow rides the hand for the whole motion. A failed attachment stops the sim before any crowd compute is spent.
+3. Automate the Phase 3 collapse test the same way: run one agent as a ragdoll on a collapsing floor section first, and verify it falls with the floor (no hovering) before the full crowd collapse runs.
+4. Automate the Phase 4 render-iteration gate: render the behavior pass in Unreal first for turnaround, and promote to Karma only after the behavior (aim, stick, death, collapse) is signed off. Record which renderer produced each review pass, so a slow Karma render is never spent on an unapproved behavior.
+
+**Check**
+- The trigger counts sticky collisions per agent and transitions to ragdoll at the configured threshold; the hit log exists per dead agent.
+- The single-agent draw/release check passes before the crowd sim starts.
+- The single-agent collapse check passes before the full collapse runs.
+- The Unreal behavior pass is signed off before any Karma hero render is queued.
+
+**Why**
+- The crowd solver's cost is in the full sim, so every check that can run on one agent must run on one agent. The trigger pattern also replaces the author's hand-tuned handoff with the documented mechanism, which means the next artist can reproduce the deaths instead of reverse-engineering them.
+
 ## The human method, distilled
 
 1. **Fix the library animation first**: re-attach before you simulate.

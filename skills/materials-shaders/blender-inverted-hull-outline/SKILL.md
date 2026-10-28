@@ -25,6 +25,8 @@ video before about making a toon outline shader for both Cycles and
 Eevee, and I get a lot of questions about it, so I made it again with a
 bit more detail."
 
+Second source (2026-10-26 scout run, audit 3 tip 2): Blender Secrets repeats the same method in "5 Tips: Square to Round shapes, Inverted Hull, Reduce polycount, find double geometry, better bevels" (https://www.youtube.com/watch?v=hnHqboUoxxs, uploaded 2026-10-15, 736 s, 11,620 views) and confirms it still works exactly the same way in Blender 5.2, despite viewer reports that it had stopped working. The details that people miss are the ones this skill already records: noodles plugged exactly as shown, Transparent Shadows ON, and Ray Length (not Is Camera Ray) for mirror reflections. No change to the method itself.
+
 ## Tools used
 
 **Blender** (author says the method still works in Blender 5.2; captions
@@ -147,6 +149,32 @@ and ignored).
   that has traveled (reflected) still qualifies, so the outline
   survives the mirror. Transparent shadows ON is the second silent
   killer: without it, the shell's shadow logic fights the transparency.
+
+## AAA studio practice
+
+The inverted hull is the production method, not a Blender-only trick. Arc System Works' Guilty Gear Xrd team presented it at GDC 2015 as the "Back Method": the model is rendered once expanded and backface-reversed to produce the whole black contour, then rendered again at normal size, and the two are composited so only the contour survives where the expanded version extends past the silhouette. That is exactly this skill's Solidify Flip plus Material Offset shell, generalized to a two-pass renderer. The same GDC material names the failure mode this skill's Phase 5 fixes: when outlines are built on edited normals, the lines thin unintentionally, because the outline cannot be extruded along the edited normals, and subdivided surfaces recalculate normals outright. Arc's answer was to treat outline weight as a designed, per-character property, not a single global thickness, and to accept that each character costs individual tuning (the talk's often-quoted figure is four months per character, outline work included). The algorithm is also taught as the standard inverted-hull outline: duplicate geometry, extrude, flip normals, enable backface culling, so outlines become separate geometry sitting on top of the original.
+
+- Source: https://www.gamedeveloper.com/art/see-i-guilty-gear-xrd-i-s-striking-2d-3d-art-deconstructed-at-gdc-2015 (GDC 2015: Arc System Works, "Guilty Gear Xrd's Art Style: The X Factor Between 2D and 3D")
+- Source: https://topic.alibabacloud.com/a/quottranslationquot-nishikawa-quotexperiment-made-by-the-game-graphicsquotquotguilty-gear-xrd-font-colorredsignfont-quot-in-the_8_8_31556834.html (translation of the Xrd art talk: the Back Method, expanded black contour composited with the normal render)
+- Source: https://www.scribd.com/document/743898396/GGXrd-AnimeStyleModelTips-pptx (Guilty Gear Xrd character modeling tips: inverted-hull outline thinning on edited/subdivided normals)
+- Source: https://15362.courses.cs.cmu.edu/fall2025content/lectures/53_lec-s03/53_lec-s03_slides.pdf (CMU computer graphics lecture: inverted hull outline algorithm)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the thickness acceptance pass: render the character at three camera distances (close, mid, far) with the chosen Solidify thickness, and measure the outline's screen-space width in each. If the width collapses at distance (the Xrd thinning failure), raise the thickness or switch to a distance-scaled thickness before shipping the asset.
+2. Automate the Phase 5 mirror test as a render pair, not a manual look: one render with a metallic roughness-0 mirror in frame, checking outline presence in both the direct view and the reflection, with Is Camera Ray versus Ray Length recorded as the factor used.
+3. Automate the silent-killer checks as a settings audit before render: transparent shadows ON in the render settings, material order (skin first, outline second), Solidify Flip enabled, Material Offset 1. Any mismatch fails the audit before a frame renders.
+4. Record the final thickness value per character in the asset notes, not as a global default: Arc's lesson is that outline weight is per-character tuning.
+
+**Check**
+- Outline width is stable across the three camera distances, or the distance-scaling fix is in place.
+- The mirror render shows the outline in both direct view and reflection.
+- The settings audit passes (transparent shadows, material order, Flip, offset) before render.
+- Thickness is recorded per character.
+
+**Why**
+- The inverted hull's known production failure is not a broken shader but a thinning outline discovered late, in a shot where the camera moved. A three-distance render pass plus a settings audit catches both of this skill's failure modes (thinning, whole-head-black) before the asset reaches a scene.
 
 ## The human method, distilled
 

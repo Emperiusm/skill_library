@@ -193,6 +193,30 @@ Free and local does not mean restriction-free. The code license and the
 model license are different documents, and the model license is the one
 that governs production use.
 
+## AAA studio practice
+
+AAA studios do not hand-paint every PBR set anymore; they generate a baseline with AI and spend human time on the hero decisions. Ubisoft's La Forge lab published exactly this shape as an open-source prototype for SIGGRAPH Asia 2025: a three-stage pipeline (diffusion texture synthesis from text or conditioning images, then a custom "CHORD" image-to-material model that decomposes the texture into PBR maps, then a 2x or 4x upscaler for 2K/4K game assets), built so artists fine-tune the result rather than authoring from scratch. The same baseline-plus-judgment split shows up in shipped work: the Painkiller RTX team used NVIDIA's PBRFusion to batch-convert thousands of legacy textures into base color, normal, roughness, and height maps at a scale no manual rebuild could reach, while still hand-crafting metals, glass, and skin, and giving hero materials extra attention with AI-assisted generation plus procedural workflows. UltraTex is the local, single-mesh version of that pipeline: reference-driven baseline (one image in, albedo plus MR out), with the same rule that the generated set is a starting point the artist verifies, not a finished asset.
+
+- Source: https://www.ubisoft.com/en-us/studio/laforge/news/1i3YOvQX2iArLlScBPqBZs/generative-base-material-an-opensource-prototype-for-pbr-material-estimation-debuting-at-siggraph-asia-2025 (Ubisoft La Forge Generative Base Material: synthesis, CHORD image-to-material, upscaling; artist fine-tuning)
+- Source: https://developer.nvidia.com/blog/how-painkiller-rtx-uses-generative-ai-to-modernize-game-assets-at-scale/?ref=dailydev (Painkiller RTX: PBRFusion batch conversion of legacy textures to PBR, hand-crafted metals/glass/skin, hero-material attention)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a texture manifest before running: mesh path, reference-image hash, workflow band (Standard/Advanced/Low-VRAM), model variant (must read Klein BASE), albedo resolution, and texture size. A manifest with a distilled Klein checkpoint fails before any generation, turning UltraTex's silent failure into a loud one.
+2. Automate the Phase 4 promotion gate: run at 1024, capture the multi-angle preview set, and only queue the 2048 final when the 1024 set passes the Phase 6 checks (text/logos intact, MR maps separate from albedo). Log the 1024 pass/fail per angle.
+3. Automate the Phase 6 MR separation check: read the exported maps and verify the metallic and roughness channels are their own maps, not baked into base color, and that `unseen_before_fill` and `projection_confidence` passes exist in the output folder. Missing passes fail the run, not the review.
+4. Automate the hero-material rule from Painkiller RTX: tag each mesh as baseline or hero in the manifest. Hero meshes get the full 2048 final plus a manual MR review; baseline meshes stop at the automated gates.
+
+**Check**
+- The manifest exists and the Klein variant reads BASE before generation starts.
+- The 1024 test set passes all Phase 6 checks before any 2048 final is queued.
+- MR maps are separate files with their own channels; the fill and confidence passes are present.
+- Every mesh is tagged baseline or hero, and hero meshes have a recorded manual MR review.
+
+**Why**
+- The AAA pattern is baseline automation plus judgment where it matters. The manifest catches the one silent failure (wrong Klein variant), the 1024 gate catches reference and mesh mistakes at a fraction of the cost, and the MR check catches the defect a pretty preview hides: a PBR set that is really just a color map.
+
 ## The human method, distilled
 
 1. Match the workflow to the GPU first, then run. VRAM band is a Phase 2

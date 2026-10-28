@@ -75,6 +75,32 @@ disclosed; none are claimed here.
 - A trick that costs 8 hours to cache is a finishing trick, not an
   iteration trick: run it late, not while blocking the shot.
 
+## AAA studio practice
+
+Production FLIP work treats viscosity as a field you paint and schedule, not a single solver value. SideFX's own FLIP documentation lists "custom fields like varying viscosity and mass-density" as a core feature of the SOP-based FLIP workflow, and notes the DOP workflow remains production-proven precisely because studios built their own networks around it. The practitioner rule from production FLIP writing is the same: FLIP fluids have no viscosity by default, so time-dependent and non-Newtonian viscosity are inputs the artist supplies, with 32-bit solves recommended for faster viscosity solves and surface visualization used to read viscous fluids. That is the formal version of this skill's Phase 1: thicken where the collider moves, relax afterward, as a time-varying attribute. The fake-normals sparkle has its own production lineage: Autodesk's Arnold flakes shader creates glitter by putting flake variation into the normal (and coat normal) layers rather than modeling sparkle geometry, and real-time sparkle research (TU Graz) treats sparkle as a view-dependent normal/noise function with explicit sparkle-size and sparkle-density parameters, implemented in a AAA title's snow scene.
+
+- Source: http://www.sidefx.com/docs/houdini/fluid/dopversussop.html (SideFX: SOP FLIP custom fields including varying viscosity; DOP production-proven)
+- Source: https://www.katexagoraris.com/super-fluids (production FLIP notes: no default viscosity, time-dependent/non-Newtonian viscosity as input, 32-bit viscosity solves, surface visualization)
+- Source: https://help.autodesk.com/cloudhelp/ENU/AR-Houdini/files/tutorials/shading/arnold_for_houdini_shading_ah_Flakes_Example_html.html (Arnold flakes: glitter via flakes in the normal and coat-normal layers, not geometry)
+- Source: http://diglib.cgv.tugraz.at/bitstream/handle/10.2312/sre20161209/049-054.pdf (real-time sparkle effect: view-dependent sparkle with size/density parameters, implemented in a AAA title)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Replace the Phase 1 description with an explicit viscosity field: drive local viscosity from collider distance (an attribute ramp, not a global value), with a relaxation curve back to the base value logged per frame. The ramp parameters and the relaxation time are written into the shot notes, so the "thicken then settle" behavior is reproducible instead of hand-tuned per sim.
+2. Replace the Phase 2 description with an explicit normal-noise parameter: sparkle density and normal-randomization amplitude as named values, rendered as a before/after pair (flat normals versus randomized) so the sparkle contribution is measurable, not just visible.
+3. Automate the Phase 3 budget as a comparable record: log resolution, particle count, hardware, and cache hours for every run. The author's 8 hours becomes a baseline other runs can be compared against, instead of a single anecdote.
+4. Gate the finishing pass on the budget log: a run that exceeds the logged baseline by a wide margin triggers a resolution or particle-count review before the cache is committed.
+
+**Check**
+- Viscosity is an attribute field with a logged relaxation curve, not a single solver value.
+- Sparkle has named density and amplitude values with a before/after render pair.
+- Every cache run logs resolution, particle count, hardware, and hours.
+- Budget overruns trigger a review before the cache is committed.
+
+**Why**
+- A finishing trick that cannot be reproduced or budgeted is a one-off, not a pipeline step. Naming the viscosity field, the sparkle parameters, and the cache cost turns this audit's three observations into settings the next shot can reuse and the next budget can plan around.
+
 ## The human method, distilled
 
 1. **Viscosity is local and temporary**: thicken for the stroke, relax

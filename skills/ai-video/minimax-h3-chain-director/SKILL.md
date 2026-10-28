@@ -136,6 +136,31 @@ Related node mentioned by a commenter, author-unexamined:
   continuity; it has only automated the generation loop. The drift
   list is the acceptance test.
 
+## AAA studio practice
+
+No AAA studio is documented as shipping on MiniMax H3 itself, so this section does not claim one. What is documented is the production-grade principle the Director implements: continuity across segments is managed as a system, not hoped for per clip. Filmatix, an AI-cinema production outfit, describes its multi-shot workflow as shot-by-shot generation with "full continuity control": character identity locked, state preserved across cuts, lighting matched between scenes, with a serialized AI drama (The Mia Show) as its internal R&D environment for exactly this problem. StoryMem, a multi-shot storytelling system from ByteDance and Nanyang Technological University researchers, makes the same point architecturally: it keeps a memory bank of keyframes from previously generated shots and conditions each new shot on it, reporting a 28.7% improvement in cross-shot consistency over methods without that memory. The Director's Motion Context plus trimmed seams is the ComfyUI version of that memory bank: carried context, not independent generations. The same production logic appears in practitioner workflows for long AI video: plan in the unit the tool renders (scene math), build one reference pack before generating anything, and run a continuity check that flags any scene where clothing, lighting, or props could drift from the previous one, before spending generation budget.
+
+- Source: https://www.filmatix.ai/Cinema.html (Filmatix AI-cinema production process: shot-by-shot generation, identity locked, state preserved across cuts)
+- Source: https://studio.aifilms.ai/blog/storymem-multi-shot-video-storytelling-with-visual-memory (StoryMem: keyframe memory bank conditioning subsequent shots, 28.7% cross-shot consistency improvement)
+- Source: https://dipenvaja.medium.com/the-10-minute-ai-video-headline-is-really-about-stitching-short-scenes-9d80c5bd77c9 (long-AI-video workflow: scene math, one reference pack, continuity check before spend)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a segment manifest before any render: one JSON file listing every segment, its general plus per-segment prompts, the reference-image indices it uses, and the transition frames to be trimmed. The Director panel settings (mode, duration, aspect, seed, sampler, scheduler, steps) are copied into the manifest, not left only in the UI.
+2. Automate the prop-drift acceptance pass from Phase 4: after each segment renders, extract its first and last frames plus one mid-segment frame, and check the named props (earring, mousepad logo, shelf vases, or the project's own equivalents) across all three. Log pass/fail per prop per segment in a JSONL take log.
+3. Automate the Phase 4 upscaler-compatibility gate: before the UPSCALE stage, read the upscaler node's expected parameter set from the installed node and compare it against the parameter set the Director passes. A missing parameter (the V1.0 `keep_proportion` failure mode) fails the run before any upscale compute is spent.
+4. Log every segment take (seed, sampler, steps, BASE/UPSCALE split, trim frames) to the same JSONL file, so a drifted segment can be re-rendered alone instead of re-running the whole chain.
+
+**Check**
+- The manifest exists and matches the Director panel before generation starts.
+- Every segment has first/mid/last frames checked against the prop list; a prop failure regenerates that segment only.
+- The upscaler parameter sets match before UPSCALE runs; a mismatch is a hard stop, not a render-then-debug.
+- The take log covers every rendered segment with no gaps.
+
+**Why**
+- In multi-shot production, the expensive defect is a continuity failure discovered at the final cut. The manifest, the prop check, and the parameter gate all move that discovery to before the spend: the manifest prevents a wrong reference index, the prop check catches drift while the segment is still cheap to redo, and the parameter gate catches the known V1.0 bug class before compute is burned.
+
 ## The human method, distilled
 
 1. **One panel, two modes**: Single or Chain, same Director.

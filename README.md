@@ -13,20 +13,20 @@ skill.
 
 ## The skills
 
-103 skills in 9 categories, growing with every daily scout run. The full grouped
+126 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
 | Category | Skills | What it covers |
 |---|---|---|
-| [`capture`](skills/capture/) | 5 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
-| [`characters`](skills/characters/) | 8 | Character pipelines, consistent identities, rigging, cloth and hair |
-| [`procgen-worlds`](skills/procgen-worlds/) | 16 | Procedural generation: terrain, cities, creatures, whole games from a seed |
-| [`ai-video`](skills/ai-video/) | 16 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
+| [`capture`](skills/capture/) | 7 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
+| [`characters`](skills/characters/) | 9 | Character pipelines, consistent identities, rigging, cloth and hair |
+| [`procgen-worlds`](skills/procgen-worlds/) | 21 | Procedural generation: terrain, cities, creatures, whole games from a seed |
+| [`ai-video`](skills/ai-video/) | 19 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
 | [`simulation-vfx`](skills/simulation-vfx/) | 14 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
-| [`materials-shaders`](skills/materials-shaders/) | 9 | Material authoring, shaders, texturing |
-| [`engine-runtime`](skills/engine-runtime/) | 26 | Engine systems, runtime and render tech, browser and WebGPU |
-| [`automation`](skills/automation/) | 7 | Agent-driven pipelines, DCC bridges, productized generation |
+| [`materials-shaders`](skills/materials-shaders/) | 11 | Material authoring, shaders, texturing |
+| [`engine-runtime`](skills/engine-runtime/) | 30 | Engine systems, runtime and render tech, browser and WebGPU |
+| [`automation`](skills/automation/) | 13 | Agent-driven pipelines, DCC bridges, productized generation |
 | [`no-tooling`](skills/no-tooling/) | 2 | Negative examples: footage with no extractable workflow, kept on purpose |
 
 ## The tool
@@ -313,7 +313,7 @@ The short version:
 
 ## Contributing
 
-The short version:
+The short version (for the scout scripts and the default loop):
 
 - **Standard library only.** Every script must run on `python3` with no installs.
   A dependency added to look sophisticated is supply-chain surface bought for nothing.
@@ -324,6 +324,10 @@ The short version:
   workflow, or audit.
 - **By submitting a contribution you agree it may be distributed under the PolyForm
   Noncommercial licence** (see [`LICENSE.md`](LICENSE.md)).
+
+For contributing a skill from a Reddit post or YouTube video, see
+[`CONTRIBUTING.md`](CONTRIBUTING.md) and the
+[`url-to-skill`](skills/automation/url-to-skill/SKILL.md) skill.
 
 ## Security reporting
 
