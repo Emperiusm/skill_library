@@ -8,6 +8,7 @@ can always be checked.
 
 | Date | Report |
 | ---- | ------ |
+| 2026-10-29 | [have-vs-need-2026-10-29.md](have-vs-need-2026-10-29.md) |
 | 2026-10-28 | [have-vs-need-2026-10-28.md](have-vs-need-2026-10-28.md) |
 | 2026-10-27 | [have-vs-need-2026-10-27.md](have-vs-need-2026-10-27.md) |
 | 2026-10-26 | [have-vs-need-2026-10-26.md](have-vs-need-2026-10-26.md) |

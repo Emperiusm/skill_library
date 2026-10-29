@@ -204,12 +204,43 @@ screenshot. The return on the tokens is the reusable tooling: the
 builders, kernels, rules, and automation that make the next world
 cheaper than this one.
 
+## Phase 3b: Enforce the staged-mask integration contract (community technique)
+
+Corroborated 2026-10-29 by the r/proceduralgeneration post "Building an
+Alpine world in Unreal" (KovatiDev, same project), which added this
+commenter technique (Plane_Big_5912) that the devlog did not spell out.
+
+**Do**
+1. Enforce a strict stage order where each stage hands the next one a mask
+   of what it actually built, never the input line: terrain, then rivers
+   carve and write a water mask, then roads flatten and write their
+   footprint, then vegetation reads the final heights plus both masks.
+2. Edit anything upstream and rerun everything after it.
+3. In Unreal specifically: if the finished road paints a landscape layer,
+   have PCG filter on that layer weight instead of the spline, so the
+   grass reads the real surface.
+
+**Check**
+- No grass through asphalt: the author's failure case was vegetation
+  placement reading the original road line instead of the finished road
+  surface.
+- Upstream edits propagate downstream by rerun, not by hope.
+
+**Why**
+Procedural systems fail at their seams, not in their middles. The
+mask-of-what-was-built contract makes the seams explicit and
+recomputable. (The author asked: "how do you keep roads, water and
+vegetation reading the same landscape data as the world changes?" This
+is the answer.)
+
 ## The human method, distilled
 
 1. Art-direct; never touch the level. Reports are the interface.
 2. Real survey for terrain; derived features for water and falls.
 3. Context stack drives biomes; fix leaks at the data level.
 4. Roads emit structures per segment; paint them into the ground.
+4b. Stages hand each other masks of what they built, never input lines;
+   PCG filters on painted landscape layers, not splines.
 5. Perf fixes are measured bakes; track what is still broken.
 6. Memory guards, headless overnight builds, a growing lesson
    notebook.

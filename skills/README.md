@@ -13,6 +13,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`vathography-depth-remap`](capture/vathography-depth-remap/SKILL.md) | Turn a photo's hidden depth pass into the artwork: Marigold V2 single-photo depth (Apache 2.0), then Blender compositor Color Ramp remap for volume, mist, and focus. |
 | [`ai-3d-gaussian-splats`](capture/ai-3d-gaussian-splats/SKILL.md) | Capture, inspect, and decide on Gaussian splats: COLMAP camera solve, the splat-versus-mesh decision rule, and a mixed-format workflow. |
 | [`ai-3d-image-to-3d-reconstruction`](capture/ai-3d-image-to-3d-reconstruction/SKILL.md) | Reconstruct usable assets from reference images: reference quality, multi-view coverage, hidden-side hunting, repair loop, six-point sign-off. |
+| [`houdini-single-image-gsplat-sharp-moge2`](capture/houdini-single-image-gsplat-sharp-moge2/SKILL.md) | Turn a single photo into a Gaussian splat in Houdini 22: built-in MoGe-2 node or Apple's SHARP via ONNX in Copernicus, contract-exact COPs prep, CUDA inference, volumes to points, Karma shadow-skip, HDA wrap. |
 
 ## Characters and rigging (`characters/`)
 
@@ -81,6 +82,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`minimax-h3-native-3mp-lowvram`](ai-video/minimax-h3-native-3mp-lowvram/SKILL.md) | Generate MiniMax H3 video natively at 2336x1312 on an RTX 3060 12 GB: INT8, DMAD 4-step LoRA, sparse attention at 0.10, 4096-row chunks, 243 frames in 33 minutes. |
 | [`comfyui-ai-documentary-batch-pipeline`](ai-video/comfyui-ai-documentary-batch-pipeline/SKILL.md) | Produce AI history documentaries in batch: Claude visual bible + 10-second-chunk script, Qwen Image 2.1 batch images, Claude QA rewriting only bad prompts, MiniMax H3 10-second clips, Qwen3-TTS per-line narration, RTX VSR x2 to 2K. |
 | [`comfyui-video-builder-agent-music-video`](ai-video/comfyui-video-builder-agent-music-video/SKILL.md) | Let a Claude Sonnet agent build a full music video in ComfyUI through MCP from one prompt: Krea2 refs, YUE2 song, story and scene prompts, overnight run, frame review with up to 3 retries per scene, no post-edits. |
+| [`minimax-h3-longform-documentary`](ai-video/minimax-h3-longform-documentary/SKILL.md) | Generate a watchable 25-second MiniMax H3 video natively at 1536x864 on an RTX 3060 12 GB: Singularity V2 + DMAD 4-step, storyboard guidance, one pass in ~37.6 min, under-describe motion in the prompt. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -154,6 +156,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-format-export-guide`](engine-runtime/ai-3d-format-export-guide/SKILL.md) | Choose between GLB, FBX, OBJ, USD, and STL by destination, with each format's failure mode and post-export checks. |
 | [`ai-3d-engine-export`](engine-runtime/ai-3d-engine-export/SKILL.md) | Hand an AI asset to Unity, Unreal, or Blender: shared export gates plus per-target settings and a fresh-scene re-import proof. |
 | [`ai-3d-scene-graph`](engine-runtime/ai-3d-scene-graph/SKILL.md) | Read and repair scene graphs: parent-child transform trees, a five-point health checklist, and the distinction from node workflow graphs. |
+| [`threejs-browser-game-asset-diet`](engine-runtime/threejs-browser-game-asset-diet/SKILL.md) | Ship a 3D browser game on an asset budget: 347 MB to 45 MB with gltf-transform (Draco + WebP), load-gate by area, chunk-instanced nature, Blender Python tree recipes, web-worker hero building, auto quality step-down, 1-4 player split-screen. |
 
 ## Automation and bridges (`automation/`)
 
@@ -177,6 +180,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`agentic-open-world-build`](automation/agentic-open-world-build/SKILL.md) | Operate agents building an open world over days: art-director review loops, context-stack biomes, draw-a-line roads, perf fixes, and the guardrails that keep unattended builds alive. |
 | [`ai-narrative-quest-pipeline`](automation/ai-narrative-quest-pipeline/SKILL.md) | Take dialogue from script to played scene and build full quests with agents: speech and face banks, stale-line regeneration, mouth-layer localization, hash-based regeneration. |
 | [`automationforge-hub-setup`](automation/automationforge-hub-setup/SKILL.md) | Install the AutomationForge Hub and activate its plugins in UE 5.8: engine-version-first check, sign-in, stable versus nightly, install versus activation. |
+| [`jet-studio-godot-mcu-editor`](automation/jet-studio-godot-mcu-editor/SKILL.md) | Build a Godot-flavored game editor for microcontrollers: reuse Godot 4's UI and node conventions, bridge a C++17 software runtime via GDExtension, design a strict GDScript subset compiling to bytecode, measure FPS and RAM on real 320x240 SPI hardware. |
+| [`frameforge-comfyui-movie-app`](automation/frameforge-comfyui-movie-app/SKILL.md) | Productize AI movie production on ComfyUI: timeline of ComfyUI jobs with swappable backends, LLM script writing, reference manager, pose studio, voice clips, cheap-draft/expensive-final discipline on one RTX 3060. |
 
 ## No-tooling examples (`no-tooling/`)
 
