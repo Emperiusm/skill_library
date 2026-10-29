@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="138 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="143 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">138 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">143 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 138 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">32</span></h2>
+  <input id="search" type="search" placeholder="Search 143 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">33</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -160,6 +160,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/seeded-squad-sim-deterministic-replay/SKILL.md">seeded-squad-sim-deterministic-replay</a></h3>
   <p>Build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate RNG streams per system; an event log with a hash plus replay checking proves determinism; per-soldier...</p>
 </article>
+<article class="card" data-search="threejs-browser-game-asset-diet ship a 3d browser game on an asset budget: measure the full model load (347 mb), cut the demo to ~45 mb with gltf-transform (draco + webp), load-gate by area, instance nature per chunk, generate trees from blender...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/threejs-browser-game-asset-diet/SKILL.md">threejs-browser-game-asset-diet</a></h3>
+  <p>Ship a 3D browser game on an asset budget: measure the full model load (347 MB), cut the demo to ~45 MB with gltf-transform (Draco + WebP), load-gate by area, instance nature per chunk, generate trees from Blender...</p>
+</article>
 <article class="card" data-search="unity-dots-fake-ragdoll-crowds render 10,000-character crowds in unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 lod levels...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/unity-dots-fake-ragdoll-crowds/SKILL.md">unity-dots-fake-ragdoll-crowds</a></h3>
   <p>Render 10,000-character crowds in Unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 LOD levels...</p>
@@ -268,7 +272,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU Instancer Pro instancing + occlusion culling, Microsplat, Amplify...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">20</span></h2>
+<section><h2>AI video <span class="count">21</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -314,6 +318,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-nomask-lowvram/SKILL.md">minimax-h3-character-swap-nomask-lowvram</a></h3>
   <p>Swap a character in video with MiniMax H3 + Character Swap LoRA in ComfyUI with no masking: 0.4 MP at 8 steps, runs on 6 GB VRAM. Reference-video latent injection, Qwen2.1 start-frame trick, and the wan2gp low-VRAM...</p>
 </article>
+<article class="card" data-search="minimax-h3-longform-documentary generate a watchable 25-second native 1536x864 minimax h3 video on an rtx 3060 12 gb: singularity v2 + dmad 4-step lora at strength 1.0, initial frame + character refs + 3x3 storyboard guidance, 600 frames in one pass...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-longform-documentary/SKILL.md">minimax-h3-longform-documentary</a></h3>
+  <p>Generate a watchable 25-second native 1536x864 MiniMax H3 video on an RTX 3060 12 GB: Singularity V2 + DMAD 4-step LoRA at strength 1.0, initial frame + character refs + 3x3 storyboard guidance, 600 frames in one pass...</p>
+</article>
 <article class="card" data-search="minimax-h3-native-3mp-lowvram generate minimax h3 video natively at 2336x1312 (3.06 mp) on an rtx 3060 12 gb: int8 ref2va v2 + dmad 4-step lora, res_multistep/simple, int8 sparse attention at video_budget 0.10, 4096-row chunks, 243 frames in 33...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-native-3mp-lowvram/SKILL.md">minimax-h3-native-3mp-lowvram</a></h3>
   <p>Generate MiniMax H3 video natively at 2336x1312 (3.06 MP) on an RTX 3060 12 GB: INT8 Ref2VA V2 + DMAD 4-step LoRA, res_multistep/simple, INT8 sparse attention at video_budget 0.10, 4096-row chunks, 243 frames in 33...</p>
@@ -351,7 +359,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">18</span></h2>
+<section><h2>Automation and pipelines <span class="count">20</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
@@ -393,6 +401,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/automationforge-hub-setup/SKILL.md">automationforge-hub-setup</a></h3>
   <p>Install the AutomationForge Hub and get its plugins running in Unreal Engine 5.8: engine-version-first check, account sign-in, stable versus nightly channels, and the install-versus-activation distinction. Trigger when...</p>
 </article>
+<article class="card" data-search="frameforge-comfyui-movie-app build a desktop app that productizes ai movie production on comfyui: an intuitive timeline of comfyui jobs with swappable default workflows (minimax h3, ltx 2.3, qwen 2.1), llm automatic script writing, a reference...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/frameforge-comfyui-movie-app/SKILL.md">frameforge-comfyui-movie-app</a></h3>
+  <p>Build a desktop app that productizes AI movie production on ComfyUI: an intuitive timeline of ComfyUI jobs with swappable default workflows (MiniMax H3, LTX 2.3, Qwen 2.1), LLM automatic script writing, a reference...</p>
+</article>
 <article class="card" data-search="freefield-comfyui-higgsfield-clone rebuild a closed ai product as comfyui apps: one folder per app (app.json + api workflow), ui/downloads/vram map/tests generated from those files, and a fixed-seed lab that publishes one example per app with real time...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/freefield-comfyui-higgsfield-clone/SKILL.md">freefield-comfyui-higgsfield-clone</a></h3>
   <p>Rebuild a closed AI product as ComfyUI apps: one folder per app (app.json + API workflow), UI/downloads/VRAM map/tests generated from those files, and a fixed-seed lab that publishes one example per app with real time...</p>
@@ -412,6 +424,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="itch-publish publish and update a game on itch.io: create the project page and upload builds with the butler cli (butler push) to named channels. use for itch.io publishing, butler push, channel naming for windows/macos/linux/html5...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/itch-publish/SKILL.md">itch-publish</a></h3>
   <p>Publish and update a game on itch.io: create the project page and upload builds with the butler CLI (butler push) to named channels. Use for itch.io publishing, butler push, channel naming for Windows/macOS/Linux/HTML5...</p>
+</article>
+<article class="card" data-search="jet-studio-godot-mcu-editor build a godot-flavored game editor for microcontroller targets: reuse godot 4&#x27;s ui/theme/icons and node conventions in an interface-only app, bridge a c++17 software runtime via gdextension, design a strict gdscript...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/jet-studio-godot-mcu-editor/SKILL.md">jet-studio-godot-mcu-editor</a></h3>
+  <p>Build a Godot-flavored game editor for microcontroller targets: reuse Godot 4&#x27;s UI/theme/icons and node conventions in an interface-only app, bridge a C++17 software runtime via GDExtension, design a strict GDScript...</p>
 </article>
 <article class="card" data-search="nomad-blender-live-link verify and use the nomad sculpt live link to blender and other pc apps: install the link, round-trip a sculpt ipad-to-pc and back, and check the update&#x27;s tube tool, brush stroke editing, lattice tool, and saved undo...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/nomad-blender-live-link/SKILL.md">nomad-blender-live-link</a></h3>
@@ -575,7 +591,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
 </article>
 </div></section>
-<section><h2>Capture and reconstruction <span class="count">7</span></h2>
+<section><h2>Capture and reconstruction <span class="count">8</span></h2>
 <div class="grid">
 <article class="card" data-search="adaptive-frame-extractor feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. trigger when extracting frames for sfm pipelines.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/adaptive-frame-extractor/SKILL.md">adaptive-frame-extractor</a></h3>
@@ -596,6 +612,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="greenscreen-plate-production-keying produce pro-level greenscreen plates for keying/compositing practice or demoreels: stage shoot, cinema camera, prores raw capture, in-frame tracking markers, deliberately kept motion-blur/defocus plates, planned...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/greenscreen-plate-production-keying/SKILL.md">greenscreen-plate-production-keying</a></h3>
   <p>Produce pro-level greenscreen plates for keying/compositing practice or demoreels: stage shoot, cinema camera, ProRes RAW capture, in-frame tracking markers, deliberately kept motion-blur/defocus plates, planned...</p>
+</article>
+<article class="card" data-search="houdini-single-image-gsplat-sharp-moge2 turn a single photo into a gaussian splat in houdini 22 two ways: the built-in moge-2 node (depth/normal/position to faux splat) or apple&#x27;s sharp model via onnx in copernicus (sharp fp16.onnx, 1536x1536, ocio to srgb...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/houdini-single-image-gsplat-sharp-moge2/SKILL.md">houdini-single-image-gsplat-sharp-moge2</a></h3>
+  <p>Turn a single photo into a Gaussian splat in Houdini 22 two ways: the built-in MoGe-2 node (depth/normal/position to faux splat) or Apple&#x27;s SHARP model via ONNX in Copernicus (sharp fp16.onnx, 1536x1536, OCIO to sRGB...</p>
 </article>
 <article class="card" data-search="spirula-3dgs-anti-floater-capture produce clean 3d gaussian splats with spirula: plan phone capture around the actual camera moves (4k60), enable normal and depth estimation at sfm time, and use mild training-time floater suppression. reconstructs...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/spirula-3dgs-anti-floater-capture/SKILL.md">spirula-3dgs-anti-floater-capture</a></h3>
