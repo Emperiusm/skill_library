@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="132 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="138 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,13 +31,13 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">132 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">138 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 132 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+  <input id="search" type="search" placeholder="Search 138 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
 <section><h2>Engine and runtime <span class="count">32</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
@@ -169,8 +169,12 @@ claude plugin install skill-library@skill-library</code>
   <p>Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">22</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">24</span></h2>
 <div class="grid">
+<article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
+  <p>Build game terrain inside Unreal as an editable node graph with an AI agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4K to 16K builds, and...</p>
+</article>
 <article class="card" data-search="ai-3d-game-prop-pipeline take an ai-generated game prop from constrained brief to in-engine verification: candidates, retopology, pbr texturing, lods, export, and a go/no-go gate, with the recipe saved so the next prop in the set costs a...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/ai-3d-game-prop-pipeline/SKILL.md">ai-3d-game-prop-pipeline</a></h3>
   <p>Take an AI-generated game prop from constrained brief to in-engine verification: candidates, retopology, PBR texturing, LODs, export, and a go/no-go gate, with the recipe saved so the next prop in the set costs a...</p>
@@ -206,6 +210,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="godot-procgen-shader-city generate a low-poly godot city of plain surfacetool boxes (~700 buildings a lap) and get all its life from one window shader: 3.6 m floors, whole floors lit/dark like offices, far windows fading to glow, no window...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/godot-procgen-shader-city/SKILL.md">godot-procgen-shader-city</a></h3>
   <p>Generate a low-poly Godot city of plain SurfaceTool boxes (~700 buildings a lap) and get all its life from one window shader: 3.6 m floors, whole floors lit/dark like offices, far windows fading to glow, no window...</p>
+</article>
+<article class="card" data-search="meshforge-asset-pipeline run ai asset generation inside the editor with human checkpoints: mesh definitions, cost estimate before generate, tripo p2 versus meshy a/b, multi-view discipline, retexture branching, blender round-trip, in-editor...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/meshforge-asset-pipeline/SKILL.md">meshforge-asset-pipeline</a></h3>
+  <p>Run AI asset generation inside the editor with human checkpoints: mesh definitions, cost estimate before generate, Tripo P2 versus Meshy A/B, multi-view discipline, retexture branching, Blender round-trip, in-editor...</p>
 </article>
 <article class="card" data-search="minecraft-world-one-block generate massive voxel worlds from one block with deterministic sampling and lod. trigger when building large-scale procedural terrain.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/minecraft-world-one-block/SKILL.md">minecraft-world-one-block</a></h3>
@@ -343,11 +351,19 @@ claude plugin install skill-library@skill-library</code>
   <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">14</span></h2>
+<section><h2>Automation and pipelines <span class="count">18</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
   <p>Drive Blender as an agent subroutine to build game-ready 3D assets: screenshot-measure-execute-assess loop via Blender MCP, per-asset ASSESSMENT.md files, non-destructive fit studies, human-in-the-loop mechanical...</p>
+</article>
+<article class="card" data-search="agentic-open-world-build run agents to build an open game world over days: art-director review loops with written reports, real-survey terrain, context-stack biomes, draw-a-line roads that emit structures, perf fixes, and the guardrails that...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-open-world-build/SKILL.md">agentic-open-world-build</a></h3>
+  <p>Run agents to build an open game world over days: art-director review loops with written reports, real-survey terrain, context-stack biomes, draw-a-line roads that emit structures, perf fixes, and the guardrails that...</p>
+</article>
+<article class="card" data-search="agentic-vehicle-pipeline produce game vehicles as code: an agent writes headless blender build scripts from a concept sheet, never hand-edits the model, and scripted playtests with per-asset check counts gate acceptance. trigger when building...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-vehicle-pipeline/SKILL.md">agentic-vehicle-pipeline</a></h3>
+  <p>Produce game vehicles as code: an agent writes headless Blender build scripts from a concept sheet, never hand-edits the model, and scripted playtests with per-asset check counts gate acceptance. Trigger when building...</p>
 </article>
 <article class="card" data-search="ai-3d-product-agency-workflows deliver client 3d work without drift: frozen-product and editable-scene workflows, a product-readiness audit, revision-survival tests, and scene-as-unit-of-work for campaigns. strategy-level guidance, no click-level...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/ai-3d-product-agency-workflows/SKILL.md">ai-3d-product-agency-workflows</a></h3>
@@ -368,6 +384,14 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="ai-3d-workflow-nodes-agents build repeatable ai 3d work as node graphs and let agents operate them safely: graph design, typed ports and dag re-execution, settings to lock, a fake-editor test, and agent guardrails. trigger when making an ai 3d...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/ai-3d-workflow-nodes-agents/SKILL.md">ai-3d-workflow-nodes-agents</a></h3>
   <p>Build repeatable AI 3D work as node graphs and let agents operate them safely: graph design, typed ports and DAG re-execution, settings to lock, a fake-editor test, and agent guardrails. Trigger when making an AI 3D...</p>
+</article>
+<article class="card" data-search="ai-narrative-quest-pipeline take dialogue from script to played scene and build full quests with agents: speech and face banks, elevenlabs casting, local audio-to-face solve, stale-line regeneration, per-language mouth-layer localization, then...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/ai-narrative-quest-pipeline/SKILL.md">ai-narrative-quest-pipeline</a></h3>
+  <p>Take dialogue from script to played scene and build full quests with agents: speech and face banks, ElevenLabs casting, local audio-to-face solve, stale-line regeneration, per-language mouth-layer localization, then...</p>
+</article>
+<article class="card" data-search="automationforge-hub-setup install the automationforge hub and get its plugins running in unreal engine 5.8: engine-version-first check, account sign-in, stable versus nightly channels, and the install-versus-activation distinction. trigger when...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/automationforge-hub-setup/SKILL.md">automationforge-hub-setup</a></h3>
+  <p>Install the AutomationForge Hub and get its plugins running in Unreal Engine 5.8: engine-version-first check, account sign-in, stable versus nightly channels, and the install-versus-activation distinction. Trigger when...</p>
 </article>
 <article class="card" data-search="freefield-comfyui-higgsfield-clone rebuild a closed ai product as comfyui apps: one folder per app (app.json + api workflow), ui/downloads/vram map/tests generated from those files, and a fixed-seed lab that publishes one example per app with real time...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/freefield-comfyui-higgsfield-clone/SKILL.md">freefield-comfyui-higgsfield-clone</a></h3>
@@ -593,7 +617,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-10-28 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-10-29 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');

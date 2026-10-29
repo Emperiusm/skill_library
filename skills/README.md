@@ -54,6 +54,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-text-to-3d-prompting`](procgen-worlds/ai-3d-text-to-3d-prompting/SKILL.md) | Turn text prompts into usable assets: specificity ladder, 60-second triage, three gaps, and the switch to a reference once a look is right. |
 | [`ai-3d-print-routing`](procgen-worlds/ai-3d-print-routing/SKILL.md) | Route AI output between printable STL shells and textured editable assets, with the asymmetry rule that screen-to-print is cheap and print-to-screen is nearly impossible. |
 | [`ai-3d-svg-to-3d`](procgen-worlds/ai-3d-svg-to-3d/SKILL.md) | Turn vector art into usable 3D: clean closed paths, extrude at 10 to 25 percent of shape width, bevel, material, light, export. |
+| [`agentic-terrain-pipeline`](procgen-worlds/agentic-terrain-pipeline/SKILL.md) | Build game terrain inside Unreal as an editable node graph with an AI agent driving it: erosion chains, sub-0.1s preview, real-survey import, 4K to 16K builds. |
+| [`meshforge-asset-pipeline`](procgen-worlds/meshforge-asset-pipeline/SKILL.md) | Run AI asset generation inside the editor with human checkpoints: mesh definitions, cost gate, provider A/B, retexture branching, Blender round-trip, judge at player distance. |
 
 ## AI video and film (`ai-video/`)
 
@@ -171,6 +173,10 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-production-readiness-gates`](automation/ai-3d-production-readiness-gates/SKILL.md) | Gate AI assets for handoff: five-level quality ladder, inspection list, decision matrix by asset type, pass, revise, and reject gates. |
 | [`ai-3d-studio-team-workflows`](automation/ai-3d-studio-team-workflows/SKILL.md) | Run AI 3D as a team discipline: provenance, style control, review gates, workspace selection, 40-SKU batch example. |
 | [`ai-3d-workflow-nodes-agents`](automation/ai-3d-workflow-nodes-agents/SKILL.md) | Build repeatable AI 3D work as node graphs and let agents operate them safely: typed ports, DAG re-execution, fake-editor test, guardrails. |
+| [`agentic-vehicle-pipeline`](automation/agentic-vehicle-pipeline/SKILL.md) | Produce game vehicles as code: an agent writes headless Blender build scripts from a concept sheet and scripted playtests with per-asset check counts gate acceptance. |
+| [`agentic-open-world-build`](automation/agentic-open-world-build/SKILL.md) | Operate agents building an open world over days: art-director review loops, context-stack biomes, draw-a-line roads, perf fixes, and the guardrails that keep unattended builds alive. |
+| [`ai-narrative-quest-pipeline`](automation/ai-narrative-quest-pipeline/SKILL.md) | Take dialogue from script to played scene and build full quests with agents: speech and face banks, stale-line regeneration, mouth-layer localization, hash-based regeneration. |
+| [`automationforge-hub-setup`](automation/automationforge-hub-setup/SKILL.md) | Install the AutomationForge Hub and activate its plugins in UE 5.8: engine-version-first check, sign-in, stable versus nightly, install versus activation. |
 
 ## No-tooling examples (`no-tooling/`)
 
