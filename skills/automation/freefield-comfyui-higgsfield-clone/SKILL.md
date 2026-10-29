@@ -74,6 +74,29 @@ Fixed seeds turn "it worked once" into a repeatable claim, and batch flag-fixing
 **Why**
 A 117-app bundle that only runs on one machine is a demo. A VRAM map plus a Modal-or-local choice makes it a tool other people can actually run.
 
+## AAA studio practice
+
+- **Test with every check-in, and tier the suite by speed.** Rare's Sea of Thieves practice, presented at GDC 2019, required testing with every check-in, ran a core set of tests before every check-in and longer-running tests periodically, and ran the full suite multiple times across platforms and configurations (shipping and debug). The studio reported about 10,000 tests run remotely via TeamCity. Applied here: Freefield's 117-app lab is the analogue of that full suite, and it needs a fast core tier (a subset of apps on every change) plus the full lab periodically, not an all-or-nothing lab that only runs when someone remembers.
+  Source: https://docslib.org/download/1319348/automated-testing-for-multiplayer-game-ai-in-sea-of-thieves
+- **One asset definition is the product, not the pile of outputs.** SideFX's Houdini Digital Assets practice wraps a larger network into a single digital asset node with an artist-friendly interface, so a team reuses one controlled definition instead of hand-maintaining copies. Freefield's `app.json` + workflow plays the same role for a ComfyUI bundle: the definition is the source, and the UI, downloads, VRAM map, and tests are generated from it, never edited by hand.
+  Source: https://www.sidefx.com/tutorials/houdini-digital-assets/
+- **Ship the workflow as versioned, API-submittable JSON.** ComfyUI's API pattern is that the web UI POSTs a workflow JSON to `/prompt` with a client id, and the caller polls `/history/{prompt_id}` until outputs appear. That makes a workflow a submittable artifact an agent or CI job can run headlessly, which is the precondition for Freefield's lab to be automated rather than clicked through.
+  Source: https://www.runflow.io/blog/comfyui-workflow-tutorial
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a `check_app.py` gate that runs on every change to an app folder and fails the change if any of these drift: the app folder lacks `app.json` or an API-format workflow; the generated UI, model-download list, VRAM map, or test file does not regenerate byte-identically from those two files; or the app has no published fixed-seed example with real time and peak VRAM.
+2. Tier the lab Rare-style: a core set (one app per category: image, video, VFX, audio, plus any app changed in the commit) runs on every change; the full 117-app lab runs on a schedule and before any release, and its pass rate (like the author's 710/733) is recorded per run, not per impression.
+3. Record a `lab-run.json` per lab run: date, app count, pass count, failed app names, and the fixed seeds used, so a regression names the app and the seed that broke.
+
+**Check**
+- A new app is shippable only when `check_app.py` passes and its fixed-seed example exists with time and VRAM; an app with a hand-edited UI file fails the gate even if it renders.
+- A lab run is reportable only with its pass count and failed-app list; "the lab is green" without numbers is not a report.
+
+**Why**
+Freefield's claim is product-sized coverage (117 apps), and coverage claims rot the moment generated files drift from their definitions. A regeneration gate plus a tiered lab keeps the bundle's 117-app number honest at the same scale Rare keeps a live game's build honest.
+
 ## The human method, distilled
 
 1. Take a vendor's "open source" claim literally and rebuild the whole surface, not one app.

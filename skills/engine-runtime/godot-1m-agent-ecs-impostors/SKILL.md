@@ -56,6 +56,29 @@ Rendering cost must scale with what the camera sees, or the army size is capped 
 **Why**
 A benchmark without its conditions is a marketing number. The author's own caveats are what make the number usable: headroom in-editor, release expected faster but unmeasured.
 
+## AAA studio practice
+
+- **Run two crowd systems, not one: a cheap systemic crowd plus full AI that dips in and out.** Ubisoft's Assassin's Creed Unity had a dedicated crowd-realisation team and two cooperating systems: a "bolt crowd" simulating how people move inside a crowd (flock-like, systematic), with individual complex AI dipping in and out of it, becoming part of the bolt crowd when they move away and full AI again when they step out. Crowds reached 5,000 AI in some missions and 10,000 for the beheading of the King. Applied here: the 1M-agent simulation is the bolt-crowd layer; the near field that gets full rigs is the dipping-in layer, and the boundary between them is a designed system, not an accident of distance.
+  Source: https://www.techradar.com/news/gaming/inside-assassin-s-creed-unity-ubisoft-s-leap-of-faith-1268435/2
+- **Simulate the whole city, not a bubble around the player.** Epic's The Matrix Awakens Mass AI system simulated 35,000 pedestrians and about 17,000-20,000 traffic vehicles across the city, with the developers stressing it was not a frustum bubble: they kept track of everything, with optimizations, but did not exclude agents by view frustum. The Godot skill's "simulate everyone, render only what is near" is the same contract at 1M scale, and the Matrix numbers are the proof that the contract holds in a shipped tech demo.
+  Source: https://gamingbolt.com/the-matrix-awakens-demo-features-35000-metahuman-pedestrians-billions-of-polygons-for-7000-buildings
+- **Bake distant animation into textures, and bake it at 16-bit.** A production GPU-driven crowd framework described on 80 Level bakes each animation state (idle, clap, yell, stand) as a separate vertex-animation-texture (VAT) bake with constant topology, using 16-bit floating point raster depth because 8-bit textures lack the precision to store world-space position offsets without visible vertex jitter, especially close to the camera. That is the production form of this skill's GPU impostors: the impostor is not a flat billboard by default, it is a baked animation texture with a precision floor.
+  Source: https://80.lv/articles/6-000-agents-on-one-game-thread-novel-high-performance-framework-for-gpu-driven-crowd-systems
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Log a per-frame distance-band budget: agents simulated, agents fully rigged/skinned, agents drawn as impostors, and the camera distance at which the near/impostor boundary falls, sampled at three camera positions (close, mid, far) per test run.
+2. Add an impostor-pop check: fly the same camera path twice, once with the boundary at its shipping distance and once with the boundary halved, and diff the frames at the transition distance; visible popping at the boundary is a defect, not a tradeoff to accept silently.
+3. Add a release-export gate before any FPS figure is quoted: re-measure the same scene in a release export (no editor, no debug engine), since the author's own caveat is that release is untested and only expected to be faster; the editor/JIT figure and the release figure are reported as two separate numbers, never merged.
+
+**Check**
+- A crowd scene is shippable only when the distance-band budget shows render cost flat as total agent count grows at a fixed camera position, and the pop check passes at the shipping boundary.
+- Any FPS figure quoted without its build type (editor/JIT or release export) is incomplete and must not be reused.
+
+**Why**
+The skill's headline (1M agents, 300-450 FPS) is only usable if its two halves are measured separately: simulation cost that scales with army size, and render cost that scales with camera distance. The band budget proves the second half, and the release gate closes the author's own open caveat.
+
 ## The human method, distilled
 
 1. Simulate everyone, render only the near field; never let render cost scale with total count.

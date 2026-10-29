@@ -61,6 +61,31 @@ No single trick fits 3 MP on 12 GB. INT8 halves weights, the 4-step LoRA cuts sa
 **Why**
 A single 33-minute run is a proof, not a budget table. The thread's other 12 GB runs are what turn one result into a usable expectation for the same hardware class.
 
+## AAA studio practice
+
+No named AAA studio publishes a MiniMax H3 low-VRAM recipe, so this section is production inference practice, labeled as such, not a studio claim. The pattern it documents is the same stack the skill uses, applied as a measured discipline rather than a one-off run:
+
+- **Quantize as the production default, and measure the saving.** CogVideoX's production optimization docs describe INT8 weight-only quantization (about 20-30% memory reduction, minimal quality impact) and FP8 dynamic quantization (about 40-50%, H100 or higher) via TorchAO, alongside VAE slicing and tiling that cut decode memory by roughly 50-80% combined. The discipline is to pick one quantization scheme, state it, and keep it fixed across a run, exactly as this skill pins INT8.
+  Source: https://deepwiki.com/zai-org/CogVideo/7-performance-optimization
+- **Treat INT8 as a safe production starting point, not a free lunch.** Production quantization guidance puts INT8 at roughly 2x memory reduction versus FP16 with minimal accuracy loss, and warns that the quality cost curve steepens below INT8 (INT4 costs a further 1-3% on most evals). That is why this skill's stack stops at INT8 plus sparse attention and chunking instead of pushing to INT4 to chase a bigger number.
+  Source: https://developers.redhat.com/articles/2026/09/07/understanding-w8a8-int8-llm-quantization
+- **Leave dense where sparsity visibly hurts, especially at seams.** An independent video-inference profiling writeup reports block-sparse attention in 41 of 48 layers, with the 7 layers where sparsity visibly hurt left dense, along with the frames that make loops seamless, because sparse attention changes what the model can see and seam frames are exactly where it hurts. Applied here: a sparse-attention budget is not uniform by default; the first and last frames of a clip, and any join frame, are the places to verify dense before accepting a sparse budget.
+  Source: https://phosphene.cc/blog/ai-video-inference-profiling-silent-fallback
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a `run-manifest.json` for every native-resolution run: model and precision, LoRA and weight, sampler and scheduler, sparse-attention budget, chunk rows, frame count and resolution, seconds per iteration, total seconds, and peak VRAM (or the system-RAM/pagefile spill note, labeled as the commenter hypothesis it is).
+2. Treat the manifest as a contract: if any one stack element changes, the previous run's time and VRAM figures are void and the run is re-measured, not carried over.
+3. Add a seam check to every run: render and inspect the first frame, the last frame, and one mid-clip join frame at full resolution before accepting the sparse-attention budget; if a seam frame shows attention artifacts, re-run that segment dense and record the cost delta in the manifest.
+
+**Check**
+- A run is shippable only when its manifest is complete and its seam frames pass; a run with a missing peak-VRAM figure or an unchecked seam frame is an unmeasured claim, not a budget.
+- Two runs on the same hardware class are comparable only when their manifests match on every stack element except the one being varied.
+
+**Why**
+The skill's value is a reproducible budget table for a hardware class, not one 33-minute anecdote. A manifest plus a seam check turns each run into a comparable data point, and the dense-at-seams rule is what keeps the sparse budget honest.
+
 ## The human method, distilled
 
 1. Generate at the target resolution natively; do not let upscaling stand in for resolution.
