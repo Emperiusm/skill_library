@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="143 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="149 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">143 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">149 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 143 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">33</span></h2>
+  <input id="search" type="search" placeholder="Search 149 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">35</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -124,6 +124,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-resources/SKILL.md">godot-resources</a></h3>
   <p>Design data-driven Godot 4.7 games with custom Resource classes: define typed data with class_name + @export, save/load .tres/.res files, instance and duplicate resources, and load on demand with ResourceLoader (incl...</p>
 </article>
+<article class="card" data-search="godot-scalable-vector-shapes draw godot pixel art with vector shape tools: scalablevectorshape2d nodes rendered through a subviewport with pixel snap so pixels never rotate, plus a dynamicoutline2d node using geometry2d.merge_polygons for clean...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-scalable-vector-shapes/SKILL.md">godot-scalable-vector-shapes</a></h3>
+  <p>Draw Godot pixel art with vector shape tools: ScalableVectorShape2D nodes rendered through a Subviewport with pixel snap so pixels never rotate, plus a DynamicOutline2D node using Geometry2D.merge_polygons for clean...</p>
+</article>
 <article class="card" data-search="godot-shaders write godot 4.7 shaders in the godot shading language: canvas_item shaders for 2d and spatial shaders for 3d, with vertex/fragment functions, uniforms (source_color, hint_range), time/uv animation, and screen-reading...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-shaders/SKILL.md">godot-shaders</a></h3>
   <p>Write Godot 4.7 shaders in the Godot Shading Language: canvas_item shaders for 2D and spatial shaders for 3D, with vertex/fragment functions, uniforms (source_color, hint_range), TIME/UV animation, and screen-reading...</p>
@@ -164,6 +168,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/threejs-browser-game-asset-diet/SKILL.md">threejs-browser-game-asset-diet</a></h3>
   <p>Ship a 3D browser game on an asset budget: measure the full model load (347 MB), cut the demo to ~45 MB with gltf-transform (Draco + WebP), load-gate by area, instance nature per chunk, generate trees from Blender...</p>
 </article>
+<article class="card" data-search="threejs-forest-env-perf ship a dense three.js forest that runs: 500 instanced trees with compute-shader frustum culling, cross-billboards at distance, alphatest leaves instead of transparency, claude-placed godrays, grass trails, and 5-variant...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/threejs-forest-env-perf/SKILL.md">threejs-forest-env-perf</a></h3>
+  <p>Ship a dense three.js forest that runs: 500 instanced trees with compute-shader frustum culling, cross-billboards at distance, alphaTest leaves instead of transparency, Claude-placed godrays, grass trails, and 5-variant...</p>
+</article>
 <article class="card" data-search="unity-dots-fake-ragdoll-crowds render 10,000-character crowds in unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 lod levels...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/unity-dots-fake-ragdoll-crowds/SKILL.md">unity-dots-fake-ragdoll-crowds</a></h3>
   <p>Render 10,000-character crowds in Unity with fake ragdolls: premade ragdoll animation clips plus deterministic launch instead of physics, baked vertex animations, sub-1000-triangle meshes, no armatures, 3 LOD levels...</p>
@@ -173,7 +181,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">24</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">26</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -207,6 +215,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/cinematic-cavern/SKILL.md">cinematic-cavern</a></h3>
   <p>Build a cinematic cave/pool/waterfall scene end to end: Blender blockout, ZBrush sculpt, decimation to game mesh, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver...</p>
 </article>
+<article class="card" data-search="city-diffusion-osm-training train a diffusion model from scratch on rasterized openstreetmap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. trigger when generating...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/city-diffusion-osm-training/SKILL.md">city-diffusion-osm-training</a></h3>
+  <p>Train a diffusion model from scratch on rasterized OpenStreetMap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. Trigger when generating...</p>
+</article>
 <article class="card" data-search="godot-procgen-city-glb-export-schema ship a godot procedural city as documented glb: keep generation procedural in-engine, define the schema of custom glb properties so others can write their own importers, and accept that shader tricks (decals, interior...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/godot-procgen-city-glb-export-schema/SKILL.md">godot-procgen-city-glb-export-schema</a></h3>
   <p>Ship a Godot procedural city as documented glb: keep generation procedural in-engine, define the schema of custom glb properties so others can write their own importers, and accept that shader tricks (decals, interior...</p>
@@ -230,6 +242,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="parametric-ship-generator-isometric generate sci-fi ships (and stations, megacities) as parametric 3d geometry drawn isometrically onto a 2d canvas in plain javascript: grid-snapped hull segments, taper profiles, fit rules for engines/noses/wings...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/parametric-ship-generator-isometric/SKILL.md">parametric-ship-generator-isometric</a></h3>
   <p>Generate sci-fi ships (and stations, megacities) as parametric 3D geometry drawn isometrically onto a 2D canvas in plain JavaScript: grid-snapped hull segments, taper profiles, fit rules for engines/noses/wings...</p>
+</article>
+<article class="card" data-search="per-frame-planet-geometry-clipmap render a 1:1 earth-scale planet from orbit to ground in one frame: compute shader rebuilds nested geometry-clipmap rings from a libnoise complex-planet stack ported to hlsl, no tiles, no streaming, camera in doubles...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/per-frame-planet-geometry-clipmap/SKILL.md">per-frame-planet-geometry-clipmap</a></h3>
+  <p>Render a 1:1 Earth-scale planet from orbit to ground in one frame: compute shader rebuilds nested geometry-clipmap rings from a libnoise complex-planet stack ported to HLSL, no tiles, no streaming, camera in doubles...</p>
 </article>
 <article class="card" data-search="phosphor-command-code-drawn-procgen ship a code-drawn procedural game in the phosphor command pattern: everything drawn by code (no sprites, no textures), a deliberate phosphor-crt radar-scope aesthetic, and generation at the operation level (a contract...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/phosphor-command-code-drawn-procgen/SKILL.md">phosphor-command-code-drawn-procgen</a></h3>
@@ -359,7 +375,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">20</span></h2>
+<section><h2>Automation and pipelines <span class="count">21</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
@@ -400,6 +416,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="automationforge-hub-setup install the automationforge hub and get its plugins running in unreal engine 5.8: engine-version-first check, account sign-in, stable versus nightly channels, and the install-versus-activation distinction. trigger when...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/automationforge-hub-setup/SKILL.md">automationforge-hub-setup</a></h3>
   <p>Install the AutomationForge Hub and get its plugins running in Unreal Engine 5.8: engine-version-first check, account sign-in, stable versus nightly channels, and the install-versus-activation distinction. Trigger when...</p>
+</article>
+<article class="card" data-search="comfyui-agenty-ai-agent run agenty, a free mit ai agent that lives inside comfyui: builds unseen workflows from web research on cheap/local llms, self-judges outputs against the brief, runs parallel agents per shot, and drives...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/comfyui-agenty-ai-agent/SKILL.md">comfyui-agenty-ai-agent</a></h3>
+  <p>Run agentY, a free MIT AI agent that lives inside ComfyUI: builds unseen workflows from web research on cheap/local LLMs, self-judges outputs against the brief, runs parallel agents per shot, and drives...</p>
 </article>
 <article class="card" data-search="frameforge-comfyui-movie-app build a desktop app that productizes ai movie production on comfyui: an intuitive timeline of comfyui jobs with swappable default workflows (minimax h3, ltx 2.3, qwen 2.1), llm automatic script writing, a reference...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/frameforge-comfyui-movie-app/SKILL.md">frameforge-comfyui-movie-app</a></h3>
@@ -552,7 +572,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
 </article>
 </div></section>
-<section><h2>Characters and rigging <span class="count">9</span></h2>
+<section><h2>Characters and rigging <span class="count">10</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
@@ -565,6 +585,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
   <p>Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for...</p>
+</article>
+<article class="card" data-search="keenface-metahuman-heads turn reference photos into production-ready 3d heads with native metahuman topology, clean bald base mesh, and full pbr maps (base color, normal, roughness, specular) using keenface. trigger when a character pipeline...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/keenface-metahuman-heads/SKILL.md">keenface-metahuman-heads</a></h3>
+  <p>Turn reference photos into production-ready 3D heads with native MetaHuman topology, clean bald base mesh, and full PBR maps (Base Color, Normal, Roughness, Specular) using KeenFace. Trigger when a character pipeline...</p>
 </article>
 <article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
@@ -637,7 +661,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-10-29 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-10-30 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
