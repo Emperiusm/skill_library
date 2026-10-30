@@ -28,6 +28,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`substance-painter-characters`](characters/substance-painter-characters/SKILL.md) | Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. |
 | [`reallusion-rigger-apex-rig`](characters/reallusion-rigger-apex-rig/SKILL.md) | Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials, full APEX rig, face puppet and muscle tools, LookAt auto-animation. |
 | [`ai-3d-character-pipeline`](characters/ai-3d-character-pipeline/SKILL.md) | Take an AI character from clean A-pose reference through modular parts, rigging, skins, and animation prep to an engine proof. |
+| [`keenface-metahuman-heads`](characters/keenface-metahuman-heads/SKILL.md) | Turn reference photos into production-ready 3D heads with native MetaHuman topology, clean bald base mesh, and full PBR maps via KeenFace. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -57,6 +58,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-svg-to-3d`](procgen-worlds/ai-3d-svg-to-3d/SKILL.md) | Turn vector art into usable 3D: clean closed paths, extrude at 10 to 25 percent of shape width, bevel, material, light, export. |
 | [`agentic-terrain-pipeline`](procgen-worlds/agentic-terrain-pipeline/SKILL.md) | Build game terrain inside Unreal as an editable node graph with an AI agent driving it: erosion chains, sub-0.1s preview, real-survey import, 4K to 16K builds. |
 | [`meshforge-asset-pipeline`](procgen-worlds/meshforge-asset-pipeline/SKILL.md) | Run AI asset generation inside the editor with human checkpoints: mesh definitions, cost gate, provider A/B, retexture branching, Blender round-trip, judge at player distance. |
+| [`per-frame-planet-geometry-clipmap`](procgen-worlds/per-frame-planet-geometry-clipmap/SKILL.md) | Render a 1:1 Earth-scale planet from orbit to ground in one frame: compute shader rebuilds nested geometry-clipmap rings from a libnoise complex-planet stack ported to HLSL, no tiles, no streaming. |
+| [`city-diffusion-osm-training`](procgen-worlds/city-diffusion-osm-training/SKILL.md) | Train a diffusion model from scratch on rasterized OpenStreetMap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. |
 
 ## AI video and film (`ai-video/`)
 
@@ -157,6 +160,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-engine-export`](engine-runtime/ai-3d-engine-export/SKILL.md) | Hand an AI asset to Unity, Unreal, or Blender: shared export gates plus per-target settings and a fresh-scene re-import proof. |
 | [`ai-3d-scene-graph`](engine-runtime/ai-3d-scene-graph/SKILL.md) | Read and repair scene graphs: parent-child transform trees, a five-point health checklist, and the distinction from node workflow graphs. |
 | [`threejs-browser-game-asset-diet`](engine-runtime/threejs-browser-game-asset-diet/SKILL.md) | Ship a 3D browser game on an asset budget: 347 MB to 45 MB with gltf-transform (Draco + WebP), load-gate by area, chunk-instanced nature, Blender Python tree recipes, web-worker hero building, auto quality step-down, 1-4 player split-screen. |
+| [`threejs-forest-env-perf`](engine-runtime/threejs-forest-env-perf/SKILL.md) | Ship a dense three.js forest that runs: 500 instanced trees with compute-shader frustum culling, cross-billboards at distance, alphaTest leaves, Claude-placed godrays, grass trails, 5-variant footstep audio. |
+| [`godot-scalable-vector-shapes`](engine-runtime/godot-scalable-vector-shapes/SKILL.md) | Draw Godot pixel art with vector shape tools: ScalableVectorShape2D nodes through a Subviewport with pixel snap so pixels never rotate, plus a DynamicOutline2D node with merged-polygon outlines. |
 
 ## Automation and bridges (`automation/`)
 
@@ -182,6 +187,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`automationforge-hub-setup`](automation/automationforge-hub-setup/SKILL.md) | Install the AutomationForge Hub and activate its plugins in UE 5.8: engine-version-first check, sign-in, stable versus nightly, install versus activation. |
 | [`jet-studio-godot-mcu-editor`](automation/jet-studio-godot-mcu-editor/SKILL.md) | Build a Godot-flavored game editor for microcontrollers: reuse Godot 4's UI and node conventions, bridge a C++17 software runtime via GDExtension, design a strict GDScript subset compiling to bytecode, measure FPS and RAM on real 320x240 SPI hardware. |
 | [`frameforge-comfyui-movie-app`](automation/frameforge-comfyui-movie-app/SKILL.md) | Productize AI movie production on ComfyUI: timeline of ComfyUI jobs with swappable backends, LLM script writing, reference manager, pose studio, voice clips, cheap-draft/expensive-final discipline on one RTX 3060. |
+| [`comfyui-agenty-ai-agent`](automation/comfyui-agenty-ai-agent/SKILL.md) | Run agentY, a free MIT AI agent inside ComfyUI: builds unseen workflows from web research on cheap/local LLMs, self-judges outputs, runs parallel agents per shot, drives Blender/Maya/Houdini/AE over MCP. |
 
 ## No-tooling examples (`no-tooling/`)
 
