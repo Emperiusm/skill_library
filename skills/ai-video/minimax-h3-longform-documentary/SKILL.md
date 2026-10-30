@@ -103,6 +103,75 @@ the author's breathing fix is the evidence.)
 The community's low-VRAM recipes are the real product here; the author's
 numbers are the proof. But VRAM behavior is card- and workflow-specific.
 
+## AI-video production practice (studio pilots and vendor research, not game-studio AAA)
+
+Honest framing: no AAA game studio publishes a long-form-AI-video
+production pipeline comparable to this skill's 12 GB-card recipe.
+The closest production evidence comes from studio pilots and vendor
+production research for AI video:
+
+- **Pilots have moved from clips to scenes; the discipline is
+  versioning plus review.** Studios are piloting 1-3 minute AI
+  sequences for previz and B-roll, with the emphasis on temporal
+  consistency, character persistence, and editable camera grammar
+  rather than pure image fidelity; early tests report 20-40% time
+  savings in pre-production. Integration with ShotGrid and
+  Premiere/After Effects is described as critical so AI assets can
+  be versioned, reviewed, and cleared like any other plate or comp;
+  C2PA content credentials are being embedded for provenance.
+  Applied here: treat each 37-minute generation as a plate, version
+  it, log its prompt/seed, and keep it reviewable in an editorial
+  timeline instead of judging it from the ComfyUI queue alone.
+  Source: https://business20channel.tv/studios-pilot-long-form-ai-video-as-runway-google-and-nvidia-step-up-r-d-on-scene-level-control-12-12-2025
+- **Persistent characters come from a shot catalog built once and
+  read many times.** Runway's Story Panels workflow builds a
+  catalog of shots with consistent characters, locations, and
+  styles from one starting image: panels are built, upscaled, then
+  animated into clips, and the model's reference capabilities
+  regenerate elements from new angles without losing fidelity.
+  Applied here: this is the vendor-scale version of this skill's
+  3x3 storyboard plus character-reference-images guidance, a
+  reusable character/shot bible that every generation reads from,
+  which is why the storyboard maps to sequence beats rather than
+  describing each beat from scratch.
+  Source: https://www.eyerys.com/articles/news/story-panels-runway-wants-redefine-ai-storytelling-using-consistency-and-controls
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a generation ledger: before each full run, record the prompt
+   hash, storyboard version, character-ref versions, seed, and
+   settings in a one-line entry. A defect fix must change at least
+   one of these; "changed the prompt" is not a ledger entry, the
+   hash is.
+2. Add a plate-style review step: export each finished generation
+   as a named version (e.g. doc_v3), keep all versions, and judge
+   watchability by comparing versions side by side rather than
+   re-rendering from memory.
+3. Add a pre-run VRAM guard: before committing to a 37-minute
+   generation, run the community's memory/sparse node recipe in a
+   short test clip first (per Phase 3), and start the full pass
+   only if the test clip completes without stalls.
+4. Add a character-bible check: the character reference images and
+   storyboard panels are stored once, versioned, and referenced by
+   name in every prompt; a prompt that re-describes a character the
+   bible already defines is flagged and simplified (the
+   breathing-fix rule applied to descriptions).
+
+**Check**
+- Does every full run have a ledger entry with prompt hash and seed?
+- Are versions named and comparable, none deleted?
+- Did the pre-run VRAM test pass before the full pass started?
+- Do prompts reference the character bible instead of re-describing
+  it?
+
+**Why**
+The studio pilots' actual discipline is not better models, it is
+plates, versions, and reviewable assets. The ledger turns the
+author's three-run iteration arc from anecdote into an auditable
+experiment log, and the character bible turns "under-describe the
+physics" into a rule with a place to check it.
+
 ## The human method, distilled
 
 1. "I focused on getting an actual watchable result rather than just

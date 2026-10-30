@@ -147,6 +147,70 @@ add-on for Narrative. No prompts, parameters, or rigging steps were
 disclosed, so it stands as evidence that the loop generalizes beyond
 ground vehicles, not as a procedure to copy.
 
+## AAA studio practice
+
+- **Build each car to a frozen spec, and QA it on both sides.**
+  Turn 10's GDC talk on outsourcing Forza Motorsport describes the
+  production discipline behind hundreds of licensed cars: a full
+  prototype build led to a finalized spec handed to vendors (Valkyrie,
+  Glass Egg, Dhruva); vendors worked each asset start to finish,
+  because "working on someone else's art is the worst thing for an
+  artist"; dedicated staff and QA existed on both sides, and QA leads
+  synced per milestone. Applied here: the concept sheet is this
+  pipeline's finalized spec, freeze it (version it, hash it) before
+  the agent writes the build script, and treat the per-asset scripted
+  check counts as the "both sides" QA gate, with the agent's
+  self-check as the vendor side and the human's review sheet as the
+  studio side.
+  Source: https://www.gamedeveloper.com/business/gdc-successful-outsourcing-on-aaa-games
+- **Budget car production in months per car, with art and physics as
+  one line item.** Polyphony Digital's Kazunori Yamauchi: "It takes
+  eight months for us to do both the appearance and the physics for
+  how the dynamics of the car work," and he test-drives the car at
+  the end to verify it. Turn 10's Dan Greenawalt described
+  six-month builds per car for Forza 5, produced in overlapping
+  waves timed to finish just before each launch pack. Applied here:
+  the "test-drive" is the scripted playtest gate; the overlapping
+  waves idea maps to batching vehicles (agent scripts vehicle B
+  while the human reviews vehicle A's sheets) rather than building
+  strictly one at a time, so review time overlaps build time.
+  Source: https://www.evo.co.uk/features/209047/gran-turismo-creator-kazunori-yamauchi-on-the-challenges-of-car-game-development
+  Source: https://gameranx.com/updates/id/18669/article/it-takes-turn-10-six-months-to-make-a-forza-5-car/
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a spec-freeze step at the top of Phase 1: version the concept
+   sheet (git commit or hash) before the agent writes the build
+   script. Any design note given later is checked against the frozen
+   spec; a change to the spec is a new version, not a silent edit.
+2. Add a build-manifest check to Phase 2: after Blender runs
+   headless, the script writes a manifest (parts count, export path,
+   checksum). On rebuilds, the agent diffs the manifest against the
+   previous build's manifest; an unexpected diff fails the build
+   before review sheets are even looked at.
+3. Make Phase 4's playtest gate batch-friendly: group vehicles in
+   waves (per Turn 10's overlapping-wave scheduling), so the agent
+   builds the next vehicle's script while the human reviews the
+   current one's sheets.
+4. Add an end-to-end human "test-drive" sign-off after the scripted
+   checks pass, mirroring Yamauchi's test-drive: scripted checks
+   gate the build, the human drive gates the ship.
+
+**Check**
+- Is the concept sheet frozen with a version hash before scripting
+  begins?
+- Do rebuild manifest diffs come back clean?
+- Is the human test-drive recorded as the final sign-off, not
+  replaced by the scripted checks?
+
+**Why**
+The AAA lesson is that vehicle production is a spec, a measurement,
+and a human drive at the end, not just geometry. Freezing the spec
+keeps design authority from leaking into the agent's build; manifest
+diffs catch regressions between rebuilds; waves keep the human and
+the agent in parallel instead of in series.
+
 ## The human method, distilled
 
 1. Concept sheet is the contract; the script is the model.

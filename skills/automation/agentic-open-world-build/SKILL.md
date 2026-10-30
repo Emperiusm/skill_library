@@ -233,6 +233,31 @@ recomputable. (The author asked: "how do you keep roads, water and
 vegetation reading the same landscape data as the world changes?" This
 is the answer.)
 
+## AAA studio practice
+
+- **Design procedural systems for iteration and dependencies, then use them to author, modify, and monitor content.** Insomniac Games, Marvel's Spider-Man (GDC 2019, principal technical artist David Santiago): each procedural system was originally designed to support iterations and dependencies. In production the systems were used to author, modify, and monitor much more content than planned, covering roads, buildings, cars, pedestrians, and props as generated asset sets that artists then tweaked and combined with hand-crafted scenery; the anticipated and unforeseen challenges became a roadmap for future projects. Applied here: the agent-built road, biome, and river tools should be versioned procedural systems with declared dependencies (the staged-mask contract from Phase 3b is the dependency declaration), not one-off scripts, and the written job reports are the AAA "monitor" function made explicit.
+  Source: https://www.gamedeveloper.com/programming/video-procedurally-creating-manhattan-for-i-marvel-s-spider-man-i-
+- **Preserve hand-authored work across procedural regeneration, and guide humans to the pieces needing attention.** The SIGGRAPH abstract of Santiago's follow-up talk lists the three improvements Insomniac added to accommodate city-layout iterations: preserve hand-authored work if it continues to meet specifications; place encounter components with higher fidelity; and provide artists and designers guidance for the pieces needing more attention. Applied here: the agent's guardrails should include a preservation rule (authored content survives reruns when it still meets the recipe), a higher-fidelity placement rule for gameplay-adjacent content, and a "needs attention" queue so human review time goes to flagged items rather than drowning in every report.
+  Source: https://history.siggraph.org/learning/procedural-system-assisted-authoring-of-open-world-content-for-marvels-spider-man-by-santiago/
+- **Automate the authoring, never the judgment; artists paint and override on top of generation.** Far Cry 5's macro management tool fills the world automatically, but artists paint sub-biomes with the Biome Painter, override natural distribution (clearing forest for roads and driveways), and adjust terrain at any time with procedural tools refreshing coherence automatically. Applied here: this is exactly the skill's art-director loop, and the AAA version adds the missing mechanism, the non-destructive refresh that keeps overrides coherent when the terrain underneath changes.
+  Source: https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Formalize every agent-built tool (road builder, biome kernels, river router) as a versioned system with declared dependencies: record the stage order in the tool itself and enforce the staged-mask contract from Phase 3b, failing loudly if any stage runs without its upstream mask, instead of generating anyway.
+2. Add a preservation rule to the guardrails: content the human or the agent has explicitly approved is marked authored; before any rerun the agent lists what it will preserve versus regenerate, and the written report confirms authored content survived unchanged (the Insomniac preserve-hand-authored-work rule, applied to agent runs).
+3. Add a "needs attention" queue: after each job the agent appends unresolved items (like the open chunk-load hitches) to a standing queue the human reads before the next job starts, and the lesson notebook gets a structured attention section rather than only free-text mistakes.
+4. Wrap heavy jobs with an automated memory monitor that caps usage and logs it, replacing the ad-hoc discovery that a build had nearly hit 60 GB.
+
+**Check**
+- A stage run without its upstream mask fails loudly; authored content is verified preserved in each report.
+- The attention queue drains or is explicitly deferred by the human; nothing stays open and unlisted.
+- Memory usage is logged for every heavy job, and the cap holds.
+
+**Why**
+The AAA difference is not bigger tools, it is procedural systems engineered for iteration: declared dependencies, preserved authored work, and human attention routed to the flagged pieces. Unattended agents that regenerate blindly will eat their own best work; the preservation rule and the attention queue are the guardrails that make eight days of agents cheaper than one careful artist.
+
 ## The human method, distilled
 
 1. Art-direct; never touch the level. Reports are the interface.

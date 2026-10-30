@@ -132,6 +132,72 @@ The game's origin is a constraint: "we only have one computer." Split-screen
 is a design answer to hardware reality, and it is a differentiator the
 comments argued about in both directions.
 
+## AAA studio practice
+
+- **Split the world into chunks and stream by area; the 5 MB bar is a
+  distributor rule, not a preference.** Vortelli's Pizza Delivery
+  (PlayCanvas, launched on Poki September 2023, 8+ million plays in its
+  first year) split its open-world city into chunk islands connected by
+  bridges, with trigger volumes loading the chunk ahead and unloading the
+  one behind as the car crosses bridges; initial download landed at 58
+  requests / 2.14 MB, below a hard 5 MB upper limit taken from a Poki talk,
+  and Draco mesh compression cut download size by nearly 70%. Applied here
+  (labeled: a shipped indie web game, not AAA): this is the direct
+  production precedent for the skill's Phase 2 load-gating and Phase 3
+  chunk instancing; validate the skill's area gates against the same test
+  (initial download under budget, old area unloaded, not just compressed).
+  Source: https://forum.playcanvas.com/t/vortelli-s-pizza-delivery-a-3d-open-world-driving-game/33735
+- **Compress textures first, gate by area second, unload aggressively
+  third.** The Ascendant Continuum WebGL optimization (Unity): texture
+  compression (ETC2/DXT) cut texture memory from 200 MB to 35 MB,
+  progressive loading staged UI textures (500 KB) then the current realm
+  (5 MB) with other realms in the background, and Addressables unloaded old
+  realm assets immediately on transition; initial load fell from 45 seconds
+  to 8 seconds, and draw-call batching (materials 87 to 12, GPU instancing)
+  took frame rate from 15 to 60 fps. Applied here (labeled: a production
+  dev blog, not a AAA studio): the three.js recipe maps directly (KTX2/
+  Basis for GPU-ready textures instead of shipping raw WebP, per-area
+  manifests instead of realms, explicit dispose of the previous area
+  instead of relying on GC). The automation upgrade below turns the
+  per-area budget into a build-time check.
+  Source: https://ascendant-continuum.web.app/blog/posts/unity-webgl-performance-from-15fps-to-60fps.html
+- **Real-time shadows are a production risk on unknown hardware.**
+  Vortelli's hardest launch bug: a small percentage of players saw the HUD
+  over a blue void with no world loaded; the fix, suggested by another Poki
+  developer, was disabling real-time shadows (planned to return as an
+  optional setting). Applied here: the skill's Phase 5 automatic step-down
+  should demote shadows first; on the web, shadows are a setting, not a
+  feature.
+  Source: https://forum.playcanvas.com/t/vortelli-s-pizza-delivery-a-3d-open-world-driving-game/33735
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a build-time area manifest generator: script that walks the scene
+   graph, records compressed byte totals per load area (models + textures
+   as served, after gltf-transform), and fails the build when any
+   first-load area exceeds its budget; the Vortelli 2.14 MB discipline and
+   the skill's 45 MB demo target made automatic.
+2. Commit the gltf-transform recipe with the project: record the exact
+   draco compression level and WebP quality per asset class in a checked-in
+   config, so compression is reproducible across builds instead of
+   re-invented per release.
+3. Add a split-screen cost gate: measure FPS with 1, 2, 3, and 4 viewports
+   and record where the automatic step-down triggers; the 4-way split is
+   roughly 4x draw submission cost, so the gate must be defined against the
+   worst case, not the solo case.
+
+**Check**
+- No area exceeds its byte budget at build time; compression settings are
+  versioned; the step-down trigger is measured for the 4-viewport worst
+  case.
+
+**Why**
+The web has no minimum spec, so the budget has to be enforced by the
+build, not the author. The manifest makes the diet measurable, the recipe
+makes it repeatable, and the split-screen gate makes the degrade path
+honest about the hardest case the game actually ships.
+
 ## The human method, distilled
 
 1. Budget first, features second: the 347 -> 45 MB number leads the post.

@@ -112,6 +112,80 @@ and voice are the pre-production a team would do.
 Vague specs erode trust in open-source releases. "It depends" is honest
 only when you name what it depends on.
 
+## AAA studio practice
+
+- **Previs is an optical-accuracy discipline, and the industry productized
+  it long before AI generation.** FrameForge Storyboard Studio (labeled:
+  a different product from this skill's FrameForge, same name by
+  coincidence; Innoventive Software's tool, built by filmmaker Ken Schafer)
+  won a Technical Achievement Emmy from the National Academy of Arts and
+  Sciences for a "proven track record of saving productions time and money
+  through virtual testing"; the award rationale is that previs lets
+  productions test and solve real-world production problems before shooting.
+  Applied here: the app's two-tier render discipline is the AI-era version
+  of the same argument (cheap drafts are virtual testing, expensive finals
+  are production). The app should inherit the data-rich-shoot ethic too:
+  FrameForge Studio's data-rich storyboards export shot data for use at all
+  stages of production, so this skill's draft tier should export its
+  settings (workflow, resolution, seed, voice take) alongside every render.
+  Source: https://en.wikipedia.org/wiki/FrameForge_3D_Studio
+- **Separate the planning layer from the production layer, and give every
+  department its own artifact.** ILM's Virtual Art Department (VAD) works
+  in Unreal Engine to design environments, assess what will be practical
+  versus digital, and pre-light scenes for the DP; filmmakers then say
+  their first day on set felt "like they were doing a re-shoot." ILM
+  Previz exists to produce "a technically and aesthetically sound roadmap
+  to production" with "fewer iterations in post." Applied here: the app's
+  modules (script, references, poses, voices) are the VAD layers; each
+  module should produce a reviewable artifact a human signs off, exactly
+  like the skill's Phase 3 checks already require. The gap to close is
+  making each artifact versioned against the timeline, so a regenerated
+  shot can be traced back to the pose sheet and reference set that produced
+  it.
+  Source: https://www.ilm.com/visual-development/
+- **A previs tool proves itself by how fast a plan becomes an editable
+  cut.** ILM's Virtual Story Reels let filmmakers capture shots live on a
+  virtual stage and get them into the edit "in a fraction of the time" it
+  takes with traditional methods. Applied here: the app should always be
+  able to assemble the timeline's current draft into a rough-cut reel for
+  human review; the "human reviews, the app proposes" loop from Phase 3
+  only works if review costs minutes, not hours.
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a hardware-variable matrix: script a dry run that renders one frame
+   of each default workflow (MiniMax H3, LTX 2.3 low-res, Qwen 2.1) at the
+   chosen resolution and logs peak VRAM and time, then interpolates the
+   answer to "will this run on my card?" from the matrix of resolution x
+   length x workflow; this replaces the vague "it depends" with measured
+   variables, per Phase 4.
+2. Add a draft-final diff: after each final render, hash frames of the
+   draft and the final per scene and verify the final differs from the
+   draft (it changed) but matches the approved draft's scene list (nothing
+   added or dropped), proving the expensive tier only ran on approved
+   content.
+3. Add a timeline startup validation: validate every workflow template
+   against the live ComfyUI API's node list on app start and list broken
+   templates before any job runs, so a renamed node cannot waste a render.
+4. Attach "data-rich" metadata to every render (workflow name, resolution,
+   seed, voice-take id, reference set version), mirroring FrameForge
+   Studio's data-rich storyboards, so any shot can be reproduced or audited
+   later.
+
+**Check**
+- A reader can predict their own VRAM/time from the published matrix, not
+  just admire the author's 3060 run.
+- Finals never render a scene the draft pass did not approve; broken
+  templates are named at startup, not at render time.
+
+**Why**
+The industry's previs lesson is that planning pays only when the plan is
+executable and auditable. The matrix makes the hardware question
+answerable, the diff makes the two tiers honest, and the metadata makes
+every take reproducible; the three things that turn a demo app into a
+studio tool.
+
 ## The human method, distilled
 
 1. Competition as scope control: built for the Higgsfield Build Competition

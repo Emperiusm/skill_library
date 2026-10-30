@@ -227,6 +227,73 @@ An ecosystem of plugins is only operable when the operator knows
 which one owns what. Roadmap items are the most expensive things to
 depend on silently.
 
+## AAA studio practice
+
+- **Generate the radiant layer; hand-craft the story that matters.**
+  Bethesda's Bruce Nesmith on Skyrim's Radiant Story system: the
+  team defined 30 player actions and built data types so the Story
+  Manager could feed semi-procedural quests into the world (placed
+  in unvisited locations, aware of player relationships), but they
+  deliberately did not use it for the main quest ("Sounds great,
+  would play horribly") and "ended up doing many more custom
+  pieces. It felt better." Applied here: the agent's quest builds
+  are the radiant layer, quest shapes filling the world between
+  hand-crafted moments. Keep the agent on radiant-shape quests and
+  reserve main-story quests for human authoring; and copy the
+  data-driven rule: generated quests must be conditioned on world
+  state (unvisited locations, existing relationships), not assembled
+  blind.
+  Source: https://gamesbeat.com/bethesdas-nesmith-reflects-on-the-difficult-birth-of-skyrims-radiant-story-system/
+- **Let audio drive the face, and keep regeneration cheap when the
+  audio changes.** EA SEED's Voice2Face converts recorded dialogue
+  directly into lip-synced facial animation; Battlefield 6 used it
+  for cinematics with up to about 30% of facial animation
+  AI-assisted, integrated with FaceRig, Maya, and Flow, so that when
+  audio changed, teams no longer rebuilt full animation sequences
+  from scratch. Applied here: this is the AAA validation of the
+  skill's solve-once-bake-often economics, voice changes propagate
+  to the face without a full rebuild, and the stale-line rule
+  (regenerate only what changed) is the same principle at line
+  granularity.
+  Source: https://www.g2a.com/news/features/battlefield-6-uses-ai-tools-in-development-voice2face-facerig-explained/
+  Source: https://www.ea.com/en-ca/news/seed-10-year-anniversary
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a radiant-vs-main classification step to Phase 5's design
+   script: every quest the agent builds gets tagged "radiant"
+   (generated, world-state-conditioned) or "main" (must be
+   human-authored). The agent refuses main-tagged quests and says so
+   in its understanding-confirmation before acting.
+2. Add a world-state conditioning check: the agent must name, for
+   each generated quest, the world-state conditions it reads (which
+   locations count as unvisited, which NPC relationships exist),
+   mirroring Radiant Story's location/relationship conditioning. A
+   generated quest with no named conditions fails review.
+3. Add a voice-change propagation check to Phases 1-2: when a line's
+   audio changes, the agent re-solves only that line's mouth layer
+   and confirms every other line's face output is unchanged from the
+   previous solve, mirroring the no-rebuild-from-scratch rule.
+4. After any batch generation (voices, faces, montages), run an
+   ID-stability audit: every stable ID from the previous batch must
+   still resolve to the same asset; new IDs are additions only, never
+   remapped old ones.
+
+**Check**
+- Are main quests tagged main and never agent-built?
+- Does every generated quest name its world-state conditions?
+- Does changed-line regeneration leave all other lines' faces
+  unchanged?
+- Does the ID audit pass with no remapped IDs?
+
+**Why**
+The two AAA precedents set the automation boundary: procedural
+generation earns its place on conditioned, radiant-layer content,
+and cheap regeneration is only real if it provably touches nothing
+else. These four checks turn those principles into measurements the
+agent can run before the human playtests.
+
 ## The human method, distilled
 
 1. Banks hold content; cast once, read hundreds of times.

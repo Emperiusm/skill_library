@@ -202,6 +202,31 @@ Inspector beauty is not game beauty. Player distance is the only
 distance that matters for a game asset, and scale surprises are the
 most common reason an approved asset looks wrong in the level.
 
+## AAA studio practice
+
+- **Automate asset validation across the whole library, and send the issue log to the artist.** SideFX production practice (Houdini PDG in game pipelines): automatically check an entire asset library for required attributes (UVs, lightmap UV2, vertex colors, vertex normals, manifold geometry, collision) with a PDG node network that can run locally or on a farm, produce a log of every issue per file, and send it to the artist in charge. Applied here: before any AI-generated take advances, run an automated validation pass (manifold geometry, UV channels, normals, collision presence, stats versus the requested budget) and attach the log to the mesh definition; human inspection then verifies the log instead of hunting for missing attributes by eye.
+  Source: https://www.gamedeveloper.com/programming/streamline-your-pipeline-with-procedural-workflows-automation
+- **Automate the review imagery too: render turntables on submit and keep them current.** The same production practice automates Shotgun asset reviews: render CG assets with several different light rigs and publish them immediately, with thumbnails regenerated whenever the asset changes so reviewers always see the latest information. Applied here: generate front/side/back/top turntables of every take automatically at submit time, so the adversarial inspection in Phase 3 always has the needed views without anyone setting up cameras by hand.
+  Source: https://www.gamedeveloper.com/programming/streamline-your-pipeline-with-procedural-workflows-automation
+- **Put a simple, artist-friendly UI over the complex process, and measure the iteration speedup.** Embark Studios (GDC 2023, lead 3D artist Erik Hallberg): their internally built Asset Processor provides an easy-to-use UI inside Blender where users set up the process input, then runs complex Houdini processes in the background; the studio took asset creation times from weeks to days by moving from manual to automated while keeping artistic freedom. Applied here: the mesh definition is exactly that UI layer over the generation service; keep generation parameters behind the definition UI rather than exposing raw provider settings, and track per-asset time from definition to approved take so the iteration speedup is measured, not assumed.
+  Source: https://80.lv/articles/embark-s-erik-hallberg-discusses-the-studio-s-houdini-powered-asset-processor
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add an automated validation gate after every generation: script the mechanical checks from Phase 3 (stats versus budget, manifold geometry, UV channels, normals, collision presence) and store the validation log inside the mesh definition. A take without a passing log cannot advance to player-distance judgment.
+2. Add automated turntables: render front, side, back, and top views of each take at submit time, attached to the definition, so adversarial inspection always starts from the same views (the production review-automation pattern from the Shotgun practice above).
+3. Record A/B verdicts as structured data in the definition (provider, settings, winning take, asset class). When a new asset enters the pipeline, suggest the provider and settings from past verdicts for the same asset class instead of starting every A/B from zero.
+4. After a take passes player-distance judgment, generate its technical variants from the same approved mesh: an LOD chain and collision (the production pattern is semi-automatic LOD generation from a single LOD0 with per-class presets, batch-processed; do not hand-build LODs).
+
+**Check**
+- No take advances without a validation log; every take has turntable views attached.
+- New assets get a provider suggestion backed by the verdict database; overrides are recorded as new verdicts.
+- The approved take ships with an LOD chain and collision generated from it, not modeled separately.
+
+**Why**
+AAA review pipelines move the mechanical checks into automation and reserve human judgment for art calls. The human checkpoint in this skill should be "judge the art at player distance," not "hunt for missing UVs." The validation gate, the turntables, and the verdict database are the automation that keeps the checkpoints human-scale as the asset count grows.
+
 ## The human method, distilled
 
 1. Definition first: references, settings, and results in one home.

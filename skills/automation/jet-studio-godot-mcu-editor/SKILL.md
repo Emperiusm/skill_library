@@ -123,6 +123,67 @@ GDExtension is the seam; everything on either side of it is ordinary.
 On a 320 KB device the budget is the feature. Measuring first and
 estimating before building is the whole portability story.
 
+## AAA studio practice
+
+- **Unify the game and the editor so the project is always playable.**
+  Ubisoft Massive's Snowdrop engine (GDC 2014, built for Tom Clancy's The
+  Division) was created in-house on the philosophy "to do things better,
+  not bigger": a node-based system at its core, where "the game and the
+  editor are unified, and everything in the engine runs in real time, which
+  means that the ongoing project is always playable." Its integrated
+  editor lets developers bring the editor up while playing, move content,
+  and continue. Applied here: Jet Studio already follows this rule (Play
+  in the editor is the board's view); the automation step is formalizing it
+  into a regression check, so "editor view and hardware output agree
+  visually" is measured, not assumed.
+  Source: https://www.otakustudy.com/video-game/2014/03/ubisoft-share-dev-diary-qa-new-snowdrop-engine/
+- **On constrained hardware, offer a language ladder, not a single
+  compromise.** Panic's Playdate is a shipped constrained-target device
+  built on a microcontroller (STM32F-class, 168 MHz, 16 MB RAM, 400x240
+  1-bit screen, no GPU), and Panic shipped it with an official SDK for both
+  Lua and C plus Pulp, a no-coding web tool: a ladder from low-code to
+  native, so each developer picks the rung that fits their constraint.
+  Applied here (labeled: Playdate is a commercial indie console, not a AAA
+  platform, but the closest shipped example of language-tiering for
+  constrained targets): JetScript is Jet Studio's middle rung. The
+  automation upgrade below is the tier checker: static analysis on every
+  save rejects unsupported constructs (await, lambdas, class_name, inner
+  classes) with the exact compile error the on-board VM would emit and
+  points the author at the supported idiom, enforcing the Phase 2 rule of
+  loud compile errors before the flash step.
+  Source: https://functionallyimperative.com/p/playdate-a-love-letter-to-constraints
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a JetScript subset linter that runs on every script save: parse for
+   the banned constructs from Phase 2 (await, lambdas, class_name, inner
+   classes, double-precision float assumptions) and emit the VM's compile
+   error inside the editor before flash; the loud-error rule made
+   automatic.
+2. Add a RAM-budget ledger: assign each node type and script allocation a
+   conservative byte estimate, total them per scene, and fail the build
+   when the estimate exceeds the target board's RAM (e.g. 320 KB on the
+   Nucleo-F746ZG), before the flash step wastes a cycle; Phase 4's
+   "estimate before building" made automatic.
+3. Add a hardware agreement test: run a fixed reference scene through the
+   editor runtime and through the real board over serial, capture both
+   framebuffers, and diff them; a mismatch fails CI, proving "editor view
+   and hardware output agree visually" with evidence.
+
+**Check**
+- Unsupported JetScript constructs are caught at save time with the VM's
+  error message, not at flash time.
+- The RAM ledger fails a scene that would OOM before any hardware is
+  touched; the framebuffer diff passes only when editor and board agree.
+
+**Why**
+Constraint-first design only works when the constraints are enforced by
+tools, not remembered by authors. The linter enforces the language subset,
+the ledger enforces the RAM budget, and the framebuffer diff enforces the
+"what you see is what ships" promise; the three guarantees that make a
+tiny-target editor trustworthy.
+
 ## The human method, distilled
 
 1. Convention over invention: every Godot convention the author could

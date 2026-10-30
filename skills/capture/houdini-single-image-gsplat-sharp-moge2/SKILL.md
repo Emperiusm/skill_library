@@ -192,6 +192,75 @@ The last mile is representation hygiene: orientation, color space, and
 aspect are all places a technically correct splat can look wrong. The HDA
 is the deliverable, not the one-off network.
 
+## AAA studio practice
+
+- **Studios ship splats as streamed LODs, not raw PLY files.** Magnopus
+  built a production splat renderer for Unreal (first Niagara-based, then
+  rebuilt on instanced rendering with GPU-side per-frame sorting for its
+  OKO spatial-computing platform, scaling past 30-million-splat assets)
+  and adopted PlayCanvas's Streamed SOG format for delivery: scenes are
+  carved into a spatial tree of region leaves with decimated LOD levels,
+  selected per frame by screen-space error, requested coarsest-first, and
+  streamed over HTTP with a fixed-memory working set and most-distant-
+  first eviction. Applied here (labeled: Magnopus is a commercial
+  spatial-computing studio, not a AAA game studio): the skill's HDA is the
+  capture step; production step two is a post-process converting the splat
+  to streamed LOD chunks, so the single-image splat renders at distance
+  without blowing VRAM. The automation upgrade below adds the first half
+  of this (cleanup plus standard PLY export) as the HDA's exit contract.
+  Source: https://www.magnopus.com/blog/gaussiansplats-part-3-theres-always-a-bigger-scene
+- **The production route for AI imagery is orbit-then-reconstruct, not
+  single-view.** Marzena Milowska's "Through the Depths of Time" (MFA
+  thesis film and VR experience, SVA 2025-2026) started every scene as an
+  AI-generated image, generated a 360-degree camera orbit with Higgsfield,
+  reconstructed the synthetic multi-view footage in both Postshot and Luma
+  AI (keeping whichever was cleaner per scene), cleaned every splat in
+  SuperSplat, and built the film in Unreal Engine 5.3 with the Luma AI
+  plugin (Niagara-based splat rendering), layering RealityScan
+  photogrammetry meshes underneath for two scenes. She states the key limit
+  directly: single-image 3D models such as Apple's SHARP "must infer
+  information that is not visible in the source" and produce Gaussians
+  "designed primarily for rendering nearby viewpoints," which is why she
+  synthesized views first. Applied here (labeled: an independent
+  production film, not a AAA studio): the SHARP path in this skill inherits
+  exactly that limit (nearby viewpoints only; do not fly the camera far).
+  The HDA's disparity-factor control is the manual stand-in for what orbit
+  synthesis does automatically, and the automation upgrade below records
+  which model wins per scene class, turning the author's nature-vs-geometry
+  rule of thumb into data.
+  Source: https://radiancefields.com/stepping-inside-an-ai-generated-film-with-gaussian-splats
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add a cleanup pass at the end of the HDA before output: cull splats
+   below a tunable alpha threshold and log the percentage removed, mirroring
+   the SuperSplat cleanup step in the production pipeline above; verify with
+   a frame diff that the visible render did not change.
+2. Add a model-selection bake: run both the MoGe-2 and SHARP paths on a
+   small set of scene classes (nature, geometric, portrait) once per
+   project, record which won per class, and store the mapping in the HDA;
+   this automates the author's nature-vs-geometry rule of thumb into
+   measured data instead of memory.
+3. Add a standard PLY export step at the end of the HDA with orientation
+   and color already corrected, so the output feeds downstream renderers
+   (e.g. Unreal's Luma AI plugin, which expects standard 3DGS PLY) without
+   a manual conversion; the HDA's exit contract matches the ecosystem's
+   input contract.
+
+**Check**
+- The cleanup pass removes stray splats and the frame diff passes (visible
+  pixels unchanged); the model mapping exists and is backed by per-class
+  renders, not the author's memory; the exported PLY opens in a second
+  renderer.
+
+**Why**
+Production splat pipelines are judged by their exit contract: clean,
+portable data with known limits. The cleanup pass buys the SuperSplat
+step, the model mapping buys the "which model for this scene" decision,
+and the PLY export buys compatibility with the Unreal-side tooling the
+industry actually renders with.
+
 ## The human method, distilled
 
 1. Contract-first integration: read the model's I/O contract off Hugging

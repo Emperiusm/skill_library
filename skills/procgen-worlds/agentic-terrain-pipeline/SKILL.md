@@ -162,6 +162,30 @@ agent edit is a graph edit the human can read, adjust, and rebuild.
 An agent operating on opaque terrain would be a black box; an agent
 operating on this graph is a junior artist whose work you can review.
 
+## AAA studio practice
+
+- **Chain procedural stages so each stage hands the next a mask of what it actually built, and refresh the world on a schedule.** Ubisoft Montreal's Far Cry 5 procedural pipeline (tech artist Etienne Carrier, 2.5-year development) ran its tools sequentially: freshwater, then cliffs, then biomes, with each tool exporting masks used by the next (the freshwater tool generated a water mask the biome tool consumed). Build machines ran nightly builds that fully refreshed the world each morning, alongside in-editor on-demand tools, and generation was deterministic so the same inputs produced identical results on any machine. Applied here: the erosion chain, auto-masks, and scatter should be ordered stages communicating through exported masks, and a headless command should rebuild the full terrain from the graph without the editor, on a schedule, exactly like the nightly refresh.
+  Source: https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html
+- **Keep everything artist-editable at every stage: rules in a graph, hand-authored overrides respected.** Guerrilla Games' Horizon Zero Dawn (GDC 2017, Jaap van Muijden) used a GPU-based procedural placement system where artists defined placement rules in a graph editor and the GPU algorithms built a dense world on the fly, but artists could alter the placement logic and work with hand-authored assets; painting in a tree line or redirecting roads was as easy as moving mountains. Applied here: hand-drawn features (river path, lake) and every agent edit to the graph must stay re-editable; nothing the agent produces should harden into opaque geometry the human cannot re-open.
+  Source: https://80.lv/articles/the-procedural-nature-of-the-horizon-zero-dawn?amp=1
+- **Treat real-world data as a draft, then rebuild rather than depending on the import.** Ubisoft's Assassin's Creed Valhalla world building started by pulling Google Earth elevation and structure data as a rough draft for the first playable terrain layout, cleaned and rescaled it, then dumped the imported terrain and rebuilt the world from scratch incorporating what the draft taught them; scale was adjusted for playability (the true 226-mile distance became about 5 miles in game). Applied here: the survey-import node is the starting truth, but keep the import step separable so it can be re-pulled or re-run, and let agent edits live downstream of it rather than depending on the import's imperfections.
+  Source: https://popsciah.pages.dev/posts/how-ubisoft-built-the-world-of-assassin-s-creed-valhalla/
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Add an inter-stage mask export: after the erosion chain, write each derived mask (water, slope/rock, erosion flow, land cover) as a named output of the graph. Scatter graphs read only those exported masks, never the raw heightfield, matching the Far Cry tool-to-tool mask contract.
+2. Add a scheduled headless build: one command builds the full terrain (4K, 8K, 16K) from the graph without opening the editor, matching the Far Cry nightly-refresh pattern. Compare the headless build against the editor build to prove deterministic generation.
+3. Add a regeneration-coherence check: edit one node upstream (for example mountain height), rebuild, and verify every downstream stage (masks, water bodies, scatter placement) updates consistently with no manual fixes.
+
+**Check**
+- Masks are named graph outputs; scatter reads the masks, not the heightfield.
+- The headless build matches the editor build exactly; the upstream edit propagates everywhere with no manual repair.
+- The agent's graph edits stay re-editable (graph opens, reads, and rebuilds cleanly), per the Guerrilla rule.
+
+**Why**
+AAA pipelines survive long productions because stages communicate through exported data, rebuilds are scheduled and deterministic, and artists can edit anything at any stage. The agent-driven graph should prove the same three properties, or the graph will rot the first time the terrain changes.
+
 ## The human method, distilled
 
 1. Graph first, sculpt never. Readable graphs are editable by humans
