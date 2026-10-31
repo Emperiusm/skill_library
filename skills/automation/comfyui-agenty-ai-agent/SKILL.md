@@ -241,6 +241,123 @@ points into the written, scripted gates studios actually ship.
    re-renders of misses, and pre-planned agent-or-human review points
    are part of the pipeline design, not an afterthought.
 
+## UPDATE 2026-10-31 (agentY UPDATE post)
+
+New details from the r/comfyui UPDATE post (Admirable-Agency-578,
+score 69, 10 comments, 2026-10-31):
+
+- https://www.reddit.com/r/comfyui/comments/1xjbipg/
+
+Evidence note: all facts below are the author's claims from the UPDATE
+post text plus the author's comment replies. No third-party
+verification in this audit.
+
+### Update 1: WorldLabs splats from single images
+
+**Do**
+1. Use the WorldLabs API update: generate high-quality splats from
+   single generated images.
+
+**Check**
+- The splat produced from a single image holds up from multiple
+  viewing angles in the viewer.
+
+**Why**
+Single-image-to-splat closes the loop: generate the image, splat it,
+and review in 3D without leaving the agent's viewer.
+
+### Update 2: grok via its OpenAI-compatible endpoint
+
+**Do**
+1. In the settings panel, enter grok's endpoint URL and API key.
+2. Restart the agent.
+
+**Check**
+- After restart, grok sees the workflow, adjusts the canvas directly,
+  builds workflows in separate ComfyUI tabs, and answers in the
+  side-panel chat while it works.
+
+**Why**
+The OpenAI-compatible endpoint standard makes the backend swap a
+settings-panel edit, not a reinstall: any compatible model becomes the
+agent's brain.
+
+### Update 3: Annotation tool for visual feedback
+
+**Do**
+1. Use the annotation tool to draw directly on images and videos to
+   give the agent feedback.
+
+**Check**
+- After annotating a miss, verify the re-render addressed the marked
+  region, not something else.
+
+**Why**
+Drawing on the frame is the fastest feedback channel: it points at
+the miss instead of describing it in words.
+
+### Update 4: Uninstall and key reset
+
+**Do**
+1. To uninstall: delete the agentY repo folders and the agent custom
+   node inside the ComfyUI folder.
+2. API keys can be re-set via the settings panel; or re-run the
+   installer.
+
+**Check**
+- After deletion, the custom node is gone from the node list and no
+  agent panels remain.
+
+**Why**
+Clean uninstall is a documented procedure, not archaeology: two
+deletion targets, keys recoverable either way.
+
+### Update 5: Platform support and Linux status
+
+**Do**
+1. Supported: Windows + Apple Silicon (listed builds).
+2. `install_agent.sh` covers macOS and Linux, but Linux is **untested
+   by the author** , the readme is updated only if a user confirms it
+   works.
+
+**Check**
+- On Linux: confirm the installer completes and the agent launches
+   before relying on it in a pipeline.
+
+**Why**
+Untested-on-Linux is stated honestly by the author; a user
+confirmation is the acceptance test.
+
+### Update 6: agentY packaged as an MCP itself
+
+**Do**
+1. Treat agentY as an MCP: Claude (or another orchestrator) can
+   orchestrate multiple agentY instances, which themselves use other
+   LLMs.
+
+**Check**
+- Multiple agentY instances coordinate on one brief without
+  double-working the same step.
+
+**Why**
+Agents all the way down: the agent becomes a callable tool for a
+larger orchestrator, so per-shot parallelism (Phase 4 of the original
+skill) scales across instances.
+
+### Update 7: remotion motion graphics in ComfyUI's own viewer
+
+**Do**
+1. Build motion graphics and edit video with remotion, editable inside
+   ComfyUI's own image/video/3D viewer.
+
+**Check**
+- The remotion timeline edits render back into the viewer the agent
+  already owns.
+
+**Why**
+Editing inside ComfyUI's viewer keeps the motion-graphics loop in the
+same room as the generation loop: no round-trip to a separate NLE.
+
 ## Failure modes
 
 - **Miswired researched graph:** a web-researched workflow can look

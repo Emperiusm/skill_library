@@ -14,6 +14,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-gaussian-splats`](capture/ai-3d-gaussian-splats/SKILL.md) | Capture, inspect, and decide on Gaussian splats: COLMAP camera solve, the splat-versus-mesh decision rule, and a mixed-format workflow. |
 | [`ai-3d-image-to-3d-reconstruction`](capture/ai-3d-image-to-3d-reconstruction/SKILL.md) | Reconstruct usable assets from reference images: reference quality, multi-view coverage, hidden-side hunting, repair loop, six-point sign-off. |
 | [`houdini-single-image-gsplat-sharp-moge2`](capture/houdini-single-image-gsplat-sharp-moge2/SKILL.md) | Turn a single photo into a Gaussian splat in Houdini 22: built-in MoGe-2 node or Apple's SHARP via ONNX in Copernicus, contract-exact COPs prep, CUDA inference, volumes to points, Karma shadow-skip, HDA wrap. |
+| [`comfyui-ldoi-image-to-3d`](capture/comfyui-ldoi-image-to-3d/SKILL.md) | Turn one photo into a 3D asset locally on low VRAM: ComfyUI-ldoi TripoSG nodes, five fp16 weights (~3.8 GB), splat to MeshLab Screened Poisson to Blender voxel remesh. |
 
 ## Characters and rigging (`characters/`)
 
@@ -28,6 +29,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`substance-painter-characters`](characters/substance-painter-characters/SKILL.md) | Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. |
 | [`reallusion-rigger-apex-rig`](characters/reallusion-rigger-apex-rig/SKILL.md) | Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials, full APEX rig, face puppet and muscle tools, LookAt auto-animation. |
 | [`ai-3d-character-pipeline`](characters/ai-3d-character-pipeline/SKILL.md) | Take an AI character from clean A-pose reference through modular parts, rigging, skins, and animation prep to an engine proof. |
+| [`zbrush-dynamesh-extract-decimate`](characters/zbrush-dynamesh-extract-decimate/SKILL.md) | Sculpt a 250M-poly character with zero booleans: one Dynamesh, extract pieces, remesh/extrude/subdivide for edges, alphas for detail, Decimation Master to 10M, Marmoset renders. |
 | [`keenface-metahuman-heads`](characters/keenface-metahuman-heads/SKILL.md) | Turn reference photos into production-ready 3D heads with native MetaHuman topology, clean bald base mesh, and full PBR maps via KeenFace. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
@@ -85,6 +87,10 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`minimax-h3-native-3mp-lowvram`](ai-video/minimax-h3-native-3mp-lowvram/SKILL.md) | Generate MiniMax H3 video natively at 2336x1312 on an RTX 3060 12 GB: INT8, DMAD 4-step LoRA, sparse attention at 0.10, 4096-row chunks, 243 frames in 33 minutes. |
 | [`comfyui-ai-documentary-batch-pipeline`](ai-video/comfyui-ai-documentary-batch-pipeline/SKILL.md) | Produce AI history documentaries in batch: Claude visual bible + 10-second-chunk script, Qwen Image 2.1 batch images, Claude QA rewriting only bad prompts, MiniMax H3 10-second clips, Qwen3-TTS per-line narration, RTX VSR x2 to 2K. |
 | [`comfyui-video-builder-agent-music-video`](ai-video/comfyui-video-builder-agent-music-video/SKILL.md) | Let a Claude Sonnet agent build a full music video in ComfyUI through MCP from one prompt: Krea2 refs, YUE2 song, story and scene prompts, overnight run, frame review with up to 3 retries per scene, no post-edits. |
+| [`comfyui-motion-previs-studio`](ai-video/comfyui-motion-previs-studio/SKILL.md) | Direct AI video in 3D before generating: block scenes and cameras on a 24fps timeline, export pose/depth/mask/camera-matrix control passes into ComfyUI instead of prompt-spiraling. |
+| [`open-h3-regenerate-2k-refine`](ai-video/open-h3-regenerate-2k-refine/SKILL.md) | Refine and upscale MiniMax H3 video in ComfyUI with NVIDIA's merged refiner: 24fps inputs, upscale-only vs noise 0.5/0.6/0.7 ladder, single merged LoRA (never stack turbo), 4090-class VRAM. |
+| [`opsis-comfyui-film-studio`](ai-video/opsis-comfyui-film-studio/SKILL.md) | Run a self-hosted AI film studio on ComfyUI graphs: API graph + .map.yaml becomes a priced form; local 12GB, RunPod serverless, or mock mode; YAML-defined studios, no code. |
+| [`touchdesigner-generative-lexicon-press`](ai-video/touchdesigner-generative-lexicon-press/SKILL.md) | Perform written passages as audio-reactive TouchDesigner typography across 25 layouts, with a local Ollama writing partner generating the text. |
 | [`minimax-h3-longform-documentary`](ai-video/minimax-h3-longform-documentary/SKILL.md) | Generate a watchable 25-second MiniMax H3 video natively at 1536x864 on an RTX 3060 12 GB: Singularity V2 + DMAD 4-step, storyboard guidance, one pass in ~37.6 min, under-describe motion in the prompt. |
 
 ## Simulation and VFX (`simulation-vfx/`)
@@ -104,6 +110,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`houdini-ocean-emergence-shot`](simulation-vfx/houdini-ocean-emergence-shot/SKILL.md) | Sell a creature emerging from the ocean in Houdini + Nuke: spectrum amplitude down and high-frequency detail up, pre-emergence bulge with bow shock, upward custom velocity field, foam as a separate pass, slow drainage, VEX stepping fix. |
 | [`houdini-crowd-archers-ragdoll`](simulation-vfx/houdini-crowd-archers-ragdoll/SKILL.md) | Stage a Houdini crowd battle: archers aiming at live targets, Mixamo arrow re-attached to the hand, clean RBD arrow handoff into the crowd sim, sticky arrows, death after 1 to 3 hits, collapsing floor with ragdolls, Karma-to-Unreal render switch for iteration speed. |
 | [`zenith-lens-flare-copernicus`](simulation-vfx/zenith-lens-flare-copernicus/SKILL.md) | Build physically based lens flare in Houdini Copernicus with Zenith: ray-traced lens prescriptions (built-in 28/50/135/300mm or .zmx files), energy-calibrated plate lights, scene-light follow, mask/alpha occlusion, iris-shaped starburst, RGB or spectral color, CUDA GPU. |
+| [`crushform-ue5-vehicle-damage`](simulation-vfx/crushform-ue5-vehicle-damage/SKILL.md) | Deform UE5 vehicles in real time without Chaos Destruction: lattice damage measured in delta-v, dents drawn with World Position Offset, one Nanite asset, server-authoritative replication. |
 | [`flip-local-viscosity-fake-normals`](simulation-vfx/flip-local-viscosity-fake-normals/SKILL.md) | Finish a Houdini FLIP shot cheaply: raise viscosity only where the collider moves so strokes hold, relax after so the surface settles, fake sparkle by randomizing gel normals instead of adding geometry; budget the 8-hour cache. |
 
 ## Materials and shaders (`materials-shaders/`)
@@ -161,6 +168,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-scene-graph`](engine-runtime/ai-3d-scene-graph/SKILL.md) | Read and repair scene graphs: parent-child transform trees, a five-point health checklist, and the distinction from node workflow graphs. |
 | [`threejs-browser-game-asset-diet`](engine-runtime/threejs-browser-game-asset-diet/SKILL.md) | Ship a 3D browser game on an asset budget: 347 MB to 45 MB with gltf-transform (Draco + WebP), load-gate by area, chunk-instanced nature, Blender Python tree recipes, web-worker hero building, auto quality step-down, 1-4 player split-screen. |
 | [`threejs-forest-env-perf`](engine-runtime/threejs-forest-env-perf/SKILL.md) | Ship a dense three.js forest that runs: 500 instanced trees with compute-shader frustum culling, cross-billboards at distance, alphaTest leaves, Claude-placed godrays, grass trails, 5-variant footstep audio. |
+| [`godot-terrain3d-heightmap`](engine-runtime/godot-terrain3d-heightmap/SKILL.md) | Ship runtime-editable Godot terrain with Terrain3D v1.1.0: heightmap editing (no 3D tunnels), tessellated shadow-casting render, decoupled coarser collision, code-generated procedural maps. |
 | [`godot-scalable-vector-shapes`](engine-runtime/godot-scalable-vector-shapes/SKILL.md) | Draw Godot pixel art with vector shape tools: ScalableVectorShape2D nodes through a Subviewport with pixel snap so pixels never rotate, plus a DynamicOutline2D node with merged-polygon outlines. |
 
 ## Automation and bridges (`automation/`)
