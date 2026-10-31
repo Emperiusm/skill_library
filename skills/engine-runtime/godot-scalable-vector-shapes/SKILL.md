@@ -77,6 +77,90 @@ compositor this is a valid art discipline."
 Outlines drawn per-shape would double up at overlaps; merging the
 polygons first gives one clean outline around the union.
 
+## AAA studio practice
+
+Vector input with the renderer enforcing pixel discipline is a shipped
+production pattern, twice over: once for pixel art (Dead Cells) and
+once for 2D animation at AAA scale (UbiArt). And production has a
+known-unsolved failure mode that directly informs the skill's
+pixel-snap gate.
+
+**Motion Twin / Dead Cells (2018): 3D pipeline for 2D pixel art.**
+Artist Thomas Vasseur's documented pipeline: hand-draw a 2D pixel-art
+model sheet first, then build the character and its skeleton in 3D
+(3DS Max, exported as FBX) — deliberately crude, because the
+character is only ~50 pixels tall in-game, so high-detail 3D work is
+cost-inefficient. A custom homebrew renderer converts the 3D mesh to
+pixel art by rendering it at very small size **with antialiasing
+disabled**, plus cell shading. Renderer-level pixel discipline, not
+artist-level: the exact principle of the skill's Subviewport +
+pixel-snap approach. Measured payoff: no per-frame redraw, one
+animation reusable across models, automatic interpolation frames
+(30fps), fast retakes for gameplay tuning, all done by one artist.
+(Source: https://www.gamedeveloper.com/production/art-design-deep-dive-using-a-3d-pipeline-for-2d-animation-in-i-dead-cells-i- —
+Game Developer deep dive by Vasseur.)
+
+**Ubisoft Montpellier / UbiArt Framework (Rayman Origins 2011, Rayman
+Legends, Child of Light, Valiant Hearts): engine-driven 2D.**
+The proprietary UbiArt engine takes any scanned, photographed, or
+digitized 2D artwork, **separates the imagery into individual pieces,
+applies a skeleton and bones as pivot points**, and the animator poses
+the model while the system deforms the image automatically —
+artist-drawn input, engine-driven animation, exactly the skill's
+vector-input/enforced-output principle. Design intent per Michel
+Ancel: "let the artists work easily, without thinking about polygons
+or textures or sizes, so they could just concentrate on the art" —
+the engine owns the technical pipeline discipline. Hardened
+acceptance bar: full 1080p HD at a locked **60fps from day one**
+(2011), vector-based so assets stay crisp across resolutions.
+(Source: https://www.cgw.com/Publications/CGW/2012/Volume-35-Issue-5-Aug-Sept-2012-/Fine-Tooning.aspx —
+Computer Graphics World, 2012. Corroborating: Ubisoft Montpellier's
+Chris McEntee on the UbiArt tools for Rayman Legends, GDC 2014:
+https://www.gamedeveloper.com/design/video-the-tools-used-to-design-i-rayman-legends-i-)
+
+**The known-hard problem:** Dead Cells could not solve flickering
+pixels — shimmer when 3D-rendered low-res pixels move or rotate. That
+limitation is production-scale evidence that stable rotation is the
+skill's load-bearing feature: the skill's Subviewport + pixel-snap
+gate exists precisely because even Motion Twin never fully solved
+rotation shimmer.
+
+## Agent automation
+
+**Do**
+1. **Flicker gate** (agent design, motivated by the Dead Cells
+   limitation): rotate and translate the character through one full
+   animation cycle while capturing frames, then run a consecutive-
+   frame pixel diff over the pixels that should be static. Any
+   shimmering pixel with pixel snap on is a failure — the automated
+   version of the skill's Phase 1 "do the pixels stay aligned?"
+   check.
+2. **Renderer-discipline audit** (agent design): a scripted
+   configuration assertion that the load-bearing settings are all
+   present — Subviewport in the tree, pixel snap enabled, no shader
+   overriding the pixel grid. The skill's principle ("alignment is a
+   render setting") becomes a config gate that fails the build if a
+   setting is missing, rather than a manual reminder.
+3. **Merge-first assertion** (agent design): assert in the scene tree
+   that DynamicOutline2D's `Geometry2D.merge_polygons` call precedes
+   the outline draw and that the outline node sits behind the shapes
+   it outlines. The skill's "doubled outlines at overlaps" failure
+   mode becomes an ordering check the agent runs before every export.
+
+**Check**
+- The flicker gate's acceptance baseline is zero shimmering static
+  pixels over the fixture cycle; the fixture animation is committed
+  with the project.
+- The config audit and merge assertion exit non-zero on failure and
+  run headless — no editor open required.
+
+**Why**
+Dead Cells and UbiArt both prove the same thing: pixel discipline is
+cheapest when the renderer enforces it, and rotation shimmer is the
+failure even AAA pipelines never fully solved. These gates make the
+skill's two load-bearing settings (pixel snap; merge-before-outline)
+machine-checkable instead of remembered.
+
 ## The human method, distilled
 
 1. **Let the engine do the discipline.** Pixel snap alignment is a

@@ -135,6 +135,123 @@ The stated next step is a **drainage pass tracing rivers and watersheds
 from the relief** — already following valleys — to drive coasts,
 vegetation, and clearings top-down.
 
+## AAA studio practice
+
+Seamless orbit-to-ground procgen planets are a shipped AAA problem,
+solved three different ways — and the geometry-clipmap technique
+itself is a 2004 SIGGRAPH paper with GPU production numbers that
+validate the skill's budgets. Four sources:
+
+**Hello Games / No Man's Sky (GDC 2017, Innes McKendrick): continuous
+world generation, nothing stored.** The pipeline order is explicit:
+**voxel-based world generation → polygonization → texturing →
+population → simulation**, run continuously in real time so players
+transition seamlessly from space down to interactive, populated
+terrain (no level/streaming seams). Nothing is stored per-planet:
+worlds are generated on arrival from a compact rule set (~300 MB of
+compressed world-building data, 64-bit addressing over 18.4
+quintillion planets). The team-architecture payoff is the skill's own
+lesson: a ~10-person team owned universe-scale content because
+procedural population (trees, creatures, flora) derived from the
+same seeds as the terrain rather than being separately authored.
+(Source: https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i- —
+Game Developer on the GDC 2017 talk; corroboration:
+https://Techraptor.net/gaming/news/hello-games-introduces-hello-labs-discusses-math-and-no-mans-sky)
+
+**Cloud Imperium / Star Citizen planet tech v4 (CitizenCon 2949):
+climate-driven terrain.** v4 replaced parameter-stack + texture-
+overlay terrain with **climate-driven terrain: temperature and
+humidity fields decide biomes and textures**, mimicking real Earth
+processes — smooth, natural biome transitions instead of authored
+layer boundaries. **Orbit-to-ground continuity is a hard
+requirement:** no distance fade, no texture pop-in on approach; what
+you see from orbit is exactly the terrain on the ground. Artists get
+a **painting tool** where painting a feature in one area
+auto-propagates it to every area on the planet with matching
+conditions, which massively cut planet-authoring time. One planet
+(Microtech) carries six distinct biomes.
+(Source: https://twinfinite.net/news/star-citizen-microtech-planet-tech-v4/ —
+Twinfinite, Nov 2019; caveat: alpha.)
+
+**Frontier Developments / Elite: Dangerous "Stellar Forge":
+formation-history simulation.** Stellar Forge **simulates planetary
+formation from first principles**: bodies accrete from nebulous gas
+over long simulated time with chemical composition and angular
+momentum, generating ~400 billion star systems — a simulation of
+formation history, not a heightmap-from-noise generator. Terrain
+features **nest by cause**: the game runs tectonic simulations for
+surface structure, and craters reflect impacts from the formation
+simulation itself. This is the production answer to the skill
+author's stated gap ("features don't nest the way real landscapes
+do"): nest by simulated cause, then run the drainage pass.
+Real data is fused in where it exists (Hipparcos and other stellar
+catalogs; known stars searchable by catalog number); pure procgen
+only fills gaps beyond 2013 observation limits.
+(Sources: https://procedural-generation.isaackarth.com/2015/11/23/elite-dangerous-2014-planet-generation.html —
+Isaac Karth's blog summarizing Frontier's newsletter; corroboration:
+https://www.polygon.com/features/2019/5/6/18525941/elite-dangerous-distant-worlds-2-exploration-galactic-mapping-project/)
+
+**Geometry clipmaps: the 2004 paper + GPU production path.** Losasso
+& Hoppe's SIGGRAPH 2004 geometry clipmaps flew interactively (60 fps)
+over a **40 GB US heightmap dataset compressed 100x by a compressed
+image pyramid**; decompression, synthesis, and normal-map computation
+are incremental, and inter-level seams are hidden by **morphing
+geometry in a transition region per level** (in the vertex shader).
+The GPU Gems 2 (2005) implementation moved nearly everything to GPU
+via vertex textures: a 20-billion-sample grid stored in **355 MB at
+~90 fps**, vertex/index buffers reduced to small constant "footprints"
+instanced across levels, CPU only handling frustum culling of blocks
+(2–3x load reduction) and incremental decompression. Budgets an agent
+can cite: ring/level size n must be odd (n = 2^k − 1, e.g. 255);
+deactivate levels whose extent < **2.5× viewer height**, rechecked
+every few frames; expected draw-call load ~6L+5 per frame (71 calls
+at L=11).
+(Sources: http://hhoppe.com/proj/geomclipmap/ — original paper;
+https://developer.nvidia.com/gpugems/GPUGems2/gpugems2_chapter02.html —
+GPU Gems 2 chapter. Marked unverified: no shipped AAA title confirmed
+from these sources as using Losasso/Hoppe clipmaps; the commonly
+rumored FSX adoption is unconfirmed.)
+
+## Agent automation
+
+**Do**
+1. **Nothing-stored gate** (NMS pattern, agent design): after a
+   flight session, assert no per-planet cache exists on disk —
+   the byte-level check that "the terrain is a function" stayed
+   true. Any written planet data fails the run.
+2. **Orbit-to-ground continuity sweep** (Star Citizen hard
+   requirement, agent design): script a camera sweep from orbit to
+   ground over fixed altitude bands, capturing renders at each
+   band; diff consecutive bands for texture pop-in or distance
+   fade. Pop-in anywhere fails the sweep.
+3. **Viewer-height ring budget** (GPU Gems 2, agent design): derive
+   the active ring count from camera height each frame using the
+   2.5× rule (deactivate rings whose extent < 2.5× viewer height),
+   and log the ring count per frame. Cross-check against the
+   author's stated 700–1,100-ring budget: sustained over-budget
+   frames are the signal to re-tune, not to add hardware.
+4. **Cause-nested feature audit on the roadmap** (Stellar Forge,
+   future gate, agent design): when the author's drainage pass
+   lands, assert rivers trace from valleys in the relief — a
+   scripted watershed-from-relief check that features nest by
+   cause, the production fix for "noise without tectonics."
+
+**Check**
+- All four run headless and exit non-zero on failure; the
+  continuity sweep's altitude bands and fixture camera path are
+  committed with the project.
+- The ring-budget log makes frame-cost spikes attributable to
+  ring count, not to guesswork.
+
+**Why**
+NMS proves the nothing-stored architecture ships; Star Citizen
+proves continuity is a hard requirement, not a nice-to-have;
+Stellar Forge proves features must nest by cause; and the clipmap
+paper itself hands over the production budgets (2.5× viewer
+height, 6L+5 draw calls, vertex-shader seam morphing). These gates
+convert the skill's design claims into the same scripted
+acceptance a studio would demand.
+
 ## The human method, distilled
 
 1. **Delete the pipeline stage that hurts.** Streaming, chunking, and

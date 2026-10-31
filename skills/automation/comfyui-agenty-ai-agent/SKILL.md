@@ -125,6 +125,112 @@ This is the MCP-driven-DCC-loop pattern as a shipped product: an agent
 inside the workflow tool, driving the DCCs over MCP, with review
 points from Phase 3 as the safety rail.
 
+## AAA studio practice
+
+An AI agent that drafts, judges, and iterates production work is not
+novel in AAA — it is shipped, measured, and gated. The studio pattern
+is always the same: AI proposes, humans dispose, and the loop gets
+shorter every year.
+
+**Ubisoft Ghostwriter (La Forge, GDC 2023): AI drafting with human
+selection.** Ghostwriter is an in-house AI tool that "generates first
+drafts of barks — phrases or sounds made by NPCs during a triggered
+event," deliberately framed as drafting support, not writer
+replacement. The production loop: scriptwriter creates a character +
+interaction/utterance type → the tool proposes a select number of
+variations → the writer selects and edits → training uses **pairwise
+comparison** (the writer picks between two choices), and "after
+thousands of selections made by humans, it becomes more effective and
+accurate." Scale-out is per-project: a back-end website called
+**Ernestine** "allows anyone to create their own machine learning
+models used in Ghostwriter," so each production team tailors its own
+AI to its game's narrative needs instead of using one shared model.
+(Source: https://news.ubisoft.com/en-gb/article/7Cm07zbBGy4Xml6WgYi25d/the-convergence-of-ai-and-creativity-introducing-ghostwriter —
+Ubisoft News, March 2023; presented at GDC 2023.)
+
+**Ubisoft Commit Assistant → Clever-Commit (La Forge, Mozilla
+partnership): AI pre-review gates on code.** The prototype was built by
+Ubisoft La Forge with Concordia University, transferred to the Ubisoft
+Technology Group "to develop, adapt and deploy it to our production
+teams worldwide," and **beta-deployed on major AAA titles** (Mozilla
+added Rust/C++/JS support). Measurable numbers, from Ubisoft La Forge
+via press coverage: catches **6 out of 10 bugs with 30% false
+alarms**; bug squashing absorbs **up to 70% of development costs**;
+trained on roughly **10 years of Ubisoft code**; estimated to free
+**~20% of programmers' time**. The executable pattern is the
+pre-commit/pre-review gate — the exact role an agentY review point
+should play.
+(Sources: https://montreal.ubisoft.com/en/partnering-up-with-mozilla-to-develop-an-ai-coding-assistant/ —
+Ubisoft Montreal, 2019;
+https://www.gamesindustry.biz/articles/2019-02-13-ubisoft-partners-with-mozilla-on-ai-coding-assistant —
+GamesIndustry.biz, Feb 13, 2019.)
+
+**EA SEED: shipped ML systems and agentic QA.** Shipped production ML:
+**Swish** in Madden NFL 21 — "one of the first real-time,
+player-facing machine learning deformer ever shipped in a game"
+(neural-net cloth); **Voice2Face** audio-driven facial animation used
+in Battlefield 6 cinematics and EA SPORTS FC 25 crowd chants;
+**Reinforcement-Learning Goalkeeper** in EA SPORTS FC 26 (adaptive ML
+positioning); Bad Actor Detection across "millions of matches" in Apex
+Legends. The agentic pattern: SEED's Battlefield 1 self-learning
+agent (2018) started from **30 minutes of human play as
+imitation-learning seed**, then ran 6 days of self-play on parallel
+machines (**~300 days of gameplay experience**) with the explicit
+stated purpose of QA (more crash reports), not shipping bots. The IEEE
+CoG 2020 paper by Gordillo et al. documents curiosity-driven RL agents
+maximizing game-state coverage for playtesting 3D scenarios —
+"automatically mapping reachable/unreachable areas" and detecting
+unintended mechanics.
+(Sources: https://www.ea.com/en-ca/news/seed-10-year-anniversary — EA,
+Nov 2025; https://ieee-cog.org/2021/assets/papers/paper_7.pdf — IEEE
+CoG 2020.)
+
+**Marked as unconfirmed:** a named Activision AI-QA-bot product from a
+primary source; current Activision QA reporting (Oct 2026) is about
+the union contract fight and AI guardrails, not a shipped bot. Cite
+SEED/EA and Ubisoft examples, not Activision.
+
+## Agent automation
+
+**Do**
+1. **Pairwise-comparison acceptance log** (Ghostwriter pattern, agent
+   design): extend the skill's Phase 3 self-judgment into a written
+   record. For every brief, the agent logs each candidate-vs-candidate
+   comparison it makes (winner, loser, reason) to `acceptance.jsonl`
+   before re-rendering. The log is the evidence that judgment
+   happened, not the claim that it did.
+2. **Web-research wiring audit** (Commit-Assistant pattern, agent
+   design): the skill's Phase 2 "inspect the graph before executing"
+   becomes a script: walk every node in the researched workflow,
+   assert each input's type matches its connected output's type, and
+   fail the run on the first mismatch. This is the Commit Assistant's
+   pre-review gate applied to node graphs.
+3. **MCP action ledger** (SEED QA pattern, agent design): every DCC
+   mutation over MCP is logged with a pre/post state diff to
+   `mcp-actions.jsonl` — the "crash report" discipline, repurposed as
+   an undo trail for the skill's Phase 5 side-effect risk.
+4. **Ernestine-style run manifest** (agent design): record which LLM
+   backend + agentY build produced each pipeline run in
+   `run-manifest.json` (backend name, build version, timestamp, brief
+   hash). One backend per project, per Ghostwriter's per-game model
+   tailoring — no drifting across runs unrecorded.
+
+**Check**
+- `acceptance.jsonl` is non-empty after every run: zero comparisons
+  logged means the self-judge step was skipped, and the run fails.
+- The wiring audit exits non-zero on any type mismatch; the audit
+  script itself is committed to the project, not re-typed per run.
+- `run-manifest.json` lets a later run diff "why did this pipeline
+  change?" down to the backend or build.
+
+**Why**
+AAA doesn't trust AI agents more than agentY's own pitch does — it
+trusts them with gates around them. Ghostwriter's thousands of human
+selections, Commit Assistant's pre-review catch rate, and SEED's QA
+coverage metrics are all the same move: make judgment explicit and
+logged. These four upgrades turn the skill's already-explicit review
+points into the written, scripted gates studios actually ship.
+
 ## The human method, distilled
 
 1. **Free the agent from the expensive model** — Qwen/DeepSeek cheap,

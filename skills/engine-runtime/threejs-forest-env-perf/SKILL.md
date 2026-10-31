@@ -107,6 +107,120 @@ remove geometry the eye can't resolve anyway.
 Persistence (the trail) and variation (5 randomized variants) are the
 two cheap tricks that make a loop feel alive.
 
+## AAA studio practice
+
+Dense forests at 60fps are a shipped AAA problem, and the production
+answers validate every technique in this skill — instancing, GPU
+culling, billboards, alphaTest — with studios naming the same
+failure modes the skill already lists.
+
+**Sucker Punch / Ghost of Tsushima (GDC 2021, Eric Woley): procedural
+per-blade grass.** Traditional grass cards failed first: animation
+tied to whole cards lacked fluidity and overdraw tanked performance
+at density — so they moved to fully procedural per-blade generation.
+The world is tiled with parameter textures (terrain height, material,
+grass type/height); **compute shaders lay out blade positions per tile
+with frustum + distance culling**; the vertex shader generates blades
+from index/instance ID with **no vertex streams** (instanced indexed
+draw calls), with high/low LODs and smooth transitions to kill
+popping. **Unified wind:** a single 2D Perlin noise field sampled by
+both CPU and GPU with minimal overhead; blade shape/animation from
+cubic Bezier curves; clumping via a Voronoi algorithm modulating
+height and orientation. Shadows were the expensive part: full shadow
+pipelines were impractical, so they used **impostors to approximate
+grass heights + screen-space shadows for fine detail**; grass height
+is copied to CPU-accessible textures so gameplay physics can answer
+stealth-visibility queries (stealth vs decorative grass types).
+(Source: https://gist.ly/youtube-summarizer/procedural-grass-systems-in-ghost-of-tsushima-achieving-art-direction —
+summary of Woley's GDC 2021 talk; cite as a summary, not the slides.)
+
+**Guerrilla / Horizon Forbidden West (GDC 2022, James McLaren):
+Deferred Texturing built for foliage.** Guerrilla built its Deferred
+Texturing system primarily to accelerate foliage: the problem was
+"lush jungle, lots of animated alpha-tested foliage, massive
+overdraw," with animated geometry needing correct motion vectors for
+TAA and motion blur. Zero Dawn's baseline is the gate this skill can
+copy: **depth prepass + simple alpha-discard shader, then a
+depth-equal second pass** so no pixel writes to the G-buffer more than
+once. The sequel constraint forced the new system: art demanded
+higher foliage density with the frame budget already full **and PS4
+still a target**; the talk closes with measured performance numbers.
+(Source: https://git.rayfalling.com/rayfalling/e-books/-/raw/5b55a6f4f168c88da799c8a937862cc0d9579255/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E5%8F%8A%E5%9B%B2%E5%BD%A2%E5%AD%A6/GDC/2022/Adventures%20with%20Deferred%20Texturing%20in%20'Horizon%20Forbidden%20West'.pdf?inline=false —
+McLaren's GDC 2022 slides, third-party mirror; cite with that
+qualifier.)
+
+**Ubisoft / Ghost Recon Wildlands (80 Level, 2017): cascade
+vegetation + density-modulated LODs.** Two cooperating systems: a
+grass system spawning patterns from terrain splatting, plus a Houdini
+tool spreading bushes/trees via a "cascade" rule set (big trees spawn
+medium trees spawn small trees/bushes), with density/scale/slope/
+spacing, sun direction, species-per-material rules, and
+inclusion/exclusion zones; roads, railways, water, and footpaths are
+deleted automatically. **Density-modulated LODs:** instead of fixed
+per-asset LOD distances, LOD switch points vary with local vegetation
+density — in dense areas the same asset drops to its impostor LOD
+sooner. **Dynamic in-engine impostors** are the final LOD, generated
+inside the engine (no 3D-model/impostor mismatch), carrying multiple
+channels for light direction, fake shadowing, and translucency. Asset
+discipline: few species per rule, different "steps" of the same
+species — natural look and memory-friendly.
+(Source: https://80.lv/articles/vegetation-generation-in-ghost-recon-wildlands —
+80 Level interview with technical artist Maximilien Cleda, 2017.)
+
+**Simplygon / Microsoft (vendor, 2026): the prescribed hybrid LOD
+chain.** Triangle reduction for near LODs, **billboard-cloud
+impostors for the far LOD**, with trunk detection splitting trunk
+(triangle-reduced) from leaves/branches (impostorized). Impostor
+shading fixes: fade orthogonal planes, noise the normals, enable
+**Preserve coverage** so mip levels don't vanish at distance —
+directly relevant to the skill's cross-billboard distance swap.
+Billboard clouds also optimize shadow rendering even at close range,
+and tight-fitting impostors are generated from the alpha channel to
+reduce overdraw from transparent pixels.
+(Source: https://developer.microsoft.com/en-us/games/articles/2026/01/how-to-optimize-vegetation-with-simplygon/ —
+Microsoft Developer blog, Jan 2026.)
+
+## Agent automation
+
+**Do**
+1. **Card-first rejection gate** (GoT pattern, agent design): before
+   writing billboard cards, assert the density target against the
+   frame budget with a scripted overdraw estimate. If whole-card
+   animation at target density exceeds the budget, the pipeline
+   goes procedural per-blade — the GoT decision, scripted instead
+   of discovered mid-production.
+2. **No-double-write check** (Horizon Zero Dawn baseline, agent
+   design): assert the render path uses depth prepass + alpha-discard
+   with a depth-equal second pass, so foliage pixels write the
+   G-buffer at most once. The skill's alphaTest choice becomes a
+   render-state assertion, not just a material switch.
+3. **Density-modulated LOD table** (Wildlands, agent design): measure
+   local vegetation density per region and vary the cross-billboard
+   switch distance with it — denser regions switch to impostors
+   sooner. A scripted per-region density map drives the switch
+   distances, replacing one global distance.
+4. **Impostor/model match check** (Wildlands + Simplygon, agent
+   design): at the switch distance, render the model and its
+   impostor side by side and diff them; assert the switch is
+   invisible (the skill's existing "visible pop" check becomes a
+   frame-diff gate). Include the Preserve-coverage rule: assert
+   mip levels survive at the farthest switch distance.
+
+**Check**
+- All four are scripts with pass/fail output; the LOD table and
+  switch distances are committed data, not hand-tuned constants.
+- The frame-diff baseline comes from the skill's own M1 Mac
+  numbers (8 → 27–35 fps), not invented targets.
+
+**Why**
+GoT, Guerrilla, and Ubisoft all converged on the same stack —
+instancing, GPU-side culling, billboard/impostor LODs, alphaTest
+over transparency — and each names the failure the skill already
+fears (overdraw, visible pops, model/impostor mismatch). These gates
+turn the skill's measured recipe into the Wildlands-style cascade:
+rules, density maps, and automated checks instead of one tuned
+distance.
+
 ## The human method, distilled
 
 1. **Measure the real bottleneck first.** 8 fps on M1 Mac at max
