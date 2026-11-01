@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="157 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="162 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,13 +31,13 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">157 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">162 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 157 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+  <input id="search" type="search" placeholder="Search 162 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
 <section><h2>Engine and runtime <span class="count">36</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
@@ -185,7 +185,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">26</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">28</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -215,6 +215,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/branch-propagation-tree-generator/SKILL.md">branch-propagation-tree-generator</a></h3>
   <p>Generate tree species in C++ from per-level branch propagation rules (end-only vs mid-branch splits, palmate or simple leaves, species and level angle intervals with upward biases), rendered as low-memory cylinder...</p>
 </article>
+<article class="card" data-search="chronicle-of-gods-planet-pipeline seeded planet generation on a cube-sphere: a fixed six-stage pipeline (crust, voronoi plates, elevation/sea level, climate, hydrology flood-judge-carve, biomes) with biome regions as the simulation unit. trigger when a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/chronicle-of-gods-planet-pipeline/SKILL.md">chronicle-of-gods-planet-pipeline</a></h3>
+  <p>Seeded planet generation on a cube-sphere: a fixed six-stage pipeline (crust, Voronoi plates, elevation/sea level, climate, hydrology flood-judge-carve, biomes) with biome regions as the simulation unit. Trigger when a...</p>
+</article>
 <article class="card" data-search="cinematic-cavern build a cinematic cave/pool/waterfall scene end to end: blender blockout, zbrush sculpt, decimation to game mesh, substance bake and pbr materials, unreal export, scripted repairs, a c++ height-field water solver...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/cinematic-cavern/SKILL.md">cinematic-cavern</a></h3>
   <p>Build a cinematic cave/pool/waterfall scene end to end: Blender blockout, ZBrush sculpt, decimation to game mesh, Substance bake and PBR materials, Unreal export, scripted repairs, a C++ height-field water solver...</p>
@@ -222,6 +226,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="city-diffusion-osm-training train a diffusion model from scratch on rasterized openstreetmap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. trigger when generating...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/city-diffusion-osm-training/SKILL.md">city-diffusion-osm-training</a></h3>
   <p>Train a diffusion model from scratch on rasterized OpenStreetMap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. Trigger when generating...</p>
+</article>
+<article class="card" data-search="exolune-planet-engine real-scale planet terrain: simulate plates at startup in under a second, derive terrain from boundary distance, climate from winds and relief, evaluate per point on the gpu each frame with no streaming. trigger when a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/exolune-planet-engine/SKILL.md">exolune-planet-engine</a></h3>
+  <p>Real-scale planet terrain: simulate plates at startup in under a second, derive terrain from boundary distance, climate from winds and relief, evaluate per point on the GPU each frame with no streaming. Trigger when a...</p>
 </article>
 <article class="card" data-search="godot-procgen-city-glb-export-schema ship a godot procedural city as documented glb: keep generation procedural in-engine, define the schema of custom glb properties so others can write their own importers, and accept that shader tricks (decals, interior...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/godot-procgen-city-glb-export-schema/SKILL.md">godot-procgen-city-glb-export-schema</a></h3>
@@ -292,7 +300,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU Instancer Pro instancing + occlusion culling, Microsplat, Amplify...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">25</span></h2>
+<section><h2>AI video <span class="count">26</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -305,6 +313,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="blender-mcp-camera-minimax direct ai video camera moves in 3d first: block the move with codex cli plus blender mcp, render a reference clip, assign role-based inputs in minimax h3 reference-to-video. trigger when ai video needs a deliberate...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/blender-mcp-camera-minimax/SKILL.md">blender-mcp-camera-minimax</a></h3>
   <p>Direct AI video camera moves in 3D first: block the move with Codex CLI plus Blender MCP, render a reference clip, assign role-based inputs in MiniMax H3 reference-to-video. Trigger when AI video needs a deliberate...</p>
+</article>
+<article class="card" data-search="blender-mcp-previs-minimax-h3 multi-shot ai video previs: build a low-poly scene with chatgpt plus blender mcp, render reference shots, lock design with reference sheets, generate with minimax h3 reference-to-video in comfyui. variant of...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/blender-mcp-previs-minimax-h3/SKILL.md">blender-mcp-previs-minimax-h3</a></h3>
+  <p>Multi-shot AI video previs: build a low-poly scene with ChatGPT plus Blender MCP, render reference shots, lock design with reference sheets, generate with MiniMax H3 reference-to-video in ComfyUI. Variant of...</p>
 </article>
 <article class="card" data-search="claude-cinematic-trailer direct an ai agent to cut a cinematic trailer from your game, then curate its output. trigger when generating trailers with agents.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/claude-cinematic-trailer/SKILL.md">claude-cinematic-trailer</a></h3>
@@ -395,7 +407,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">21</span></h2>
+<section><h2>Automation and pipelines <span class="count">22</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
@@ -460,6 +472,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="houdini-mops-blender drive blender/cycles rendering with houdini motion operators. trigger when bridging houdini motion design into blender.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/houdini-mops-blender/SKILL.md">houdini-mops-blender</a></h3>
   <p>Drive Blender/Cycles rendering with Houdini motion operators. Trigger when bridging Houdini motion design into Blender.</p>
+</article>
+<article class="card" data-search="infinite-language-generator build a deterministic seed-based conlang tool for games: one seed call generates the whole language plus rules, voiced lines and animated glyphs ship with it, dictionary and subtitle tool included, mcp-toolable. trigger...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/infinite-language-generator/SKILL.md">infinite-language-generator</a></h3>
+  <p>Build a deterministic seed-based conlang tool for games: one seed call generates the whole language plus rules, voiced lines and animated glyphs ship with it, dictionary and subtitle tool included, MCP-toolable. Trigger...</p>
 </article>
 <article class="card" data-search="itch-publish publish and update a game on itch.io: create the project page and upload builds with the butler cli (butler push) to named channels. use for itch.io publishing, butler push, channel naming for windows/macos/linux/html5...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/itch-publish/SKILL.md">itch-publish</a></h3>
@@ -545,7 +561,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build physically based lens flare in Houdini Copernicus with Zenith: ray-trace a real lens prescription (built-in 28/50/135/300mm lenses or your own .zmx Zemax file) instead of painting sprites, drive flare from...</p>
 </article>
 </div></section>
-<section><h2>Materials and shaders <span class="count">12</span></h2>
+<section><h2>Materials and shaders <span class="count">13</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-pbr-materials-textures author and verify pbr materials for ai assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2k-master rule...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-pbr-materials-textures/SKILL.md">ai-3d-pbr-materials-textures</a></h3>
@@ -570,6 +586,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="leather-patch-generator generate leather patch materials with a parametric substance generator. trigger when authoring reusable material generators.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/leather-patch-generator/SKILL.md">leather-patch-generator</a></h3>
   <p>Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators.</p>
+</article>
+<article class="card" data-search="material-painter paint pbr materials in material-painter, the free open-source substance painter alternative: node-graph material design, wgsl custom shader nodes, gpu baking with caching, engine export presets. trigger when a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/material-painter/SKILL.md">material-painter</a></h3>
+  <p>Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets. Trigger when a...</p>
 </article>
 <article class="card" data-search="procedural-building-shader fill a cyberpunk skyline with a procedural building shader instead of geometry. trigger when a city must scale cheaply.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/procedural-building-shader/SKILL.md">procedural-building-shader</a></h3>
@@ -693,7 +713,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-10-31 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-01 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
