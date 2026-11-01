@@ -37,6 +37,12 @@ from one prompt, rather than the human prompting shot by shot.
 reference images), **YUE2** (song generation), **MiniMax H3** (video;
 same builder and settings family as the storyboard-grid skill).
 
+The Halloween production (Phase 5, same author, same builder, 2026-11-01)
+pins the stack down further: **MiniMax H3 Singularity ref2va v2 (int8)**,
+**8-step 768p ref2v LoRA v1.1**, **Krea 2 three-panel character sheets**,
+**Nano Banana** (locations), **Suno 6** (song + stems), **ElevenLabs Scribe**
+(lyric timing), **Topaz AI** (optional final enhance pass).
+
 ## Phase 1: Prompt once, and let the agent own the whole job
 
 **Do**
@@ -82,6 +88,69 @@ same builder and settings family as the storyboard-grid skill).
 - The retry cap is the quality contract: 3 retries bounds the
   overnight run, and the frame review is the acceptance check.
 
+## Phase 5: The Halloween production run (exact settings, labor split, cost)
+
+Source: Cheap_Credit_3957, https://www.reddit.com/r/comfyui/comments/1xkhkea/
+(r/comfyui post 1xkhkea, score 84, 12 comments) | 2026-11-01 scout run,
+audit 3. Same author, same builder, fully costed — this phase pins the
+workflow's numbers and the exact human/agent division the author published.
+
+**Do**
+1. Use these exact sampler settings:
+   - Model: **MiniMax H3 Singularity ref2va v2 (int8)**
+   - Pass 1: **25 steps**
+   - Pass 2: the **8-step 768p ref2v LoRA v1.1, 4 steps, 0.35 denoise**
+   - Characters: Krea 2 three-panel reference sheets; Locations: Nano
+     Banana; Song: Suno 6 (keep the stems).
+   - Run everything through the VRGDG Video Builder in ComfyUI. A 2-pass
+     workflow with the same settings ships in the repo's
+     `Workflows/MiniMax-H3-Two-Stage-Sampling-v2/` folder for single scenes;
+     the full video needs the builder. (Note: the main model is now the V2,
+     so swap the LoRA accordingly.)
+2. Human owns: the story idea (pop-punk female rock song, Halloween house
+   party in a Victorian mansion, band on stage, singer working the room
+   between choruses); the character descriptions (the singer's costume is
+   the one the author wears that night, the bass player is her sister's
+   planned costume — Krea 2 rendered them "almost spot on"); the song in
+   Suno from Claude's lyrics, with stems; the locations in Nano Banana from
+   Claude's prompts; the casting picks; the staging rules (instruments only
+   on the stage, guests partying naturally with no crowd posing behind her,
+   lots of close-ups when she's off stage, fun camera moves); the verdicts
+   — review drafts and the finished video, and order re-shoots of anything
+   disliked (the stage scenes were all close-ups at first, so the human
+   asked for wide shots with moving cameras; the human asked for a new
+   opening — guests arriving at the house — and the agent redid the prompts
+   and re-ran the scenes).
+3. Agent owns: the lyrics from the story idea; the location prompts; the
+   band and guest characters from the descriptions (Krea 2 three-panel
+   sheets); timing every sung word with **ElevenLabs Scribe** and working
+   out from the stems who plays when; planning the video (**19 scenes,
+   2:29**) and writing every MiniMax H3 prompt with lyric timing for each
+   shot and the facial acting; running the whole render queue through the
+   Builder's Agent API (**80 renders, about 12 GPU hours**, much of it
+   overnight while the author slept); reviewing every take itself and
+   re-shooting the failures (cloned guests, the camera pulling back wide on
+   a held note); splicing the fixed scenes into the final video
+   frame-exactly and checking the lip-sync in every scene.
+4. Optional finishing: a final enhance pass in **Topaz AI** to fix far-away
+   blurry faces from wide shots. ("You don't need to do this. It looks fine
+   both ways.")
+
+**Check**
+- The 2-pass shareable workflow reproduces one scene with the same settings.
+- Lip-sync holds in every scene; no cloned guests; staging rules obeyed.
+
+**Why**
+- Fixed settings + one builder = a reproducible pipeline. The labor split
+  is the contract: the agent never re-decides casting, staging, or the
+  brief; the human never hand-prompts a shot.
+- Cost it: this video took **~12 hours** including the overnight render and
+  next-day re-rolls, and used about **8% of Claude usage on the $20 pro
+  plan**. (Commenter note: the same stack runs locally with LM Studio or
+  Gemma4/Qwen .gguf models instead of Claude.)
+- Timing is data: lyric timing from ElevenLabs Scribe plus the song stems
+  turns "a music video" into per-shot per-word direction.
+
 ## The human method, distilled
 
 1. **One prompt, whole job**: the agent owns refs, lyrics, song,
@@ -92,6 +161,10 @@ same builder and settings family as the storyboard-grid skill).
    what the loop produced, issues included.
 4. **The builder stays editable**: the project can be opened inside
    the video builder afterwards and any element changed by hand.
+5. **Brief once, verdict often**: the agent owns words, planning, and the
+   render farm; the human owns casting, staging rules, and re-shoot orders.
+   The Halloween run is the costed proof: 19 scenes, 2:29, 80 renders,
+   ~12 GPU hours, ~12 wall hours, 8% of a $20 Claude plan.
 
 ## AAA studio practice
 
@@ -156,3 +229,8 @@ same builder and settings family as the storyboard-grid skill).
 verbatim, tool chain, overnight run, review loop with retry cap, and
 a stated failure mode; the builder repo itself was not inspected, so
 no node-level settings beyond the 2-pass workflow pointer are claimed).
+Expanded 2026-11-01 with the Halloween production run: exact sampler settings
+(MiniMax H3 Singularity ref2va v2 int8; pass 1: 25 steps; pass 2: 8-step 768p
+ref2v LoRA v1.1, 4 steps, 0.35 denoise), the verbatim human/agent labor
+division, ElevenLabs Scribe lyric timing, and the cost data (80 renders,
+~12 GPU hours, ~12 wall hours, 8% of a $20 Claude Pro plan).

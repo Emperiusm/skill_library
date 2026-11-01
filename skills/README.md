@@ -62,6 +62,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`meshforge-asset-pipeline`](procgen-worlds/meshforge-asset-pipeline/SKILL.md) | Run AI asset generation inside the editor with human checkpoints: mesh definitions, cost gate, provider A/B, retexture branching, Blender round-trip, judge at player distance. |
 | [`per-frame-planet-geometry-clipmap`](procgen-worlds/per-frame-planet-geometry-clipmap/SKILL.md) | Render a 1:1 Earth-scale planet from orbit to ground in one frame: compute shader rebuilds nested geometry-clipmap rings from a libnoise complex-planet stack ported to HLSL, no tiles, no streaming. |
 | [`city-diffusion-osm-training`](procgen-worlds/city-diffusion-osm-training/SKILL.md) | Train a diffusion model from scratch on rasterized OpenStreetMap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. |
+| [`chronicle-of-gods-planet-pipeline`](procgen-worlds/chronicle-of-gods-planet-pipeline/SKILL.md) | Generate seeded game worlds on a cube-sphere: fixed six-stage pipeline (crust, Voronoi plates, elevation/sea level, climate, hydrology flood-judge-carve, biomes) with biome regions as the simulation unit. |
+| [`exolune-planet-engine`](procgen-worlds/exolune-planet-engine/SKILL.md) | Build real-scale planet terrain: simulate plates at startup in under a second, derive terrain from boundary distance, evaluate per point on the GPU each frame in double precision, no streaming, orbit to pebble in one shot. |
 
 ## AI video and film (`ai-video/`)
 
@@ -92,6 +94,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`opsis-comfyui-film-studio`](ai-video/opsis-comfyui-film-studio/SKILL.md) | Run a self-hosted AI film studio on ComfyUI graphs: API graph + .map.yaml becomes a priced form; local 12GB, RunPod serverless, or mock mode; YAML-defined studios, no code. |
 | [`touchdesigner-generative-lexicon-press`](ai-video/touchdesigner-generative-lexicon-press/SKILL.md) | Perform written passages as audio-reactive TouchDesigner typography across 25 layouts, with a local Ollama writing partner generating the text. |
 | [`minimax-h3-longform-documentary`](ai-video/minimax-h3-longform-documentary/SKILL.md) | Generate a watchable 25-second MiniMax H3 video natively at 1536x864 on an RTX 3060 12 GB: Singularity V2 + DMAD 4-step, storyboard guidance, one pass in ~37.6 min, under-describe motion in the prompt. |
+| [`blender-mcp-previs-minimax-h3`](ai-video/blender-mcp-previs-minimax-h3/SKILL.md) | Previsualize a whole shot list with ChatGPT plus Blender MCP, render low-poly reference shots, lock design with reference sheets, generate with MiniMax H3 reference-to-video; the multi-shot variant of blender-mcp-camera-minimax. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -129,6 +132,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`blender-inverted-hull-outline`](materials-shaders/blender-inverted-hull-outline/SKILL.md) | Build a toon outline in Blender with the inverted hull method: Solidify Flip normals and Material Offset 1, black Emission outline material, Transparent BSDF mixed by Geometry Backfacing, second Mix Shader gated by Light Path Is Camera Ray (Ray Length for mirrors), 0.003 example thickness, transparent shadows ON; works in Cycles and Eevee. |
 | [`ai-3d-retopology-uv`](materials-shaders/ai-3d-retopology-uv/SKILL.md) | Repair AI meshes for production: retopology decisions by destination, wireframe checks, UV inspection with checker textures and overlap overlays. |
 | [`ai-3d-pbr-materials-textures`](materials-shaders/ai-3d-pbr-materials-textures/SKILL.md) | Author and verify PBR materials for AI assets: channel meanings, ORM packing, normal-map green-channel conventions, two-light and moving-light tests. |
+| [`material-painter`](materials-shaders/material-painter/SKILL.md) | Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets for Unreal/Unity/Godot/Blender. |
 
 ## Engine and runtime (`engine-runtime/`)
 
@@ -196,6 +200,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`jet-studio-godot-mcu-editor`](automation/jet-studio-godot-mcu-editor/SKILL.md) | Build a Godot-flavored game editor for microcontrollers: reuse Godot 4's UI and node conventions, bridge a C++17 software runtime via GDExtension, design a strict GDScript subset compiling to bytecode, measure FPS and RAM on real 320x240 SPI hardware. |
 | [`frameforge-comfyui-movie-app`](automation/frameforge-comfyui-movie-app/SKILL.md) | Productize AI movie production on ComfyUI: timeline of ComfyUI jobs with swappable backends, LLM script writing, reference manager, pose studio, voice clips, cheap-draft/expensive-final discipline on one RTX 3060. |
 | [`comfyui-agenty-ai-agent`](automation/comfyui-agenty-ai-agent/SKILL.md) | Run agentY, a free MIT AI agent inside ComfyUI: builds unseen workflows from web research on cheap/local LLMs, self-judges outputs, runs parallel agents per shot, drives Blender/Maya/Houdini/AE over MCP. |
+| [`infinite-language-generator`](automation/infinite-language-generator/SKILL.md) | Build a deterministic seed-based conlang tool for games: one seed call generates the whole language plus rules, voiced lines and animated glyphs ship with it, dictionary and subtitle tool included, MCP-toolable. |
 
 ## No-tooling examples (`no-tooling/`)
 
