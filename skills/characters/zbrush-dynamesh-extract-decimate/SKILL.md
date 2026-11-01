@@ -93,6 +93,95 @@ the hardware can take it (5950X + 64 GB DDR4 handled 250M polys).
 Sculpt at absurd density, render at sane density; Decimation Master is
 the bridge, Marmoset is the presentation.
 
+## AAA studio practice
+
+The core gesture of this skill, **extracting pieces from a masked body
+instead of using booleans**, is standard practice among production
+character artists, not a personal quirk.
+
+1. **Extraction from masks is the standard way garments and parts are
+   derived from the body.** Yuriy Barchuk (80 Level, Oct 2026): "The
+   clothing was originally blocked out by extracting meshes from masks on
+   the main body and using different tools to move them into place."
+   Eric Liu (80 Level, Oct 2026; 10+ years in game art, including
+   outsourcing work on *Marvel Rivals* and *Path of Exile*): "for the
+   gum, I masked that area of the mouth and extracted it. The clothing
+   was created with a similar method." In studios this is how armor,
+   clothing, and gum/teeth pieces start life.
+   - https://80.lv/articles/sculpting-scales-simulating-clothes-for-creature-chef-in-zbrush-marvelous-designer
+   - https://80.lv/articles/sculpting-texturing-a-semi-realistic-lobo-bust-with-zbrush-substance-3d
+2. **ZRemesh after blockout/extract for clean topology before detail
+   sculpting.** Barchuk ZRemeshed the Dynameshed body "to ensure I had
+   relatively clean topology to sculpt on" before layering detail and
+   before clothing simulation; Liu ZRemeshed "several times and reduced
+   the polycount to make it easier to fix and tidy the edge flow for
+   later use in the pipeline." Inference: this skill's brute-force
+   subdivide-only approach skips that step. On a studio timeline the
+   ZRemesh step buys cheaper detail passes and topology that downstream
+   steps can use, where the author's personal-time brute force
+   ("optimization would have taken 10 times more") only wins when one
+   person owns every step.
+   - https://80.lv/articles/sculpting-scales-simulating-clothes-for-creature-chef-in-zbrush-marvelous-designer
+   - https://80.lv/articles/sculpting-texturing-a-semi-realistic-lobo-bust-with-zbrush-substance-3d
+3. **Decimation is a bake bridge, not just an export step.** Liu baked
+   curvature, cavity, convexity, AO, position, normal, and world normal
+   maps in Marmoset Toolbag from the high poly before texturing in
+   Substance 3D Painter. Jueon Kim (80 Level, Oct 2026) enables Keep UVs
+   in ZBrush's Decimation Master to preserve UVs during optimization,
+   pairing it with ProOptimizer in 3ds Max for final counts. Inference:
+   if the decimated 10M mesh is headed to a bake or texturing stage,
+   preserve UVs at decimation time; otherwise that work is rebuilt later.
+   - https://80.lv/articles/sculpting-texturing-a-semi-realistic-lobo-bust-with-zbrush-substance-3d
+   - https://80.lv/articles/breakdown-giant-robot-in-cathedral-ruins-made-in-3d
+4. **Presentation setup starts early, not after texturing.** Liu put the
+   model into Marmoset Toolbag "once I was halfway through texturing" to
+   begin the lighting setup (spotlight key, directional fill, rim lights
+   for silhouette), rather than treating the render as a final pass.
+   Inference: save the Marmoset scene as a reusable template and
+   re-render per pass instead of re-lighting per render.
+   - https://80.lv/articles/sculpting-texturing-a-semi-realistic-lobo-bust-with-zbrush-substance-3d
+
+## Agent automation
+
+**Do**
+1. Write `proportions.md` before sculpting: the chosen proportion system
+   (the skill's 8-head ideal vs 7.5-head realistic), the head-unit
+   landmarks for the character, and a per-piece checklist: piece name,
+   source body region, target silhouette landmark. No piece gets
+   extracted without a checklist line.
+2. Record the extract, remesh, extrude, and subdivide sequence as a
+   ZBrush macro (.txt) once per piece family and replay it for the rest.
+   Inference: ZBrush macro recording replays UI actions; verify the
+   recording captures the parameter panel entries for your ZBrush
+   version before depending on it.
+3. Density budget log: per SubTool, log the subdivision level and poly
+   count before decimation, then the decimated count. Gate: 25x
+   reduction (250M to 10M per the skill) or your own target. If a piece
+   loses silhouette after decimation, it fails the gate and goes back to
+   Phase 2.
+4. Silhouette check: render a turntable of the decimated mesh and compare
+   frames against the 250M sculpt; log the comparison in the run log.
+   Acceptance is the author's own check: edges read sharp at render
+   distance, micro-detail from alphas intact.
+5. If the decimated mesh heads to texturing: enable Keep UVs at
+   decimation and record the bake manifest (curvature, cavity, AO,
+   normal) with cage/skew notes, per the Liu/Kim practice above.
+6. Save one Marmoset Toolbag scene as the lighting template (key, fill,
+   rim, tone mapping) and reuse it for every render pass.
+
+**Check**
+- File manifest exists: `proportions.md`, density budget log, macro
+  .txt, decimation report (before/after counts), turntable frames,
+  Marmoset template scene.
+- Every piece on the checklist is extract-derived with no boolean
+  seams; no piece ships past the density gate without a logged check.
+
+**Why**
+The author's workflow lives in memory (5950X, personal time, a
+tutorial pack that ships later). A proportion sheet, a recorded macro,
+a density log, and a lighting template make the same workflow
+reproducible by another agent with no access to the author.
+
 ## The human method, distilled
 
 1. **"Not a single Boolean"**, extraction over booleans for organic

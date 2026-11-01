@@ -127,6 +127,61 @@ author adds, replying to a music-video use case: "Music videos are a
 perfect fit for this, especially when camera motion and shot planning
 really matter."
 
+## AAA studio practice
+
+- ILM runs a dedicated Previz department (alongside techvis and
+  postvis) whose stated mission is a "technically and aesthetically
+  sound roadmap to production ... resulting in a clear creative directive
+  and fewer iterations in post". Previs data is the upstream contract,
+  exactly as this skill treats the 24fps timeline as the contract
+  generation must honor.
+  https://www.ilm.com/visual-development/
+- Previs houses routinely convert previs data into physical shoot
+  control: previs is used for "programming practical camera and stunt
+  rigs," with techvis documenting "detailed camera and shooting details
+  through diagrams or QuickTime movies" (previs supervisors at Halon
+  Entertainment, Proof, MPC, Stargate Studios, and The Third Floor,
+  speaking to CGW). The skill's camera-matrix export is the low-cost
+  version of the same pipeline: machine-readable camera data, not just a
+  video.
+  https://www.cgw.com/Publications/CGW/2017/Volume-40-Issue-3-May-Jun-2017-/Planning-Process.aspx
+- Gearbox Software (Borderlands) treats mocap as a previz instrument:
+  "It's perfect for previz. Animators can hop in, capture a performance,
+  and we can visualise how it fits into a cinematic or gameplay moment
+  within the same day." Markerless capture collapsed a 30-40 minute
+  marker-setup/calibration session into a full capture session in the
+  same window, with data delivered to animators in under two hours
+  (Vicon fireside chat with Gearbox's motion capture lead, GDC 2025).
+  This is the professional precedent for the skill's procedural/FK/IK
+  blocking presets: cheap, fast blocking motion used to decide camera
+  and timing, never the final performance.
+  https://www.vicon.com/resources/blog/vicon-markerless-helps-gearbox-studios-create-better-games-gdc-2025/
+- ILM's virtual-production toolset gives filmmakers "intuitive virtual
+  cameras" operated like on-set gear: handheld, dolly, crane, Steadicam,
+  traditional wheels. The skill's camera vocabulary (dolly, orbit,
+  tracking, crane, handheld, whip pan) mirrors the move set a working DP
+  reaches for. Inference: build trajectories from that vocabulary rather
+  than freeform curves when the goal is production camera language.
+  https://www.ilm.com/visual-development/
+
+## Agent automation
+
+- Export manifest: after Phase 3, write `previs-manifest.json` listing
+  every exported pass (MP4 preview, OpenPose, depth, alpha, camera
+  matrices) with per-frame file naming. An agent generates this
+  manifest mechanically and must refuse to start Phase 4 while any
+  listed pass is missing.
+- Alignment gate: programmatically verify frame counts match across all
+  passes and equal the timeline length at 24fps (frames = seconds x 24),
+  and that camera matrices parse as one 4x4 float matrix per frame.
+  Fix failures in the 3D scene; never hand-edit pass files.
+- Drift log: after each Phase 4 generation, append one line to
+  `drift-log.md`: shot id, what drifted (camera / blocking / timing),
+  and whether the fix was a scene change or a workflow tweak.
+  Inference: cap regeneration retries (three attempts is a reasonable
+  ceiling) before returning to re-blocking, so the loop cannot become
+  the prompt spiral the tool exists to escape.
+
 ## The human method, distilled
 
 1. **Block in 3D before generating a single frame.**

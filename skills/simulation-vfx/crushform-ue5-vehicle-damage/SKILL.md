@@ -159,6 +159,122 @@ consistency is a first-class feature.
 The plugin deliberately does NOT simulate handling damage. That stays
 the game's design decision, exposed through per-side zones and events.
 
+## AAA studio practice
+
+How AAA studios ship the same techniques (cited to named studios and
+shipped titles; the Crushform facts above remain the author's claims):
+
+1. **Bugbear Entertainment, Next Car Game (later Wreckfest), ACM
+   SIGGRAPH 2014:** "Soft-body simulation is utilized for most of the
+   vehicle destruction, with additional 'plates' added to the outermost
+   regions to more closely simulate what would happen in a real
+   collision. The bending and buckling of the chassis is handled by this
+   component of ROMU," with easily-detached objects that also deform, a
+   partially damaged rear bumper that "rattles and springs," and tire
+   physics that affects "the way your car handles... the crashes,
+   slides, swerves... everything."
+   (https://www.siggraph.org/news/perfecting-destruction-racing-game-focuses-on-the-crash/)
+2. **Bugbear Entertainment, Wreckfest 2, Digital Foundry/Eurogamer 2025:**
+   "Panels twist and shear based on contact angle and force" and "none
+   of it is pre-calculated - it's all properly simulated." Paint is
+   "scraped away, revealing the metal beneath," individual pieces
+   "crumble and change based on external forces," and the component-based
+   approach models "material-specific properties too, with glass, plastic
+   and steel all providing different levels of strength and rigidity."
+   Wrecked parts are reported per-component, and "damage directly impacts
+   your ability to race, altering the handling." Up to 24 cars are
+   simulated at once, with the damage modeling optimized "to be fast and
+   flexible" for consoles.
+   (https://www.eurogamer.net/digitalfoundry-2025-wreckfest-2-a-superb-overhaul-of-a-boundary-pushing-game)
+3. **Wrotek, Rice, and McGuire, "Real-Time Collision Deformations using
+   Graphics Hardware" (Journal of Graphics Tools):** minor collision
+   dents are simulated by altering only bump/normal maps, leaving "mesh
+   geometry unchanged," computing deformation on the GPU by "rendering"
+   intersections to offscreen buffers; heavy damage pairs this with
+   pre-deformed macro meshes. (Inference: this is the published
+   counterpart of Crushform's "draw the dent in the material, keep one
+   asset" approach; Crushform uses World Position Offset where the paper
+   used bump maps.)
+   (https://casual-effects.com/research/Wrotek2005Bump/deform-jgt05.pdf)
+
+## Agent automation
+
+Convert the manual checks above into agent-executable gates, keeping
+Do/Check/Why. Inference labels are in parentheses.
+
+**Gate 1: canonical-impact regression log**
+**Do**
+1. Script the three canonical impacts from Phase 1 (pole crater, wall
+   nose-flatten, glancing side-drag) as repeatable sequences with fixed
+   delta-v bands, and run each three times.
+2. Log dent depth, dent location, and contact area per run to
+   `crushform-impacts.log`.
+**Check**
+- Dent patterns differ across direction/speed/contact area, and the three
+   runs of each impact match within the project's tolerance.
+**Why**
+The lattice's whole contract is hit-shape discrimination; the
+regression log turns the Phase 1 Check into a repeatable acceptance
+gate.
+
+**Gate 2: mass-independence acceptance**
+**Do**
+1. Run the same scripted impact against two vehicles of different mass
+   with identical damage tuning.
+2. Log both dent results to `crushform-mass.log` and diff them.
+**Check**
+- The diff is within the project's tolerance with no retuning: the
+   delta-v measurement holds.
+**Why**
+"a hit is measured as the body's change of speed (delta-v), not as a
+force" is the plugin's core claim; this gate tests exactly that claim.
+
+**Gate 3: damage-to-handling wiring harness**
+**Do**
+1. Write a script that maps per-side damage zones and events to engine
+   power and steering cuts (the plugin deliberately leaves handling to
+   the game; Phase 5).
+2. Feed the harness scripted zone damage levels and assert the power
+   and steering cuts fire with the configured magnitudes.
+**Check**
+- Every scripted damage level produces the expected cut; no zone maps to
+   a silent no-op.
+**Why**
+Crushform exposes damage as zones and events but never cuts power
+itself; an automated harness check keeps the game's wiring honest as
+vehicles and zones multiply. (Inference: the harness structure is
+recommended from the plugin's zones-and-events design; the plugin
+itself performs no handling changes.)
+
+**Gate 4: single-asset integrity check**
+**Do**
+1. After the heaviest scripted impact, enumerate the vehicle's meshes
+   (editor automation or a packaged self-test) and log the count to
+   `crushform-integrity.log`.
+**Check**
+- Exactly one Nanite body asset remains; detached doors appear as
+   separate actors, which is expected per Phase 3.
+**Why**
+"The car stays one asset, Nanite keeps working" is the architectural
+guarantee; the check makes it a logged invariant instead of a
+spot-check.
+
+**Gate 5: replication state-hash comparison**
+**Do**
+1. Run a scripted impact with the server and two clients connected, then
+   capture the damage-state hash on all three.
+2. Connect a late joiner after the impact and capture its wreck state.
+**Check**
+- All three hashes match; the late joiner receives the wreck, not a
+   pristine car.
+**Why**
+Damage is replicated state with client-side prediction; identical
+hashes across server and clients make that a testable invariant rather
+than a "looks the same" judgment. (Inference: the plugin exposes
+replicated damage state; the hash mechanism is a standard way to
+compare replicated state and is recommended here, not described by the
+author.)
+
 ## The human method, distilled
 
 1. **"Tuning doesn't depend on the vehicle's mass"**, measure inputs

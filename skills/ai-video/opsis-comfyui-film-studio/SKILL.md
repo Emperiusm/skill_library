@@ -99,6 +99,65 @@ truth; the form is a generated view.
 Mock-by-default removes the setup tax; keys are per-model and
 optional.
 
+## AAA studio practice
+
+- Weta Digital partnered with Autodesk to productize its proprietary,
+  Academy Award-winning VFX tools (Lord of the Rings, Avatar, Game of
+  Thrones, Planet of the Apes) as a subscription cloud service embedded
+  in Maya: "the first step in the democratization of VFX and animation
+  production," giving artists "powerful new effects tools and time-saving
+  automation capabilities." Opsis's graph-to-form idea is the same
+  democratization move one level down: expert graphs wrapped so
+  non-technical users can run them without touching nodes.
+  https://creativecow.net/weta-digital-partners-with-autodesk-to-offer-next-generation-creative-cloud-production-pipeline/
+- Weta FX and AWS are building AI tools for VFX artists on an
+  artist-first principle: "no clunky prompt engineering," systems that
+  "respond to the way artists work," with direct manipulation and live
+  feedback instead of text-box guessing. The skill's priced-form UI is
+  that principle applied to ComfyUI: the graph stays the source of
+  truth, and the human only sees inputs that matter, priced.
+  https://completeaitraining.com/news/weta-fx-and-aws-partner-on-ai-that-puts-vfx-artists-in/
+- Production cost math is per-unit and upfront: cost per frame = render
+  time per frame x cost per hour, with the honest version adding boot,
+  upload, setup overhead plus a 10-15% buffer for rerenders ("Estimated
+  cost = (Setup + Simulation + Rendering + Buffer) x Hourly Rate",
+  citing sidefx.com). Opsis's price estimate on the form is this
+  practice operationalized: the user sees the number before spending
+  GPU time or money.
+  https://irendering.net/how-to-calculate-real-cost-per-frame-before-you-hit-render/
+  https://irendering.net/how-much-does-it-cost-to-render-a-houdini-shot-in-the-cloud/
+- VFX veteran Joseph Bell (years at Industrial Light & Magic) notes the
+  biggest driver of VFX budget overruns is not shot complexity but scope
+  drift, and recommends budgeting a 15-20% contingency on the VFX line
+  (Vitrina's 2026 VFX budget breakdown; Netflix, Warner Bros, and
+  Paramount use Vitrina to source VFX vendors). Inference: a priced form
+  should log estimate-vs-actual per shot so drift is visible early; that
+  is the same discipline at studio scale.
+  https://vitrina.ai/blog/vfx-budget-breakdown-2026/
+
+## Agent automation
+
+- Workflow onboarding checklist: for each new API-format graph, verify
+  (1) the graph loads as a ComfyUI API-format graph, (2) the
+  `.map.yaml` maps every form input to a real node input id, (3) a price
+  estimate appears on the form before submit. An agent adds a workflow
+  by writing these two files only; the checklist confirms the form was
+  generated correctly, no code deploy involved.
+- Run ledger: for every RunPod (paid) run, append one row to
+  `run-ledger.csv`: shot id, workflow, compute target, model, frames,
+  estimated cost, actual cost, variance. Inference: review the ledger
+  regularly; persistent variance is a signal the estimate formula needs
+  recalibration, not a number to absorb silently.
+- Mock gate: no paid run starts without a completed mock-mode pass of
+  the same workflow first. The agent treats mock success as the
+  acceptance test for real runs; mock failures are fixed in the YAML,
+  never in the graph.
+- Budget guard: keep `budget-log.md` with per-shot estimate vs actual
+  and flag any shot whose actual exceeds its estimate past the 15-20%
+  contingency cited above. Inference: this is the agent version of
+  Bell's contingency discipline, catching scope drift before it
+  compounds.
+
 ## The human method, distilled
 
 1. **Forms over graphs**: expose only the inputs that matter, priced.
