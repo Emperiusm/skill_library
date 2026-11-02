@@ -91,6 +91,65 @@ scout run, audit 5.
   no loading nor streaming, so no flight speed limitation." Per-point GPU
   evaluation is what makes 1:1 scale tractable.
 
+## AAA studio practice
+
+No shipped title documents exolune's exact design (per-point GPU evaluation
+in double precision, startup plate sim under a second) -- the closest shipped
+anchors are math-evaluated planets, 64-bit coordinate spaces, tectonic-mask
+terrain, and first-principles formation sims.
+
+- **Nothing on disk: planets as math (Hello Games, No Man's Sky, GDC
+  2017).** "Nothing exists on disk, or in the cloud": everything visible is
+  generated from math when the player arrives; a deterministic engine (single
+  seed + PRNG) re-creates identical features; planets are stored as cubes and
+  cast onto a sphere; the whole planet first appears as a low-detail sphere
+  with detail arriving on approach, holding a 30 fps budget.
+  (https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i-, https://www.thesixthaxis.com/2014/06/25/crafting-the-endless-cosmos-of-no-mans-sky/)
+- **64-bit coordinates + seamless macro-to-micro (Cloud Imperium, Star
+  Citizen).** The engine moved to 64-bit coordinates for solar-system scale;
+  planets are nested object containers streamed in the background so
+  high-speed traversal has no loading screens; planet tech v4 builds biomes
+  from temperature + humidity + height map, with artists placing mountain and
+  ocean zones and procedural rules filling in.
+  (https://www.digitalfoundry.net/articles/digitalfoundry-2020-star-citizen-tech-focus-alpha-3-point-8)
+- **Tectonic masks drive terrain (Frontier Developments, Elite Dangerous:
+  Horizons).** Matt Dickinson, head of technical art: "We generate these
+  tectonic masks... we understand the compression of the plates, so we can
+  see where they'd move together and move apart. That creates where ridges
+  are formed, mountains, or trenches." 1:1-scale worlds with seamless
+  space-to-surface journeys, no loading screens. Stellar Forge predicted
+  Pluto's appearance before NASA's New Horizons flyby -- shipped-studio
+  precedent for emergence-as-acceptance-test.
+  (https://www.polygon.com/features/2015/11/20/9772708/elite-dangerous-horizons-expansion-adds-planetary-landings-on, https://www.impulsegamer.com/frontier-developments-announces-elite-dangerous-horizons/)
+- **GPU-evaluated terrain density functions (Ryan Geiss, NVIDIA, GPU Gems
+  3).** The terrain surface is one density function f(x,y,z); GPU marching
+  cubes builds geometry at interactive framerates; LOD follows camera
+  distance with popping killed via alpha-fade transitions or
+  density-function erosion.
+  (https://developer.nvidia.com/gpugems/gpugems3/part-i-geometry/chapter-1-generating-complex-procedural-terrains-using-gpu)
+- **Honest gaps:** no shipped title documents per-point double-precision GPU
+  evaluation with zero caching/streaming (NMS streams voxel detail; Star
+  Citizen bakes height maps offline); no AAA anchor for a startup plate sim
+  under one second.
+
+## Agent automation
+
+- **Emergence acceptance test:** calibrate boundary profiles on Earth, then
+  assert emergent extremes land within tolerance of Everest (~8,849 m) and
+  the Challenger Deep (~10,935 m) -- the test Elite ran against real Pluto
+  data.
+- **Determinism check:** seed -> feature hash; assert byte-identical results
+  across sessions and restarts (NMS determinism design).
+- **Precision audit:** compute required coordinate precision from planet
+  radius + minimum feature size; verify no vertex jitter at ground level
+  (Star Citizen 64-bit rationale).
+- **Transition test:** log a continuous orbit-to-ground descent; assert zero
+  load events and no frame-time spike above threshold (Star Citizen's
+  no-loading bar); flag terrain LOD pops (GPU Gems 3 transition checks).
+- **GPU-evaluation purity check:** verify the density/terrain function takes
+  no per-frame CPU input beyond camera and uniforms, so terrain is
+  math-evaluated, not streamed.
+
 ## The human method, distilled
 
 1. **Calibrate on Earth, trust emergence**: boundary profiles from Earth's,

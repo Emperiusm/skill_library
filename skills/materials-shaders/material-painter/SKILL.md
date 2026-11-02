@@ -81,6 +81,78 @@ creation process."
   growth strategy is the community making and sharing materials, and the
   interoperability story is export presets instead of format conversion.
 
+## AAA studio practice
+
+AAA texturing standardized on Substance Painter, but the automation doctrine
+around it -- bake-first, export presets as contracts, textures as build
+artifacts -- transfers to any PBR painter, including an open-source one.
+
+- **Bake-first and preset-export (Splash Damage, Gears Tactics).** The first
+  Splash Damage project where Painter became the standard: character smart
+  materials "make heavy use of curvature and ambient occlusion maps, so these
+  are baked before beginning texturing"; a shared-network Substance Library
+  (smart materials, filters, patterns, brushes, and export settings) served
+  the internal and outsource teams alike; finished textures were exported
+  "using a preset"; custom filters ran built-in QA ("PBR Validation",
+  "Tinting Check").
+  (https://www.adobe.com/products/substance3d/magazine/destroyed-beauty-texturing-gears-tactics-with-splash-damage.html)
+- **Textures as build artifacts (Allegorithmic, GDC 2018 Substance Day).**
+  "Substance Automation Toolkit: Building a Future-Proof Material Pipeline":
+  automating texture generation, scripting consistent texturing of similar
+  objects, and "using a build system to make sure all textures are current
+  when 3D models and substance files change."
+  (https://80.lv/articles/substance-day-at-gdc-2018/)
+- **Version-controlled, build-driven tooling (CD PROJEKT RED, Cyberpunk
+  2077).** Custom REDengine-to-Substance bridge ("Remote Browser"), material
+  templates via an internal Material Library Manager, pipeline code in
+  Visual Studio with their own build system, Helix/Perforce as the data
+  repository.
+  (https://80.lv/articles/the-texturing-pipeline-in-substance-tools-for-cyberpunk-2077)
+- **Channel-mask-driven engine workflows (ILMxLAB, Star Wars: Secrets of the
+  Empire, GDC 2018).** Painter-authored multi-channel masks brought into
+  Unreal to blend Designer materials -- the export preset is the contract
+  between texturing and the engine.
+  (https://80.lv/articles/substance-day-at-gdc-2018/)
+- **Output templates as shareable contracts (Adobe docs).** Templates control
+  naming, channel packing, format, and bit depth; they are saved as
+  individual files shareable across users (`assets/export-presets`); the
+  `$mesh`, `$textureset`, and `$udim` naming keywords make deterministic,
+  machine-checkable naming a first-class feature.
+  (https://experienceleague.adobe.com/en/docs/substance-3d-painter/using/export/export-window/output-templates)
+- **Headless bake automation (Adobe PySbs batchtools).** The `pysbs.batchtools`
+  module wraps the CLI bakers (ambient occlusion, curvature, ...) as Python
+  functions with explicit args (output size, dilation, ray counts,
+  high/low naming suffixes, format, bit depth) -- the official route to
+  CI-style bake loops independent of any GUI.
+  (https://helpx-origin.aws116.adobeitc.com/substance-3d-sat/pysbs-python-api/overview/pysbs-batchtools-module.html)
+- **Honest gaps:** no named-studio source for AAA production use of Quixel
+  Mixer (final offline build released 2026-02-19; its functionality folded
+  into Unreal, a dead end for new projects), ArmorPaint, or Material Maker
+  as the primary texturing tool -- AAA evidence centers on Painter as the
+  standard.
+  (https://gamefromscratch.com/epic-games-release-final-free-quixel-mixer/)
+
+## Agent automation
+
+- **Bake-before-paint gate:** script a check that curvature + AO (and normal)
+  maps exist on disk and match the low-poly mesh name before texturing
+  starts (Splash Damage bake-first convention).
+- **Export-template contract check:** store the engine preset/template in the
+  project, hash it, and diff against the canonical template before every
+  batch export; fail the batch if the template drifted (output templates +
+  Gears Tactics shared-library practice).
+- **Channel-set validation:** verify the exported map inventory per texture
+  set matches the target preset (e.g., Unreal packed: BaseColor, Normal,
+  ARM with R=AO / G=Roughness / B=Metallic, packed maps linear with no sRGB)
+  and that naming follows the `$mesh_$textureset` keyword expansion.
+- **PBR QA pass:** automated check on the exported set mirroring Splash
+  Damage's PBR Validation -- base color in plausible luminance range,
+  metalness masks binary-ish, roughness present. Thresholds are the agent's
+  inference; no studio published theirs.
+- **Textures as build artifacts:** on any mesh or material change, re-bake
+  and re-export headlessly and fail the check if outputs are stale (GDC
+  Automation Toolkit doctrine; CDPR build-system practice).
+
 ## The human method, distilled
 
 1. **Ship the tool, grow the asset commons**: the value of a painting tool is

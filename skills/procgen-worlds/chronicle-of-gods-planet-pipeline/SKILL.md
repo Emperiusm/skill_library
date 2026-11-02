@@ -117,6 +117,74 @@ The author's custom generator for the god game *Chronicle of Gods*. Surface:
   of the terrain as colored patches); single tiles are too fine to simulate
   history on.
 
+## AAA studio practice
+
+The six-stage fixed pipeline (geography -> climate -> hydrology -> biomes ->
+history) is the same architecture shipped games use: Dwarf Fortress runs it
+verbatim, No Man's Sky computes it continuously from one seed, and Stellar
+Forge simulates formation from first principles.
+
+- **Staged pipeline, finalized elevation before climate (Bay 12 Games, Dwarf
+  Fortress).** The generator seeds elevation, rainfall, temperature,
+  drainage, and volcanism, then derives vegetation, places volcanoes, then
+  runs an erosion and river stage: "Many fake rivers flow downward... carving
+  channels in the elevation field"; lakes are grown along rivers. Climate
+  reads finalized elevation only: "Now that the elevations are finalized, it
+  makes adjustments to rainfall based on rain shadows... Temperatures are
+  reset based on elevation and rainfall." Seeds are logged in gamelog.txt;
+  rejection parameters act as automated acceptance gates -- a world that
+  fails any parameter "is rejected and re-randomised."
+  (https://dwarffortresswiki.org/index.php?title=World, http://dwarffortresswiki.org/index.php/Advanced_world_generation)
+- **History layered strictly after geography (Dwarf Fortress).** "After
+  generating the world, Dwarf Fortress will generate a history for that
+  world... a giant zero-player strategy game... history is just a record of
+  that"; civilizations place only where geography allows (kobold civs are
+  skipped if no caves exist) -- the direct parallel to this skill's
+  regions-as-history-unit.
+  (https://dwarffortresswiki.org/index.php?title=World)
+- **Continuous generation from one seed, cube-to-sphere (Hello Games, No
+  Man's Sky, GDC 2017).** Voxel worldgen -> polygonization -> texturing ->
+  population and simulation, from a single 64-bit seed; McKendrick solved
+  the sphere problem by storing surface data "in a mathematical cube" and
+  transposing it onto a sphere -- the same cube-sphere architecture as this
+  skill. Automated debugging: "virtual space probes to fly around the
+  universe, make gifs of the planets, and report back" -- scripted seed
+  walkthroughs as acceptance sampling.
+  (https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i-, https://www.fastcompany.com/3048667/how-4-designers-built-a-game-with-184-quintillion-unique-planets/)
+- **Formation simulated from first principles (Frontier Developments, Elite
+  Dangerous Stellar Forge).** Systems are "formed from first principles...
+  taking into account its chemical composition"; terrain runs tectonic
+  simulations -- "it's not just generating heightmaps from noise"; craters
+  reflect recorded impacts from the formation sim; systems regenerate
+  identically every visit. Human override: pinned real bodies (e.g.
+  Trappist-1) re-run the sim around them.
+  (https://www.polygon.com/2014/12/4/7333709/elite-dangerous-milky-way-stellar-forge-human-cruelty, https://procedural-generation.isaackarth.com/2015/11/23/elite-dangerous-2014-planet-generation.html)
+- **Honest gaps:** no named AAA title publishes Voronoi-based plate
+  generation (Stellar Forge runs tectonic sims but Frontier has not published
+  the method); no AAA source documents an explicit flood/judge/carve
+  hydrology judgment loop (DF's is carve-first); no 80 Level article found on
+  these internals.
+
+## Agent automation
+
+- **Determinism gate:** log the seed per world; regenerate and checksum the
+  output to prove same seed -> same world (DF gamelog.txt convention; NMS
+  64-bit-seed design).
+- **Pipeline-order check:** assert climate and hydrology stages read the
+  finalized elevation field, never a mutable intermediate (DF resets
+  temperature only after elevations are finalized).
+- **Rejection-parameter validation:** encode world acceptance criteria
+  (mountain counts, biome coverage, river presence) as pass/fail gates that
+  reject and re-randomize (DF "belt and braces" parameters).
+- **Feature provenance:** tag surface features with the simulation stage
+  that produced them (Stellar Forge crater = recorded impact), giving an
+  audit trail from cause to visible feature.
+- **Sampling probes:** scripted walkthroughs that render N random seeds and
+  report the samples for review (NMS space-probe GIFs).
+- **Ground-truth pinning:** pin known observations as immutable constraints;
+  a validation script flags any generated world violating them before it
+  proceeds downstream (Stellar Forge Trappist-1 correction).
+
 ## The human method, distilled
 
 1. **Fixed pipeline, run once**: crust -> plates -> elevation/sea level ->

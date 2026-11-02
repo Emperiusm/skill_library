@@ -90,6 +90,64 @@ You").
 - The 3D scene is the cheap place to iterate; the generation budget is spent
   only after direction is settled.
 
+## AAA studio practice
+
+Previs is a discipline, not a fidelity level: AAA previs work happens in cheap,
+crude 3D long before anything expensive renders, and the revision loop is the
+product, not the image.
+
+- **Crude blocking first, look-dev later (Halon Entertainment, War for the
+  Planet of the Apes).** Halon's previs team blocks shots in grayscale Maya
+  playblasts, keyframed fast, to get material in front of the director
+  quickly; only after intent is honed do they introduce mocap, keyframe
+  refinement, and Unreal renders, separating composition/intention feedback
+  from lighting/texture feedback.
+  (https://www.unrealengine.com/developer-interviews/halon-evolves-previs-with-unreal-engine?lang=en-US)
+- **One-button handoffs, not manual exports (Halon).** Once a process worked
+  manually, Halon "wrote tools around the process to automate it": one-click
+  export of multiple skeletal-mesh animations and cameras from Maya into
+  Unreal, baking cloth sims for import, converting rigid-body sims into
+  SkelMesh animations.
+  (https://www.unrealengine.com/developer-interviews/halon-evolves-previs-with-unreal-engine?lang=en-US)
+- **Every scene starts in previz (Naughty Dog, Uncharted 4).** GDC 2017:
+  digital previz with crude character models and environments plans camera
+  angles, sets, and movement before any rendering; expensive mocap stage time
+  is blocked digitally first. Their Tasker tool shares tasks with threaded
+  critiques and one-click access to the in-game moment under work.
+  (https://gamesbeat.com/how-planning-and-technology-helped-naughty-dog-animate-uncharted-4-a-thiefs-end/)
+- **The "slap comp" review gate (Blizzard Cinematics, Diablo III).** First 3D
+  blocking pass: simple skeletons + rough backgrounds + layered sound,
+  circulated to many teams early; features are layered piece by piece only
+  after. Anti-"grand reveal" rule: rough versions go out early because it is
+  too late to incorporate feedback when the work is nearly done.
+  (https://www.guildwars2powerleveling.net/2012/05/27/insider-when-you-begin-creating-a-new-cinematic-where-do-the-storyline-and-script-come-from/)
+- **Previs stays a planning tool even at high fidelity (Halon, The Third
+  Floor).** On The Mandalorian (ILM, The Third Floor, Halon, Happy Mushroom,
+  Mold3D): traditional previs -> Virtual Art Department -> real-time Unreal
+  on LED walls; The Third Floor: "No, we're not making the final images."
+  (https://vfxvoice.com/how-previs-has-gone-real-time/)
+- **Previs is architecture for films (Ron Frankel, Proof Inc., Panic
+  Room).** Revision loop as product: trim 3 frames from a shot's tail, add 2
+  to the next head, re-render, cut into the animatic for the director in
+  under a minute. Previs shines at spatial-temporal camera/subject
+  relationships; it deliberately cannot show final color, light, or tone.
+  (https://www.awn.com/vfxworld/beyond-words-previs-design-and-approval-tool-directors)
+
+## Agent automation
+
+- **Grayscale-first review gate:** before generation, render the previs pass
+  with no textures and no look-dev; the review scores only camera,
+  composition, and timing. Generation stays blocked until the grayscale pass
+  is approved (Halon two-tier review).
+- **Separate composition and look-dev reviews:** two named gates (direction
+  locked; look locked) instead of one combined verdict.
+- **Slap-comp assembly review:** cut the previs shots into the animatic
+  assembly and circulate to reviewers early; log per-shot feedback before
+  any generation budget is spent (Blizzard slap-comp rule).
+- **One-shot camera/export handoff:** script the previs-to-generation
+  handoff as a single export step (cameras + shot list) so it is not a
+  manual file-per-shot chore (Halon one-button export discipline).
+
 ## The human method, distilled
 
 1. **Direct the camera in 3D, generate the image in AI, never the reverse.**
