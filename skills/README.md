@@ -64,6 +64,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`city-diffusion-osm-training`](procgen-worlds/city-diffusion-osm-training/SKILL.md) | Train a diffusion model from scratch on rasterized OpenStreetMap data to generate conditioned 512x512 city layouts, extend maps with context preservation, and build worlds in a custom editor. |
 | [`chronicle-of-gods-planet-pipeline`](procgen-worlds/chronicle-of-gods-planet-pipeline/SKILL.md) | Generate seeded game worlds on a cube-sphere: fixed six-stage pipeline (crust, Voronoi plates, elevation/sea level, climate, hydrology flood-judge-carve, biomes) with biome regions as the simulation unit. |
 | [`exolune-planet-engine`](procgen-worlds/exolune-planet-engine/SKILL.md) | Build real-scale planet terrain: simulate plates at startup in under a second, derive terrain from boundary distance, evaluate per point on the GPU each frame in double precision, no streaming, orbit to pebble in one shot. |
+| [`infinitra-deterministic-voxel-world`](procgen-worlds/infinitra-deterministic-voxel-world/SKILL.md) | Design a deterministic shared procedural voxel world: one replaceable processing-graph definition, order-independent point evaluation in doubles, world-anchored geometry networks (25 m flow-routing lattice, route-searched roads), SDF-preserving 16^3 voxel LOD; server spot-checks by recomputation. |
 
 ## AI video and film (`ai-video/`)
 
@@ -115,6 +116,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`zenith-lens-flare-copernicus`](simulation-vfx/zenith-lens-flare-copernicus/SKILL.md) | Build physically based lens flare in Houdini Copernicus with Zenith: ray-traced lens prescriptions (built-in 28/50/135/300mm or .zmx files), energy-calibrated plate lights, scene-light follow, mask/alpha occlusion, iris-shaped starburst, RGB or spectral color, CUDA GPU. |
 | [`crushform-ue5-vehicle-damage`](simulation-vfx/crushform-ue5-vehicle-damage/SKILL.md) | Deform UE5 vehicles in real time without Chaos Destruction: lattice damage measured in delta-v, dents drawn with World Position Offset, one Nanite asset, server-authoritative replication. |
 | [`flip-local-viscosity-fake-normals`](simulation-vfx/flip-local-viscosity-fake-normals/SKILL.md) | Finish a Houdini FLIP shot cheaply: raise viscosity only where the collider moves so strokes hold, relax after so the surface settles, fake sparkle by randomizing gel normals instead of adding geometry; budget the 8-hour cache. |
+| [`godot-silk-vfx-vector-pixelation`](simulation-vfx/godot-silk-vfx-vector-pixelation/SKILL.md) | Hand-make fluid pixel-art VFX in Godot 4: smooth vector shapes with tonal 3D faking under a custom pixelation shader; silk as dots moving along lines with the back half fainter for roundness; iterate the money shot by explicit rejection (4 failed ghost-cut variants). |
 
 ## Materials and shaders (`materials-shaders/`)
 
@@ -174,6 +176,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`threejs-forest-env-perf`](engine-runtime/threejs-forest-env-perf/SKILL.md) | Ship a dense three.js forest that runs: 500 instanced trees with compute-shader frustum culling, cross-billboards at distance, alphaTest leaves, Claude-placed godrays, grass trails, 5-variant footstep audio. |
 | [`godot-terrain3d-heightmap`](engine-runtime/godot-terrain3d-heightmap/SKILL.md) | Ship runtime-editable Godot terrain with Terrain3D v1.1.0: heightmap editing (no 3D tunnels), tessellated shadow-casting render, decoupled coarser collision, code-generated procedural maps. |
 | [`godot-scalable-vector-shapes`](engine-runtime/godot-scalable-vector-shapes/SKILL.md) | Draw Godot pixel art with vector shape tools: ScalableVectorShape2D nodes through a Subviewport with pixel snap so pixels never rotate, plus a DynamicOutline2D node with merged-polygon outlines. |
+| [`threejs-sim-render-split-horde`](engine-runtime/threejs-sim-render-split-horde/SKILL.md) | Ship a three.js action prototype: headless 60 Hz fixed-step sim over SoA typed arrays with renderer interpolation, projectiles backstepped (no wall tunneling), 7-draw-call instanced hordes, flow-field + ring-slot crowds, <2 ms tick budget, hashed golden-test digests. |
+| [`ue5-stable-3d-pixel-art-rendering`](engine-runtime/ue5-stable-3d-pixel-art-rendering/SKILL.md) | Render stable 3D pixel art in UE5: cubemap-based pixelation post-process kills rotation jitter, 0.25 s slow cubemap refresh hidden by Lunar Blank / Dylan Ebert disocclusion, distance-layered far-field raymarching, custom depth + stencil for dynamics. |
 
 ## Automation and bridges (`automation/`)
 
@@ -201,6 +205,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`frameforge-comfyui-movie-app`](automation/frameforge-comfyui-movie-app/SKILL.md) | Productize AI movie production on ComfyUI: timeline of ComfyUI jobs with swappable backends, LLM script writing, reference manager, pose studio, voice clips, cheap-draft/expensive-final discipline on one RTX 3060. |
 | [`comfyui-agenty-ai-agent`](automation/comfyui-agenty-ai-agent/SKILL.md) | Run agentY, a free MIT AI agent inside ComfyUI: builds unseen workflows from web research on cheap/local LLMs, self-judges outputs, runs parallel agents per shot, drives Blender/Maya/Houdini/AE over MCP. |
 | [`infinite-language-generator`](automation/infinite-language-generator/SKILL.md) | Build a deterministic seed-based conlang tool for games: one seed call generates the whole language plus rules, voiced lines and animated glyphs ship with it, dictionary and subtitle tool included, MCP-toolable. |
+| [`magic-studios-agent-first-sprite-video`](automation/magic-studios-agent-first-sprite-video/SKILL.md) | Make asset generation agent-operable: package ComfyUI + MiniMax H3 as a local app (own NVIDIA GPU or own Higgsfield key), expose an MCP server + API for coding agents, animate sprites from video models instead of rigging; 480/720@32fps sweet spot. |
 
 ## No-tooling examples (`no-tooling/`)
 
