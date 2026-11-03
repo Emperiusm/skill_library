@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="178 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="181 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">178 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">181 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 178 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">40</span></h2>
+  <input id="search" type="search" placeholder="Search 181 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">41</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -99,6 +99,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="godot-export export and build a godot 4.7 project for distribution: install export templates, define export presets (windows/macos/linux/web/android), run headless command-line exports for ci, and handle web (html5) coop/coep and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-export/SKILL.md">godot-export</a></h3>
   <p>Export and build a Godot 4.7 project for distribution: install export templates, define export presets (Windows/macOS/Linux/Web/Android), run headless command-line exports for CI, and handle web (HTML5) COOP/COEP and...</p>
+</article>
+<article class="card" data-search="godot-fake-frustum-culling-shader visualize what real frustum culling removes in godot 4: a shader that discards pixels invisible to a reference camera, camera data passed from gdscript, plus the corrections that make the fake match the engine (aabb...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-fake-frustum-culling-shader/SKILL.md">godot-fake-frustum-culling-shader</a></h3>
+  <p>Visualize what real frustum culling removes in Godot 4: a shader that discards pixels invisible to a reference camera, camera data passed from GDScript, plus the corrections that make the fake match the engine (AABB...</p>
 </article>
 <article class="card" data-search="godot-gdscript write idiomatic gdscript for godot 4.7: static typing, the node lifecycle (_ready/_process/_physics_process), @export/@onready/@tool annotations, signals, and await for asynchronous flow. use when editing .gd scripts in...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-gdscript/SKILL.md">godot-gdscript</a></h3>
@@ -605,7 +609,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build physically based lens flare in Houdini Copernicus with Zenith: ray-trace a real lens prescription (built-in 28/50/135/300mm lenses or your own .zmx Zemax file) instead of painting sprites, drive flare from...</p>
 </article>
 </div></section>
-<section><h2>Characters and rigging <span class="count">14</span></h2>
+<section><h2>Characters and rigging <span class="count">15</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
@@ -630,6 +634,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
   <p>Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers...</p>
+</article>
+<article class="card" data-search="midi-driven-robot-hands-fingering animate robotic piano hands from any midi file in three.js: precalculate fingering for every note, drop impossible notes before the performance starts, special-case thumb tucking on overlapping notes, and render with...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/midi-driven-robot-hands-fingering/SKILL.md">midi-driven-robot-hands-fingering</a></h3>
+  <p>Animate robotic piano hands from any MIDI file in three.js: precalculate fingering for every note, drop impossible notes before the performance starts, special-case thumb tucking on overlapping notes, and render with...</p>
 </article>
 <article class="card" data-search="minimax-h3-refmod-identity-comfyui generate images of your own character with minimax h3 in comfyui without lora training: bake identity into a refmod file from 8 photos with refmod custom nodes, then prompt scenes, outfits, poses, and environments. 8...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-identity-comfyui/SKILL.md">minimax-h3-refmod-identity-comfyui</a></h3>
@@ -664,7 +672,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Sculpt a character with zero booleans: one Dynamesh for the whole body, extract pieces out of it, harden edges with remesh/extrude/subdivide, alphas for micro-detail, Decimation Master from 250M to 10M polys, Marmoset...</p>
 </article>
 </div></section>
-<section><h2>Materials and shaders <span class="count">14</span></h2>
+<section><h2>Materials and shaders <span class="count">15</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-pbr-materials-textures author and verify pbr materials for ai assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2k-master rule...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-pbr-materials-textures/SKILL.md">ai-3d-pbr-materials-textures</a></h3>
@@ -677,6 +685,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="blender-inverted-hull-outline build a toon outline in blender with the inverted hull method: solidify modifier with flip normals and material offset 1, a black emission outline material, a transparent bsdf mixed by geometry backfacing, a second mix...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/blender-inverted-hull-outline/SKILL.md">blender-inverted-hull-outline</a></h3>
   <p>Build a toon outline in Blender with the inverted hull method: Solidify modifier with Flip normals and Material Offset 1, a black Emission outline material, a Transparent BSDF mixed by Geometry Backfacing, a second Mix...</p>
+</article>
+<article class="card" data-search="blender-taco-shell-voronoi-tortilla model and shade a realistic taco shell in blender: box base folded into a u-shell (subdivision + displace), voronoi distance-to-edge plus noise tortilla-toast material with bump, small-hangar hdri lighting, area-light...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/blender-taco-shell-voronoi-tortilla/SKILL.md">blender-taco-shell-voronoi-tortilla</a></h3>
+  <p>Model and shade a realistic taco shell in Blender: box base folded into a U-shell (Subdivision + Displace), Voronoi Distance-to-Edge plus Noise tortilla-toast material with bump, small-hangar HDRI lighting, area-light...</p>
 </article>
 <article class="card" data-search="godot-window-raindrop-shader make rain read as weather in a godot window shader: per-drop heightmaps (tallest at center) driving light by slope, bounce lighting plus emissive material, and per-pane torus sampling so no two panes rain in sync...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/godot-window-raindrop-shader/SKILL.md">godot-window-raindrop-shader</a></h3>
