@@ -15,6 +15,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-image-to-3d-reconstruction`](capture/ai-3d-image-to-3d-reconstruction/SKILL.md) | Reconstruct usable assets from reference images: reference quality, multi-view coverage, hidden-side hunting, repair loop, six-point sign-off. |
 | [`houdini-single-image-gsplat-sharp-moge2`](capture/houdini-single-image-gsplat-sharp-moge2/SKILL.md) | Turn a single photo into a Gaussian splat in Houdini 22: built-in MoGe-2 node or Apple's SHARP via ONNX in Copernicus, contract-exact COPs prep, CUDA inference, volumes to points, Karma shadow-skip, HDA wrap. |
 | [`comfyui-ldoi-image-to-3d`](capture/comfyui-ldoi-image-to-3d/SKILL.md) | Turn one photo into a 3D asset locally on low VRAM: ComfyUI-ldoi TripoSG nodes, five fp16 weights (~3.8 GB), splat to MeshLab Screened Poisson to Blender voxel remesh. |
+| [`photogrammetry-realitycapture-game-assets`](capture/photogrammetry-realitycapture-game-assets/SKILL.md) | Turn real-world objects into game assets: shoot overlapping photos in manual mode, reconstruct in RealityCapture, clean up and bake color and normal maps. |
 
 ## Characters and rigging (`characters/`)
 
@@ -31,6 +32,10 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-character-pipeline`](characters/ai-3d-character-pipeline/SKILL.md) | Take an AI character from clean A-pose reference through modular parts, rigging, skins, and animation prep to an engine proof. |
 | [`zbrush-dynamesh-extract-decimate`](characters/zbrush-dynamesh-extract-decimate/SKILL.md) | Sculpt a 250M-poly character with zero booleans: one Dynamesh, extract pieces, remesh/extrude/subdivide for edges, alphas for detail, Decimation Master to 10M, Marmoset renders. |
 | [`keenface-metahuman-heads`](characters/keenface-metahuman-heads/SKILL.md) | Turn reference photos into production-ready 3D heads with native MetaHuman topology, clean bald base mesh, and full PBR maps via KeenFace. |
+| [`unreal-jiggle-physics-spring`](characters/unreal-jiggle-physics-spring/SKILL.md) | Add jiggle physics to character joints in Unreal with Animation Blueprint spring controllers: tune stiffness and damping, budget the CPU cost honestly. |
+| [`stair-animation-hidden-ramps-ik`](characters/stair-animation-hidden-ramps-ik/SKILL.md) | Ship believable stair climbing without dedicated stair animations: hidden ramp colliders, capsule-jitter diagnosis, IK foot planting. |
+| [`facial-animation-blendshape-mocap`](characters/facial-animation-blendshape-mocap/SKILL.md) | Build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link to a control rig, climb the capture ladder. |
+| [`character-animation-pipeline-rig-mocap`](characters/character-animation-pipeline-rig-mocap/SKILL.md) | Take a character from model to game animation: joint-and-control rig with painted weights, interruptible layered clips, mocap, cleanup and exaggeration. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -65,6 +70,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`chronicle-of-gods-planet-pipeline`](procgen-worlds/chronicle-of-gods-planet-pipeline/SKILL.md) | Generate seeded game worlds on a cube-sphere: fixed six-stage pipeline (crust, Voronoi plates, elevation/sea level, climate, hydrology flood-judge-carve, biomes) with biome regions as the simulation unit. |
 | [`exolune-planet-engine`](procgen-worlds/exolune-planet-engine/SKILL.md) | Build real-scale planet terrain: simulate plates at startup in under a second, derive terrain from boundary distance, evaluate per point on the GPU each frame in double precision, no streaming, orbit to pebble in one shot. |
 | [`infinitra-deterministic-voxel-world`](procgen-worlds/infinitra-deterministic-voxel-world/SKILL.md) | Design a deterministic shared procedural voxel world: one replaceable processing-graph definition, order-independent point evaluation in doubles, world-anchored geometry networks (25 m flow-routing lattice, route-searched roads), SDF-preserving 16^3 voxel LOD; server spot-checks by recomputation. |
+| [`unreal-pcg-village-generation`](procgen-worlds/unreal-pcg-village-generation/SKILL.md) | Generate a village with Unreal's PCG framework: derive placement rules, spawn points, drive Static Mesh Spawners through Transform Points, break uniformity with Random Choice fractions. |
+| [`ue-grass-cards-lod`](procgen-worlds/ue-grass-cards-lod/SKILL.md) | Build cheap game grass from crossed cards: rotate to hide the card look from above, then swap cheap crosses in the distance and detailed grass near the player with LODs. |
 
 ## AI video and film (`ai-video/`)
 
@@ -117,6 +124,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`crushform-ue5-vehicle-damage`](simulation-vfx/crushform-ue5-vehicle-damage/SKILL.md) | Deform UE5 vehicles in real time without Chaos Destruction: lattice damage measured in delta-v, dents drawn with World Position Offset, one Nanite asset, server-authoritative replication. |
 | [`flip-local-viscosity-fake-normals`](simulation-vfx/flip-local-viscosity-fake-normals/SKILL.md) | Finish a Houdini FLIP shot cheaply: raise viscosity only where the collider moves so strokes hold, relax after so the surface settles, fake sparkle by randomizing gel normals instead of adding geometry; budget the 8-hour cache. |
 | [`godot-silk-vfx-vector-pixelation`](simulation-vfx/godot-silk-vfx-vector-pixelation/SKILL.md) | Hand-make fluid pixel-art VFX in Godot 4: smooth vector shapes with tonal 3D faking under a custom pixelation shader; silk as dots moving along lines with the back half fainter for roundness; iterate the money shot by explicit rejection (4 failed ghost-cut variants). |
+| [`smoke-flipbook-particles`](simulation-vfx/smoke-flipbook-particles/SKILL.md) | Fake volumetric smoke in games: simulate offline, render 64 frames into an 8x8 flipbook texture, play it on camera-facing particle cards. |
+| [`ue-wind-shader-grass`](simulation-vfx/ue-wind-shader-grass/SKILL.md) | Animate grass with wind in a material shader: RotateAboutAxis driven by a time-fed sine, per-card phase offsets, tip-only masking, painted flow map. |
 
 ## Materials and shaders (`materials-shaders/`)
 
@@ -135,6 +144,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-retopology-uv`](materials-shaders/ai-3d-retopology-uv/SKILL.md) | Repair AI meshes for production: retopology decisions by destination, wireframe checks, UV inspection with checker textures and overlap overlays. |
 | [`ai-3d-pbr-materials-textures`](materials-shaders/ai-3d-pbr-materials-textures/SKILL.md) | Author and verify PBR materials for AI assets: channel meanings, ORM packing, normal-map green-channel conventions, two-light and moving-light tests. |
 | [`material-painter`](materials-shaders/material-painter/SKILL.md) | Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets for Unreal/Unity/Godot/Blender. |
+| [`normal-maps-parallax-occlusion`](materials-shaders/normal-maps-parallax-occlusion/SKILL.md) | Fake surface detail: bake high-poly detail into tangent-space normal maps, then add height maps and view-dependent UV offset with parallax occlusion mapping. |
 
 ## Engine and runtime (`engine-runtime/`)
 
@@ -178,6 +188,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`godot-scalable-vector-shapes`](engine-runtime/godot-scalable-vector-shapes/SKILL.md) | Draw Godot pixel art with vector shape tools: ScalableVectorShape2D nodes through a Subviewport with pixel snap so pixels never rotate, plus a DynamicOutline2D node with merged-polygon outlines. |
 | [`threejs-sim-render-split-horde`](engine-runtime/threejs-sim-render-split-horde/SKILL.md) | Ship a three.js action prototype: headless 60 Hz fixed-step sim over SoA typed arrays with renderer interpolation, projectiles backstepped (no wall tunneling), 7-draw-call instanced hordes, flow-field + ring-slot crowds, <2 ms tick budget, hashed golden-test digests. |
 | [`ue5-stable-3d-pixel-art-rendering`](engine-runtime/ue5-stable-3d-pixel-art-rendering/SKILL.md) | Render stable 3D pixel art in UE5: cubemap-based pixelation post-process kills rotation jitter, 0.25 s slow cubemap refresh hidden by Lunar Blank / Dylan Ebert disocclusion, distance-layered far-field raymarching, custom depth + stencil for dynamics. |
+| [`instancing-vs-copying-perf`](engine-runtime/instancing-vs-copying-perf/SKILL.md) | Choose instancing over copying for repeated assets: one mesh plus coordinates in VRAM, a single draw call, and the copy-swap trick for interactable instances. |
+| [`ue-lod-impostors`](engine-runtime/ue-lod-impostors/SKILL.md) | Cut rendering cost with LODs and impostors: swap geometry by distance, skip occluded assets, use camera-facing billboards with normal-mapped lighting. |
 
 ## Automation and bridges (`automation/`)
 
