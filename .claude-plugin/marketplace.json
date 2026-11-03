@@ -74,7 +74,6 @@
         "./skills/capture/spirula-3dgs-anti-floater-capture",
         "./skills/capture/vathography-depth-remap",
         "./skills/characters/ai-3d-character-pipeline",
-        "./skills/characters/ai-character-pipeline",
         "./skills/characters/blender-fake-sim-rigging",
         "./skills/characters/character-animation-pipeline-rig-mocap",
         "./skills/characters/facial-animation-blendshape-mocap",
@@ -285,7 +284,6 @@
       "strict": false,
       "skills": [
         "./skills/characters/ai-3d-character-pipeline",
-        "./skills/characters/ai-character-pipeline",
         "./skills/characters/blender-fake-sim-rigging",
         "./skills/characters/character-animation-pipeline-rig-mocap",
         "./skills/characters/facial-animation-blendshape-mocap",

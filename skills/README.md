@@ -21,7 +21,6 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 
 | Skill | What it teaches |
 |---|---|
-| [`ai-character-pipeline`](characters/ai-character-pipeline/SKILL.md) | Turn an AI character concept into a rigged, game-ready 3D asset, two methods: Tripo P2.0 generate-then-repair (recommended), or base-mesh-first with AI-assisted rigging. Meshy not recommended. |
 | [`blender-fake-sim-rigging`](characters/blender-fake-sim-rigging/SKILL.md) | Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or. |
 | [`layered-vellum-proxy-colliders`](characters/layered-vellum-proxy-colliders/SKILL.md) | Layer hair sims on top of cloth sims in Houdini Vellum without intersection or tangling: simulate cloth first, then give the hair layer simplified VDB-proxy colliders. |
 | [`minimax-h3-refmod-identity-comfyui`](characters/minimax-h3-refmod-identity-comfyui/SKILL.md) | Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod. |

@@ -26,13 +26,23 @@ CustomUse learn articles (article text, audited 2026-10-27):
 Evidence note: a small FAQ tail of one member article was unseen; all
 substantive sections were read.
 
+Thread source (merged 2026-11-03 from the absorbed
+`characters/ai-character-pipeline` skill):
+
+- https://www.reddit.com/r/aigamedev/comments/1wsbnia/how_can_i_get_3d_models_that_looks_like_this/
+  (100-comment thread, 2026-09-28 scout; both top chains and their
+  replies reviewed; linked imgur albums, demo video, and realtime demo
+  were not reviewed, so visual claims rest on the comment text)
+
 ## Tools used
 
-Tools used: AI generators (Meshy, Tripo, Hunyuan) for base meshes;
-rigging tools (Rigify, HumanIK, Mixamo, AccuRIG); DCC tools (Blender,
+Tools used: AI generators (Tripo, Hunyuan) for base meshes; rigging tools (Rigify, HumanIK, Mixamo, AccuRIG); DCC tools (Blender,
 Maya) for cleanup and skinning; Unreal Engine 5 as the proof
 destination. Worked character sizes from the sources: agent-demo
-characters at 12K to 18K triangles.
+characters at 12K to 18K triangles. Generator verdict from the
+r/aigamedev thread: Tripo P2.0 is recommended; Meshy is explicitly not
+recommended for characters ("the topology is a mess... the faces are
+blurry"; "almost good is not shippable").
 
 ## Phase 1: Prepare a clean A-pose reference
 
@@ -44,6 +54,12 @@ characters at 12K to 18K triangles.
    is where character work most often breaks.
 3. Gate the reference before generating: if the reference is posed,
    occluded, or low-resolution, fix the reference, not the mesh.
+4. For image-to-3D generation, produce a clean multi-view turnaround
+   first (character isolated on a plain background, consistent front,
+   side, and back views) and feed that, never the whole gameplay
+   scene: a scene screenshot bakes background, composition, and
+   framing errors into the mesh (Tripo Studio US team diagnosis from
+   the r/aigamedev thread).
 
 **Check**
 - Is the reference a true neutral pose with all sides covered?
@@ -155,6 +171,38 @@ never actually ready.
 4. Movement test decides retopology versus regeneration.
 5. Topology first, rig second. No rig rescues bad edge flow.
 6. FBX for rigged characters, never OBJ. Engine proof is the verdict.
+
+## Two proven chains (r/aigamedev thread)
+
+The thread's verdict, condensed: AI generation buys silhouette and
+proportions; retopology, rig standards, and weight-paint validation
+make the game asset. "70% ready" is the honest ceiling; the last 30%
+is manual, so budget it instead of prompting against it.
+
+**Chain 1, generate-then-repair** (recommended when you have a 2D
+concept and no base mesh): clean 4-view turnaround first; generate
+with Tripo Smart Mesh P2.0 at roughly 5,000 to 10,000 tris; generate
+parts separately and assemble in Blender (base body, head, clothes,
+armor, hair); use GPT Astra to split meshes, fix UVs, and replace
+materials with CC0 textures; rig in Tripo or Mixamo on the clean
+T-pose; retarget Mixamo animations (Cascadeur for cleanup, Fable for
+idle motion); spring-bone dynamics for capes and cloth instead of
+full simulation.
+
+**Chain 2, base-mesh-first** (when you need reliability or already
+have a base mesh): buy or pull a clean-topology base (Sketchfab,
+Humble Bundle packs); rig with Pupa's addon; use Blender MCP plus AI
+assist for rigging and animation; take animations from Mixamo;
+fine-tune open-source clothes and weapons instead of generating them;
+run Unity import-parity checks (materials, lighting, import settings)
+before blaming the model when the in-engine look differs from the
+generator preview.
+
+**Shared tests:** the diorama test (does it survive camera movement,
+animation, and player exploration? If not, it is a render, not an
+asset); hands are the highest-risk detail zone, inspect them first;
+past one hour of iteration on a single generation, stop prompting and
+start modeling.
 
 ## AAA studio practice
 
