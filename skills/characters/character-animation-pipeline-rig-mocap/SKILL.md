@@ -129,6 +129,64 @@ leaves performances that are accurate and lifeless; overdoing it
 leaves cartoons. The animator's judgment is the step no pipeline
 automates away.
 
+## AAA studio practice
+
+- **Ubisoft Montreal, GDC 2016, Simon Clavet, "Motion Matching and
+  The Road to Next-Gen Animation" (For Honor).** The industry
+  replacement for hand-managed state machines: a "ridiculously
+  brute-force" selection that, every few frames, jumps to the
+  mocap segment best matching the character's current situation
+  and the desired destination. Trajectory comes from code (a
+  simulated point, essentially a spring-damper on the desired
+  velocity); animation is "a cosmetic detail on top." The goal is
+  predictability, not responsiveness. At the time, 4-5 Ubisoft
+  projects were using motion matching. Source: Game Anim writeup:
+  https://www.gameanim.com/2016/05/03/motion-matching-ubisofts-honor/
+- **Ubisoft Montreal mocap pipeline practice (same talk).** Shoots
+  are planned with "dance cards": required action coverage (walks,
+  runs, starts, stops, turns, plants) captured in long takes with
+  buffer motion before and after each move. Animators do NOT chop
+  clips or author cycles (called out as the biggest time-sink of
+  traditional pipelines); they do an initial tweak, import, and
+  mark events at the exact significant moment (e.g. sword
+  contact), and all pose-matching metadata is precomputed offline
+  for runtime speed. Pose matching uses about 10 factors: match
+  only a few bones, local velocity, feet positions and
+  velocities. A realism-vs-comfort slider lets animators and
+  designers balance fidelity against immediacy, and aggressive LOD
+  keeps it efficient with 100+ characters on screen.
+- **Sony Santa Monica, GDC 2019, Bruno Velazquez (God of War
+  2018).** A full studio-level rework of the animation approach
+  for Kratos, covering the "clean up and exaggerate for the
+  fantasy" end of this pipeline: realistic capture as the starting
+  point, character-specific exaggeration as the goal. Source: Game
+  Developer (GDC Vault video):
+  https://www.gamedeveloper.com/art/video-animating-i-god-of-war-i-
+
+**Agent-executable upgrades**
+
+1. **Mocap dance-card manifest (`dance-card.json`).** Required
+   action coverage per character (walks, runs, repositions,
+   starts, stops, turns, plants, strafe patterns), each with
+   buffer-motion requirements. An automated coverage check rejects
+   a shoot day whose take library leaves a dance-card action
+   uncovered.
+2. **Event-markup gate.** Every clip must carry its gameplay
+   events (stance changes, hit moments) at the significant frame,
+   not clip boundaries; untagged clips fail the gate. All
+   pose-matching metadata (pose, velocity, feet
+   positions/velocities) is precomputed offline by a batch script,
+   never at runtime.
+3. **Responsiveness/interruption test.** Automated loop asserting
+   every clip can be interrupted at any point by a
+   higher-priority state and that masked layers apply to the right
+   body parts (upper-body masks with weapon-arm swing reduction,
+   per this skill's Phase 2).
+4. **LOD/cost check.** Character-count stress test: animation
+   update cost stays within budget at the game's target on-screen
+   character count, with the LOD policy recorded per character
+   tier.
+
 ## The human method, distilled
 
 1. Rig: joints, controls, painted weights; no shortcuts at the

@@ -73,6 +73,17 @@ Commenter-cited open alternative: https://github.com/fmmix/sprite_h3 — "my ful
 **Why**
 - [inference] If the agent is the user, every new capability must be agent-operable from day one; bolting the API on later breaks the contract.
 
+## AAA studio practice
+
+**Ubisoft La Forge, Ghostwriter (GDC 2023, AAA reference for agent-shaped tooling).** Ubisoft's R&D lab built Ghostwriter to generate first drafts of NPC barks (short triggered dialogue lines), explicitly so scriptwriters select and polish the samples instead of drafting from zero; R&D scientist Ben Swanson demonstrated it at GDC 2023. The design rules map directly onto agent-first tooling: the tool owns volume production, the human owns the approval gate, and generations are produced in pairs so the writer's choice becomes training data (pairwise preference as the training loop). Ubisoft's own technology page frames it as giving writers "more time to polish and focus on the narrative elsewhere" (Ubisoft technology page: https://www.ubisoft.com/en-us/company/how-we-make-games/technology ; VG247 coverage of the GDC demo: https://www.vg247.com/ubisoft-says-its-ghostwriter-ai-program-will-not-replace-game-writers/ ; pairwise-training detail: https://aiwiki.ai/wiki/gaming).
+
+**GIANTY, studio engineering blog on generative AI in asset production (2026).** GIANTY's writeup says generative AI delivers value "as an accelerator across specific stages of the pipeline," not as fully automated content creation. Their internal AI Pixel Tool produces placeholder pixel-art mockups to speed prototyping, but outputs "still need artist refinement before shipping," and the real bottlenecks are quality, consistency, technical precision, and IP safety (https://www.gianty.com/generative-ai-in-game-asset-production-in-2026/). This is the AAA-industry version of Magic Studios' own stance: free, bring-your-own-compute, dogfood first, ship only what passes a human gate.
+
+**Agent-executable upgrades (from the above).**
+1. Job manifest JSON: every MCP/API call appends {op: generate, edit, or export; params; seed; model; hardware; timestamp; verdict} to a results log. Following the Ghostwriter pattern, the verdict is a pairwise choice: accepted, or rejected-with-reason. The rejected entries become the training signal for the next prompt or model iteration.
+2. Human approval gate: route every export through an approval queue (the GIANTY artist-refinement gate). An agent may not mark a job "shipped" until a verdict is recorded, mirroring Ghostwriter's writer-selects-and-polishes loop. The gate is the product contract, not an optional flag.
+3. Stuck-point instrumentation: the author's "tell me where an agent gets stuck" becomes a structured stuck-point log {operation, input, error or dead end, frequency}. After every 10 jobs the agent aggregates frequencies and proposes the top stuck point as the next fix, so the bug list is data-driven instead of anecdotal.
+
 ## The human method, distilled
 
 1. "I want to know where animations break for your art style, whether the export works in your engine, how it runs on your card, and where an agent gets stuck." — the feedback ask names the four failure surfaces: art-style breakage, engine export, hardware variance, agent stuckness.

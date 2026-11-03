@@ -94,6 +94,48 @@ high-budget games use it broadly is the CPU cost per spring, not the
 difficulty. The decision is economic (is this motion worth its
 springs?) rather than technical.
 
+## AAA studio practice
+
+Two named practices cover the two ends of this skill: bone-spring
+controllers for animation-graph secondary motion, and GPU strand
+simulation when bones are not enough.
+
+- **Epic Games, Kawaii Physics plugin (AnimGraph, by Epic's Kazuya
+  Okada).** Bone-based secondary motion with just two physics
+  control parameters (deliberately simpler to set up than the
+  engine's AnimDynamics node), sphere/capsule/plane colliders placed
+  in the Animation Editor viewport, bone length preserved even when
+  the solver fails, and no PhysX dependency, which keeps overhead
+  lower than the standard physics system. Source: 80 Level, "Simple
+  Anime Physics Plug-In For Unreal Engine 5" (Dec 2024):
+  https://80.lv/articles/kawaii-physics-plug-in-now-supports-unreal-engine-5-5/
+- **GDC 2015, AMD + Eidos-Montreal, "Augmented Hair in Deus Ex
+  Universe Projects: TressFX 3.0."** The AAA rung above spring
+  bones: hair as individual strands simulated on the GPU with
+  compute shaders (edge-length, local-shape, and global-shape
+  constraints; collision shapes; external forces like wind and
+  gravity), then rendered with high-quality shading. First used in
+  Crystal Dynamics' Tomb Raider (2013), then integrated into the
+  Dawn Engine for the Deus Ex universe. Source: GDC 2015 slide deck
+  (mirrored):
+  https://doczz.net/doc/5523200/augmented-hair-in-deus-ex-universe-projects--tressfx-3-0
+
+**Agent-executable upgrades**
+
+1. **Spring budget manifest (`springs.json`).** One entry per
+   spring: joint name, stiffness, damping, controller type (Spring
+   Controller / AnimDynamics / Kawaii), collider setup, and measured
+   cost. An automated gate rejects the character if total measured
+   spring cost exceeds the per-character frame budget.
+2. **Settle check.** Simulate the character through N seconds of
+   representative motion, then assert oscillation amplitude decays
+   below a threshold within the designed settle time. This turns the
+   manual "does it settle naturally" check into a batch loop over
+   every spring.
+3. **Bone-length invariant.** Wherever Kawaii Physics is used,
+   assert bone length is preserved across the simulation (its
+   documented guarantee) as part of the batch validation.
+
 ## The human method, distilled
 
 1. Joints own flesh; declare the joints before the springs.

@@ -106,6 +106,19 @@ with an upward force. "It's not necessarily volumetric, but it looks
 like a volume, and that's good enough for games." The next time you
 see a huge fire in a game, "it's just a bunch of PNGs floating by."
 
+## AAA studio practice
+
+**Winni Li via 80 Level, "VFX Production in Houdini & UE4."** The standard professional pipeline this skill mirrors: simulate in Houdini, then use Houdini's mosaic node to organize the rendered frames into one flipbook texture, typically 6x6 or 8x8. More frames look more consistent, but Unreal's import limit depends on image size, so grid size is a budget decision, not a free choice. The particle material is translucent with a particle color node feeding the texture, exactly the card setup in Phase 3 (https://80.lv/articles/006sdf-vfx-production-in-houdini-ue4).
+
+**Gasper Znoj via 80 Level, "Creating a VFX Explosion in UE4" (VFX artist, EA's Plants vs. Zombies: Battle for Neighborville, Relic's Age of Empires IV).** For fake volumetric lighting on smoke, Znoj takes a dot product between a manually set light vector and the vertex normal direction, then pans a 1x512 gradient texture toward or away from the light; using the camera position (with an offset) as the light direction keeps the explosion looking the same from any angle. He notes the same trick already exists as drawn highlights and shadows on 2D animated flipbooks (https://80.lv/articles/creating-a-vfx-explosion-in-ue4). This upgrades Phases 2 and 3: the flipbook's baked lighting and the engine-side fake light must agree, or the cards will fight the scene lighting.
+
+**GDC 2023 VFX Roundtable notes (realtimevfx.com).** The industry's own roundtable discussed using Stable Diffusion to "fill in frames of a flipbook" and generally clean up work artists already do, alongside Houdini workflows for packing data into UV channels (https://realtimevfx.com/t/gdc-2023-vfx-roundtable-discussion-notes/23367). This points at the automation ceiling for this technique: interpolation between baked frames is the natural agent task, scoped to real popping ranges rather than speculative generation.
+
+**Agent-executable upgrades (from the above).**
+1. Flipbook manifest JSON: {frame-count, grid (e.g. 8x8), frame-size px, total texture px, alpha-channel present, engine import limit pass or fail}. The agent runs a batch validation loop after every bake: frame count equals grid squared, no missing tiles, alpha channel exists, total texture within the engine's import budget. This automates Phase 2's Check.
+2. Lighting consistency gate: log the baked light direction {x, y, z} and the engine-side fake light vector; the agent flags a mismatch before the effect ships, with Znoj's camera-offset convention recorded as the chosen standard so future effects inherit it.
+3. Frame-interpolation queue: any flipbook where scrubbing shows visible popping is logged with the popping frame range as a candidate for AI frame fill (the GDC 2023 roundtable use case). The queue entry is scoped to the range, never a vague "improve this."
+
 ## The human method, distilled
 
 1. Simulate offline for bake, not for playback; 64 good frames is

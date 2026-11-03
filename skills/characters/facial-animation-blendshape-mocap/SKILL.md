@@ -123,6 +123,44 @@ direction of travel is clear (cheaper, more automatic), but the 3D
 truth of facial movement is what separates convincing capture from a
 talking mask. Match the rung to the project's dialogue load.
 
+## AAA studio practice
+
+- **GDC 2014, John Hable (ex-Naughty Dog/Uncharted, EA/Tiger
+  Woods), "Next-Gen Characters: From Facial Scans to Facial
+  Animation."** The core problem is quality vs volume: traditional
+  mocap-plus-hand-sculpted-blendshapes loses the fine subtleties
+  of the face, while expensive capture (Universal Capture) does not
+  fit game production. His pipeline: take raw face scans, process
+  them into aligned blendshapes, compress them to run in real
+  time, and drive them with motion-capture data. Source: GDC Vault
+  (archived): https://archive.org/details/GDC2014Hable
+- **Naughty Dog, Uncharted 4.** Faces jumped from 90-100 joints
+  (Uncharted, The Last of Us) to 300-500 joints in Uncharted 4,
+  per Naughty Dog's Josh Scherr (GamesTM interview). The
+  performance side moved from hand animation (the first three
+  Uncharted games) to headcams with facial markings capturing the
+  actors. Note: Naughty Dog builds joint-based facial systems
+  rather than pure blendshape rigs, which is the production-grade
+  answer to this skill's "whole expressions or muscle groups"
+  choice. Sources:
+  https://wccftech.com/uncharted-4-thiefs-500-joints-faces-bring-lifelike-facial-animations/amp/
+  and
+  https://www.gamedeveloper.com/production/naughty-dog-shares-a-guided-look-at-its-i-uncharted-4-i-production-process
+
+**Agent-executable upgrades**
+
+1. **Face pipeline manifest (`face-rig.json`).** Expression list
+   (whole expressions or muscle groups, with the choice recorded),
+   scan-to-shape alignment error tolerance, compression ratio, and
+   capture tier per scene.
+2. **Automated gates.** Neutral-face interpolation check (no mesh
+   explosions at slider extremes). Coverage check (every dialogue
+   line's phoneme set is reachable from the shapes or the capture
+   tier). 3D-preservation check (capture preserves depth
+   displacement of mouth corners, not a 2D flattening). For
+   audio-driven real-time tiers: latency check against the
+   dialogue load.
+
 ## The human method, distilled
 
 1. Shapes are the vocabulary; choose whole expressions or muscle

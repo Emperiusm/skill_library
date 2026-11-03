@@ -108,6 +108,16 @@ bug, not an asset bug. And the fix compounds: instanced modular
 pieces are cheaper in VRAM, cull better, and produce more visual
 variety from fewer assets.
 
+## AAA studio practice
+
+- **Epic Games, Instanced Static Mesh Component documentation.** Epic's official docs describe instancing as the mechanism for many copies of one mesh sharing draw calls. The engine source comment on `AInstancedStaticMeshActor` states it plainly: "An Instanced Static Mesh Actor renders all instances in a single draw call making it much more efficient than the equivalent number of individual static mesh actors," with the restriction that all instances share the same materials and static mesh asset. Source: https://dev.epicgames.com/documentation/en-us/unreal-engine/instanced-static-mesh-component-in-unreal-engine ; https://forums.unrealengine.com/t/editor-feature-pull-request-ramas-instanced-static-mesh-editor-feature/23819
+- **HISM draw-call math (Epic tooling documentation).** The rule the agent can audit with: original draw calls = instance count x material count; after conversion to a Hierarchical Instanced Static Mesh, draw calls = material count. Any repeated asset whose measured draw calls scale with instance count is an instancing bug, exactly the Windrose diagnosis. Source: https://deepwiki.com/tedbarnett/VP_Supervisor/5.4-hism-management-interface
+
+Agent-executable upgrades this research unlocks:
+
+1. **draw-call-audit.json** — a manifest-driven audit loop: for each repeated asset, record expected draw calls (material count) vs. measured draw calls (from `stat rhi` or `renderer.info.render.calls`). Any asset whose measured calls scale with instance count gets flagged for ISM/HISM conversion, turning the Windrose base-building diagnosis into a repeatable check.
+2. **Interaction-swap registry** — the copy-swap trick becomes data: a registry mapping interactable instances to their conversion rule (remove the instance, spawn the copy actor at the same transform on first interaction). The gate verifies that non-interacted instances stay instanced and that the swap is atomic (no frame renders both the instance and the copy).
+
 ## The human method, distilled
 
 1. Instance by default; copies are for interaction, not for

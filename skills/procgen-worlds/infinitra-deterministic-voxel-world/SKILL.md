@@ -75,6 +75,16 @@ C# / Unity; IL2CPP on the client, .NET on the server; custom closed-source voxel
 **Why**
 - LOD without popping requires the coarse representation to be a strict subset-preview of the fine one, not an average. SDFs carry the detail the coarse grid cannot.
 
+## AAA studio practice
+
+- **Hello Games (No Man's Sky) — GDC 2017, Innes McKendrick.** McKendrick's GDC talk breaks down the continuous world-generation pipeline: voxel-based world generation, then polygonization and texturing, then population and simulation, all generated continuously in real time as the player moves from space down to the surface. Source: https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i-
+- **Hello Games — deterministic universe from one seed.** No Man's Sky computes nearly everything through deterministic algorithms from a single 64-bit seed: a star's position seeds its planetary system, each planet's position seeds its features, and so on down the hierarchy. Very little is stored on servers; every machine derives the same elements by recomputing them when the player is near, which is why two players visiting the same location see the same world. This is the shipped-AAA version of "computed identically on every machine from definition + position alone." Source: https://alchetron.com/Development-of-No-Man%27s-Sky
+
+Agent-executable upgrades this research unlocks:
+
+1. **parity-harness.json** — a manifest of (seed, region, expected-digest) entries. A CI job recomputes each region on a different runtime/architecture and fails on any digest mismatch, turning "recompute any region on a different machine" from a manual check into an automated gate. The server's random spot-check of collected items becomes a configured sampling rate in the same manifest.
+2. **Float-behavior audit** — the IL2CPP-vs-.NET split is the same hazard that forced Rocket League-era determinism patches between processor types. Pin the audit to the manifest: declare the precision envelope (doubles, 64-bit cell keys) and add a cross-runtime digest entry so drift is caught by the harness, not by players.
+
 ## The human method, distilled
 
 1. "The engine is far ahead of the game" — the author is explicit that the unsolved part is gameplay that uses the strengths (one huge shared world, dynamic changes everyone sees); "a simple shooter would use none of that." Build the tech for the game it enables, and admit when the game is not found yet.

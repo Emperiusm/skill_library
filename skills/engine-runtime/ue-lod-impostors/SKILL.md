@@ -101,6 +101,19 @@ indistinguishable from geometry at a fraction of the cost. The
 normal-mapped lighting response is what prevents the far field from
 looking flat when the sun moves.
 
+## AAA studio practice
+
+- **Epic Games / Ryan Brucks — octahedral impostors (GDC 2018, Fortnite).** Brucks' Impostor Baker captures objects from multiple angles using octahedra mapping and stores them in a texture atlas, with full-sphere, upper-hemisphere, and traditional-billboard modes. Fortnite has used these impostors since its map 2.0 update, built directly into Hierarchical LODs via "Use MaxLOD as Impostor"; the smallest frame counts shipped are a 12x12 layout for the main pine tree and 8x8 for smaller farm props. Source: https://www.scribd.com/document/584595871/shaderbits-com-blog-octahedral-impostors
+- **Ubisoft Montreal (Far Cry 4) — GDC 2015, Stephen McAuley.** Trees get three LODs before becoming an impostor; leaf-cluster LODs are generated offline (percentage of cluster visible computed at 12 distances x 9 viewpoints); the impostor itself is baked from nine viewpoints; and impostors are "brought to life" with per-vertex sine waves on tessellated billboards (simulated as smooth triangle waves for speed) plus per-pixel noise from texture to fake leaf motion. Source: https://archive.org/stream/GDC2015McAuley/GDC2015-McAuley_djvu.txt
+- **Guerrilla Games (Horizon Zero Dawn) — GDC 2018, Gilbert Sanders.** Trees ship with five LODs: ~10,000 triangles down through ~2,600 and ~1,200 to a ~200+12 LOD with a billboard fading in, ending at a 12-triangle billboard shader; all foliage motion is driven by one global wind force field evaluated in a compute shader (around 150 microseconds). Source: https://sup1r19glprl3ghipfbxrc.vquantum.top/gdc2018/presentations/gilbert_sanders_between_tech_and.pdf
+- **Epic's Kite demo — Render to Texture toolset.** The Kite demo rendered 3D impostor sprites plus normalized depth maps through the Render to Texture Toolset so distant tree impostors cast accurate shadows and blend instead of reading as billboard planes. Source: https://forums.unrealengine.com/t/lightmass-disable-self-shadowing-on-static-meshes/381408
+
+Agent-executable upgrades this research unlocks:
+
+1. **lod-chain.manifest.json** — per asset: tri budgets per LOD (Horizon's 10k / 2.6k / 1.2k / 200+12 / 12 chain is the reference ladder), screen-size thresholds, and impostor bake parameters (view grid, atlas size, mode). A build gate fails any asset whose LOD chain does not terminate in an impostor or an explicit cull.
+2. **Impostor parity gate** — render the impostor and the LOD0 geometry from the same camera at the transition distance and compare (PSNR or perceptual-diff threshold); fail the bake if the impostor visibly disagrees with the geometry it replaces.
+3. **Wind continuity check** — the Far Cry lesson: the impostor shader must carry the same wind motion as the geometry LODs, or the swap reads as a freeze. The gate samples vertex displacement under the wind field at the transition distance and asserts continuity across the LOD boundary.
+
 ## The human method, distilled
 
 1. Distance decides fidelity: high, medium, low, impostor.

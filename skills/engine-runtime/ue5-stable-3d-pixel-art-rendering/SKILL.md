@@ -69,6 +69,16 @@ Unreal Engine 5 (5.6–5.8 per the plugin docs site); custom post-process plugin
 **Why**
 - The cubemap path is inherently static-scene-friendly; dynamics need their own pass or they smear across the slow capture interval.
 
+## AAA studio practice
+
+- **Dylan Ebert, "Texel Splatting: Perspective-Stable 3D Pixel Art" (arXiv 2603.14587)** — the peer-reviewed statement of the same trick this plugin uses: scene geometry is rasterized into a cubemap from a fixed probe origin, shaded per cubemap texel, and splatted to screen as world-space quads. Cubemap parameterization gives rotation invariance (rotating the camera never reassigns a scene point to a different texel); snapping the probe origin to a world grid gives translation invariance. The paper names the same open tradeoff this plugin fights: disocclusion at probe boundaries, where geometry the fixed origin never saw cannot be supplied stably. Source: https://arxiv.org/pdf/2603.14587
+- **Square Enix / Acquire (Octopath Traveler) — HD-2D.** The team's Famitsu interview describes the shipped AAA answer to pixel-art-plus-3D: "rich-looking pixel art enhanced by modern technology," with the hard-won lessons being (a) too little depth is uninteresting, (b) too much resolution and saturation kills the pixel appeal, (c) denser tile variations and colors enrich the view, and (d) deliberate per-element decisions about what stays pixel (whether water should be pixel or photorealistic was an open question). Source: https://gonintendo.com/archives/276657-project-octopath-traveler-devs-talk-characters-dev-challenges-the-game-s-look-and
+
+Agent-executable upgrades this research unlocks:
+
+1. **pixel-stability-test.json** — a manifest of camera moves (rotate-in-place N frames, strafe translations, approach-the-horizon), each with a stability assertion: frame hashes must not drift beyond tolerance while the camera stays within one probe cell, and the disocclusion budget (pixels reprojected per frame) is measured and capped.
+2. **Capture-rate sweep** — the 0.25 s capture interval becomes a parameter, not a constant. The runner sweeps 0.1 to 0.5 s and reports stability vs. capture cost, so the tradeoff is chosen from data instead of the author's one number.
+
 ## The human method, distilled
 
 1. Build on public discoveries and credit them: the plugin started from Project Shadowglass trailers + Ebert/Blank's disocclusion work.

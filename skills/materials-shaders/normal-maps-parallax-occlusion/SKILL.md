@@ -138,6 +138,41 @@ Detail fakery is a cost ladder, and most surfaces never need the top
 rung. POM on every surface is the same mistake as high-poly
 everything: paying for fidelity nobody can see.
 
+## AAA studio practice
+
+- **Crytek, Crysis 2 "DX11 Ultra Upgrade" documentation.** Crytek
+  reintroduced parallax occlusion mapping "in order to add macro
+  details that are not efficiently possible with hardware
+  Tessellation." POM "efficiently approximates surface
+  displacement in tangent space" (no real geometry displacement),
+  and brings self-shadowing to the surface detail (mud, pavement,
+  plastic floors in the before/after comparisons). Source:
+  Crytek's official DX11 Ultra Upgrade doc (archived):
+  https://dn710105.ca.archive.org/0/items/crysis2-files/Files/DirectX%2011%20Ultra%20Upgrade%20Doc/c2_dx11_ultra_upgrade.pdf
+- **Crysis 2 DX11 patch analysis (bit-tech).** "Where tessellation
+  isn't feasible within the Crysis 2's performance window, Crytek
+  has used parallax occlusion mapping instead," quoting Nvidia's
+  Ultra upgrade guide: POM gives "an illusion of depth on certain
+  textures, as well as adding self-shadowing" while level
+  geometry stays unchanged. This is the cost-ladder decision this
+  skill's Phase 4 describes, as shipped by Crytek. Source:
+  https://bit-tech.net/reviews/gaming/pc/crysis-2-directx-11-patch-analysis/5/
+
+**Agent-executable upgrades**
+
+1. **Material cost-ladder manifest (`materials.json`).** Per
+   material: chosen technique (normal-map-only vs POM), the
+   justification flag (does low-angle viewing actually happen for
+   this surface?), and the height-map parameters for POM
+   materials. An automated audit flags every POM material lacking
+   a low-angle justification.
+2. **Automated gates.** Neutral-normal check (flat areas read 0.5,
+   0.5, 1). Grazing-angle artifact scan (render the material at
+   extreme low angles in a batch loop and flag visible layering).
+   Shader cost check (texture sample count per POM material
+   against the shader budget; this converts "can be a bit more
+   expensive" into a number).
+
 ## The human method, distilled
 
 1. Bake high-poly detail to tangent-space normal maps; 0.5 is

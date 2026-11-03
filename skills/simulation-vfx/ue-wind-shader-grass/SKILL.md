@@ -115,6 +115,19 @@ grass is rooted. The flow map is what separates wind from vibration:
 real wind travels. The sound-off test is the honest one, because
 sound covers a multitude of shader sins.
 
+## AAA studio practice
+
+**Sucker Punch, GDC 2021: wind in Ghost of Tsushima (Bill Rockenbeck).** The studio's wind prioritizes volume over accuracy: "we're not doing any real modeling of fluid dynamics." The main wind vector keeps a constant direction while time-varying Perlin noise modulates the magnitude, which is what makes gusts visibly travel across large grass fields. Local swirl comes from "vorticles," invisible wind-generating particles that grass and other particles sample, plus local disturbance inputs such as character footfall. For the Guiding Wind feature they use a single vector from the hero toward the goal (https://www.gamedeveloper.com/design/using-vorticles-to-simulate-wind-in-i-ghost-of-tsushima-i-). This is the AAA version of the skill's "there is no wind": one authored global vector plus traveling noise plus local disturbances, with particles and sound selling the rest. It also shows the skill's flow map as the entry-level version of a real shipped idea: painted direction with traveling intensity.
+
+**Sucker Punch, GDC talk "Procedural Grass in Ghost of Tsushima" (Eric Woley).** The studio generates per-blade grass data with a compute shader, models blade shape with cubic Bezier curves, drives a global wind system that is sampled on both CPU and GPU, applies the wind as rotation on the vertices, and layers an LOD system blending high to low detail for the performance win (talk listing: https://www.classcentral.com/course/youtube-procedural-grass-in-ghost-of-tsushima-165645). The RotateAboutAxis material approach in this skill is the same principle at grass-card scale; the compute-shader route is the documented escalation path when card counts grow beyond what instanced cards can carry.
+
+**Epic Games, Pivot Painter 2.0 (official tool overview via 80 Level; SideFX Houdini HDA docs).** Epic's Pivot Painter stores each sub-object's pivot and rotation information in the model's data (UV channels or textures), which the shader references so every blade of grass rotates and bends around its own root, with branch-leaf hierarchies inheriting parent motion. Pivot Painter 2.0 raised the object limit from 3,000 to 30,000 sub-models specifically to represent complex foliage (https://80.lv/articles/working-with-pivot-painter-2-0-in-unreal ; https://www.sidefx.com/tutorials/game-tools-pivot-painter/). This is the industrial answer to Phase 2's desync problem: bake per-blade pivots once, compute motion per vertex in the shader, and get unique animation per blade without a single extra draw call.
+
+**Agent-executable upgrades (from the above).**
+1. Wind parameter manifest JSON: {global-vector, gust-noise scale and frequency, per-card phase source (random hash vs baked pivots), intensity min/max, tip-mask gradient, flow-map path}. Every exposed material parameter gets a default, a range, and an art-directable label, so a designer or agent tunes without touching the math, matching Phase 2's Why.
+2. Traveling-gust gate: sample the wind field at 3 world positions 10 m apart over 5 seconds and require the gust peak to arrive at each in order (the Sucker Punch traveling-gust behavior). A single global sine fails this; Perlin noise or a scrolling flow map passes. An agent can run this check in-engine or in a test harness before approving the wind setup.
+3. Sound-off visual regression: render the fixed-camera test scene with and without wind applied, then diff against a golden reference screenshot. The skill's "must read as wind with the sound off" becomes a pixel-diff gate with a documented threshold, re-run whenever the material graph changes.
+
 ## The human method, distilled
 
 1. There is no wind; animate its effects and add sound.

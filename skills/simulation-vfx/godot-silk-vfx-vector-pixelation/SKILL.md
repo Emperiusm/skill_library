@@ -73,6 +73,17 @@ Godot 4; 2D vector shapes (smooth, not pixel-drawn); a custom pixelation shader 
 **Why**
 - When the goal is a *feel*, trial-and-error with explicit rejection beats planning. Responsiveness outranks spectacle: the player must read the attack the instant it starts.
 
+## AAA studio practice
+
+**Riot Games, League of Legends VFX Style Guide (internal 37-page discipline guide).** Riot's stated VFX goals, in order: visual clarity for gameplay, minimal clutter, thematic reinforcement, surprise and delight. Every effect has a primary element (focal point, high value, clear silhouette, strong shape, high opacity) that carries the gameplay signal, and a secondary element (low value, blurry or simple shape, low opacity, subtle movement) that carries theme. Shapes are hand-painted, mixing soft and hard lines; photographs and superfluous detail are banned; silhouettes must read cleanly; and area-of-effect art must match the actual gameplay radius (https://gdad.wiki/wiki/sources/source-lol-vfx-style-guide). This is the institutional version of the author's "reject by look, name the failure": readability outranks fidelity, and every rejection names the violated rule. The author's "one was like confetti" rejection is exactly a clutter-fights-signal violation.
+
+**Riot's Magnus Lehmann (Head of Creative) on VFX timing (VFX Apprentice interview).** Lehmann describes standout VFX timing as "a small symphony with anticipation, build up, and a big payoff, then overshoot settle," and cites Ryan Woodward's GDC Visual Effects Bootcamp for what a single simple shape can do with timing alone (https://www.vfxapprentice.com/blog/riot-games-head-creative-vfx-artist-needs). This maps to Phase 4's money shot: the ghosts cutting the silk one by one reads because of the timing sequence (coil releases on attack, loose silk pulls to the next ghost), not because of particle count. It also validates cutting the dive: responsiveness is the anticipation beat done right.
+
+**Agent-executable upgrades (from the above).**
+1. Rejection log JSON: {version, what-changed, rejected-because (named visual reason), violated-rule (e.g. "clutter fights signal", "silhouette unreadable", "wrong motion language")}. The author kept rejections in his head; the log makes trial-and-error legible and re-usable across effects in the series.
+2. Readability gate: freeze-frame the effect at the key moment and check three boxes from the LoL guide before shipping: the primary element carries the signal (silhouette reads at game camera distance), the secondary stays subordinate (no clutter), and the effect art matches the gameplay area (no misleading radius). An agent can run this as a checklist against captured frames.
+3. Timing beat sheet: write the effect as {anticipation-beat, snap-payoff, overshoot-settle} with frame counts before building it, so iteration targets timing first (the Lehmann symphony), then texture detail last.
+
 ## The human method, distilled
 
 1. "Because i dont use AI assets?" — hand-made, stated plainly when challenged.

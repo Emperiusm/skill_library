@@ -96,6 +96,58 @@ character slides up correctly but the feet hover or clip, which is
 exactly the kind of small wrongness players notice. IK is what sells
 the contact.
 
+## AAA studio practice
+
+- **Ubisoft Montreal, GDC 2013 Animation Bootcamp (Jonathan Cooper,
+  AC3).** A detailed procedural lean and foot-placement system for
+  turning while running, created procedurally and then fine-tuned
+  by comparing against real motion-capture data. Assassin's Creed
+  games use IK for detailed hand and foot placement in climbing,
+  plus a procedural layer for overall body movement on jumps and
+  landings. Secondary motion is spring-based too: cloth simulation
+  on the cape, spring physics on the equipment bits attached to the
+  character. Source: Wolfire Games GDC13 Animation Bootcamp
+  summary:
+  https://www.wolfire.com/blog/2013/04/GDC13-Summary-Animation-Bootcamp-Part-4-6/
+- **Ubisoft Montreal, GDC 2016, Simon Clavet, "Motion Matching and
+  The Road to Next-Gen Animation" (For Honor).** Toe-locking at
+  run-time to a ground socket matching the toe's position in the
+  animation fixes foot-slide; foot IK is also implemented for
+  slopes, pulling the hips down to connect to the lowest foot on
+  slopes and stairs, with the hard rule that dropping the hips
+  must never break the pose or hyper-extend the knees (animator
+  silhouettes are preserved). Instead of timescaling animations
+  more than 10% faster or 20% slower to adjust speed, designers
+  slide the characters and let foot IK relieve the foot-sliding.
+  Source: Game Anim writeup:
+  https://www.gameanim.com/2016/05/03/motion-matching-ubisofts-honor/
+- **Epic Games, Valley of the Ancient sample documentation.**
+  "Flexible real-time animation using full-body Inverse Kinematics
+  (IK) and motion warping to fit character motion with gameplay."
+  The UE5 Motion Warping system adapts an animation's root motion
+  to warp points in the environment, condensing the workload of
+  environmental interactions like vaults. Source: Epic Developer
+  Community documentation (mirrored):
+  https://github.com/gcampton/claude-skill-unreal-engine-full/blob/HEAD/references/epic-official/valley-of-the-ancient-sample-game-for-unreal-engine_1805937c.md
+
+**Agent-executable upgrades**
+
+1. **Traversal manifest (`traversal.json`).** Every staircase and
+   slope test case: step height and width (must match the
+   cross-discipline stair standard), ramp placement (edge-running
+   vs recessed), and collider type. An automated loop walks each
+   case and records gates.
+2. **Gates per case.** Capsule jitter check (vertical oscillation
+   of the capsule root while climbing stays under threshold; if
+   not, the collider is the stairs themselves). Foot contact check
+   (feet sit on the ground, no floating or clipping). Knee check
+   (bend accommodates the height difference without
+   hyper-extension). Silhouette check (hip drops for slopes and
+   stairs never break the authored pose, per Clavet's rule).
+3. **Cross-discipline standard check.** Reject any new staircase
+   whose step height deviates from the agreed standard before the
+   real-stair-animation path is even considered.
+
 ## The human method, distilled
 
 1. Hidden ramp under the stairs, placed to match the visual.

@@ -72,6 +72,21 @@ Three.js, TypeScript, Vite. All code "vibed with Opus 5.5 as lead/reviewer, with
 **Why**
 - When the code is AI-written ("We live in an incredible time"), hashed golden tests are what keep refactors honest. The digest is cheaper than re-validating gameplay by hand after every model-assisted change.
 
+## AAA studio practice
+
+Studios solving the same sim/render split:
+
+- **Psyonix (Rocket League) — fixed-tick physics independent of the renderer.** Jared Cone's GDC 2018 talk "It IS Rocket Science!" describes replacing UE3's PhysX with Bullet specifically because Bullet allowed a deterministic physics engine on a fixed tick rate independent of the renderer, on server-authoritative dedicated servers with client-side prediction and rollback resimulation. Source: https://github.com/endel/prediction-multiplayer-research/blob/HEAD/rocket-league.md
+- **Blizzard (Overwatch) — fixed 16 ms timestep on a strict ECS.** Timothy Ford's GDC 2017 talk "Overwatch Gameplay Architecture and Netcode" covers a strict Entity Component System (46 client systems, 103 component types) that isolates netcode into three systems, a fixed-timestep sim with predicted projectiles and reconciliation, and time dilation (the client simulates at ~15.2 ms instead of 16 ms when the server starves for input) to keep the input pipeline full. Source: https://edgegap.com/blog/game-backend-deep-dive-overwatch-2016-netcode-architecture-rollback ; https://github.com/endel/prediction-multiplayer-research/blob/HEAD/TECHNIQUES/client-side-prediction-reconciliation.md
+- **Wube Software (Factorio) — state checksums as the determinism gate.** Factorio's deterministic lockstep detects divergence by checksumming game state across peers (a desync is a CRC mismatch); the Lua API exposes `game.force_crc()` so every peer computes and compares map CRCs on demand. Age of Empires did the same per subsystem (world state, pathfinding results, targeting data). Source: https://lua-api.factorio.com/1.1.27/LuaGameScript.html ; https://github.com/endel/prediction-multiplayer-research/blob/HEAD/TECHNIQUES/deterministic-lockstep.md
+- **Glenn Fiedler, "Fix Your Timestep"** — the canonical accumulator pattern: decouple sim rate from render rate so the sim is framerate-independent and 100% deterministic regardless of display refresh. Source: https://gafferongames.com/post/fix_your_timestep/
+
+Agent-executable upgrades this research unlocks:
+
+1. **golden-tests.manifest.json** — replace the hand-kept "5 scenarios x 600 steps" with a machine-readable manifest: each entry has scenario_id, seed, step_count, and expected_digest. The test runner iterates the manifest, steps the sim, hashes the state, and fails on any mismatch.
+2. **Per-subsystem digests** — Factorio and Age of Empires checksum subsystems independently, not just the whole world. Hash enemies, projectiles, and RNG state separately so a failing digest names the subsystem that diverged instead of just failing the whole run (and checksum every tick during development, per the lockstep playbook).
+3. **Perf budget gate in CI** — promote the "under 2 ms per-tick at 400 enemies" budget from a measured note to an enforced gate: the runner times each scenario and fails the build on a budget breach, the same way the digest fails it on a behavior change.
+
 ## The human method, distilled
 
 1. "because I had plenty usage left. Codex was gone and claude was like 20% left" — pick the model you have budget for; put the strongest (Opus 5.5) as lead/reviewer and the other (Grok) on the sim and cameras.

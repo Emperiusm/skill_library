@@ -118,6 +118,17 @@ village is finished when it is placed, while a PCG village is a
 living design you keep tuning. If a rule change breaks the village,
 the rules were not clean enough.
 
+## AAA studio practice
+
+- **Epic Games — Electric Dreams, GDC 2023 State of Unreal (UE 5.2).** Epic's first public demo of the PCG framework built a lush jungle from a handful of Quixel assets: artists "define rules and parameters to populate large scenes with Unreal Engine assets of your choice," with both in-editor and runtime PCG components, so the world can react to gameplay or geometry changes and generated content works seamlessly with hand-placed content. That is the production-scale version of this skill's "graph of rules, not hand placement." Source: https://www.provideocoalition.com/electric-dreams-sample-in-unreal-engine-get-the-demo/
+- **Electric Dreams sample graphs.** The shipped sample's PCG graphs (PCGDemo_Forest: a PCG Volume with bounds plus Cleanup/Generate for iteration; PCGDemo_Ditch: spline-driven placement; exclusion volumes keeping generated foliage away from placed objects) show the points-and-rules pattern from this skill running at Epic-demo scale. Source: https://docs.dungeonarchitect.dev/unreal/pcg/pcg-framework-overview/
+
+Agent-executable upgrades this research unlocks:
+
+1. **pcg-rules.json** — every placement rule from Phase 1 becomes a data entry (rule_id, plain-language statement, node parameters: fractions, offsets, seeds). The agent edits the JSON, regenerates, and diffs the output; the "play with almost everything" step becomes a parameterized sweep over the JSON instead of clicking nodes.
+2. **Regeneration diff gate** — after any rule change, the runner regenerates and reports instance-count and transform deltas per spawner. A rule change that silently breaks propagation shows up as an unexpected delta before anyone looks at the viewport.
+3. **Seed-locked variation check** — Random Choice fractions are scale-independent only if the seed is fixed. The gate asserts the graph seed is pinned, so "the same graph produces a hamlet or a town with the same character" is a tested property, not a hope.
+
 ## The human method, distilled
 
 1. Observe, break into elements, write rules in plain language.

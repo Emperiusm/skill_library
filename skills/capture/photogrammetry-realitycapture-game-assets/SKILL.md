@@ -100,6 +100,46 @@ The raw scan is evidence, not an asset. The cleanup-and-bake pass is
 where the scan becomes usable: detail moves into textures where it
 is cheap, and geometry keeps only what the silhouette needs.
 
+## AAA studio practice
+
+- **DICE, GDC 2016, "Star Wars: Battlefront and the Art of
+  Photogrammetry" (Keneth Brown, Andrew Hamilton).** Photogrammetry
+  was first used at DICE on Battlefield, then fully embraced for
+  Star Wars: Battlefront: real-world locations (Finse, Norway;
+  Death Valley) and original Lucasfilm Archives props (X-Wings,
+  stormtrooper helmets, Boba Fett's armor, Han Solo's DL-44) were
+  photographed from every angle in different lighting and
+  reconstructed. The talk's key message: photogrammetry is "not a
+  magic bullet but a tool like any other." Hard data point for
+  this skill's load-bearing caveat: Darth Vader's helmet was the
+  tricky case because it is "black and shiny." Sources: GDC Vault
+  session:
+  https://gdcvault.com/play/1022981/Photogrammetry-and-Star-Wars-Battlefront
+  ; Game Developer summary:
+  https://www.gamedeveloper.com/art/video-how-i-star-wars-battlefront-i-was-built-with-real-props-locations
+- **3D scanning workflow analysis of the same talk (3dmag).**
+  DICE ran the same phases as traditional asset creation but much
+  faster: the "High Topo" digital-sculpt phase (ZBrush-style)
+  became retouching instead of sculpting. The artists mainly used
+  Agisoft's software and experimented with RealityCapture. Source:
+  https://www.3dmag.com/inspiration/3d-scanning-star-wars-battlefront/
+
+**Agent-executable upgrades**
+
+1. **Scan session manifest (`scan.json`).** Photo count, overlap
+   coverage, manual-mode locks (exposure, white balance, focus),
+   camera-solve stats, and the object class, including a "black
+   and shiny" / textureless flag that quarantines the object for
+   an alternative workflow.
+2. **Automated gates.** Solve completeness (every camera solved;
+   reprojection error under threshold). Hole check (missing-data
+   regions listed, not silently ignored). Reflectivity pre-screen
+   (automatic rejection/quarantine of shiny or plain-colored
+   surfaces before wasting reconstruction time). Bake validation
+   (baked color and normal maps must carry the target share of
+   raw-scan detail; the optimized asset must meet the polygon
+   budget and topology rules).
+
 ## The human method, distilled
 
 1. Manual mode, overlapping shots; consistency over beauty.
