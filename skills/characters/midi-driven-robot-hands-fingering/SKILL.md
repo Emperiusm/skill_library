@@ -12,11 +12,11 @@ This skill reconstructs the MIDI-driven robotic-hands workflow, step by step, so
 ## Source
 
 - Post: "Robotic hands that play any MIDI file on a piano in real time" by enamore22 — https://www.reddit.com/r/threejs/comments/1xmfm6f/robotic_hands_that_play_any_midi_file_on_a_piano/ (r/threejs, score 159, 25 of 31 comments retrieved)
-- Evidence: post text plus author answers in the comments (2026-11-03 scout run). Built with Claude Opus 5.5. No code was published; this skill encodes the design, not a code listing.
+- Evidence: full author writeup plus author answers in the comments (2026-11-03 scout run: post text + 25/31 comments; 2026-11-04 run: full post text recovered + 31 comments). Built with Claude Opus 5.5. No code was published; this skill encodes the design, not a code listing.
 
 ## Tools used
 
-three.js (WebGL render), Claude Opus 5.5 (author built the whole project with it), author's own MIDI parser + fingering solver, Blender (role undisclosed in retrieved text; presumably the hand models).
+three.js (WebGL render), Claude Opus 5.5 (author built the whole project with it), Parncutt's fingering research (hand/finger assignment), inverse kinematics (joint positioning), deterministic animation (scrubbable timeline), Blender ("Claude generated the hands and piano in Blender"), post pipeline: per-pixel motion blur, depth-of-field/bokeh, volumetric god rays, ambient occlusion, bloom, anamorphic lens effects, color grading; planar reflections on the piano lacquer; spherical harmonic probes for indirect room lighting; physical key-press sounds.
 
 ## Phase 1: Parse the MIDI into playable events
 
@@ -50,16 +50,21 @@ Thumbs collide when the hands are close; a generic nearest-finger assignment pro
 ## Phase 3: Render cinematically in three.js
 
 **Do**
-1. Animate the robot hands against the MIDI timeline with the precalculated fingering.
-2. Stage it like the Westworld intro: the author's stated inspirations are the Westworld title sequence aesthetic and 90s alt-rock piano covers, plus annoyance at unrealistic piano playing in media.
-3. Use cinematic camera motion; commenters singled this out ("can't remember the last time I saw something this cinematic in 3js").
+1. Animate the robot hands against the MIDI timeline with the precalculated fingering. The animation is deterministic: "It's deterministically animated, so you can scrub around a song."
+2. Build the assets with the agent: "Claude generated the hands and piano in Blender."
+3. Run the full post pipeline: per-pixel motion blur, depth-of-field/bokeh, volumetric god rays, ambient occlusion, bloom, anamorphic lens effects, and color grading.
+4. Reflect the lacquer: "The piano's lacquer has planar reflections, and the room lighting uses spherical harmonic probes for indirect illumination."
+5. Add physical key-press sounds "mimicking a real piano" (audible in quiet parts).
+6. Stage it like the Westworld intro: the author's stated inspirations are the Westworld title sequence aesthetic and 90s alt-rock piano covers, plus annoyance at unrealistic piano playing in media.
+7. Use cinematic camera motion; commenters singled this out ("can't remember the last time I saw something this cinematic in 3js").
 
 **Check**
 - Hand a stranger a MIDI file: three commenters tested their own files (Westworld, Severance, Clair de Lune) and reported results matching the author's documented behavior. That is stronger verification than a demo reel.
 - A commenter asked whether the rules have "choice wiggle room" or are explicitly applied; the author did not answer in the retrieved comments. Treat the solver as deterministic per input.
+- A commenter asked for notes lighting up when played; it does not exist in this version (the pinky "light up" at 0:25 was lighting reflection).
 
 **Why**
-Realistic finger motion is the whole point (the author was annoyed by unrealistic piano playing in media); the cinematic camera sells the Westworld riff. Letting users bring their own MIDI converts the audience into the QA department.
+Realistic finger motion is the whole point (the author was annoyed by unrealistic piano playing in media); the post pipeline is what makes it read as the Westworld riff instead of a tech demo. Letting users bring their own MIDI converts the audience into the QA department. Related prior art (u/will-kilroy): https://gidi.uk/ — a years-long real-time MIDI instrument visualizer.
 
 ## The human method, distilled
 
@@ -83,4 +88,4 @@ No game-studio source exists for piano-hand fingering specifically (flagged open
 3. **Animation-dispatch ledger** (Neversoft analog): log every dispatched animation command as JSONL: MIDI event time, note, hand, finger, animation command sent. The ledger is the machine-checkable version of the thumb-tuck rule: query it for overlapping-note intervals and assert no two thumb records target the same key in the same window without an explicit tuck flag.
 4. **Exception authoring, not runtime logic**: the thumb-tuck rule lives in the precalc data as a named exception type, the same way GHIII HOPOs became a data convention. An audit step counts exception types per song and fails the precalc if an untyped exception appears.
 
-**Depth status:** PARTIAL (post text + 25/31 comments; no code, parameters, or model sources; Blender's role undisclosed; realtime-input lag untested).
+**Depth status:** FULL (full author writeup + 31 comments: Parncutt fingering, IK, key travel/release bounce, full post pipeline, spherical-harmonic probes, Blender asset role confirmed; upgraded from PARTIAL on 2026-11-04). Inference: "Parncutt's research" is the author's phrase (Richard Parncutt's piano-fingering research, general knowledge); solver internals undisclosed.

@@ -72,6 +72,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`infinitra-deterministic-voxel-world`](procgen-worlds/infinitra-deterministic-voxel-world/SKILL.md) | Design a deterministic shared procedural voxel world: one replaceable processing-graph definition, order-independent point evaluation in doubles, world-anchored geometry networks (25 m flow-routing lattice, route-searched roads), SDF-preserving 16^3 voxel LOD; server spot-checks by recomputation. |
 | [`unreal-pcg-village-generation`](procgen-worlds/unreal-pcg-village-generation/SKILL.md) | Generate a village with Unreal's PCG framework: derive placement rules, spawn points, drive Static Mesh Spawners through Transform Points, break uniformity with Random Choice fractions. |
 | [`ue-grass-cards-lod`](procgen-worlds/ue-grass-cards-lod/SKILL.md) | Build cheap game grass from crossed cards: rotate to hide the card look from above, then swap cheap crosses in the distance and detailed grass near the player with LODs. |
+| [`infinity-castle-seeded-grammar`](procgen-worlds/infinity-castle-seeded-grammar/SKILL.md) | Generate an infinite explorable castle from a seed in three.js: hash coordinates plus seed for zero stored state, an architectural grammar (chapters to rooms), ~2 draw calls per cell with vertex-baked AO, Karplus-Strong audio. |
 
 ## AI video and film (`ai-video/`)
 
@@ -103,6 +104,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`touchdesigner-generative-lexicon-press`](ai-video/touchdesigner-generative-lexicon-press/SKILL.md) | Perform written passages as audio-reactive TouchDesigner typography across 25 layouts, with a local Ollama writing partner generating the text. |
 | [`minimax-h3-longform-documentary`](ai-video/minimax-h3-longform-documentary/SKILL.md) | Generate a watchable 25-second MiniMax H3 video natively at 1536x864 on an RTX 3060 12 GB: Singularity V2 + DMAD 4-step, storyboard guidance, one pass in ~37.6 min, under-describe motion in the prompt. |
 | [`blender-mcp-previs-minimax-h3`](ai-video/blender-mcp-previs-minimax-h3/SKILL.md) | Previsualize a whole shot list with ChatGPT plus Blender MCP, render low-poly reference shots, lock design with reference sheets, generate with MiniMax H3 reference-to-video; the multi-shot variant of blender-mcp-camera-minimax. |
+| [`reshoot-4d-comfyui`](ai-video/reshoot-4d-comfyui/SKILL.md) | Reshoot any person in 4D inside ComfyUI: capture a video as 4D, keyframe a new virtual camera in the node, re-shoot with ReDirector, photoreal-render with LTX 2.3 guided by footage warped via CrossView-Warp IC-LoRA. |
+| [`iv-studio-comfyui-film-studio`](ai-video/iv-studio-comfyui-film-studio/SKILL.md) | Direct AI short films without touching a node graph: agent-written MiniMax H3 prompts, a checker for what H3 punishes, cheap 0.4-0.9 MP hunt previews, same-latent finish, and a staging board that renders grey previs clips H3 follows. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -146,6 +149,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ai-3d-pbr-materials-textures`](materials-shaders/ai-3d-pbr-materials-textures/SKILL.md) | Author and verify PBR materials for AI assets: channel meanings, ORM packing, normal-map green-channel conventions, two-light and moving-light tests. |
 | [`material-painter`](materials-shaders/material-painter/SKILL.md) | Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets for Unreal/Unity/Godot/Blender. |
 | [`normal-maps-parallax-occlusion`](materials-shaders/normal-maps-parallax-occlusion/SKILL.md) | Fake surface detail: bake high-poly detail into tangent-space normal maps, then add height maps and view-dependent UV offset with parallax occlusion mapping. |
+| [`rind-godot-pbr-texture-painter`](materials-shaders/rind-godot-pbr-texture-painter/SKILL.md) | Paint PBR textures directly in the Godot editor with Rind: non-destructive layer stacks, channel-ticked brushes (color, roughness, metallic), masks, material presets, and the exact shortcuts. |
 
 ## Engine and runtime (`engine-runtime/`)
 
@@ -192,6 +196,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ue5-stable-3d-pixel-art-rendering`](engine-runtime/ue5-stable-3d-pixel-art-rendering/SKILL.md) | Render stable 3D pixel art in UE5: cubemap-based pixelation post-process kills rotation jitter, 0.25 s slow cubemap refresh hidden by Lunar Blank / Dylan Ebert disocclusion, distance-layered far-field raymarching, custom depth + stencil for dynamics. |
 | [`instancing-vs-copying-perf`](engine-runtime/instancing-vs-copying-perf/SKILL.md) | Choose instancing over copying for repeated assets: one mesh plus coordinates in VRAM, a single draw call, and the copy-swap trick for interactable instances. |
 | [`ue-lod-impostors`](engine-runtime/ue-lod-impostors/SKILL.md) | Cut rendering cost with LODs and impostors: swap geometry by distance, skip occluded assets, use camera-facing billboards with normal-mapped lighting. |
+| [`meshlet-drawing-pipeline-threejs`](engine-runtime/meshlet-drawing-pipeline-threejs/SKILL.md) | Render billions of instanced triangles at 60 fps in the browser with three.js r187 MeshletDrawingPipeline: 64-triangle meshlet clusters with LOD chains, GPU culling per frame, one indirect draw per geometry/material group. |
 
 ## Automation and bridges (`automation/`)
 
@@ -220,6 +225,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`comfyui-agenty-ai-agent`](automation/comfyui-agenty-ai-agent/SKILL.md) | Run agentY, a free MIT AI agent inside ComfyUI: builds unseen workflows from web research on cheap/local LLMs, self-judges outputs, runs parallel agents per shot, drives Blender/Maya/Houdini/AE over MCP. |
 | [`infinite-language-generator`](automation/infinite-language-generator/SKILL.md) | Build a deterministic seed-based conlang tool for games: one seed call generates the whole language plus rules, voiced lines and animated glyphs ship with it, dictionary and subtitle tool included, MCP-toolable. |
 | [`magic-studios-agent-first-sprite-video`](automation/magic-studios-agent-first-sprite-video/SKILL.md) | Make asset generation agent-operable: package ComfyUI + MiniMax H3 as a local app (own NVIDIA GPU or own Higgsfield key), expose an MCP server + API for coding agents, animate sprites from video models instead of rigging; 480/720@32fps sweet spot. |
+| [`hiraeth-agentic-game-dev-loop`](automation/hiraeth-agentic-game-dev-loop/SKILL.md) | Build a game in a month with an AI stack and hold quality with instruments: agent-skill design audits, a serendipity map for empty-but-walkable space, and a same-angle visual changelog. |
 
 ## No-tooling examples (`no-tooling/`)
 
