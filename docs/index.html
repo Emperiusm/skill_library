@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="181 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="187 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">181 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">187 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 181 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">41</span></h2>
+  <input id="search" type="search" placeholder="Search 187 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">42</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -160,6 +160,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/mass-entity-niagara-crowd/SKILL.md">mass-entity-niagara-crowd</a></h3>
   <p>Render massive UE crowds without per-agent actors: simulate in custom C++ MassEntity processors, stream transform arrays into Niagara GPU particles, animate with VATs. Trigger when building RTS/battle crowds, swarm...</p>
 </article>
+<article class="card" data-search="meshlet-drawing-pipeline-threejs render billions of instanced triangles at 60 fps in the browser with three.js r187 meshletdrawingpipeline: split geometry into 64-triangle meshlet clusters with lod chains, cull on the gpu per frame, and draw what...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/meshlet-drawing-pipeline-threejs/SKILL.md">meshlet-drawing-pipeline-threejs</a></h3>
+  <p>Render billions of instanced triangles at 60 fps in the browser with three.js r187 MeshletDrawingPipeline: split geometry into 64-triangle meshlet clusters with LOD chains, cull on the GPU per frame, and draw what...</p>
+</article>
 <article class="card" data-search="multiplayer-movement-smooth smooth multiplayer movement with client prediction and server reconciliation. trigger when fixing netcode movement.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/multiplayer-movement-smooth/SKILL.md">multiplayer-movement-smooth</a></h3>
   <p>Smooth multiplayer movement with client prediction and server reconciliation. Trigger when fixing netcode movement.</p>
@@ -205,7 +209,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build an interactive, physically-grounded Kerr black-hole renderer in the browser with WebGPU: backwards ray integration through Kerr spacetime per pixel, blackbody disk color with Doppler shift and gravitational...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">31</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">32</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -262,6 +266,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="infinitra-deterministic-voxel-world design a deterministic shared procedural voxel world: replaceable processing-graph definition, order-independent point evaluation, geometry networks, sdf-preserving lod. trigger when building server-authoritative...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/infinitra-deterministic-voxel-world/SKILL.md">infinitra-deterministic-voxel-world</a></h3>
   <p>Design a deterministic shared procedural voxel world: replaceable processing-graph definition, order-independent point evaluation, geometry networks, SDF-preserving LOD. Trigger when building server-authoritative...</p>
+</article>
+<article class="card" data-search="infinity-castle-seeded-grammar generate an infinite explorable structure from a seed in three.js: resolve every point in space by hashing coordinates plus seed (no stored state), organize generation with an architectural grammar (chapters to...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/infinity-castle-seeded-grammar/SKILL.md">infinity-castle-seeded-grammar</a></h3>
+  <p>Generate an infinite explorable structure from a seed in three.js: resolve every point in space by hashing coordinates plus seed (no stored state), organize generation with an architectural grammar (chapters to...</p>
 </article>
 <article class="card" data-search="meshforge-asset-pipeline run ai asset generation inside the editor with human checkpoints: mesh definitions, cost estimate before generate, tripo p2 versus meshy a/b, multi-view discipline, retexture branching, blender round-trip, in-editor...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/meshforge-asset-pipeline/SKILL.md">meshforge-asset-pipeline</a></h3>
@@ -332,7 +340,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Generate a village with Unreal&#x27;s PCG framework: break the environment into elements, derive placement rules, spawn points, drive Static Mesh Spawners through Transform Points, and break uniformity with Random Choice...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">26</span></h2>
+<section><h2>AI video <span class="count">28</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -369,6 +377,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="flux-3-klein-comfyui-19-workflows run flux 3 klein (black forest labs) in comfyui for text-to-image, image editing, and multi-image combining using pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, layout boxes, inpaint crop/stitch...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/flux-3-klein-comfyui-19-workflows/SKILL.md">flux-3-klein-comfyui-19-workflows</a></h3>
   <p>Run FLUX 3 Klein (Black Forest Labs) in ComfyUI for text-to-image, image editing, and multi-image combining using Pixaroma&#x27;s 19 free workflows: prompt discipline, prompt upsampler, Layout Boxes, inpaint crop/stitch...</p>
+</article>
+<article class="card" data-search="iv-studio-comfyui-film-studio direct ai short films without touching a node graph: drive your own comfyui over its api with iv studio — an agent writes the minimax h3 prompt from references, a checker fixes what h3 punishes, hunt cheap 0.4-0.9 mp...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/iv-studio-comfyui-film-studio/SKILL.md">iv-studio-comfyui-film-studio</a></h3>
+  <p>Direct AI short films without touching a node graph: drive your own ComfyUI over its API with IV Studio — an agent writes the MiniMax H3 prompt from references, a checker fixes what H3 punishes, hunt cheap 0.4-0.9 MP...</p>
 </article>
 <article class="card" data-search="konte-multishot-ai-video run multi-shot ai video like a software project: declare shots in a typescript dsl, address assets with stable addresses, keep takes as non-destructive variants, record explicit acceptances, let agents drive comfyui...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/konte-multishot-ai-video/SKILL.md">konte-multishot-ai-video</a></h3>
@@ -422,6 +434,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/opsis-comfyui-film-studio/SKILL.md">opsis-comfyui-film-studio</a></h3>
   <p>Run a self-hosted AI film studio on ComfyUI: API-format graphs plus .map.yaml become priced forms, a local 12GB path or RunPod serverless path, mock mode by default. Trigger when non-technical users need form-based...</p>
 </article>
+<article class="card" data-search="reshoot-4d-comfyui reshoot any person in 4d inside comfyui: capture a video as 4d (motion in 3d, background, original camera path), keyframe a new virtual camera in the node editor, re-shoot along the new path with redirector, then...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/reshoot-4d-comfyui/SKILL.md">reshoot-4d-comfyui</a></h3>
+  <p>Reshoot any person in 4D inside ComfyUI: capture a video as 4D (motion in 3D, background, original camera path), keyframe a new virtual camera in the node editor, re-shoot along the new path with ReDirector, then...</p>
+</article>
 <article class="card" data-search="resistance-sci-fi-short direct an ai-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable comfyui nodes, keep prompt writing manual, edit and grade in an nle. trigger when producing ai video with a human...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/resistance-sci-fi-short/SKILL.md">resistance-sci-fi-short</a></h3>
   <p>Direct an AI-generated sci-fi short: lock keyframes and concepts first, generate shots as repeatable ComfyUI nodes, keep prompt writing manual, edit and grade in an NLE. Trigger when producing AI video with a human...</p>
@@ -439,7 +455,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Route real video into Unreal materials: Media Framework pipeline, procedural scanlines, CRT glass, mosaic UV math, SubUV flipbooks, yaw-only billboards, light-function projectors. Trigger when putting video on screens...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">23</span></h2>
+<section><h2>Automation and pipelines <span class="count">24</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
@@ -496,6 +512,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="hblink-blender-houdini-bridge bridge blender and houdini with a live socket link and a smart cache: live geometry/uvs/attributes/materials into sops or solaris, rbd caching via rest-fracture plus per-frame transform/velocity point files (35x smaller...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/hblink-blender-houdini-bridge/SKILL.md">hblink-blender-houdini-bridge</a></h3>
   <p>Bridge Blender and Houdini with a live socket link and a smart cache: live geometry/UVs/attributes/materials into SOPs or Solaris, RBD caching via rest-fracture plus per-frame transform/velocity point files (35x smaller...</p>
+</article>
+<article class="card" data-search="hiraeth-agentic-game-dev-loop build a game in a month with an ai stack and hold quality with process instruments: turn design principles into reusable agent skills and audit regularly, map empty-but-walkable space with a serendipity map, and keep a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/hiraeth-agentic-game-dev-loop/SKILL.md">hiraeth-agentic-game-dev-loop</a></h3>
+  <p>Build a game in a month with an AI stack and hold quality with process instruments: turn design principles into reusable agent skills and audit regularly, map empty-but-walkable space with a serendipity map, and keep a...</p>
 </article>
 <article class="card" data-search="houdini-jewelry-saas productize procedural generation: headless houdini engine behind an async queue and server pool with a web ui. trigger when serving procedural systems as a product.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/houdini-jewelry-saas/SKILL.md">houdini-jewelry-saas</a></h3>
@@ -609,6 +629,73 @@ claude plugin install skill-library@skill-library</code>
   <p>Build physically based lens flare in Houdini Copernicus with Zenith: ray-trace a real lens prescription (built-in 28/50/135/300mm lenses or your own .zmx Zemax file) instead of painting sprites, drive flare from...</p>
 </article>
 </div></section>
+<section><h2>Materials and shaders <span class="count">16</span></h2>
+<div class="grid">
+<article class="card" data-search="ai-3d-pbr-materials-textures author and verify pbr materials for ai assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2k-master rule...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-pbr-materials-textures/SKILL.md">ai-3d-pbr-materials-textures</a></h3>
+  <p>Author and verify PBR materials for AI assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2K-master rule...</p>
+</article>
+<article class="card" data-search="ai-3d-retopology-uv repair ai-generated meshes for production: when to retopologize by destination, wireframe checks, and a uv inspection and repair routine with checker textures, overlap overlays, and a second lightmap uv set. trigger...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-retopology-uv/SKILL.md">ai-3d-retopology-uv</a></h3>
+  <p>Repair AI-generated meshes for production: when to retopologize by destination, wireframe checks, and a UV inspection and repair routine with checker textures, overlap overlays, and a second lightmap UV set. Trigger...</p>
+</article>
+<article class="card" data-search="blender-inverted-hull-outline build a toon outline in blender with the inverted hull method: solidify modifier with flip normals and material offset 1, a black emission outline material, a transparent bsdf mixed by geometry backfacing, a second mix...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/blender-inverted-hull-outline/SKILL.md">blender-inverted-hull-outline</a></h3>
+  <p>Build a toon outline in Blender with the inverted hull method: Solidify modifier with Flip normals and Material Offset 1, a black Emission outline material, a Transparent BSDF mixed by Geometry Backfacing, a second Mix...</p>
+</article>
+<article class="card" data-search="blender-taco-shell-voronoi-tortilla model and shade a realistic taco shell in blender: box base folded into a u-shell (subdivision + displace), voronoi distance-to-edge plus noise tortilla-toast material with bump, small-hangar hdri lighting, area-light...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/blender-taco-shell-voronoi-tortilla/SKILL.md">blender-taco-shell-voronoi-tortilla</a></h3>
+  <p>Model and shade a realistic taco shell in Blender: box base folded into a U-shell (Subdivision + Displace), Voronoi Distance-to-Edge plus Noise tortilla-toast material with bump, small-hangar HDRI lighting, area-light...</p>
+</article>
+<article class="card" data-search="godot-window-raindrop-shader make rain read as weather in a godot window shader: per-drop heightmaps (tallest at center) driving light by slope, bounce lighting plus emissive material, and per-pane torus sampling so no two panes rain in sync...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/godot-window-raindrop-shader/SKILL.md">godot-window-raindrop-shader</a></h3>
+  <p>Make rain read as weather in a Godot window shader: per-drop heightmaps (tallest at center) driving light by slope, bounce lighting plus emissive material, and per-pane torus sampling so no two panes rain in sync...</p>
+</article>
+<article class="card" data-search="handdrawn-foliage-alpha-cards hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in photoshop, masked-opacity material in-engine for crisp hard leaf edges. no separate leaf geometry unless you simulate real...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/handdrawn-foliage-alpha-cards/SKILL.md">handdrawn-foliage-alpha-cards</a></h3>
+  <p>Hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in Photoshop, masked-opacity material in-engine for crisp hard leaf edges. No separate leaf geometry unless you simulate real...</p>
+</article>
+<article class="card" data-search="leather-patch-generator generate leather patch materials with a parametric substance generator. trigger when authoring reusable material generators.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/leather-patch-generator/SKILL.md">leather-patch-generator</a></h3>
+  <p>Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators.</p>
+</article>
+<article class="card" data-search="material-painter paint pbr materials in material-painter, the free open-source substance painter alternative: node-graph material design, wgsl custom shader nodes, gpu baking with caching, engine export presets. trigger when a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/material-painter/SKILL.md">material-painter</a></h3>
+  <p>Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets. Trigger when a...</p>
+</article>
+<article class="card" data-search="normal-maps-parallax-occlusion fake surface detail with normal maps and parallax occlusion mapping: bake high-poly detail into tangent-space rgb, know the no-self-shadowing limit, then add a height map and view-dependent uv offset for...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/normal-maps-parallax-occlusion/SKILL.md">normal-maps-parallax-occlusion</a></h3>
+  <p>Fake surface detail with normal maps and parallax occlusion mapping: bake high-poly detail into tangent-space RGB, know the no-self-shadowing limit, then add a height map and view-dependent UV offset for...</p>
+</article>
+<article class="card" data-search="procedural-building-shader fill a cyberpunk skyline with a procedural building shader instead of geometry. trigger when a city must scale cheaply.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/procedural-building-shader/SKILL.md">procedural-building-shader</a></h3>
+  <p>Fill a cyberpunk skyline with a procedural building shader instead of geometry. Trigger when a city must scale cheaply.</p>
+</article>
+<article class="card" data-search="realistic-rust-materials author realistic rust as a layered procedural material system with exposed parameters. trigger when weathering materials in substance.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/realistic-rust-materials/SKILL.md">realistic-rust-materials</a></h3>
+  <p>Author realistic rust as a layered procedural material system with exposed parameters. Trigger when weathering materials in Substance.</p>
+</article>
+<article class="card" data-search="rind-godot-pbr-texture-painter paint pbr textures directly in the godot editor with rind: non-destructive layer stacks, channel-ticked brushes (color, roughness, metallic), masks, material presets, and the exact shortcuts for brush, eraser, blur...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/rind-godot-pbr-texture-painter/SKILL.md">rind-godot-pbr-texture-painter</a></h3>
+  <p>Paint PBR textures directly in the Godot editor with Rind: non-destructive layer stacks, channel-ticked brushes (color, roughness, metallic), masks, material presets, and the exact shortcuts for brush, eraser, blur...</p>
+</article>
+<article class="card" data-search="substance-painter-3dspace-blur-filter remove uv seam artifacts in substance painter with a custom 3d-space blur filter that samples neighbors by 3d proximity from a baked position map instead of uv adjacency; bake the result down on low-end machines...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/substance-painter-3dspace-blur-filter/SKILL.md">substance-painter-3dspace-blur-filter</a></h3>
+  <p>Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map instead of UV adjacency; bake the result down on low-end machines...</p>
+</article>
+<article class="card" data-search="toon-2d-in-3d-dynamic-texture render a classic dbz cel look in 3d with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md">toon-2d-in-3d-dynamic-texture</a></h3>
+  <p>Render a classic DBZ cel look in 3D with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...</p>
+</article>
+<article class="card" data-search="ue58-gradient-animated-materials build four gradient-driven animated materials in unreal engine 5.8&#x27;s material editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ue58-gradient-animated-materials/SKILL.md">ue58-gradient-animated-materials</a></h3>
+  <p>Build four gradient-driven animated materials in Unreal Engine 5.8&#x27;s Material Editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...</p>
+</article>
+<article class="card" data-search="ultratex-comfyui-ai-texturing texture any untextured 3d mesh locally in comfyui with ultratex: one reference image in, 2k pbr textures out, free, on 6 to 16 gb gpus. trigger when texturing a mesh without a paid service or a large gpu.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ultratex-comfyui-ai-texturing/SKILL.md">ultratex-comfyui-ai-texturing</a></h3>
+  <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
+</article>
+</div></section>
 <section><h2>Characters and rigging <span class="count">15</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
@@ -672,69 +759,6 @@ claude plugin install skill-library@skill-library</code>
   <p>Sculpt a character with zero booleans: one Dynamesh for the whole body, extract pieces out of it, harden edges with remesh/extrude/subdivide, alphas for micro-detail, Decimation Master from 250M to 10M polys, Marmoset...</p>
 </article>
 </div></section>
-<section><h2>Materials and shaders <span class="count">15</span></h2>
-<div class="grid">
-<article class="card" data-search="ai-3d-pbr-materials-textures author and verify pbr materials for ai assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2k-master rule...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-pbr-materials-textures/SKILL.md">ai-3d-pbr-materials-textures</a></h3>
-  <p>Author and verify PBR materials for AI assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2K-master rule...</p>
-</article>
-<article class="card" data-search="ai-3d-retopology-uv repair ai-generated meshes for production: when to retopologize by destination, wireframe checks, and a uv inspection and repair routine with checker textures, overlap overlays, and a second lightmap uv set. trigger...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-retopology-uv/SKILL.md">ai-3d-retopology-uv</a></h3>
-  <p>Repair AI-generated meshes for production: when to retopologize by destination, wireframe checks, and a UV inspection and repair routine with checker textures, overlap overlays, and a second lightmap UV set. Trigger...</p>
-</article>
-<article class="card" data-search="blender-inverted-hull-outline build a toon outline in blender with the inverted hull method: solidify modifier with flip normals and material offset 1, a black emission outline material, a transparent bsdf mixed by geometry backfacing, a second mix...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/blender-inverted-hull-outline/SKILL.md">blender-inverted-hull-outline</a></h3>
-  <p>Build a toon outline in Blender with the inverted hull method: Solidify modifier with Flip normals and Material Offset 1, a black Emission outline material, a Transparent BSDF mixed by Geometry Backfacing, a second Mix...</p>
-</article>
-<article class="card" data-search="blender-taco-shell-voronoi-tortilla model and shade a realistic taco shell in blender: box base folded into a u-shell (subdivision + displace), voronoi distance-to-edge plus noise tortilla-toast material with bump, small-hangar hdri lighting, area-light...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/blender-taco-shell-voronoi-tortilla/SKILL.md">blender-taco-shell-voronoi-tortilla</a></h3>
-  <p>Model and shade a realistic taco shell in Blender: box base folded into a U-shell (Subdivision + Displace), Voronoi Distance-to-Edge plus Noise tortilla-toast material with bump, small-hangar HDRI lighting, area-light...</p>
-</article>
-<article class="card" data-search="godot-window-raindrop-shader make rain read as weather in a godot window shader: per-drop heightmaps (tallest at center) driving light by slope, bounce lighting plus emissive material, and per-pane torus sampling so no two panes rain in sync...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/godot-window-raindrop-shader/SKILL.md">godot-window-raindrop-shader</a></h3>
-  <p>Make rain read as weather in a Godot window shader: per-drop heightmaps (tallest at center) driving light by slope, bounce lighting plus emissive material, and per-pane torus sampling so no two panes rain in sync...</p>
-</article>
-<article class="card" data-search="handdrawn-foliage-alpha-cards hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in photoshop, masked-opacity material in-engine for crisp hard leaf edges. no separate leaf geometry unless you simulate real...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/handdrawn-foliage-alpha-cards/SKILL.md">handdrawn-foliage-alpha-cards</a></h3>
-  <p>Hand-draw game foliage as alpha cards: one texture, low face count, default hard-edge brush in Photoshop, masked-opacity material in-engine for crisp hard leaf edges. No separate leaf geometry unless you simulate real...</p>
-</article>
-<article class="card" data-search="leather-patch-generator generate leather patch materials with a parametric substance generator. trigger when authoring reusable material generators.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/leather-patch-generator/SKILL.md">leather-patch-generator</a></h3>
-  <p>Generate leather patch materials with a parametric Substance generator. Trigger when authoring reusable material generators.</p>
-</article>
-<article class="card" data-search="material-painter paint pbr materials in material-painter, the free open-source substance painter alternative: node-graph material design, wgsl custom shader nodes, gpu baking with caching, engine export presets. trigger when a...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/material-painter/SKILL.md">material-painter</a></h3>
-  <p>Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets. Trigger when a...</p>
-</article>
-<article class="card" data-search="normal-maps-parallax-occlusion fake surface detail with normal maps and parallax occlusion mapping: bake high-poly detail into tangent-space rgb, know the no-self-shadowing limit, then add a height map and view-dependent uv offset for...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/normal-maps-parallax-occlusion/SKILL.md">normal-maps-parallax-occlusion</a></h3>
-  <p>Fake surface detail with normal maps and parallax occlusion mapping: bake high-poly detail into tangent-space RGB, know the no-self-shadowing limit, then add a height map and view-dependent UV offset for...</p>
-</article>
-<article class="card" data-search="procedural-building-shader fill a cyberpunk skyline with a procedural building shader instead of geometry. trigger when a city must scale cheaply.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/procedural-building-shader/SKILL.md">procedural-building-shader</a></h3>
-  <p>Fill a cyberpunk skyline with a procedural building shader instead of geometry. Trigger when a city must scale cheaply.</p>
-</article>
-<article class="card" data-search="realistic-rust-materials author realistic rust as a layered procedural material system with exposed parameters. trigger when weathering materials in substance.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/realistic-rust-materials/SKILL.md">realistic-rust-materials</a></h3>
-  <p>Author realistic rust as a layered procedural material system with exposed parameters. Trigger when weathering materials in Substance.</p>
-</article>
-<article class="card" data-search="substance-painter-3dspace-blur-filter remove uv seam artifacts in substance painter with a custom 3d-space blur filter that samples neighbors by 3d proximity from a baked position map instead of uv adjacency; bake the result down on low-end machines...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/substance-painter-3dspace-blur-filter/SKILL.md">substance-painter-3dspace-blur-filter</a></h3>
-  <p>Remove UV seam artifacts in Substance Painter with a custom 3D-space blur filter that samples neighbors by 3D proximity from a baked Position Map instead of UV adjacency; bake the result down on low-end machines...</p>
-</article>
-<article class="card" data-search="toon-2d-in-3d-dynamic-texture render a classic dbz cel look in 3d with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/toon-2d-in-3d-dynamic-texture/SKILL.md">toon-2d-in-3d-dynamic-texture</a></h3>
-  <p>Render a classic DBZ cel look in 3D with a dynamic texture: fake the light direction with a target point (not an actual light), let it drive the drawn cel shapes on the texture, and verify with extreme-zoom closeup...</p>
-</article>
-<article class="card" data-search="ue58-gradient-animated-materials build four gradient-driven animated materials in unreal engine 5.8&#x27;s material editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ue58-gradient-animated-materials/SKILL.md">ue58-gradient-animated-materials</a></h3>
-  <p>Build four gradient-driven animated materials in Unreal Engine 5.8&#x27;s Material Editor (matrix-code streaks, dissolve-swap between two textures, glow-with-transition, gradient wipe) from one author-supplied gradient...</p>
-</article>
-<article class="card" data-search="ultratex-comfyui-ai-texturing texture any untextured 3d mesh locally in comfyui with ultratex: one reference image in, 2k pbr textures out, free, on 6 to 16 gb gpus. trigger when texturing a mesh without a paid service or a large gpu.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ultratex-comfyui-ai-texturing/SKILL.md">ultratex-comfyui-ai-texturing</a></h3>
-  <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
-</article>
-</div></section>
 <section><h2>Capture and reconstruction <span class="count">10</span></h2>
 <div class="grid">
 <article class="card" data-search="adaptive-frame-extractor feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. trigger when extracting frames for sfm pipelines.">
@@ -789,7 +813,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-03 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-04 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
