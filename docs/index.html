@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="187 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="191 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">187 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">191 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 187 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">42</span></h2>
+  <input id="search" type="search" placeholder="Search 191 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">43</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -67,6 +67,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="cybervga-software-raytracer-jit add real-time pbr raytracing and l1 spherical-harmonics gi to a dos-era fixed-point software engine without a gpu: jit-compile traversal/shading hot paths to sse at runtime, tile workers, probe-grid gi with ggx...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/cybervga-software-raytracer-jit/SKILL.md">cybervga-software-raytracer-jit</a></h3>
   <p>Add real-time PBR raytracing and L1 spherical-harmonics GI to a DOS-era fixed-point software engine without a GPU: JIT-compile traversal/shading hot paths to SSE at runtime, tile workers, probe-grid GI with GGX...</p>
+</article>
+<article class="card" data-search="fragmentsunreal-bim-streaming-ue5 stream bim/ifc buildings into unreal engine 5 at runtime with fragmentsunreal: convert ifc to .frag, build three lod versions per building at import, stream from a server with nothing cooked in, and select the exact...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/fragmentsunreal-bim-streaming-ue5/SKILL.md">fragmentsunreal-bim-streaming-ue5</a></h3>
+  <p>Stream BIM/IFC buildings into Unreal Engine 5 at runtime with FragmentsUnreal: convert IFC to .frag, build three LOD versions per building at import, stream from a server with nothing cooked in, and select the exact...</p>
 </article>
 <article class="card" data-search="godot-1m-agent-ecs-impostors simulate 1,000,000 agents in godot 4.6 c# at 300-450 fps: structure-of-arrays data with batch passes (no formal ecs framework), fully rigged/skinned rendering only for the nearest few thousand, gpu impostors for the...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-1m-agent-ecs-impostors/SKILL.md">godot-1m-agent-ecs-impostors</a></h3>
@@ -340,7 +344,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Generate a village with Unreal&#x27;s PCG framework: break the environment into elements, derive placement rules, spawn points, drive Static Mesh Spawners through Transform Points, and break uniformity with Random Choice...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">28</span></h2>
+<section><h2>AI video <span class="count">30</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -369,6 +373,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="comfyui-motion-previs-studio block shots in 3d before generating: dual-viewport local previs studio with camera moves, procedural character animation, a 24fps keyframe timeline, and control-pass export (openpose, depth, alpha, camera matrices) into...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/comfyui-motion-previs-studio/SKILL.md">comfyui-motion-previs-studio</a></h3>
   <p>Block shots in 3D before generating: dual-viewport local previs studio with camera moves, procedural character animation, a 24fps keyframe timeline, and control-pass export (OpenPose, depth, alpha, camera matrices) into...</p>
+</article>
+<article class="card" data-search="comfyui-vfx-suite-local-studio take a raw video to a finished shot entirely locally inside comfyui with comfyui-vfx-suite: colmap/glomap camera tracking, 3d blockout with flux.3 klein keyframes, ltx ic-lora generation, qwen image edit relighting, an...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/comfyui-vfx-suite-local-studio/SKILL.md">comfyui-vfx-suite-local-studio</a></h3>
+  <p>Take a raw video to a finished shot entirely locally inside ComfyUI with ComfyUI-VFX-Suite: COLMAP/GLOMAP camera tracking, 3D blockout with FLUX.3 Klein keyframes, LTX IC-LoRA generation, Qwen Image Edit relighting, an...</p>
 </article>
 <article class="card" data-search="comfyui-video-builder-agent-music-video let a claude sonnet agent build a full music video inside comfyui through mcp: one prompt briefs the whole job, the agent creates krea2 reference images, lyrics, a yue2 song, the story, and every scene prompt, runs the...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/comfyui-video-builder-agent-music-video/SKILL.md">comfyui-video-builder-agent-music-video</a></h3>
@@ -433,6 +441,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="opsis-comfyui-film-studio run a self-hosted ai film studio on comfyui: api-format graphs plus .map.yaml become priced forms, a local 12gb path or runpod serverless path, mock mode by default. trigger when non-technical users need form-based...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/opsis-comfyui-film-studio/SKILL.md">opsis-comfyui-film-studio</a></h3>
   <p>Run a self-hosted AI film studio on ComfyUI: API-format graphs plus .map.yaml become priced forms, a local 12GB path or RunPod serverless path, mock mode by default. Trigger when non-technical users need form-based...</p>
+</article>
+<article class="card" data-search="pruna-p-h3-image-comfyui run pruna&#x27;s p-h3-image in comfyui: a distilled minimax h3 image model with a 4b text encoder, int8 weights, a prompt upsampler, and an 8-step distilled sampling schedule (manualsigmas + er_sde, cfg 1). text-to-image and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/pruna-p-h3-image-comfyui/SKILL.md">pruna-p-h3-image-comfyui</a></h3>
+  <p>Run Pruna&#x27;s P-H3-Image in ComfyUI: a distilled MiniMax H3 image model with a 4B text encoder, int8 weights, a prompt upsampler, and an 8-step distilled sampling schedule (ManualSigmas + er_sde, CFG 1). Text-to-image and...</p>
 </article>
 <article class="card" data-search="reshoot-4d-comfyui reshoot any person in 4d inside comfyui: capture a video as 4d (motion in 3d, background, original camera path), keyframe a new virtual camera in the node editor, re-shoot along the new path with redirector, then...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/reshoot-4d-comfyui/SKILL.md">reshoot-4d-comfyui</a></h3>
@@ -629,6 +641,73 @@ claude plugin install skill-library@skill-library</code>
   <p>Build physically based lens flare in Houdini Copernicus with Zenith: ray-trace a real lens prescription (built-in 28/50/135/300mm lenses or your own .zmx Zemax file) instead of painting sprites, drive flare from...</p>
 </article>
 </div></section>
+<section><h2>Characters and rigging <span class="count">16</span></h2>
+<div class="grid">
+<article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
+  <p>Take an AI character from clean A-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. Trigger when making AI...</p>
+</article>
+<article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
+  <p>Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for...</p>
+</article>
+<article class="card" data-search="character-animation-pipeline-rig-mocap take a character from model to game-ready animation: build the joint-and-control rig with painted skin weights, break motion into interruptible layered clips, capture performance with a mocap suit or video, then clean...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/character-animation-pipeline-rig-mocap/SKILL.md">character-animation-pipeline-rig-mocap</a></h3>
+  <p>Take a character from model to game-ready animation: build the joint-and-control rig with painted skin weights, break motion into interruptible layered clips, capture performance with a mocap suit or video, then clean...</p>
+</article>
+<article class="card" data-search="facial-animation-blendshape-mocap build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link them to a control rig, keyframe dialogue against the voiceover first, then graduate to iphone, camera-plus-ml...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/facial-animation-blendshape-mocap/SKILL.md">facial-animation-blendshape-mocap</a></h3>
+  <p>Build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link them to a control rig, keyframe dialogue against the voiceover first, then graduate to iPhone, camera-plus-ML...</p>
+</article>
+<article class="card" data-search="keenface-metahuman-heads turn reference photos into production-ready 3d heads with native metahuman topology, clean bald base mesh, and full pbr maps (base color, normal, roughness, specular) using keenface. trigger when a character pipeline...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/keenface-metahuman-heads/SKILL.md">keenface-metahuman-heads</a></h3>
+  <p>Turn reference photos into production-ready 3D heads with native MetaHuman topology, clean bald base mesh, and full PBR maps (Base Color, Normal, Roughness, Specular) using KeenFace. Trigger when a character pipeline...</p>
+</article>
+<article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
+  <p>Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers...</p>
+</article>
+<article class="card" data-search="midi-driven-robot-hands-fingering animate robotic piano hands from any midi file in three.js: precalculate fingering for every note, drop impossible notes before the performance starts, special-case thumb tucking on overlapping notes, and render with...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/midi-driven-robot-hands-fingering/SKILL.md">midi-driven-robot-hands-fingering</a></h3>
+  <p>Animate robotic piano hands from any MIDI file in three.js: precalculate fingering for every note, drop impossible notes before the performance starts, special-case thumb tucking on overlapping notes, and render with...</p>
+</article>
+<article class="card" data-search="minimax-h3-refmod-identity-comfyui generate images of your own character with minimax h3 in comfyui without lora training: bake identity into a refmod file from 8 photos with refmod custom nodes, then prompt scenes, outfits, poses, and environments. 8...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-identity-comfyui/SKILL.md">minimax-h3-refmod-identity-comfyui</a></h3>
+  <p>Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod custom nodes, then prompt scenes, outfits, poses, and environments. 8...</p>
+</article>
+<article class="card" data-search="minimax-h3-refmod-voice-lowvram generate minimax h3 video with a consistent character and voice in comfyui on a 6 gb gpu: bake face and voice into reusable refmod files (no lora training), build the dataset from scratch with qwen image 2.1, and run...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-voice-lowvram/SKILL.md">minimax-h3-refmod-voice-lowvram</a></h3>
+  <p>Generate MiniMax H3 video with a consistent character AND voice in ComfyUI on a 6 GB GPU: bake face and voice into reusable RefMod files (no LoRA training), build the dataset from scratch with Qwen Image 2.1, and run...</p>
+</article>
+<article class="card" data-search="omnichar-portable-characters ship consistent ai characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the comfyui-omnichar custom nodes, then decode the same file into minimax h3...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/omnichar-portable-characters/SKILL.md">omnichar-portable-characters</a></h3>
+  <p>Ship consistent AI characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the ComfyUI-Omnichar custom nodes, then decode the same file into Minimax H3...</p>
+</article>
+<article class="card" data-search="reallusion-rigger-apex-rig turn a character creator 5 / iclone 8 character into a shaded, animatable, render-ready solaris character in houdini 22+ with one click: usd/fbx import, karma cpu/xpu materials in lops, expression wrinkles, and a full...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/reallusion-rigger-apex-rig/SKILL.md">reallusion-rigger-apex-rig</a></h3>
+  <p>Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials in LOPs, expression wrinkles, and a full...</p>
+</article>
+<article class="card" data-search="revive-ancient-model revive a legacy 3d model: retexture, rig, animate, let the original forms carry it. trigger when refurbishing old assets.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/revive-ancient-model/SKILL.md">revive-ancient-model</a></h3>
+  <p>Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. Trigger when refurbishing old assets.</p>
+</article>
+<article class="card" data-search="stair-animation-hidden-ramps-ik ship believable stair climbing without dedicated stair animations: hide a ramp under the stairs as the character collider, place it to match the game&#x27;s look, understand why capsule-vs-step causes jitter, and plant feet...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/stair-animation-hidden-ramps-ik/SKILL.md">stair-animation-hidden-ramps-ik</a></h3>
+  <p>Ship believable stair climbing without dedicated stair animations: hide a ramp under the stairs as the character collider, place it to match the game&#x27;s look, understand why capsule-vs-step causes jitter, and plant feet...</p>
+</article>
+<article class="card" data-search="substance-painter-characters texture game characters in substance painter: bake mesh maps, build materials in layers, keep the stack editable. trigger when building a character texturing pipeline.">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/substance-painter-characters/SKILL.md">substance-painter-characters</a></h3>
+  <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
+</article>
+<article class="card" data-search="unreal-jiggle-physics-spring add jiggle physics to character joints in unreal with animation blueprint spring controllers: identify the joints, add a spring controller per joint, tune stiffness and damping, and budget the cpu cost honestly. trigger...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/unreal-jiggle-physics-spring/SKILL.md">unreal-jiggle-physics-spring</a></h3>
+  <p>Add jiggle physics to character joints in Unreal with Animation Blueprint spring controllers: identify the joints, add a spring controller per joint, tune stiffness and damping, and budget the CPU cost honestly. Trigger...</p>
+</article>
+<article class="card" data-search="zbrush-dynamesh-extract-decimate sculpt a character with zero booleans: one dynamesh for the whole body, extract pieces out of it, harden edges with remesh/extrude/subdivide, alphas for micro-detail, decimation master from 250m to 10m polys, marmoset...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/zbrush-dynamesh-extract-decimate/SKILL.md">zbrush-dynamesh-extract-decimate</a></h3>
+  <p>Sculpt a character with zero booleans: one Dynamesh for the whole body, extract pieces out of it, harden edges with remesh/extrude/subdivide, alphas for micro-detail, Decimation Master from 250M to 10M polys, Marmoset...</p>
+</article>
+</div></section>
 <section><h2>Materials and shaders <span class="count">16</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-pbr-materials-textures author and verify pbr materials for ai assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2k-master rule...">
@@ -696,69 +775,6 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
 </article>
 </div></section>
-<section><h2>Characters and rigging <span class="count">15</span></h2>
-<div class="grid">
-<article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
-  <p>Take an AI character from clean A-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. Trigger when making AI...</p>
-</article>
-<article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
-  <p>Rig soft-body secondary motion with Blender constraints instead of a simulation: Stretch To + Track To guide bones drive jiggle without cloth sim or blend shapes. Trigger when a rig needs cheap secondary motion for...</p>
-</article>
-<article class="card" data-search="character-animation-pipeline-rig-mocap take a character from model to game-ready animation: build the joint-and-control rig with painted skin weights, break motion into interruptible layered clips, capture performance with a mocap suit or video, then clean...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/character-animation-pipeline-rig-mocap/SKILL.md">character-animation-pipeline-rig-mocap</a></h3>
-  <p>Take a character from model to game-ready animation: build the joint-and-control rig with painted skin weights, break motion into interruptible layered clips, capture performance with a mocap suit or video, then clean...</p>
-</article>
-<article class="card" data-search="facial-animation-blendshape-mocap build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link them to a control rig, keyframe dialogue against the voiceover first, then graduate to iphone, camera-plus-ml...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/facial-animation-blendshape-mocap/SKILL.md">facial-animation-blendshape-mocap</a></h3>
-  <p>Build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link them to a control rig, keyframe dialogue against the voiceover first, then graduate to iPhone, camera-plus-ML...</p>
-</article>
-<article class="card" data-search="keenface-metahuman-heads turn reference photos into production-ready 3d heads with native metahuman topology, clean bald base mesh, and full pbr maps (base color, normal, roughness, specular) using keenface. trigger when a character pipeline...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/keenface-metahuman-heads/SKILL.md">keenface-metahuman-heads</a></h3>
-  <p>Turn reference photos into production-ready 3D heads with native MetaHuman topology, clean bald base mesh, and full PBR maps (Base Color, Normal, Roughness, Specular) using KeenFace. Trigger when a character pipeline...</p>
-</article>
-<article class="card" data-search="layered-vellum-proxy-colliders layer hair simulations on top of cloth simulations in houdini vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified vdb-proxy colliders. trigger when stacking sim layers...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/layered-vellum-proxy-colliders/SKILL.md">layered-vellum-proxy-colliders</a></h3>
-  <p>Layer hair simulations on top of cloth simulations in Houdini Vellum without intersection or tangling: simulate the cloth first, then give the hair layer simplified VDB-proxy colliders. Trigger when stacking sim layers...</p>
-</article>
-<article class="card" data-search="midi-driven-robot-hands-fingering animate robotic piano hands from any midi file in three.js: precalculate fingering for every note, drop impossible notes before the performance starts, special-case thumb tucking on overlapping notes, and render with...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/midi-driven-robot-hands-fingering/SKILL.md">midi-driven-robot-hands-fingering</a></h3>
-  <p>Animate robotic piano hands from any MIDI file in three.js: precalculate fingering for every note, drop impossible notes before the performance starts, special-case thumb tucking on overlapping notes, and render with...</p>
-</article>
-<article class="card" data-search="minimax-h3-refmod-identity-comfyui generate images of your own character with minimax h3 in comfyui without lora training: bake identity into a refmod file from 8 photos with refmod custom nodes, then prompt scenes, outfits, poses, and environments. 8...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/minimax-h3-refmod-identity-comfyui/SKILL.md">minimax-h3-refmod-identity-comfyui</a></h3>
-  <p>Generate images of your own character with MiniMax H3 in ComfyUI without LoRA training: bake identity into a RefMod file from 8 photos with RefMod custom nodes, then prompt scenes, outfits, poses, and environments. 8...</p>
-</article>
-<article class="card" data-search="omnichar-portable-characters ship consistent ai characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the comfyui-omnichar custom nodes, then decode the same file into minimax h3...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/omnichar-portable-characters/SKILL.md">omnichar-portable-characters</a></h3>
-  <p>Ship consistent AI characters across image and video models with the portable .char format: encode face/body/wardrobe references once with the ComfyUI-Omnichar custom nodes, then decode the same file into Minimax H3...</p>
-</article>
-<article class="card" data-search="reallusion-rigger-apex-rig turn a character creator 5 / iclone 8 character into a shaded, animatable, render-ready solaris character in houdini 22+ with one click: usd/fbx import, karma cpu/xpu materials in lops, expression wrinkles, and a full...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/reallusion-rigger-apex-rig/SKILL.md">reallusion-rigger-apex-rig</a></h3>
-  <p>Turn a Character Creator 5 / iClone 8 character into a shaded, animatable, render-ready Solaris character in Houdini 22+ with one click: USD/FBX import, Karma CPU/XPU materials in LOPs, expression wrinkles, and a full...</p>
-</article>
-<article class="card" data-search="revive-ancient-model revive a legacy 3d model: retexture, rig, animate, let the original forms carry it. trigger when refurbishing old assets.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/revive-ancient-model/SKILL.md">revive-ancient-model</a></h3>
-  <p>Revive a legacy 3D model: retexture, rig, animate, let the original forms carry it. Trigger when refurbishing old assets.</p>
-</article>
-<article class="card" data-search="stair-animation-hidden-ramps-ik ship believable stair climbing without dedicated stair animations: hide a ramp under the stairs as the character collider, place it to match the game&#x27;s look, understand why capsule-vs-step causes jitter, and plant feet...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/stair-animation-hidden-ramps-ik/SKILL.md">stair-animation-hidden-ramps-ik</a></h3>
-  <p>Ship believable stair climbing without dedicated stair animations: hide a ramp under the stairs as the character collider, place it to match the game&#x27;s look, understand why capsule-vs-step causes jitter, and plant feet...</p>
-</article>
-<article class="card" data-search="substance-painter-characters texture game characters in substance painter: bake mesh maps, build materials in layers, keep the stack editable. trigger when building a character texturing pipeline.">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/substance-painter-characters/SKILL.md">substance-painter-characters</a></h3>
-  <p>Texture game characters in Substance Painter: bake mesh maps, build materials in layers, keep the stack editable. Trigger when building a character texturing pipeline.</p>
-</article>
-<article class="card" data-search="unreal-jiggle-physics-spring add jiggle physics to character joints in unreal with animation blueprint spring controllers: identify the joints, add a spring controller per joint, tune stiffness and damping, and budget the cpu cost honestly. trigger...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/unreal-jiggle-physics-spring/SKILL.md">unreal-jiggle-physics-spring</a></h3>
-  <p>Add jiggle physics to character joints in Unreal with Animation Blueprint spring controllers: identify the joints, add a spring controller per joint, tune stiffness and damping, and budget the CPU cost honestly. Trigger...</p>
-</article>
-<article class="card" data-search="zbrush-dynamesh-extract-decimate sculpt a character with zero booleans: one dynamesh for the whole body, extract pieces out of it, harden edges with remesh/extrude/subdivide, alphas for micro-detail, decimation master from 250m to 10m polys, marmoset...">
-  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/zbrush-dynamesh-extract-decimate/SKILL.md">zbrush-dynamesh-extract-decimate</a></h3>
-  <p>Sculpt a character with zero booleans: one Dynamesh for the whole body, extract pieces out of it, harden edges with remesh/extrude/subdivide, alphas for micro-detail, Decimation Master from 250M to 10M polys, Marmoset...</p>
-</article>
-</div></section>
 <section><h2>Capture and reconstruction <span class="count">10</span></h2>
 <div class="grid">
 <article class="card" data-search="adaptive-frame-extractor feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. trigger when extracting frames for sfm pipelines.">
@@ -813,7 +829,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-04 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-05 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
