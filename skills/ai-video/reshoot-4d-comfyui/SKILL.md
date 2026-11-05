@@ -20,6 +20,14 @@ This skill reconstructs the Reshoot 4D workflow, step by step, so another agent 
 
 ComfyUI; 4D capture (quick mode for fast previews, full 4D Gaussian splat for closer direction); ReDirector (retake along the new camera path); LTX 2.3 (photoreal pass); Cseti's CrossView-Warp IC-LoRA (warps real footage to the new view); RIFE (24 → 60 fps); Blender camera interchange (.fbx / .abc / .usd import and export). Tested on one RTX 3090 (24 GB).
 
+## AAA studio practice
+
+- **The exact workflow, academically.** *Hybrid Cinematography* (Nhan Tran et al., Cornell + Google, 2026): "We present Hybrid Cinematography, a workflow that bridges physical capture and generative reshooting to manage hallucination risk while filmmakers can still act on it. Using an editable 3D shot plan and a proxy of the take, our previsualization evaluates hallucination risk in real time" — "built around one editable 3D shot plan that every stage reads", evaluated with seven experienced filmmakers ([arxiv.org/html/2610.12455](https://arxiv.org/html/2610.12455)). Its reshoot definition matches this skill: "Given a recorded take, these models can render the same performance from a new camera trajectory chosen or revised after capture" (intro, citing the reshooting literature). On this skill's ~30–40° limit: "a target trajectory may require rendering things that were not visible at all, or not visible in sufficient detail, in the captured trajectory, leaving parts of the shot for the model to hallucinate. We call this unrecorded demand the shot's hallucination risk." Also: "the take is always what a later stage consumes. It is never what the plan is measured against" — Reshoot 4D's splat-vs-photoreal split is the working version of that principle.
+- **Camera-controlled re-render, lab-scale.** ReCamMaster (Jianhong Bai et al., Kuaishou Technology/CUHK/HUST, ICCV 2025): "a camera-controlled generative video re-rendering framework that reproduces the dynamic scene of an input video at novel camera trajectories" — trained on "136K realistic videos... with 122K different camera trajectories" generated in Unreal Engine 5 ([arxiv.org/html/2503.11647v1](https://arxiv.org/html/2503.11647v1)). Research lab, not a film studio; the anchor is the production-shaped training pipeline.
+- **Splats as the cheap directing proxy in virtual production.** Magnopus: "We frequently use splats in virtual production scenarios, where invariably there are multiple cameras rendering concurrently in a single instance of Unreal" — with the discipline that the renderer "has to decide, every frame, which part to render, go and fetch it and then draw it on-screen" ([magnopus.com, 2026](https://www.magnopus.com/blog/gaussiansplats-part-3-theres-always-a-bigger-scene)). Same tiering as Reshoot 4D's quick-mode splat vs full 4D: direct on the proxy, spend on the final.
+- **Camera interchange is a standards problem.** The Academy Software Foundation's USD Camera Working Group: "the cascade of interpretive pipeline dependencies on proprietary Camera rigs would be obsolesced [by a unified USD Camera schema]. Applications that are leveraging USD will be able to pick up the Camera attributes directly" ([wiki.aswf.io](https://wiki.aswf.io/display/WGUSD/USD+Camera?focusedCommentId=13492713)). Reshoot 4D's .fbx/.abc/.usd round-trip is the indie version of that handoff.
+- **ILM StageCraft: cheap interactive before expensive final.** The virtual camera is tracked in real time and the engine updates the background "accordingly... Over 50% of The Mandalorian was shot in this one, virtual location reducing location shoots and chroma key (blue and greenscreen) compositing" ([boldentrance.com](https://boldentrance.com/stagecraft-ilm-the-mandalorian/)).
+
 ## Phase 1: Capture the 4D
 
 **Do**
@@ -42,10 +50,13 @@ Directing needs the scene before the camera: motion, background, and the origina
 3. Navigate like a DCC: Blender-style view gizmo, J/K/L shuttle, frame stepping, multi-select to move or retime keys together.
 4. Set per-key camera settings: aperture, focus (in metres or locked to the subject), vignette, grain. Do rack focus and aperture pulls between keys. Alt+click in the viewport to focus on whatever is clicked.
 5. Add lens looks per shot: distortion, chromatic aberration, bloom, halation, anamorphic bokeh. Keep depth and subject matte passes if comping afterwards.
+6. Agent-executable: auto-generate candidate camera moves from templates (push-in, orbit, arc, crane-up with real-world filming constraints) so the node editor becomes a selector/adjuster over generated trajectories, rather than hand-keyframing every path — ReCamMaster-style rule-driven trajectory synthesis.
+7. Agent-executable: write the keyframed path to one canonical camera-path file (prefer USD Camera per the ASWF working group) that capture, the node editor, ReDirector, and Blender all read/write.
 
 **Check**
 - Keys are editable after the fact: "Change those later without re-rendering. The render gets reused, so a focus tweak takes a few minutes instead of the whole pipeline again."
 - Zoom keys change the lens after the render, "which makes dolly zooms work."
+- Automated round-trip check: export the camera file, import it back, diff the camera matrices, alert on drift — no silent interpretation by any stage.
 
 **Why**
 Camera direction is iteration; iteration must be cheaper than rendering. Reusing the render for focus tweaks is what makes the editor a directing tool instead of a render queue.
@@ -55,6 +66,8 @@ Camera direction is iteration; iteration must be cheaper than rendering. Reusing
 **Do**
 1. Retake: "ReDirector re-shoots the whole video along your new path."
 2. Photoreal pass: "LTX 2.3 renders every final frame, guided by the real footage warped to the new view (Cseti's CrossView-Warp IC-LoRA)."
+3. Agent-executable: enforce the two-tier pass — a splat-only novel-view preview (real-time, free) must be auto-approved for coverage and composition before the photoreal LTX pass runs, mirroring the Magnopus/ILM cheap-before-expensive discipline.
+4. Agent-executable: run a hallucination-risk gate before the expensive render, Hybrid-Cinematography-style: render the Gaussian splat along the keyframed camera path, compute per-frame observed coverage (angular deviation from the source camera, how much of the frame was actually observed), and flag frames beyond the ~30–40° working envelope as high hallucination risk — block or warn before CrossView-Warp/LTX runs. (The ~30–40° bound is this skill's own stated limit; the paper gives no degree number.)
 
 **Check**
 - Inference (labelled): u/sitefall hypothesizes ReDirector is "an older Wan fun control model" taking the camera path from the UI as input; the author did not confirm this in retrieved comments.

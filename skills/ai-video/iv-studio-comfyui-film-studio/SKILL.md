@@ -19,14 +19,23 @@ This skill reconstructs the IV Studio film-studio workflow, step by step, so ano
 
 IV Studio (Windows desktop app, MIT); ComfyUI (driven over its API); MiniMax H3 (video); Qwen3-VL via Ollama or an AI agent via MCP (prompt writing); OpenAI Whisper (take ranking); DLSS 5 or SeedVR2 (finish upscale); SAM 3.1 (cut-out); MiniMax Music 3 / ACE-Step (music); VoxCPM2 (local voices); Civitai LoRAs; three.js headless browser + ffmpeg (previs); RunPod / Modal (cloud GPU with idle shutoff); 142-tool MCP server. Tested on RTX 4090 + 64 GB RAM; 16 GB cards work with smaller previews; every model downloads from its host with SHA-256 verification.
 
+## AAA studio practice
+
+- **Previs is the spend gate, not the decoration.** Halon Entertainment's standard pipeline on *The Call of the Wild*: the first previs pass went in "Maya grayscale, which was sent to editorial and edited in along with surrounding shots to make sure it matched the pacing that was requested"; only at the approval phase "would we then be given the go-ahead to take it to engine" ([beforesandafters.com, 2020](http://beforesandafters.com/2020/03/04/what-actually-happens-when-a-director-asks-you-to-previs-a-scene/)). ILM's Rob Bredow on *The Mandalorian* StageCraft: "It really is an end-to-end solution; everything from the early stages of previz... What you see on that LED wall is actually what goes straight into the show"; Taika Waititi: "It's a great throwback to a time when people would make decisions before post" ([ilm.com, 2021](https://www.ilm.com/filmmakers-discuss-bringing-virtual-worlds-to-life-for-the-mandalorian-s2/)).
+- **Camera handoffs are numbers, not vibes.** On *The Call of the Wild*, Halon "had given all of our camera data, lens, distant to subject, etc. over to production for shooting in illustration and QuickTime format, so it was easy to replicate on set with numbers to back everything up" ([beforesandafters.com, 2020](http://beforesandafters.com/2020/03/04/what-actually-happens-when-a-director-asks-you-to-previs-a-scene/)). On *War for the Planet of the Apes*, previs supervisor AJ Briones "sat with Matt Reeves and interactively placed all of the cameras with him... so we could take advantage of our builds by generating multiple cameras with them, which in turn helped with continuity" ([unrealengine.com](https://www.unrealengine.com/developer-interviews/halon-evolves-previs-with-unreal-engine?lang=en-US)).
+- **Cheap takes before expensive frames.** Halon (2011, *John Carter of Mars* era): "In the hour it takes a keyframe artist to accomplish one take you could have done 50 takes with a virtual camera" — and the deliverable to the director was "QuickTimes with minimal edits, sound and music" ([Post Magazine, 2011](https://digital.copcomm.com/i/33429-may-2011/18)). IV Studio's grey three.js previs is the same idea aimed at a generative downstream instead of a shoot.
+- **Agent coordination precedent (indie AI-film pipeline, labeled not AAA).** David Comfort's BLACKWOOD AI short (Threshold Cinema) runs "a conversational agent [that] generates references, tracks locked or blocked cards, rewrites prompts after safety-filter rejections, and proposes parallel next steps", with "character, location, and prop reference sheets... locked against a narrative bible. Only locked references attach to story beats" ([ai-primer.com, 2026-10-31](https://www.ai-primer.com/creative/stories/blackwood-solo-production-workflow)). No AAA studio publishes an equivalent agent-driven generative-video previs pipeline (inference: this is the closest published anchor for agent-assisted prompt writing).
+
 ## Phase 1: Let the agent write the prompt
 
 **Do**
 1. "Write it for me": a local model (Qwen3-VL via Ollama, or your AI agent through MCP) looks at reference pictures and writes the H3 prompt.
 2. Run the checker: it "catches the mistakes H3 punishes (frame-grid lengths, speaker tags, unattached references) and fixes most in one click."
+3. Agent-executable: have the agent emit a per-shot camera spec as JSON (lens mm, distance to subject, move type, start/end pose) derived from the staging board, alongside the prompt. The checker verifies every H3 prompt contains an explicit camera spec before any preview is queued — mirroring Halon's "numbers to back everything up" camera-data handoff.
 
 **Check**
 - Commenter u/bumredeemer: "the frame grids is my biggest gripe about h3" — the checker is the answer to the most common H3 complaint.
+- The camera spec JSON for each shot parses and contains all four fields; the checker logs a rejection for any prompt missing one, and no rejected prompt enters the hunt queue.
 
 **Why**
 Prompt for the model's failure modes, not its strengths: the checker encodes what H3 punishes.
@@ -50,9 +59,11 @@ Hunt cheap, finish once: ranking three ways (audio, likeness, sharpness) before 
 **Do**
 1. Projects: "a six-step wizard from idea to short film (script, cast, storyboard sketches you can play as an animatic)."
 2. "Every shot is filmed from its sketch, so faces and rooms stay consistent."
+3. Agent-executable: hash-lock (SHA-256) the character and location reference images per shot and store the hashes in the shot record, BLACKWOOD-style — only locked references may attach to a shot. The prompt checker verifies each prompt references only locked hashes and rejects prompts that introduce unapproved references. Track per-shot stage status (locked/blocked) on the board.
 
 **Check**
 - The sketch is playable as an animatic before any generation is spent.
+- Every prompt in the queue resolves to locked hashes only; the checker log shows zero unapproved-reference attachments.
 
 **Why**
 The sketch is the consistency contract: faces and rooms are locked before the model ever sees the shot.
@@ -64,9 +75,11 @@ The sketch is the consistency contract: faces and rooms are locked before the mo
 2. Build the previs in-app ("The previs is built into the app, no Blender needed"): block the shot on the top-down board — up to four people, each one's facing, gaze target, and walk path; camera lens, height, and move (push, pan, track, arc).
 3. Render the previs "in motion as grey mannequins on a plain floor" with three.js in a headless browser + ffmpeg: "about 3 to 5 seconds a clip."
 4. Feed the clip into MiniMax H3's reference-to-video mode as `<Video 1>`, alongside the character and location pictures. "The prompt tells H3 the previs only sets camera and blocking, so it keeps the motion and framing but doesn't copy the grey look."
+5. Agent-executable: formalize the grey previs as the spend gate before the full-res finish — a scripted check on the previs clip must pass before the H3 finish is released: shot length matches the sketch animatic, the camera move follows the staging board, and character blocking is present. Derive all shot cameras from the one shared top-down staging scene file and run an automated continuity check across shots before queuing: consistent lens per character and the 180-degree axis rule — mirroring Halon's multiple-cameras-from-one-build continuity practice.
 
 **Check**
 - Author's honest finding: "it really pays off on arcs and orbits around characters. H3 struggl[es]..." — truncated in the retrieved comment; the struggle is named but its object is not. Treat the truncation as a known unknown.
+- The previs gate log shows pass/fail per shot; no full-res finish runs without a passed previs; the continuity check passes (lens consistent, axis respected) or the shot returns to blocking.
 
 **Why**
 A grey previs the model is told not to copy is the cleanest way to direct camera motion: blocking without style contamination.

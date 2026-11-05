@@ -20,6 +20,14 @@ This skill reconstructs the Hiraeth one-month game-build process, step by step, 
 
 Claude Opus 5.5 + GPT Astra (development); Midjourney (visual references); Tripo (3D assets); Meshy (asset trials); three.js (runtime); Unity builds via a JS bridge ("to avoid rewriting it all in C#"); Suno (music).
 
+## AAA studio practice
+
+- **Tiered check-in testing (Rare, *Sea of Thieves*).** Robert Masella (Senior Gameplay Engineer) at GDC 2019: "Require testing with every check in • Sea of Thieves now has 10,000 tests • Test run remotely using TeamCity"; "Run core set of tests before every check in • Run longer running tests periodically"; the payoff: "Shipped over 100 times in 2 years • Very low bug count • Improved code • Manual testers focus on other things • No crunch for 4 years!" ([docslib.org, GDC 2019 deck](https://docslib.org/download/1319348/automated-testing-for-multiplayer-game-ai-in-sea-of-thieves)).
+- **Tools assist, humans judge (BioWare, GDC 2012).** Alexander Lucas, QA Engineering Lead: "When we do target testing, we've consistently found that tools assisted testing yields more value than test automation"; the Automation Axioms: "Automate tasks that people cannot perform" / "Favor early stages of development" / "Augment manual testing; don't supplant it"; and the caution: "tests break… a lot! By the time developer churn has settled, and your automation framework has hardened, the game has probably already shipped" ([gamedeveloper.com](https://www.gamedeveloper.com/production/pitfalls-in-automation)).
+- **Telemetry finds dead space (Ubisoft).** Ubisoft's DNA tracking on *Assassin's Creed Brotherhood*: "Production tracking is used to give insight on the game in progress of being made and allow designers to adjust the gameplay between playtests" — playtest failure heatmaps led to the mission being made "a little easier" ([gamedeveloper.com](https://www.gamedeveloper.com/design/game-telemetry-with-dna-tracking-on-assassin-s-creed)). On *Far Cry 3*: "We can see the actual physical paths that players take to get from one mission to the next", and the goal "from test to test [was] to remove the straight lines of players running from mission to mission, and have them be replaced with an explosion of scraggly lines" ([escapistmagazine.com](https://www.escapistmagazine.com/far-cry-3-devs-watched-testers-die-in-game/)). This is the serendipity map, production-proven: instrument traversal, then let the instrument find the empty space.
+- **Always-on playtester bots (Ubisoft La Forge).** DeepBot for *For Honor*: "the studio trained its AI, the DeepBot, using competitive self-play"; "The DeepBot trains 50 matches at once at twice the speed" ([80.lv](https://80.lv/articles/ubisoft-on-building-efficient-player-bots-using-deep-reinforcement-learning)); the testing application of the same research lists "testing assistant — Open World (Far Cry: New Dawn, 2019), Live multiplayer (Tom Clancy's Rainbow Six Siege, 2015–…)" ([Ubisoft ML tutorial deck](https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/2KBudkg4PSyN7io2qQWAxv/886ec7bd381cd666dec7978c83b196b2/Delalleau-2019_ML-tutorial-day-smart-bots-for-better-games-reinforcement-learning-in-production.pdf)).
+- **Honest gap:** no AAA-studio-specific source found tonight for automated screenshot/golden-image regression in game production; the visual-changelog pixel-diff gate below is labeled inference.
+
 ## Phase 1: Assemble the AI stack
 
 **Do**
@@ -39,6 +47,12 @@ No single generator wins every asset; the arena trial is the selection mechanism
 **Do**
 1. "Turn gaming design principles into reusable agent skills, then regularly audit the game against them."
 2. Apply the fixed audit question per unit of content: "Across all 14 temples, does each one teach a mechanic, test it, then give it a twist?"
+3. Agent-executable: run the audit as a tiered check-in gate, Rare-style — the fast checks (the fixed teach/test/twist question per content unit) run on every build/change; the expensive audits (serendipity-map recompute, full screenshot review) run on a periodic cadence. Keep the tiers explicit so the audit never slows a one-month build to a crawl.
+4. Agent-executable: add always-on playtester bots that walk each temple and exercise the teach/test/twist loop continuously as a cheap regression layer for the fixed audit question — the Ubisoft La Forge "testing assistant" pattern, minus the RL training budget.
+
+**Check**
+- The audit question is fixed (teach → test → twist) and runs across all 14 temples, not just the new one.
+- The tier log shows which checks ran per build and which are on the periodic cadence; no expensive audit blocks a fast iteration.
 
 **Check**
 - The audit question is fixed (teach → test → twist) and runs across all 14 temples, not just the new one.
@@ -50,6 +64,11 @@ Design principles rot when they live in a doc; as agent skills they run on a sch
 
 **Do**
 1. Build the serendipity map: "a map that highlights walkable ground more than 50 meters from anything to discover."
+2. Agent-executable: replace the one-off serendipity pass with Ubisoft-style traversal telemetry — log positions from playtests or bot runs per build, auto-generate the coverage heatmap, and flag walkable regions with zero traversal as dead-space candidates. The instrument does the walking; the human decides what each empty region needs.
+
+**Check**
+- Empty-but-walkable regions light up; the map answers "where is there nothing" instead of "where is the content."
+- Each build produces its own heatmap; a region flagged on two consecutive builds is a standing item, not a one-off observation.
 
 **Check**
 - Empty-but-walkable regions light up; the map answers "where is there nothing" instead of "where is the content."
@@ -61,6 +80,11 @@ A month-long build accumulates dead space; the instrument finds it instead of a 
 
 **Do**
 1. "Every visual change gets a screenshot from the running game" at the visual changelog.
+2. Agent-executable (inference, no AAA source found tonight): put a deterministic pixel-diff gate on the same-angle screenshots — capture per build, auto-pass identical frames, surface only changed ones for human review. BioWare's "tools assisted testing" discipline: the tool filters, the human judges.
+
+**Check**
+- "Comparing the same room from the same angle tells me a lot more than a note saying 'improved lighting.'"
+- The diff gate log shows pass/skip per frame; only changed frames reach human review.
 
 **Check**
 - "Comparing the same room from the same angle tells me a lot more than a note saying 'improved lighting.'"

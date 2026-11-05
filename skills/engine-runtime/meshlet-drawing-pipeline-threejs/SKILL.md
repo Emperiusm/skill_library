@@ -19,6 +19,12 @@ This skill reconstructs the MeshletDrawingPipeline stress-test workflow, step by
 
 three.js r187, WebGPURenderer, `MeshletDrawingPipeline` (`three/addons/pipelines/MeshletDrawingPipeline.js`, PR #35191 by sunag); meshoptimizer (cluster building); headless browser with WebGPU for measurement.
 
+## AAA studio practice
+
+- **Meshlets in a shipped game (Remedy, *Alan Wake 2*).** Northlight's GPU-driven rendering pipeline: "we can now do occlusion culling down to a single-pixel precision and use everything in a scene as an occluder. This ability to only draw what is visible means that the world of AW2 has more geometric detail than we've ever shipped before. Diving a bit deeper into how it works: we also cull meshlets, in addition to the mesh. Meshlets are smaller, more optimized, groups of triangles extracted from the mesh" ([remedygames.com](https://www.remedygames.com/article/how-northlight-makes-alan-wake-2-shine)). Lead graphics programmer Tatu Aalto: "To achieve high geometric detail on rendering, it is crucial to select very accurately the geometry that contributes to the image and only draw that. When combined with GPU-based occlusion culling, mesh shaders provide a very efficient and simple framework to use GPU power where it matters" ([wccftech.com](https://wccftech.com/alan-wake-2-dev-talks-integration-of-mesh-shaders-dlss-3-5-explains-work-graphs-importance-in-future-games/)).
+- **Nanite: the reference cluster design (Epic, SIGGRAPH 2021).** Brian Karis: "Nanite partitions every mesh into clusters of 128 triangles. Clusters are grouped into cluster-groups of 8–32 clusters, and each group is simplified as a unit to produce the next LOD level." The parallel LOD-selection rule: `bool render = (parent_error > threshold) && (cluster_error <= threshold);` — "Every group evaluates that expression using only local data... No sibling communication. No global sort... you dispatch one thread per group in a compute shader and the answer drops out." The error metric is "a bounding sphere plus a scalar... projected into screen space and compared against the r.Nanite.MaxPixelsPerEdge threshold (default 1.0)"; "Nanite performs ... two-pass occlusion culling" ([nanite-lumen.pdf](https://theisegoria.github.io/nanite-lumen/nanite-lumen.pdf)). The three.js pipeline's 64-triangle clusters are the same family at half the granularity (inference: the granularity choice is the author's, not from Epic).
+- **GPU culling before it was cool (DICE/Frostbite, GDC 2016).** Frostbite's compute-culling deck: software Hi-Z "In Frostbite since Battlefield 3. Done on the CPU for the upcoming GPU frame. No latency"; "Draw Call Compaction (No Zero Size Draws)" — compacted indirect draws after GPU culling; "Small and inefficient draws are a problem"; batches are "Configurable subset of meshes in a scene" where "Meshes within a batch share the same shader and strides" ([slideshare, GDC 2016](https://www.slideshare.net/slideshow/optimizing-the-graphics-pipeline-with-compute-gdc-2016/59747720)). Honest gap: no AAA source states an explicit per-material meshlet-batch cap; using Frostbite's batch-by-shader-and-stride rule to justify the per-size-class material split below is inference.
+
 ## Phase 1: Build an instanced stress scene
 
 **Do**
@@ -41,11 +47,13 @@ Instanced, repeated geometry is the best case for cluster sharing. A stress test
 3. `renderer.drawingPipeline = meshlets;` — "the same scene now draws as meshlets."
 4. `await renderer.compileAsync( scene, camera );` — runs prepareAsync, which builds clusters + LODs. ("In the demo the compile goes through the RenderPipeline's scene pass, which calls the same thing.")
 5. Each frame, read `meshlets.info` → `{ clusters, triangles }` actually drawn.
+6. Agent-executable: adopt Nanite's local-cut rule as the LOD reference design — a monotone screen-space-error metric evaluated locally per cluster-group on the GPU (one thread per group, no global sort, the `(parent_error > threshold) && (cluster_error <= threshold)` cut), and ship a stat overlay showing LOD distribution per frame to validate it. Emit a cull-efficiency stat every run: percent of triangles actually drawn vs submitted, so the pipeline proves Remedy's bar — "only draw what contributes to the image."
 
 **Check**
 - Each geometry is split once into clusters ("meshlets") of 64 triangles plus a chain of simplified LODs, built with meshoptimizer.
 - Every frame, compute shaders pick an LOD per object, cull objects and clusters against the frustum, cull clusters hidden behind others, and draw what's left with one indirect draw per geometry/material group.
 - First measured frame: 26,725 clusters drawn, about 1.71M triangles — 0.087% of the scene.
+- The stat overlay shows which LOD level serves each visible cluster-group; the cull-efficiency number moves in the right direction when density grows (inference: validate against the independent benchmark, do not chase the percentage itself).
 
 **Why**
 Cull on the GPU before rasterization. The `info` readout is the proof: submitted triangles, not scene triangles, are the cost.
@@ -69,6 +77,11 @@ The author's own framing is "The honest breakdown": unique vs instanced triangle
 **Do**
 1. Expect this failure: "the pipeline batches objects by material, and sizes the batch by 'object count x the most meshlets any of its shapes has'. 40k pebbles sharing a material with the 12k-meshlet spires blew past the limit and crashed."
 2. Fix: give each size class its own material instance.
+3. Agent-executable (inference, labeled): at the offline meshoptimizer step, emit a per-material batch report — meshlet count, smallest and largest meshlet per material — and add a build-time check that warns when small-meshlet and large-meshlet shapes share one material before it can blow past the indirect-draw budget. Frostbite's rule (meshes in a batch share shader and strides) is the reference behavior, not a stated cap.
+
+**Check**
+- The crash reproduces when small-meshlet and large-meshlet shapes share a material; separate material instances per size class clear it.
+- The batch report is emitted for every build; the warning fires before the crash can, not after.
 
 **Check**
 - The crash reproduces when small-meshlet and large-meshlet shapes share a material; separate material instances per size class clear it.

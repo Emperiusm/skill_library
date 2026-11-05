@@ -20,14 +20,23 @@ This skill reconstructs the Rind texture-painting workflow, step by step, so ano
 
 Rind (texture painter by tauecar); Godot (runs in the editor and as a desktop app); models authored in Blender/Maya; Claude (large parts of the code; base skeleton and first version hand-written by the author).
 
+## AAA studio practice
+
+- **Bake first, paint second (Frozenbyte, Trine series — official internal wiki).** "The info of the high poly mesh is baked into 2D texture maps that can be used on the low poly mesh. This way you get the details of the dense high poly mesh in a much more optimized form that can be used in real time in the game." The bake set: "Bake at least these maps: Normal... World space normal, it's used by many masking generators... ID... AO... Curvature... Position" — and "First bake only the Normal map and test that everything works". Concrete parameters: "Dilation: 16 (2-4 for the color ID map)", "Anti-aliasing: Subsampling 8x8 (Consider lowering for AO, ID and Thickness, for example 4x4)", "Match: By Mesh Name", "Ignore backface: on"; "It's a good idea to bake AO and Thickness separate from the other maps and with a lower AA setting, since they take a lot of time to bake" ([wiki.frozenbyte.com](https://wiki.frozenbyte.com/index.php/3D_Asset_Workflow:_Baking_and_Texturing)).
+- **Paint the mask, not the color (Frozenbyte).** "In Substance Painter workflow a lot of the things are done by using mask and painting the mask with black or white revealing the color of the fill layer, less of painting actual colors on things"; "Each layer has color, metal, rough, normal and height channels which can be turned on and off" — Rind's channel-ticked brushes map 1:1 onto this discipline ([wiki.frozenbyte.com](https://wiki.frozenbyte.com/index.php/3D_Asset_Workflow:_Baking_and_Texturing)).
+- **Iterative hero assets, reused broadly (Ready at Dawn, *The Order: 1886*).** Senior Environment Texture Artist Bobby Rice: "Ready at dawn practices a iterative process. This means that nothing is truly done after an asset is created initially"; their in-house material system was "a similar system to DDO through what we call the compositor. It was really no different than any other PBR commercial software except that it was proprietary"; "every texture, like the brick, took probably a total of 2 to 3 weeks... these particular textures were re-used throughout 90% of the game" ([polycount.com](https://polycount.com/discussion/comment/2258184/)). Transferable discipline (inference): hero materials get versioned recipes plus a visual gate before reuse; reuse broadly instead of painting one-offs.
+- **Texel density + material over mesh (Ubisoft Toronto, *Rainbow Six Siege X*).** Texture artists Ryan Gao and Ramil Laudico: "We also pay close attention to texel density to ensure every surface has a consistent finish and look cohesive compared to each other"; "For the ponds in Skyscraper, we switched from using clutter meshes (think hundreds of generated pebbles whose polycount is very demanding on a game's engine) to displacement mapping (a single, smart texture with improved depth and dimensionality) resulting in a more realistic look and better game performance" ([toronto.ubisoft.com](https://toronto.ubisoft.com/people-of-ubisoft-toronto-meet-ryan-gao-and-ramil-laudico-texture-artists/)).
+
 ## Phase 1: Load the model
 
 **Do**
 1. Load a model "created in a 3D software of your choice (e.g. Blender, Maya)" (docs).
 2. Work in the Godot editor, or run Rind as a normal desktop application ("thanks to Godot's flexibility").
+3. Agent-executable: hard-block painting until a bake set passes auto-verification — bake-first, Frozenbyte-style. Script the ordered bake presets: Normal first at low resolution as the smoke test ("First bake only the Normal map and test that everything works"), then World Space Normal + Curvature + Position, then ID, then AO/Thickness last with lower AA ("they take a lot of time to bake"). Concrete parameters: Dilation 16 (2–4 for the ID map), AA 8x8 (4x4 for AO/ID/Thickness), Match by Mesh Name, Ignore Backface on. The skill's existing bake step becomes a scripted checklist, not a manual judgment call.
 
 **Check**
 - The model appears in the main viewport; the menu offers save, bake, and reimport.
+- The bake-preset log shows Normal-first smoke test passing before the remaining maps bake; painting actions stay disabled until the set verifies.
 
 **Why**
 The pitch is freedom from the "shackles of EvilCorp^tm" (author's words): no separate proprietary painter in the loop.
@@ -43,10 +52,12 @@ The pitch is freedom from the "shackles of EvilCorp^tm" (author's words): no sep
    - **Text**, **Image decal**, **Material preset** (ready-made materials built from layers).
 2. Give a material layer a Base fill plus painted strokes ("this layer is orange here, and blue over here").
 3. Reorder by dragging; right-click for Rename, Duplicate, Delete.
+4. Agent-executable: encode Frozenbyte's "paint the mask, not the color" rule — every paint layer must be a fill layer plus a mask, with channel ticks (color/metallic/roughness/normal/height) explicitly set per layer. The agent verifies each layer has an explicit channel-tick record before it can be painted.
 
 **Check**
 - The stack reads bottom-up: "Layers above override layers below."
 - Alt+click a layer to solo it on the model; Esc exits. The eye icon hides/shows.
+- The layer audit shows fill + mask + explicit ticks on every paint layer; bare color layers are flagged.
 
 **Why**
 Non-destructive layers: "each layer can be changed, reordered or deleted when you change your mind" — the Substance Painter concept, inside Godot.
@@ -79,10 +90,13 @@ Channel-ticked painting is the PBR difference: you paint material properties, no
 4. Smudge with J (or 4); raise Paint to mix in the brush color like a wet brush.
 5. Clone with V (or 5): Ctrl+click sets the source; Aligned keeps the source distance across strokes; copy from This layer or All layers.
 6. Undo a whole stroke with Ctrl+Z; remove just the stroke end with Alt+Z ("handy when you only want to remove parts of a stroke, not the whole stroke").
+7. Agent-executable: automate the two export conventions — (a) per-map engine-ready files plus one combined work file with all layers (Frozenbyte: per-map TGA to version control, combined layered file as the work file), and (b) a texel-density check that computes pixels-per-unit across materials and flags any surface deviating from the target density (Ubisoft Toronto's consistency rule). Both are pure computation, no artist judgment.
+8. Agent-executable: store Rind material presets as versioned, inspectable layer-stack recipes (fill layer + mask + parameters) rather than flat presets — replayable, diffable, and iterable, like Ready at Dawn's "compositor" recipe discipline.
 
 **Check**
 - The mask view (bottom-left) shows the raw mask; toggle under View > Mask preview.
 - Every layer has its own Opacity slider in layer properties — distinct from the viewport stroke-opacity slider.
+- The export manifest lists the work file plus every engine map; the texel-density report shows all materials within the target band or flags the outliers.
 
 **Why**
 Masks + non-destructive layers mean a painted detail is never committed: reduce the mask or the opacity instead of repainting.
