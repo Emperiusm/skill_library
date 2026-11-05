@@ -83,9 +83,6 @@ The author's own framing is "The honest breakdown": unique vs instanced triangle
 - The crash reproduces when small-meshlet and large-meshlet shapes share a material; separate material instances per size class clear it.
 - The batch report is emitted for every build; the warning fires before the crash can, not after.
 
-**Check**
-- The crash reproduces when small-meshlet and large-meshlet shapes share a material; separate material instances per size class clear it.
-
 **Why**
 Batch sizing is multiplicative in object count and max meshlets. Heterogeneous geometry under one material is the trap; the fix is a material per size class, not fewer instances.
 
