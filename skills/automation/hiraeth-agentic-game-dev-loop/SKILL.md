@@ -11,10 +11,10 @@ This skill reconstructs the Hiraeth one-month game-build process, step by step, 
 
 ## Source
 
-- Post: "One month building Hiraeth: a Moebius-inspired adventure game, with Opus 5.5, Astra, Tripo & Suno" by 4nf — https://www.reddit.com/r/threejs/comments/1xn2uff/one_month_building_hiraeth_a_moebiusinspired/ (r/threejs, score 287, 44 comments)
+- Post: "One month building Hiraeth: a Moebius-inspired adventure game, with Opus 5.5, Astra, Tripo & Suno" by 4nf — https://www.reddit.com/r/threejs/comments/1xn2uff/one_month_building_hiraeth_a_moebiusinspired/ (r/threejs, score 436, 72 comments)
 - Playable: https://hiraeth.my/ (controller recommended; Android builds for Retroid Pocket, Odin 3)
 - Visual changelog: https://hiraeth.my/changelog
-- Evidence: full author post + 44 comments, mostly playtest (2026-11-04 scout run). No code, prompts, or parameters disclosed.
+- Evidence: full author post + 44 comments, mostly playtest (2026-11-04 scout run); re-scanned 2026-11-05 (score 436, 72 comments, 25 retrieved: serendipity-map question, Claude-vs-Codex ticket-system thread). No code, prompts, or parameters disclosed.
 
 ## Tools used
 
@@ -60,6 +60,16 @@ No single generator wins every asset; the arena trial is the selection mechanism
 **Why**
 Design principles rot when they live in a doc; as agent skills they run on a schedule against the actual game.
 
+Agent-executable note from the thread (2026-11-05): commenters run the
+same loop with a ticketing system per revision — one commenter describes
+"forcing codex to use a ticketing system for each revision and other
+requirements", and another (a software engineer) reports "we write 0 lines
+of code... I act more like a director than a coder", using Claude Code in
+the desktop app for "a lot of the heavy lifting". If the audit skill runs
+through an agent, give it a ticket per audit finding (not a chat message):
+the ticket is the unit the agent closes, and the audit question stays fixed
+while the tickets accumulate.
+
 ## Phase 3: Instrument for discovery
 
 **Do**
@@ -69,6 +79,7 @@ Design principles rot when they live in a doc; as agent skills they run on a sch
 **Check**
 - Empty-but-walkable regions light up; the map answers "where is there nothing" instead of "where is the content."
 - Each build produces its own heatmap; a region flagged on two consecutive builds is a standing item, not a one-off observation.
+- Open question from the thread (twinsBuild, 2026-11-05, unanswered): "did it end up changing the layout a lot, or mostly where you dropped small props?" Log which one it is per region: a layout change and a prop drop are different fixes, and the map should record which it caused.
 
 **Check**
 - Empty-but-walkable regions light up; the map answers "where is there nothing" instead of "where is the content."
@@ -114,4 +125,4 @@ A public playable on day one converts the audience into QA; harsh feedback in we
 4. Judge assets in the arena (rig trials on the same body, in motion).
 5. Ship the playable, not the pitch.
 
-**Depth status:** PARTIAL (rich process from the author + 44 comments, mostly playtest; no code, prompts, or parameters disclosed). Inference: "Astra" is GPT Astra per the author's other posts; Tripo/Meshy/Suno version numbers undisclosed.
+**Depth status:** PARTIAL (rich process from the author + 72 comments, mostly playtest; no code, prompts, or parameters disclosed). Inference: "Astra" is GPT Astra per the author's other posts; Tripo/Meshy/Suno version numbers undisclosed. Expanded 2026-11-05 with the re-scan comment evidence (serendipity-map open question, ticket-system thread).
