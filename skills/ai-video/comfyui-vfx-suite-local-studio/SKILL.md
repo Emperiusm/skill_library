@@ -142,6 +142,30 @@ rather than Blender.
 Finishing in Nuke is the industry handoff: the local studio is a front
 end, not a walled garden.
 
+## AAA studio practice
+
+- **The tracked camera is the whole trick, and the frustum is its safety margin.** ILM's StageCraft (The Mandalorian, Obi-Wan Kenobi, The Batman) works because witness cameras track the real camera's six degrees of freedom plus lens metadata (focal length, focus distance, iris, distortion profile) dozens of times per second, and Unreal renders only the frustum, the cone of the LED wall the lens actually sees, from the tracked position. The frustum is drawn slightly larger than the field of view as a safety margin that absorbs tracking latency, so a fast whip-pan never reveals the seam; engineers fight latency with predictive filtering and low-latency video paths. The same discipline applies here at indie scale: the COLMAP/GLOMAP solve is the frustum source, and a solve that veers off course corrupts every generated frame downstream, exactly as the author's failure mode describes.
+  Sources: https://boldentrance.com/stagecraft-ilm-the-mandalorian/ and https://soc.org/project/obi-wan-kenobi-7/
+- **Layout in 3D before pixels, and shoot the final pixel on set.** StageCraft's philosophy is "final pixel in camera": the world is fully built in 3D first, the director sees something close to the final shot in the viewfinder, and the LED wall lights the actors interactively instead of leaving lighting to post. That is the AAA version of this skill's Phase 2 (3D blockout + FLUX.3 Klein keyframes before generation) and Phase 3 (relight before running the generation): the initial frame must satisfy before the generation runs, because relighting after the fact is the expensive fix.
+  Source: https://boldentrance.com/stagecraft-ilm-the-mandalorian/
+- **The Nuke handoff is a contract, not a dump.** Foundry's Nuke Stage links pre-production through final pixels in one pipeline: node-graph compositing, OpenUSD scene interchange, multi-channel OpenEXR, and OpenColorIO color management shared from set to post, so content refined on the LED wall transitions seamlessly to the final composite. The ASWF's OpenEXR/OCIO guidance for Nuke and Katana makes the mechanism explicit: multiple render passes (direct/indirect diffuse and specular, depth, beauty) ride in one EXR file as layers, and compositors isolate them with Shuffle nodes for fine-grained control, all under ACES via OCIO. The studio slapcomp discipline is the same contract at shot level: a script saved under the shot directory as `[project]_[sequence]_[shot]_lighting_slapcomp_v001.nk`, importing the scan, the CG beauty and all passes, and the shot's lens-distortion node.
+  Sources: https://www.foundry.com/news-and-awards/foundry-announces-nuke-stage, https://www.aswf.io/blog/openexr_opencolorio_nuke_katana/, and https://www.keheka.com/how-to-make-a-slapcomp-in-nuke/
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a `track-report.json` for every shot: frame count, solve reprojection error per frame, and any frame where the tracked path deviates from the smoothed path by more than the shot's tolerance. Frames that fail the tolerance go in a re-track queue (re-run tracking, then manual correction, in the author's fix order); a shot ships only when the queue is empty or every remaining entry is marked smoothing-acceptable (environment and characters replaced, camera trajectory only).
+2. Add a camera-path continuity check before generation: render the tracked path as a top-down plot with the frustum overlaid at the first, middle, and last keyframes, and verify no jump between consecutive frames exceeds the largest inter-frame move in the clean section of the track.
+3. Define a Nuke export contract and enforce it at export time: EXR with named AOV channels (beauty plus the passes the relight needs), one pinned OCIO config (record whether the shot is sRGB or ACES), and a generated Nuke script named `[project]_[sequence]_[shot]_vfx_v001.nk` in the shot directory. The relight pass logs a before/after frame pair against a fixed reference object in the frame, so the relight is a measured change, not a feeling.
+4. Keep the 16 GB VRAM question as an open gate, not a guess: run the track-report and keyframe steps on 16 GB first (they are the cheap steps) and record which step first exceeds memory, so the open question gets an answer per step instead of per studio.
+
+**Check**
+- A shot is generation-ready only when its track-report has no unqueued failures, its path-continuity plot shows no jumps, and its initial frame is approved; a shot that fails any of the three goes back to Phase 1, not forward to generation.
+- A Nuke export is shippable only when the EXR carries the named AOV channels, the OCIO config is pinned in the contract, and the relight before/after pair exists; an export missing any of the three is an unmeasured handoff.
+
+**Why**
+StageCraft's lesson is that the camera solve and the frustum are the product, and everything else is decoration on top of them. A track-report plus a continuity plot makes the author's "re-run or correct manually" fix order executable instead of aspirational, and the Nuke contract turns "export straight to Nuke" from a feature bullet into a verifiable handoff.
+
 ## The human method, distilled
 
 1. Track first: the camera solve gates everything downstream.

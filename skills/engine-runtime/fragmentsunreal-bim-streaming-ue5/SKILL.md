@@ -140,6 +140,34 @@ user testing, not the stage demo, decides what stays.
 The plugin ships the API and the importer; the showcase UI is product
 surface, not plugin surface.
 
+## AAA studio practice
+
+FragmentsUnreal is an AEC/digital-twin plugin, not a game, so the AAA anchor here is Epic's own engine practice for streaming massive worlds plus Epic's AEC pipeline, labeled as such. The plugin's design maps directly onto both:
+
+- **Three-tier LOD is the shipped Epic pattern.** Unreal's World Partition with Hierarchical Level of Detail is how Epic streams large worlds: each grid cell holds full-detail actors plus simplified HLOD representations, and distant cells load a single low-poly proxy instead of the actors. The Matrix Awakens demo used a layered HLOD setup (a spatially loaded instancing layer parented to a simplified mesh layer), and Epic's own guidance is to use the City Sample as the starting point for HLOD setup. The demo world was 4 km x 5 km with about 120,000 actors. This skill's three versions are the same shape at building scale: per-element up close, merged chunks mid-range, light proxy far away, with the far version at about 10% of the triangles.
+  Sources: https://forums.unrealengine.com/t/ask-unreal-anything-world-building-august-23-2022-at-12pm-edt/630393?page=4 and https://www.strayspark.studio/blog/ue5-landscape-world-partition-massive-open-worlds
+- **Build the simplified versions once, at import/build time, never at runtime.** HLOD generation is expensive: the Matrix demo's HLOD build took many hours on a single CPU, and Epic used a multi-machine setup for it. That is why this skill's Phase 2 front-loads the cost at import (three versions per building, file reading and mesh building on background workers) so runtime is a distance swap, not a load. The import-time build is the production discipline; a runtime that builds LODs on the fly is the thing that stalls.
+  Source: https://forums.unrealengine.com/t/ask-unreal-anything-world-building-august-23-2022-at-12pm-edt/630393?page=4
+- **Stream by distance and by class, with per-class loading ranges.** World Partition loads actors by proximity with per-actor or per-class streaming distances: large landmarks load from about 2 km out, small props from about 200 m. This skill's Category Filter (Structural / Shell / MEP / Interior) plus its Floor Visibility slider are the same idea applied to a building: the category and the floor range decide what streams, and focusing a building ghosts the rest of the city. The per-building 7-8 second loads and the 34-model block in about 30 seconds are the measured result of that discipline, against 5:19-6:44 per building in the old version.
+  Source: https://www.strayspark.studio/blog/ue5-landscape-world-partition-massive-open-worlds
+- **Metadata survives the pipeline; that is the AEC contract.** Epic's AEC pipeline is Datasmith into Twinmotion and Unreal: CAD and BIM scenes arrive with geometry, materials, and object hierarchy preserved, often with a live link so model changes update the scene, and Twinmotion annotations export to BCF (the IFC standard) and load back into Revit or Archicad. Foster + Partners uses Twinmotion as an integral part of its design process, and Twinmotion 2025.2 brought Nanite into the AEC tool so detail-heavy models render without performance meltdowns. This skill's per-element IFC metadata (Psets, IfcClassification, IfcQuantities, IfcCondition on a selected column) is the same contract at element scale: the model is data with geometry attached, not a baked mesh.
+  Sources: https://www.unrealengine.com/blog/twinmotion-to-unreal-engine-importer-bridging-architectural-worlds?lang=fr, https://aecmag.com/technology/twinmotion-a-new-chapter/, and https://maverickframe.com/blog/unreal-engine-for-software-architects-twinmotion-for-architectgure-visualization/
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a `lod-manifest.json` for every imported building: triangle counts for all three versions (per-element, merged chunks, light proxy), the proxy's triangle fraction (target: about 10% of full, frame-verified), the distance thresholds where each version swaps in, and the import build time with the background-worker count. If a building's proxy exceeds 15% of full triangles, flag it for re-merge instead of shipping it.
+2. Add a stale-LOD check on model update: when a model is re-streamed from the server, compare its version stamp against the manifest; if the model changed and the three versions were not rebuilt, the import is stale and the building is quarantined (shows the proxy only) until the rebuild completes.
+3. Add a streaming-distance table per category, mirroring World Partition's per-class ranges: Structural and Shell load farthest, MEP and Interior load closest, with the distances recorded in the manifest. Log the measured load for the 34-model block and per building on every run; a block that takes materially longer than about 30 seconds, or a building longer than about 14 seconds, is a regression to investigate, not a number to shrug at.
+4. Add a metadata-completeness gate at import: every streamed element must carry its Psets (Pset_MemberCommon, Pset_ColumnCommon, IfcClassification, IfcQuantities, IfcCondition as applicable). An import that drops IfcClassification or IfcQuantities fails the gate and is re-converted, because selection and filtering downstream depend on metadata surviving the pipeline.
+
+**Check**
+- A building is shippable only when its manifest lists all three versions with triangle counts, its proxy is at or under 15% of full, and its metadata gate passes; a building missing any of the three is an unmeasured import, not a streamed asset.
+- A model update is live only when the stale-LOD check passes; a re-streamed model with unrebuilt versions stays quarantined on the proxy until the rebuild lands.
+
+**Why**
+Epic's lesson is that streaming is a build-time discipline plus a distance rule, not a runtime trick. A LOD manifest plus a stale-check plus a metadata gate makes the plugin's "pay the cost once at import" principle executable: the three versions, the swap distances, and the metadata are all measured per building, and a regression shows up as a number in a log instead of a slow city.
+
 ## The human method, distilled
 
 1. Test the demo optimization with real users before keeping it; the stage

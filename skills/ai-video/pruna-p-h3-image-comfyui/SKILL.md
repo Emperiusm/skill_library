@@ -109,6 +109,34 @@ the documented failure mode.
 Distillation bakes the quality into 8 steps; the schedule is the model,
 not a tuning knob.
 
+## Production practice
+
+No AAA game studio publishes a distilled-H3 image-model recipe, so this section is production inference practice, labeled as such, not a studio claim. The pattern it documents is the same stack the skill uses, applied as a measured discipline with one shipped-title precedent:
+
+- **Compress in layers and state each layer's saving.** Pruna's own account of P-H3-Image lists the layers in order: a prompt upsampler (Qwen3.5-9B) that expands short requests; the text encoder distilled from 32B to 4B (67 GB to 9 GB, same image quality claimed); sampling distilled from 50 steps to 8 via advanced DMD; a retrained decoder because H3's video decoder returned blurry single frames; and quantization to 8-bit and 4-bit. The vendor's headline numbers are 7x smaller and 5x faster than the original H3, with the smallest ComfyUI set at 20 GB against 143 GB for H3. The discipline is to keep each layer separable and stated, so a quality regression can be blamed on one layer instead of on "the distilled model."
+  Source: https://www.llms.blog/posts/p-h3-image-pruna-open-image-model
+- **Quantize, then validate against the full-precision reference.** NVIDIA's production quantization guidance (TensorRT ModelOpt) names TensorRT the recommended production target for quantized ONNX models (2-4x for INT8) and states the rule plainly: always validate accuracy versus FP32 and FP16, and run an initial pilot on a representative subset before large-scale deployment. Pruna's own framework follows the same shape: compress with a SmashConfig (cachers, compilers, quantizers such as HQQ), then evaluate throughput, total time, and CLIP score against the base model; their SDXL example reports about 2x faster and smaller with CLIP score nearly unchanged.
+  Sources: https://docs.nvidia.com/tao/tao-toolkit/latest/text/tao_quant/limitations.html and https://docs.pruna.ai/en/stable/docs_pruna/tutorials/image_generation.html
+- **Compressed AI media is shippable when it is measured: the shipped-title precedent.** EA and Petroglyph's Command & Conquer Remastered Collection (2020) shipped AI-upscaled FMV: the original master tapes were lost, the surviving footage was 320x200, and the team used machine-learning upscaling to bring it to HD at 30 fps with reworked audio. The upscaled footage is visibly a compromise next to true HD, and it shipped anyway, because the alternative was no FMV at all. That is the bar this skill's "lighter and faster, not better" tradeoff has to clear: a measured compromise that ships beats a full model that does not fit the card.
+  Sources: https://dontfeedthegamers.com/command-and-conquer-remastered-cutscenes-fmv-ai/ and https://en.wikipedia.org/wiki/Command_%26_Conquer_Remastered_Collection
+- **Treat 4-bit as a separate promotion, not a free upgrade.** Pruna's own stated limits: the 4-bit version keeps the quality but can change small details and sometimes the composition. The ComfyUI template in this skill already ships int8 with a bf16 LoRA; a 4-bit variant is a different model for acceptance purposes, not the same model with a smaller number.
+  Source: https://www.llms.blog/posts/p-h3-image-pruna-open-image-model
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a `compression-manifest.json` for every install: each file with its precision (int8 diffusion, int8/w4a8 text encoder and upsampler, int8 VAE, bf16 LoRA), its size, and the layer it belongs to (upsampler, encoder, sampler, decoder, quantizer). If any file is swapped for a 4-bit variant, the manifest records it as a new model version, not a patch.
+2. Add a fixed acceptance set before committing to the model: five prompts spanning the failure modes the thread already names, one short single-sentence request (the template's sweet spot), one complex multi-clause request (the 4B encoder's stress case), one texture-heavy subject at 8 MP (the VAE pixelation case), one edit that must preserve composition, and one RefMod identity pass. Record pass/fail per prompt in the manifest.
+3. Run the VAE pixelation check from the failure modes as a gate, not a note: generate the texture-heavy prompt at 8 MP, inspect at 100% zoom, and record whether pixelated texture appears. A fail means the model is disqualified for texture-heavy work, not that the prompt needs rewriting.
+4. Keep the "lighter and faster, not better" verdict in the manifest: if full H3 is already runnable on the card, record that this model is a resource tradeoff, not a quality upgrade, and say so in the run log.
+
+**Check**
+- A P-H3-Image install is accepted only when its compression manifest is complete and its five-prompt acceptance set passes; an install with a missing manifest or an unrun acceptance set is an unmeasured claim, not a budget.
+- A 4-bit variant is accepted only when it passes the same five-prompt set against the int8 baseline on identical prompts and seeds; a 4-bit run that changes composition on the identity or edit prompt is rejected, not tuned around.
+
+**Why**
+The skill's value is a reproducible install-and-acceptance contract for a hardware class, not one 35.31 GB download. A manifest plus a fixed acceptance set turns Pruna's vendor numbers into a measurement the agent can repeat, and the 4-bit promotion gate is what keeps the smallest file from quietly becoming the default.
+
 ## The human method, distilled
 
 1. Quantize everything, then let the upsampler carry the prompt.

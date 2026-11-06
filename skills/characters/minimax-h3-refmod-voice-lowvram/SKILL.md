@@ -203,6 +203,32 @@ Retention 0.85 with a constant curve is the identity hold: the RefMod
 steers every step, and the strength-2.0 starting point is the author's
 calibrated default.
 
+## AAA studio practice
+
+- **Identity is a reference repository, not one hero shot.** ILM's FaceSwap on Indiana Jones and the Dial of Destiny is an umbrella over many technologies: machine-learning reference material from the Lucasfilm archives, a full computer-generated 3D head built from a head scan of Harrison Ford, elements extracted from on-set photography, and per-shot blending between them. The ML pass gets a shot to about 80% quickly; the final 20% past the uncanny valley is per-shot artistry, and there is no single recipe that works for all shots. Over 100 ILM artists spent three years on the film's VFX. That is the AAA version of this skill's Phase 1: eight angles with a locked identity sentence is the minimum viable reference repository, and the RefMod is the reusable file that repository becomes.
+  Sources: https://postperspective.com/tag/de-aging/ and https://www.animationmagazine.net/2023/07/indiana-jones-and-the-dial-of-destiny-digitally-de-ages-a-beloved-hollywood-hero/
+- **Voice is a separate performance that gets converted, not generated from nothing.** Respeecher's production method is speech-to-speech: an actor performs the line with the timing and emotion the director wants, and the system re-voices it as the target speaker while keeping the performance intact. For young Luke Skywalker in The Mandalorian, the team taught the network Hamill's voice from clean era recordings: ADR from the original trilogy, the Star Wars radio plays, and a book on tape from that era, then sampled and sliced the dialogue from the results. For Darth Vader in Obi-Wan Kenobi, James Earl Jones signed a deal authorizing his voice to be used from archive recordings. The discipline is twofold: the source performance carries the acting, and the voice carries a clear chain of consent.
+  Sources: https://nerdist.com/article/the-mandalorian-luke-skywalker-voice-not-mark-hamill-voice-cloning-software/ and https://en.wikipedia.org/wiki/Respeecher
+- **Synthetic voices are already credited in shipped games, with consent on the record.** The first synthetic speech artist was credited in Sony's God of War Ragnarok in November 2022, and Respeecher recreated the voice of the late Polish actor Milogost Reczek for CD Projekt Red's Cyberpunk 2077: Phantom Liberty. Respeecher requires written permission from a speaker or their estate before cloning a voice and does not release its models publicly. That is the production bar for this skill's voice RefMod: a voice baked from a 9-second sample is a convenience, and the node's own caveat says speaker identity transfer is not validated, so a voice RefMod ships only with a stated source and a consent note, never as a claimed clone.
+  Source: https://en.wikipedia.org/wiki/Respeecher
+- **Quantize as the production default, and measure the saving.** The low-VRAM stack in Phase 4 (int8 weights, sparse attention, chunked feedforward) is the same discipline CogVideoX's production optimization docs describe: INT8 weight-only quantization at roughly 20-30% memory reduction with minimal quality impact, FP8 dynamic quantization at roughly 40-50% on H100 or higher, plus VAE slicing and tiling that cut decode memory by roughly 50-80% combined. The rule from the sibling native-3MP skill carries over here: pick one quantization scheme, state it, and keep it fixed across a run.
+  Source: https://deepwiki.com/zai-org/CogVideo/7-performance-optimization (previously verified for the sibling minimax-h3-native-3mp-lowvram skill; same stack, same discipline)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Write a `refmod-manifest.json` for every character: the eight dataset angles actually present (front, 45-degree left, 45-degree right, waist-up front, full-body front, full-body 45-degree right, rear three-quarter, plus the eighth angle used), the voice sample file and duration, the RefMod filenames and versions (_v1, _v2), the retention value, and a consent/source note for the voice sample (whose voice, where the sample came from, whether cloning it is permitted). A character with a missing angle or a missing consent note is flagged, not silently accepted.
+2. Add a voice acceptance test before trusting a voice RefMod: generate one clip with a line that ends in silence and check for babble in the silence (the open question from the thread), and one clip with a fixed line spoken by the reference voice, and record whether the voice matches and whether the silence stays silent. A voice RefMod that babbles in silence or mismatches the reference fails the test; the failure goes in the manifest as a defect, not as a prompt tweak.
+3. Add an identity-coverage check per generation: render the same character in two scenes from the skill (Babylon street, Amalfi-coast terrace) and record face, hair, and outfit consistency per scene in the manifest. A character that drifts between scenes is a dataset-coverage failure: add the missing angle to the dataset and re-bake, rather than raising retention blindly.
+4. Keep face and voice RefMods in separate files per character, as the author directs, and record the pair in the manifest as one character entry with two files, so a two-character scene can be audited for swapped voices or faces.
+
+**Check**
+- A character is production-ready only when its manifest lists all eight angles, its voice acceptance test passes (no babble in silence, voice matches on the fixed line), and its two-scene consistency check passes; a character missing any of the three is a draft, not a reusable asset.
+- A voice RefMod with no consent/source note is never used for a real person's voice; the node's own caveat plus Respeecher's consent rule is the gate, and the manifest is where the gate is enforced.
+
+**Why**
+ILM's lesson is that the reference repository is the product and the last 20% is per-shot work; Respeecher's lesson is that the performance and the consent are separate from the voice model. A manifest plus a silence test plus a two-scene check makes the author's "bake once, prompt forever" promise auditable: the RefMod earns reuse by passing the tests, and the voice earns use by carrying its source on the record.
+
 ## The human method, distilled
 
 1. Bake identity once (face + voice, separate files), prompt scenes forever.
