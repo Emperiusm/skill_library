@@ -37,6 +37,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`stair-animation-hidden-ramps-ik`](characters/stair-animation-hidden-ramps-ik/SKILL.md) | Ship believable stair climbing without dedicated stair animations: hidden ramp colliders, capsule-jitter diagnosis, IK foot planting. |
 | [`facial-animation-blendshape-mocap`](characters/facial-animation-blendshape-mocap/SKILL.md) | Build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link to a control rig, climb the capture ladder. |
 | [`character-animation-pipeline-rig-mocap`](characters/character-animation-pipeline-rig-mocap/SKILL.md) | Take a character from model to game animation: joint-and-control rig with painted weights, interruptible layered clips, mocap, cleanup and exaggeration. |
+| [`anime-character-lookdev-grease-pencil`](characters/anime-character-lookdev-grease-pencil/SKILL.md) | Take an illustrated character into 3D and keep the illustrated feeling: Maya blocking, ZBrush detail, Blender lookdev, Substance Painter textures, Grease Pencil outlines with noise, Eevee render. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -201,6 +202,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ue-lod-impostors`](engine-runtime/ue-lod-impostors/SKILL.md) | Cut rendering cost with LODs and impostors: swap geometry by distance, skip occluded assets, use camera-facing billboards with normal-mapped lighting. |
 | [`meshlet-drawing-pipeline-threejs`](engine-runtime/meshlet-drawing-pipeline-threejs/SKILL.md) | Render billions of instanced triangles at 60 fps in the browser with three.js r187 MeshletDrawingPipeline: 64-triangle meshlet clusters with LOD chains, GPU culling per frame, one indirect draw per geometry/material group. |
 | [`fragmentsunreal-bim-streaming-ue5`](engine-runtime/fragmentsunreal-bim-streaming-ue5/SKILL.md) | Stream BIM/IFC buildings into Unreal Engine 5 at runtime: convert IFC to .frag, build three LOD versions per building at import, stream from a server with nothing cooked in, select the exact element under the cursor; 34-model block in ~30 s, no Nanite, no Datasmith cleanup. |
+| [`bone-animation-textures-gpu-instancing`](engine-runtime/bone-animation-textures-gpu-instancing/SKILL.md) | Animate thousands of skinned instances on the GPU with bone animation textures (BAT): bake each clip once into a texture, let the vertex shader read the bones, keep the CPU out of skeleton updates; 10k monsters, 2M-tri bottleneck measured. |
 
 ## Automation and bridges (`automation/`)
 
@@ -230,6 +232,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`infinite-language-generator`](automation/infinite-language-generator/SKILL.md) | Build a deterministic seed-based conlang tool for games: one seed call generates the whole language plus rules, voiced lines and animated glyphs ship with it, dictionary and subtitle tool included, MCP-toolable. |
 | [`magic-studios-agent-first-sprite-video`](automation/magic-studios-agent-first-sprite-video/SKILL.md) | Make asset generation agent-operable: package ComfyUI + MiniMax H3 as a local app (own NVIDIA GPU or own Higgsfield key), expose an MCP server + API for coding agents, animate sprites from video models instead of rigging; 480/720@32fps sweet spot. |
 | [`hiraeth-agentic-game-dev-loop`](automation/hiraeth-agentic-game-dev-loop/SKILL.md) | Build a game in a month with an AI stack and hold quality with instruments: agent-skill design audits, a serendipity map for empty-but-walkable space, and a same-angle visual changelog. |
+| [`retrocrunch-ps1-godot-conversion`](automation/retrocrunch-ps1-godot-conversion/SKILL.md) | Convert any model into a PS1-style Godot 4 scene with Retrocrunch: OBJ/glTF/FBX and a triangle budget in, .glb + indexed .png + lossless .png.import + .tscn with the PS1 material assigned out. |
 
 ## No-tooling examples (`no-tooling/`)
 

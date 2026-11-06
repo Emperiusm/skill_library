@@ -15,11 +15,13 @@ Creator: rbsolu (INFINITRA; C# / Unity since 2017)
 
 Source: https://www.reddit.com/r/proceduralgeneration/comments/1xl12dk/ | r/proceduralgeneration post 1xl12dk (score 229, 2026-11-01) | video: fly-through trailer (v.redd.it/nvt806qwnzyh1)
 
-Depth: PARTIAL — architecture fully described in the author's post; the promised "how it's built" dev video is not yet published and the author's technical comment replies were mod-removed, so no code-level parameters exist.
+Expanded 2026-11-06 with the author's second, fuller writeup: https://www.reddit.com/r/unity/comments/1xnvj49/years_of_work_on_one_shared_procedural_voxel_world/ | r/unity post 1xnvj49 (score 26, 11 comments, all retrieved) | trailer https://youtu.be/_q_Wmsdp2ng, long flight https://youtu.be/LjluoZq5hhY, site https://www.infinitra.xyz, dev pictures https://www.infinitra.xyz/docs/dev/PROGRESS.html. The expansion adds the gameplay/item systems with exact numbers, the pop-in defect and its root cause, and the download status.
+
+Depth: PARTIAL — architecture fully described in the author's posts; the promised "how it's built" dev video is not yet published and no code-level parameters exist.
 
 ## Tools used
 
-C# / Unity; IL2CPP on the client, .NET on the server; custom closed-source voxel engine (GitHub richardbogad/INFINITRA reserved for first release); server at infinitra.xyz. Scale: ~119k lines engine + server code, 89k lines tests. Runs on a 5-year-old laptop at lowest detail.
+C# / Unity; IL2CPP on the client, .NET on the server; custom closed-source voxel engine (GitHub richardbogad/INFINITRA reserved for first release); server at infinitra.xyz. Scale: ~119k lines engine + server code, 89k lines tests. Runs on a 5-year-old laptop at lowest detail. Desktop and PC VR share the same world. Download not out yet (waiting for its code-signing certificate to be approved); it will be a free Windows download, whole world locally with no account, online features (saved locations, items, avatar, other players) behind the account.
 
 ## Phase 1: Define the world as one replaceable processing graph
 
@@ -75,6 +77,34 @@ C# / Unity; IL2CPP on the client, .NET on the server; custom closed-source voxel
 **Why**
 - LOD without popping requires the coarse representation to be a strict subset-preview of the fine one, not an average. SDFs carry the detail the coarse grid cannot.
 
+## Phase 5: Build gameplay on the shared world (2026-11-06 post)
+
+**Do**
+1. Explore as a walker or a drone; neither flies without a JetPack. The drone has twice the battery and half the gravity, and survives harder falls.
+2. Drain battery by distance and mass: about 33 km on a full walker charge, 25 km on a drone's. An empty battery means quarter speed and slowly lost health. Falls and lava cost health. When you die, what you carried drops where you fell.
+3. Add shared items, all visible to everyone: JetPack (one minute of flight, also saves you mid-fall); First Aid (restores 25 health); Energy Pack (restores 25 kWh of battery); Gps & Compass (shows position and bearing until switched off); Location Saver (saves position to a slot, teleport back later); Carver Sphere (the only item that changes the world so far: cuts a 10 m wide hole for about a minute, for everyone; if you're still inside when it closes, you die).
+4. Respawn collected items after 30 to 60 seconds. Start all new online players in the same 500 m square. No chat yet.
+5. Add procedural music and reverb measured from the space around you.
+
+**Check**
+- Every item action must be visible to every player, not just the actor; the Carver Sphere hole must appear for everyone and kill anyone still inside when it closes.
+
+**Why**
+- The engine's strength is a huge shared world with dynamic changes everyone sees; the gameplay has to use that strength, which is why the author rejects a simple shooter ("A simple shooter would use none of that"). The Carver Sphere is the proof-of-concept: one item, one shared world change, everyone affected.
+
+## Phase 6: Handle the known defect — pop-in (2026-11-06 post + comments)
+
+**Do**
+1. Expect object pop-in: the author states the root cause plainly (comment): "the object density needs to be reduced over larger distances. This causes objects to appear as you move closer to them."
+2. In real time, fade objects in more gradually; the time-lapse videos make the pop-in much more noticeable.
+3. A time-lapse-adjusted crossover effect exists, but the same adjustment has not been implemented for the fade-in yet.
+
+**Check**
+- Watch a real-time (non-time-lapse) fly-through: the fade-in should be gradual, not a hard appear. A commenter flagged the pop-in at the very start of the video as "super bad" — treat that as the acceptance test.
+
+**Why**
+- The defect is a density-over-distance rule, not a rendering bug: far blocks show fewer objects by design (Phase 4), so the transition has to be a fade, and the fade has to be tuned separately for real-time and time-lapse viewing.
+
 ## AAA studio practice
 
 - **Hello Games (No Man's Sky) — GDC 2017, Innes McKendrick.** McKendrick's GDC talk breaks down the continuous world-generation pipeline: voxel-based world generation, then polygonization and texturing, then population and simulation, all generated continuously in real time as the player moves from space down to the surface. Source: https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i-
@@ -95,6 +125,7 @@ Agent-executable upgrades this research unlocks:
 ## Failure modes
 
 - **Author's own caveat:** "A light year of terrain isn't realistic, so I plan to replace the endless terrain with something else." Do not copy the 1-light-year coordinate space as a feature; the author considers it a placeholder.
-- **Moderated-away detail:** the author's technical comment replies were removed by moderators; treat any parameter not in the post text as unknown.
+- **Moderated-away detail (2026-11-01 post):** the author's technical comment replies were removed by moderators; treat any parameter not in the post text as unknown.
+- **Pop-in is a known, unfixed defect (2026-11-06 post):** the fade-in adjustment for real-time viewing is not implemented; time-lapse videos exaggerate it. Do not present the fly-throughs as the real-time experience.
 
-**Depth status:** PARTIAL (post-text architecture; dev video pending)
+**Depth status:** PARTIAL (post-text architecture + gameplay systems with exact numbers; dev video pending; no code-level parameters)
