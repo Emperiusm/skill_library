@@ -66,6 +66,7 @@
         "./skills/automation/jet-studio-godot-mcu-editor",
         "./skills/automation/magic-studios-agent-first-sprite-video",
         "./skills/automation/nomad-blender-live-link",
+        "./skills/automation/retrocrunch-ps1-godot-conversion",
         "./skills/automation/steam-publish",
         "./skills/automation/url-to-skill",
         "./skills/capture/adaptive-frame-extractor",
@@ -79,6 +80,7 @@
         "./skills/capture/spirula-3dgs-anti-floater-capture",
         "./skills/capture/vathography-depth-remap",
         "./skills/characters/ai-3d-character-pipeline",
+        "./skills/characters/anime-character-lookdev-grease-pencil",
         "./skills/characters/blender-fake-sim-rigging",
         "./skills/characters/character-animation-pipeline-rig-mocap",
         "./skills/characters/facial-animation-blendshape-mocap",
@@ -99,6 +101,7 @@
         "./skills/engine-runtime/ai-3d-game-optimization",
         "./skills/engine-runtime/ai-3d-scene-graph",
         "./skills/engine-runtime/ascii-raymarched-world-grid",
+        "./skills/engine-runtime/bone-animation-textures-gpu-instancing",
         "./skills/engine-runtime/cave-expedition-render-tech",
         "./skills/engine-runtime/cybervga-software-raytracer-jit",
         "./skills/engine-runtime/fragmentsunreal-bim-streaming-ue5",
@@ -273,6 +276,7 @@
         "./skills/automation/jet-studio-godot-mcu-editor",
         "./skills/automation/magic-studios-agent-first-sprite-video",
         "./skills/automation/nomad-blender-live-link",
+        "./skills/automation/retrocrunch-ps1-godot-conversion",
         "./skills/automation/steam-publish",
         "./skills/automation/url-to-skill"
       ]
@@ -302,6 +306,7 @@
       "strict": false,
       "skills": [
         "./skills/characters/ai-3d-character-pipeline",
+        "./skills/characters/anime-character-lookdev-grease-pencil",
         "./skills/characters/blender-fake-sim-rigging",
         "./skills/characters/character-animation-pipeline-rig-mocap",
         "./skills/characters/facial-animation-blendshape-mocap",
@@ -330,6 +335,7 @@
         "./skills/engine-runtime/ai-3d-game-optimization",
         "./skills/engine-runtime/ai-3d-scene-graph",
         "./skills/engine-runtime/ascii-raymarched-world-grid",
+        "./skills/engine-runtime/bone-animation-textures-gpu-instancing",
         "./skills/engine-runtime/cave-expedition-render-tech",
         "./skills/engine-runtime/cybervga-software-raytracer-jit",
         "./skills/engine-runtime/fragmentsunreal-bim-streaming-ue5",
