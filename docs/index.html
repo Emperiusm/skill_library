@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="194 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="196 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">194 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">196 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 194 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">44</span></h2>
+  <input id="search" type="search" placeholder="Search 196 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">45</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -171,6 +171,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="meshlet-drawing-pipeline-threejs render billions of instanced triangles at 60 fps in the browser with three.js r187 meshletdrawingpipeline: split geometry into 64-triangle meshlet clusters with lod chains, cull on the gpu per frame, and draw what...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/meshlet-drawing-pipeline-threejs/SKILL.md">meshlet-drawing-pipeline-threejs</a></h3>
   <p>Render billions of instanced triangles at 60 fps in the browser with three.js r187 MeshletDrawingPipeline: split geometry into 64-triangle meshlet clusters with LOD chains, cull on the GPU per frame, and draw what...</p>
+</article>
+<article class="card" data-search="meshlet-forest-scene-threejs apply three.js r187 meshletdrawingpipeline to a real forest scene: put it on static triangle-heavy geometry (logs, terrain, stones), keep wind-animated leaves and tile-based grass out, and measure the rendered-triangle...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/meshlet-forest-scene-threejs/SKILL.md">meshlet-forest-scene-threejs</a></h3>
+  <p>Apply three.js r187 MeshletDrawingPipeline to a real forest scene: put it on static triangle-heavy geometry (logs, terrain, stones), keep wind-animated leaves and tile-based grass out, and measure the rendered-triangle...</p>
 </article>
 <article class="card" data-search="multiplayer-movement-smooth smooth multiplayer movement with client prediction and server reconciliation. trigger when fixing netcode movement.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/multiplayer-movement-smooth/SKILL.md">multiplayer-movement-smooth</a></h3>
@@ -348,7 +352,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Generate a village with Unreal&#x27;s PCG framework: break the environment into elements, derive placement rules, spawn points, drive Static Mesh Spawners through Transform Points, and break uniformity with Random Choice...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">30</span></h2>
+<section><h2>AI video <span class="count">31</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -373,6 +377,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="comfyui-ai-documentary-batch-pipeline produce short ai history documentaries end to end in batch: claude master prompt researches with sources, builds a visual bible, and writes the script in 10-second chunks; qwen image 2.1 renders images in batch from...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/comfyui-ai-documentary-batch-pipeline/SKILL.md">comfyui-ai-documentary-batch-pipeline</a></h3>
   <p>Produce short AI history documentaries end to end in batch: Claude master prompt researches with sources, builds a visual bible, and writes the script in 10-second chunks; Qwen Image 2.1 renders images in batch from...</p>
+</article>
+<article class="card" data-search="comfyui-empty-latent-image-size set image size in comfyui the way the model actually reads it: the empty latent node sets width, height, and batch; the sampler only fills the grid. steps of 8 vs 16, why 1080 becomes 1088, why the same seed gives a new...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/comfyui-empty-latent-image-size/SKILL.md">comfyui-empty-latent-image-size</a></h3>
+  <p>Set image size in ComfyUI the way the model actually reads it: the empty latent node sets width, height, and batch; the sampler only fills the grid. Steps of 8 vs 16, why 1080 becomes 1088, why the same seed gives a new...</p>
 </article>
 <article class="card" data-search="comfyui-motion-previs-studio block shots in 3d before generating: dual-viewport local previs studio with camera moves, procedural character animation, a 24fps keyframe timeline, and control-pass export (openpose, depth, alpha, camera matrices) into...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/comfyui-motion-previs-studio/SKILL.md">comfyui-motion-previs-studio</a></h3>
@@ -841,7 +849,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-06 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-07 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
