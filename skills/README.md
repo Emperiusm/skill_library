@@ -110,6 +110,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`iv-studio-comfyui-film-studio`](ai-video/iv-studio-comfyui-film-studio/SKILL.md) | Direct AI short films without touching a node graph: agent-written MiniMax H3 prompts, a checker for what H3 punishes, cheap 0.4-0.9 MP hunt previews, same-latent finish, and a staging board that renders grey previs clips H3 follows. |
 | [`comfyui-vfx-suite-local-studio`](ai-video/comfyui-vfx-suite-local-studio/SKILL.md) | Take a raw video to a finished shot entirely locally inside ComfyUI: COLMAP/GLOMAP camera tracking, 3D blockout with FLUX.3 Klein keyframes, LTX IC-LoRA generation, Qwen Image Edit relighting, an MCP AI Director, and Nuke export, all under 24 GB of VRAM. |
 | [`pruna-p-h3-image-comfyui`](ai-video/pruna-p-h3-image-comfyui/SKILL.md) | Run Pruna's P-H3-Image in ComfyUI: a distilled MiniMax H3 image model with a 4B text encoder, int8 weights, a prompt upsampler, and an 8-step distilled sampling schedule (ManualSigmas + er_sde, CFG 1); text-to-image and image edit from the official templates, 35.31 GB total. |
+| [`comfyui-empty-latent-image-size`](ai-video/comfyui-empty-latent-image-size/SKILL.md) | Set image size in ComfyUI the way the model reads it: the empty latent sets width, height, and batch; steps of 8 vs 16 (why 1080 becomes 1088), why the same seed gives a new image at a new size, when batching saves time, and the Resolution Pixaroma shortcut. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -203,6 +204,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`meshlet-drawing-pipeline-threejs`](engine-runtime/meshlet-drawing-pipeline-threejs/SKILL.md) | Render billions of instanced triangles at 60 fps in the browser with three.js r187 MeshletDrawingPipeline: 64-triangle meshlet clusters with LOD chains, GPU culling per frame, one indirect draw per geometry/material group. |
 | [`fragmentsunreal-bim-streaming-ue5`](engine-runtime/fragmentsunreal-bim-streaming-ue5/SKILL.md) | Stream BIM/IFC buildings into Unreal Engine 5 at runtime: convert IFC to .frag, build three LOD versions per building at import, stream from a server with nothing cooked in, select the exact element under the cursor; 34-model block in ~30 s, no Nanite, no Datasmith cleanup. |
 | [`bone-animation-textures-gpu-instancing`](engine-runtime/bone-animation-textures-gpu-instancing/SKILL.md) | Animate thousands of skinned instances on the GPU with bone animation textures (BAT): bake each clip once into a texture, let the vertex shader read the bones, keep the CPU out of skeleton updates; 10k monsters, 2M-tri bottleneck measured. |
+| [`meshlet-forest-scene-threejs`](engine-runtime/meshlet-forest-scene-threejs/SKILL.md) | Apply three.js r187 MeshletDrawingPipeline to a real forest scene: cull static triangle-heavy geometry (logs, terrain, stones) down to ~25% of ~2M tris, 20-25 to 30-35 fps on M1 Mac; keep wind-animated leaves and tile-based grass out. |
 
 ## Automation and bridges (`automation/`)
 

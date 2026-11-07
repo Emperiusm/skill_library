@@ -21,6 +21,14 @@ Models by Quaternius (CC0).
 
 Depth: PARTIAL — exact technique + numbers (10k instances, 2M triangles, 4 storage buffers, multi-clip single texture, Pixel 8a / S24 Ultra field reports); no shader code, no texture format/layout details, no profiler numbers.
 
+## 2026-11-07 follow-up (re-surface, same post)
+
+The post was re-scanned on 2026-11-07 (score 52 -> 68, comments 9 -> 13). New items:
+
+- The author promises a follow-up post with optimization details ("I'll post some more details also about the optimization I made tomorrow :)"). Watch for it in the next scout run; it may settle the open storage-buffer-vs-texture benchmark in Phase 2.
+- New question from commenter javimbuilds: with 10k instances, is the triangle budget still the main bottleneck after LODs, or does the BAT texture fetch start to show up in the profiler? And: one texture per clip, or multiple clips packed into one atlas? The author answered the packing part ("I'm packing multiple clips into a single texture") and the bottleneck part ("vertices are the bottleneck in the demo because the vertex shader is heavier and 2 million triangles are too many for low end devices"), but the profiler question (does the texture fetch itself cost?) is unanswered. Treat the texture-fetch cost as an open measurement, not as zero.
+- Field reports unchanged: runs great on a Pixel 8a and an S24 Ultra. The author's plan is unchanged: change models or make LODs more aggressive.
+
 ## Tools used
 
 three.js WebGPURenderer, InstancedMesh2 library (author's own, beta on npm), bone animation textures (BAT). Models by Quaternius (CC0).

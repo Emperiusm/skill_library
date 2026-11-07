@@ -19,6 +19,20 @@ Source: https://v.redd.it/d88gwsgctinh1 | r/photogrammetry post 1w77cpe (score 4
 
 Tools used: adaptive-frame-extractor (native C++ desktop app, macOS/Windows/Linux builds, runs locally, no Python setup), COLMAP, Gaussian Splatting / NeRF pipelines, Meshroom/AliceVision (KeyframeSelection, the incumbent the tool is measured against), JPEG and PNG output, CSV per-frame metadata.
 
+## Install (2026-11-07 update)
+
+Source: https://www.reddit.com/r/photogrammetry/comments/1xpeqtc/my_free_opensource_keyframe_extractor_for_colmap/ | r/photogrammetry post 1xpeqtc (score 60, 1 comment) | update post by the author (morishuz).
+
+**Do**
+1. On macOS, run `brew install --cask morishuz/tap/frame-extractor`. No manual download or install anymore.
+2. On Windows or Linux, take the binaries from https://github.com/morishuz/adaptive-frame-extractor.
+
+**Check**
+- The cask installs the same GUI app as the manual builds (author: "No need to download and install the app manually anymore").
+
+**Why**
+- Install friction was the adoption blocker for a free tool; a Homebrew cask removes it for the macOS half of the audience. Nothing in the extraction workflow (Phases 1-7 below) changes with this update.
+
 **Do**
 1. Open the video in the GUI. Scrub the timeline to find the capture sections that matter.
 2. Mark multiple timeline regions for the sections you want to keep. Different passes, different takes, or cutting a turntable pause out of the middle of a clip are all region material.
