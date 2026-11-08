@@ -23,6 +23,16 @@ Depth: FULL — full auto-captions, exact parameters, numbers, and quoted princi
 
 ComfyUI, Empty Latent Image node, Empty SD3 Latent Image node, Z-Image Turbo, KSampler, VAE Decode, Resolution Pixaroma node.
 
+## Production practice
+
+Labeled honestly: the anchors below are a multimedia studio's ComfyUI production case study and the model vendor's own resolution guidance, not a game studio's image pipeline. No AAA game studio has published a ComfyUI empty-latent workflow; these are the closest production-grade sources for the same decisions (resolution first, batch discipline, VRAM budgeting).
+
+- **Low-res exploration, upscale only the winners (Moment Factory).** In their ComfyUI projection-mapping pipeline, Moment Factory "generated intentionally low-resolution outputs around 2K, reviewed them quickly, and even generated new variations live on site," checking them in the media server timeline minutes later. Only once a direction was approved did they upscale selected outputs to 18K (about 20 minutes each). The run was grounded in real production parameters: over 20 artistic directions, 20 to 40 iterations per direction, "batching and parameter tweaks to move quickly," with real financial and time constraints imposed so the exploration stayed meaningful ([comfy.org](https://comfy.org/customers/moment-factory)). This is the production version of Phase 3's "try small, enlarge favorites": the two-tier ladder (cheap exploration, expensive finish) is the studio discipline, not just a time saver.
+- **Size as a template, not a hand entry (Moment Factory).** The studio "built the entire workflow around architectural surface templates, so outputs were pre-mapped from the start," supporting flat UVs, 360 layouts, and camera-projection setups in parallel, with ControlNet injecting the template's structural information into the diffusion process. Late in the process they "swapped the surface template and reran the entire pipeline without re-authoring a single asset" and the composition held ([comfy.org](https://comfy.org/customers/moment-factory)). The Resolution Pixaroma node is the small version of this: a pre-validated size list is a template. The production version is a template library keyed by delivery format, so no one ever types a raw dimension.
+- **Trained-resolution discipline, vendor-stated (Stability AI, via Replicate).** SD3 "gives the best outputs at around 1 megapixel. Resolutions must be divisible by 64," with recommended sizes of 1024x1024 (1:1), 1344x768 (16:9), and 768x1344 (9:16) ([replicate.com](https://replicate.com/blog/get-the-best-from-stable-diffusion-3/)). This is the vendor authority behind commenter Anro5753's rule ("picking resolutions near the model's trained pixel budget ... tends to matter more than raw size"). Note the step rule is model-specific: SD3's rule is divisible-by-64, while the video's Z-Image rule is steps of 16 (2x2-cell fragments). Never copy one model's step onto another.
+- **Newer models tolerate a wider range (SD3.5 Medium).** SD3.5 Medium was trained progressively at 256, 512, 768, 1024, and 1440 px with a final mixed-scale stage, giving it a 0.25-2 MP native range, so the stay-near-trained-size rule is strictest on older models (SD 1.5, SDXL) and looser here (community documentation of Stability AI's training schedule, [andrewaltimit.github.io](https://andrewaltimit.github.io/Documentation/docs/ai-ml/sd3-guide.html)). Treat this as a secondary source: the direction (progressive multi-resolution training widens the usable range) is the point, not the exact stage list.
+- **VRAM scales with the square (Technolynx benchmark).** For SDXL at fp16, peak VRAM goes from about 6.5 GB at 1024x1024 to about 12 GB at 1536x1536 and about 20 GB at 2048x2048, and the source recommends tiled upscaling instead of generating at full resolution to avoid out-of-memory errors ([technolynx.com](https://www.technolynx.com/post/sizing-vram-for-stable-diffusion-texture-generation-alongside-unreal/)). This turns Phase 6's "watch VRAM" into a preflight rule: doubling the edge quadruples the pixels and roughly triples the VRAM, so the batch that fits at 1024 does not fit at 2048.
+
 ## Phase 1: Understand what a latent is (the "A Deeper Look" chapters)
 
 **Do**
@@ -42,6 +52,7 @@ ComfyUI, Empty Latent Image node, Empty SD3 Latent Image node, Z-Image Turbo, KS
 **Do**
 1. Set width and height on the empty latent node (e.g. 1024x1024, then 512x512).
 2. Run. The 512 image is not the same panda smaller: when the size changes, the initial noise changes, so the same seed gives a new image.
+3. Agent-executable: before every run, write `resolution-manifest.json` with the model, its native pixel budget (about 1 MP for SD3/SDXL), the chosen size, the model's step rule (8, 16, or 64), the seed, the batch size, and after the run the measured time and peak VRAM. Gate: the chosen size must be a multiple of the model's step AND within the model's trained pixel budget; otherwise flag it before running. A seed hunt is recorded as a size-plus-seed pair: changing the size invalidates the pair and the hunt restarts.
 
 **Check**
 - Compare the two outputs: different image, not a resize.
@@ -54,6 +65,7 @@ ComfyUI, Empty Latent Image node, Empty SD3 Latent Image node, Z-Image Turbo, KS
 **Do**
 1. Try 2048x2048 on the same prompt: much more fine detail in fur and eyes, 4x the pixels, and "it took five times as long on my video card" (author).
 2. Z-Image handled every size tried, from 512 to 2048.
+3. Agent-executable: enforce the two-tier ladder from the Moment Factory practice. Exploration batches run at or below 1 MP; only seeds approved at exploration size are promoted to full resolution, and the promotion is an upscale (tiled, per the VRAM source), not a fresh generation at 2048, unless the seed was never run at the larger size. Log the tier (explore/final) in `resolution-manifest.json`.
 
 **Check**
 - The author's habit: try ideas at regular size and only enlarge favorites, because generating each attempt in bulk at 2048 is "much faster" avoided.
@@ -92,6 +104,7 @@ ComfyUI, Empty Latent Image node, Empty SD3 Latent Image node, Z-Image Turbo, KS
 **Do**
 1. Enter 4 in the batch size field and run: four different pandas, all from the same seed. Save Image shows all four and saves each as a separate file.
 2. Re-running with the same seed gives the same four images.
+3. Agent-executable: VRAM preflight before any batch. Estimate peak VRAM from pixel count (doubling the edge quadruples the pixels; SDXL fp16 runs about 6.5 GB at 1024x1024, about 12 GB at 1536x1536, about 20 GB at 2048x2048) times the batch size, and refuse or shrink the batch when the estimate exceeds available VRAM. Record the estimate and the measured peak in `resolution-manifest.json`; if measured VRAM exceeds the estimate by more than 20%, the estimate table is stale and gets corrected before the next run.
 
 **Check**
 - At the video's size, four images took "almost as long to create as four separate runs, so the [batch] saved almost no time." With smaller images (512), the batch "worked almost twice as fast because the video card had free resources."
