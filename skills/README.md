@@ -38,6 +38,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`facial-animation-blendshape-mocap`](characters/facial-animation-blendshape-mocap/SKILL.md) | Build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link to a control rig, climb the capture ladder. |
 | [`character-animation-pipeline-rig-mocap`](characters/character-animation-pipeline-rig-mocap/SKILL.md) | Take a character from model to game animation: joint-and-control rig with painted weights, interruptible layered clips, mocap, cleanup and exaggeration. |
 | [`anime-character-lookdev-grease-pencil`](characters/anime-character-lookdev-grease-pencil/SKILL.md) | Take an illustrated character into 3D and keep the illustrated feeling: Maya blocking, ZBrush detail, Blender lookdev, Substance Painter textures, Grease Pencil outlines with noise, Eevee render. |
+| [`godot-runtime-procedural-creatures`](characters/godot-runtime-procedural-creatures/SKILL.md) | Generate creatures at runtime in Godot 4 with GDScript: build the skeleton and a single skin mesh from the creature design, animate with IK foot planting and body lean, drive behaviour with a daily schedule; no pre-made skeletal meshes. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -111,6 +112,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`comfyui-vfx-suite-local-studio`](ai-video/comfyui-vfx-suite-local-studio/SKILL.md) | Take a raw video to a finished shot entirely locally inside ComfyUI: COLMAP/GLOMAP camera tracking, 3D blockout with FLUX.3 Klein keyframes, LTX IC-LoRA generation, Qwen Image Edit relighting, an MCP AI Director, and Nuke export, all under 24 GB of VRAM. |
 | [`pruna-p-h3-image-comfyui`](ai-video/pruna-p-h3-image-comfyui/SKILL.md) | Run Pruna's P-H3-Image in ComfyUI: a distilled MiniMax H3 image model with a 4B text encoder, int8 weights, a prompt upsampler, and an 8-step distilled sampling schedule (ManualSigmas + er_sde, CFG 1); text-to-image and image edit from the official templates, 35.31 GB total. |
 | [`comfyui-empty-latent-image-size`](ai-video/comfyui-empty-latent-image-size/SKILL.md) | Set image size in ComfyUI the way the model reads it: the empty latent sets width, height, and batch; steps of 8 vs 16 (why 1080 becomes 1088), why the same seed gives a new image at a new size, when batching saves time, and the Resolution Pixaroma shortcut. |
+| [`minimax-h3-temporalwindow-character-swap`](ai-video/minimax-h3-temporalwindow-character-swap/SKILL.md) | Swap a character in long MiniMax H3 clips in ComfyUI: cut into 4-6 s segments at 1080p, keep the reference alive with TemporalWindow overlapping windows and 22-frame context continuation, stack Spark-H3, Spectrum, and lightx2v turbo LoRAs, and let the agent skill write prompts per segment. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -134,6 +136,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`godot-silk-vfx-vector-pixelation`](simulation-vfx/godot-silk-vfx-vector-pixelation/SKILL.md) | Hand-make fluid pixel-art VFX in Godot 4: smooth vector shapes with tonal 3D faking under a custom pixelation shader; silk as dots moving along lines with the back half fainter for roundness; iterate the money shot by explicit rejection (4 failed ghost-cut variants). |
 | [`smoke-flipbook-particles`](simulation-vfx/smoke-flipbook-particles/SKILL.md) | Fake volumetric smoke in games: simulate offline, render 64 frames into an 8x8 flipbook texture, play it on camera-facing particle cards. |
 | [`ue-wind-shader-grass`](simulation-vfx/ue-wind-shader-grass/SKILL.md) | Animate grass with wind in a material shader: RotateAboutAxis driven by a time-fed sine, per-card phase offsets, tip-only masking, painted flow map. |
+| [`godot-vfx-pack-shell-stacking`](simulation-vfx/godot-vfx-pack-shell-stacking/SKILL.md) | Stack multiple Godot VFX shell effects on one character without z-fighting: give each shell its own offset distance from the surface, name every addon with its pack prefix in its own folder, prove all 13 packs in one continuous mannequin walkthrough. |
 
 ## Materials and shaders (`materials-shaders/`)
 
@@ -235,6 +238,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`magic-studios-agent-first-sprite-video`](automation/magic-studios-agent-first-sprite-video/SKILL.md) | Make asset generation agent-operable: package ComfyUI + MiniMax H3 as a local app (own NVIDIA GPU or own Higgsfield key), expose an MCP server + API for coding agents, animate sprites from video models instead of rigging; 480/720@32fps sweet spot. |
 | [`hiraeth-agentic-game-dev-loop`](automation/hiraeth-agentic-game-dev-loop/SKILL.md) | Build a game in a month with an AI stack and hold quality with instruments: agent-skill design audits, a serendipity map for empty-but-walkable space, and a same-angle visual changelog. |
 | [`retrocrunch-ps1-godot-conversion`](automation/retrocrunch-ps1-godot-conversion/SKILL.md) | Convert any model into a PS1-style Godot 4 scene with Retrocrunch: OBJ/glTF/FBX and a triangle budget in, .glb + indexed .png + lossless .png.import + .tscn with the PS1 material assigned out. |
+| [`ai-game-feel-iteration-loop`](automation/ai-game-feel-iteration-loop/SKILL.md) | Build a game by feel in two weeks with an AI coding agent: feel before systems, each form a combat purpose, iterate by playing with vague complaints turned concrete, tuning values in config files, and focused tests plus browser checks protecting tuned feel. |
 
 ## No-tooling examples (`no-tooling/`)
 

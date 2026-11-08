@@ -12,12 +12,15 @@ This skill reconstructs the IV Studio film-studio workflow, step by step, so ano
 ## Source
 
 - Post: "I built a free, open-source film studio on top of ComfyUI + MiniMax H3: idea to finished short film, on your own PC" by itsVariance — https://www.reddit.com/r/comfyui/comments/1xmp6dh/i_built_a_free_opensource_film_studio_on_top_of/ (r/comfyui, score 202, 29 comments)
+- 1.0 update post: "IV Studio 1.0: I rebuilt my free, open-source film studio for ComfyUI + MiniMax H3 from your comments (now on Linux and Mac)" by itsVariance — https://www.reddit.com/r/comfyui/comments/1xqfux1/iv_studio_10_i_rebuilt_my_free_opensource_film/ (r/comfyui, score 60, 9 comments, 8 retrieved) | 2026-11-08 scout run
 - Code (MIT): https://github.com/hollisorg/iv-studio — Download: https://github.com/hollisorg/iv-studio/releases/latest
 - Evidence: full author writeup + detailed previs explanation + 29 comments (2026-11-04 scout run). Was DEPTH-LIMITED on 2026-11-03 (post body blocked, 1 comment); upgraded today.
 
 ## Tools used
 
 IV Studio (Windows desktop app, MIT); ComfyUI (driven over its API); MiniMax H3 (video); Qwen3-VL via Ollama or an AI agent via MCP (prompt writing); OpenAI Whisper (take ranking); DLSS 5 or SeedVR2 (finish upscale); SAM 3.1 (cut-out); MiniMax Music 3 / ACE-Step (music); VoxCPM2 (local voices); Civitai LoRAs; three.js headless browser + ffmpeg (previs); RunPod / Modal (cloud GPU with idle shutoff); 142-tool MCP server. Tested on RTX 4090 + 64 GB RAM; 16 GB cards work with smaller previews; every model downloads from its host with SHA-256 verification.
+
+**1.0 additions (2026-11-08):** Linux (self-updating AppImage) and Mac (Apple Silicon and Intel) builds; **Check my PC** first-launch hardware fit; **Fizgig** local character-LoRA training (16 GB+ NVIDIA card) with InsightFace likeness scoring; **RefMod** characters from 1-6 photos in ~30 s; **KJNodes** live preview override; per-shot sampler and scheduler; LoRA and RefMod trays; SDXL fine-tunes in Create > Image; **Comfy Cloud** as a third cloud option; **154 MCP tools** (up from 142). **Krea 2** (Disney Renaissance-style LoRA) made the frames for the trailer's fairy-tale opening; H3 animated them. The Linux build passes its checks on GitHub, but the author has not run GPU work on a real Linux desktop yet. Builds are unsigned: Windows shows SmartScreen, Macs need "Open Anyway" the first time.
 
 ## AAA studio practice
 
@@ -99,6 +102,84 @@ A grey previs the model is told not to copy is the cleanest way to direct camera
 **Why**
 The app is a director's console, not a node editor: edit footage, verify downloads, and let the GPU bill stop when idle.
 
+## 1.0 update: install on any platform, fit the PC, train actors (2026-11-08)
+
+The 1.0 changelog is the community's complaints from the last post, fixed.
+Each phase below has Do / Check / Why, same as the core workflow.
+
+### Phase 6: Install on any platform, with setup that fixes itself
+
+**Do**
+1. Linux: self-updating AppImage. Mac: Apple Silicon and Intel builds
+   (rendering on your own cloud account). Windows: as before.
+2. Settings > Setup installs every pack IV Studio needs, at pinned versions,
+   in one click (answers the "missing custom nodes" complaint).
+3. Your own H3 files (ComfyUI's template names, NVFP4, other turbo LoRAs)
+   are recognised and used (answers "Setup says 7 to fix but H3 is
+   installed").
+4. Ollama on another address: set it in Settings (for ComfyUI and Ollama in
+   separate containers).
+
+**Check**
+- Setup reports zero to fix when your own H3 files are present; pinned
+  versions install in one click.
+
+**Why**
+- Install friction was the adoption blocker: the 1.0 changelog is mostly the
+  community's install complaints, fixed. (Inference, labeled.)
+
+### Phase 7: Let the app fit itself to the PC
+
+**Do**
+1. "Check my PC": on first launch it reads GPU, RAM, and drives and sets
+   previews, finish size, the prompt writer, and downloads to suit.
+2. If the card is too small, a guided setup connects RunPod, Modal, or Comfy
+   Cloud.
+
+**Check**
+- A too-small card routes to cloud instead of failing locally; a commenter
+  confirms it runs on an RTX 3060 12 GB ("Slow but works").
+
+**Why**
+- Fit the workload to the hardware before spending generation: previews and
+  finish size follow the machine, not the other way round. (Inference,
+  labeled.)
+
+### Phase 8: Train actors locally, or make a RefMod in 30 seconds
+
+**Do**
+1. Train a character LoRA locally on your own 16 GB+ NVIDIA card through
+   Fizgig (or on RunPod/Modal), with presets, a spending cap, "Train more,"
+   and InsightFace likeness scoring to pick the checkpoint.
+2. Or make a RefMod character from 1 to 6 photos in about 30 seconds.
+
+**Check**
+- InsightFace scores pick the checkpoint; the RefMod path needs only photos,
+  no training run.
+
+**Why**
+- Likeness scoring turns checkpoint-picking from taste into measurement;
+  RefMod is the zero-training shortcut. (Inference, labeled.)
+
+### Phase 9: Direct with live preview and per-shot control
+
+**Do**
+1. KJNodes' preview override streams every step into a floating panel on any
+   page, including renders an agent starts over MCP.
+2. Sampler and scheduler per shot; LoRA and RefMod trays in Create.
+3. SDXL fine-tunes in Create > Image; Comfy Cloud as a third cloud option
+   beside RunPod and Modal.
+4. The app now has 154 MCP tools (up from 142), a tour that lights up the
+   real controls one at a time, and a two-minute tour of the whole app.
+
+**Check**
+- Every step of a render is visible in the floating preview; per-shot
+  sampler/scheduler settings stick to that shot.
+
+**Why**
+- Live preview plus per-shot control is the directing surface: see every
+  step, tune each shot independently. (Inference, labeled.)
+
 ## The human method, distilled
 
 1. The API is the product (drive ComfyUI; never touch the node graph unless you want to).
@@ -107,5 +188,9 @@ The app is a director's console, not a node editor: edit footage, verify downloa
 4. Previs the model can follow (grey mannequins + "don't copy the grey look" prompt).
 5. Verify downloads (SHA-256 on every model).
 6. Report the honest finding (arcs/orbits pay off; H3 struggles — truncated).
+7. **Ship the community's changelog (1.0).** Linux, Mac, one-click node setup, own-H3 recognition, Ollama address.
+8. **Fit the app to the machine (1.0).** Check my PC sets previews and finish size from the actual GPU.
+9. **Score likeness, don't eyeball it (1.0).** InsightFace picks the LoRA checkpoint.
+10. **A 30-second RefMod beats a training run (1.0)** when the character only needs to exist, not to be perfect.
 
-**Depth status:** FULL (complete author writeup + detailed previs explanation + 29 comments). Inference: H3's struggle object is truncated in the retrieved comment; Linux support unanswered.
+**Depth status:** FULL (complete author writeup + detailed previs explanation + 29 comments; 1.0 update: complete author writeup + 8 comments). Inference: H3's struggle object is truncated in the retrieved comment; Linux support unanswered in the original post (answered by 1.0: Linux and Mac builds exist, GPU work on a real Linux desktop untested by the author).
