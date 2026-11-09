@@ -172,6 +172,130 @@ stitching with the subtitle "When you want a seamless join within one shot,".
   (Inference, labeled: the author describes the mechanism, not this
   principle.)
 
+## AAA studio practice
+
+No AAA studio is documented as shipping on MiniMax H3 TemporalWindow
+itself, so this section does not claim one. What is documented is the same
+problem class at feature scale: keeping a replaced face or character
+consistent across shots and segments, and accelerating the heavy attention
+and caching work only where the task is narrow enough to allow it.
+
+**ILM FaceSwap: the reference repository is the whole job.** On
+*Indiana Jones and the Dial of Destiny*, ILM de-aged Harrison Ford across
+the opening act with a proprietary face replacement system built on three
+inputs: machine-learning reference material mined from previous Indiana
+Jones films, a complete CG head of Ford (plus a younger version of it), and
+on-set photography captured with extra cameras attached to the main unit
+camera plus lighting references for every setup. The supervisors stress
+there was "not a single recipe that was cooked up that could be done for
+all shots": the work was done shot by shot, with the performance driving
+every decision. This skill's per-segment prompts and 22-frame context
+continuation are the ComfyUI version of that per-shot treatment, and the
+same rule applies: one prompt and one reference for the whole clip cannot
+track identity across cuts the way per-segment treatment can.
+
+**Brahma / Metaphysic Neural Performance Toolset: separate performance
+from identity, and check live.** The toolset behind *Here* (60 minutes of
+4K transformation, 2026 Technology and Engineering Emmy for AI-based face
+replacement) reads the actor's full facial performance, expression, gaze,
+blinks, mouth, micro-movements, straight from the principal camera, then
+separates that performance from identity so age, likeness, or language can
+be directed on top without touching what the actor gave. The photographed
+performance is always the source of truth, and the system ran live on set:
+Zemeckis saw a 25-year-old Tom Hanks on his monitor six frames after the
+camera. The networks were trained on massive libraries of archival footage
+for each actor at each stage of life. The transferable rule is to never let
+the swap touch motion or performance, and to verify identity against a
+reference pack (archival frames, character sheets) rather than against the
+previous segment alone.
+
+**Runway and Lionsgate: one reference anchor carried across shots.** The
+September 2024 partnership gives Runway access to Lionsgate's catalog of
+over 20,000 film and TV titles to train a custom model for pre-production
+and post-production use, and Runway's Gen-4 keeps characters and objects
+consistent across shots from a single reference image. The studio-side
+pattern is the same as this skill's: a single strong reference carried
+across every shot, with per-shot prompts doing the local work. (Inference,
+labeled: no public detail ties the Lionsgate custom model to segment
+stitching or context frames; the anchor-across-shots pattern is what
+transfers.)
+
+**TokenFlow: extended attention alone is not enough for temporal
+consistency.** The Weizmann paper shows that extending self-attention
+across frames gives global appearance coherence but still leaves jitter,
+because motion is only implicitly preserved. Its fix is to enforce
+consistency in the diffusion feature space explicitly: jointly edit sampled
+keyframes, compute inter-frame correspondences from the original video's
+features, and propagate the edited features along those correspondences.
+That is the research shape of this skill's 22-frame context continuation,
+and it sets the bar for it: context frames should be treated as an explicit
+correspondence check at the seam, not as a guarantee that the seam will
+hold.
+
+**NVIDIA Sparse VideoGen: sparsity plus caching is the validated stack.**
+Sparse VideoGen (ICML 2025) shows that video diffusion attention heads
+split into spatial heads, where within-frame tokens dominate, and temporal
+heads, where cross-frame tokens dominate, and exploits that sparsity
+without retraining for up to 2.28x speedup on CogVideoX and 2.33x on
+HunyuanVideo. LoSA, a follow-up, fixes a 99 percent retained-attention-mass
+threshold instead of a sparsity ratio and reaches 3.2x when sparse attention
+is combined with feature caching. This is the same trade this skill makes
+with Spark-H3 plus Spectrum plus turbo LoRAs, and it validates the
+stacking: sparse attention and forecast caching compose, and the quality
+cost stays small precisely because character swap is a narrow,
+well-defined task.
+
+- Source: https://postperspective.com/vfx-supervisors-talk-de-aging-indiana-jones-and-more/ (ILM FaceSwap, Dial of Destiny; reference repository, per-shot treatment)
+- Source: https://www.awn.com/vfxworld/nothing-hides-cinema-screen-jo-plaete-talks-brahma-ais-emmy-winning-face-replacement-tech (Brahma/Metaphysic Neural Performance Toolset, Here; performance separated from identity, live on-set preview)
+- Source: https://www.notebookcheck.net/Lionsgate-s-entire-film-catalog-can-now-be-used-to-train-custom-Runway-AI-text-to-video-model.890934.0.html (Runway/Lionsgate custom model trained on the studio catalog)
+- Source: https://arxiv.org/pdf/2307.10373 (TokenFlow, consistent diffusion features for consistent video editing)
+- Source: https://research.nvidia.com/labs/eai/publication/sparsevideogen/ (Sparse VideoGen, spatial-temporal sparsity, NVIDIA Research)
+- Source: https://arxiv.org/html/2608.12032 (LoSA, near-lossless sparse attention composed with feature caching)
+
+### Agent automation upgrade (Do / Check / Why)
+
+**Do**
+1. Automate the reference pack before any render: build a per-segment
+   manifest listing, for each segment, the character-sheet image, the exact
+   prompt, who replaces whom, and the context-frame count (22 for forced
+   same-shot splits, none for natural shot changes). Fail the run if any
+   segment lacks a reference image or a who-becomes-whom mapping.
+2. Automate the seam acceptance pass after each segment: with ffmpeg,
+   extract the last frame of the previous segment, the first frame of the
+   new segment, and a mid-segment control frame, and write them
+   side-by-side into a per-segment check image. Do not start the next
+   segment until the seam pair has been inspected; the skill's final
+   side-by-side comparison already exists, but it must run per segment,
+   not only at the end.
+3. Automate the GPU gate for the accelerator stack: run `nvidia-smi
+   --query-gpu=name --format=csv,noheader` before the workflow starts and
+   enable Spark-H3, Sage, and Spectrum only on an RTX 30/40/50 card. On
+   any other GPU, bypass those nodes automatically instead of failing
+   mid-render.
+4. Automate the prompt audit: the h3-motion-transfer skill already shows
+   the first prompt before running; extend that to a manifest check that
+   every segment's prompt names the character mapping and restates the
+   hold ("in every frame") before the batch runs, so a dropped mapping is
+   caught before its 6-10 minute render instead of after.
+
+**Check**
+- Every segment in the manifest has a reference image, a who-becomes-whom
+  mapping, and a stated context-frame count.
+- Seam pairs (last frame of segment N, first frame of segment N+1) show no
+  identity jump, lighting jump, or pose discontinuity versus the
+  mid-segment control frames.
+- The accelerator nodes match the detected GPU; unsupported nodes are
+  bypassed, not errored.
+- No segment rendered with a prompt that omits the character mapping.
+
+**Why**
+- In production practice, identity is held by the reference pack and the
+  per-shot check, not by the model. The manifest makes the reference pack
+  auditable before the expensive renders start, and the per-segment seam
+  check is the ComfyUI version of the studio continuity check: a swap that
+  drifts at segment 12 is only cheap to fix if segment 13 has not rendered
+  yet.
+
 ## The human method, distilled
 
 1. **Cut long videos sensibly.** Segments of 4-6 s at 1080p, 15 s max at
