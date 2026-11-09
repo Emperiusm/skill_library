@@ -33,6 +33,18 @@ transcript exists for the native Reddit clip. The comments are mostly an
 AI-use debate, not workflow detail; the workflow evidence is the author's
 post text.
 
+Update (2026-11-09 scout run): second post by the same author, same
+game, with new detail — part-placement gameplay effects, procedural
+parts inventory, and IK specifics:
+https://www.reddit.com/r/proceduralgeneration/comments/1xqpk3r/procedural_creature_meshes_and_ik_walking_for_a/
+(r/proceduralgeneration post 1xqpk3r, score 72, 21 comments). Demo:
+https://akinjigames.itch.io/primordium. Kickstarter pre-launch:
+https://www.kickstarter.com/projects/primordium/primordium-evolve-your-own-creature-from-a-single-cell.
+Evidence: full author post text + 21 comments; comments are mostly an
+AI-use debate, not workflow detail; no code, no numeric parameters, no
+performance figures. The phases below marked "new detail" come from
+this second post.
+
 ## Tools used
 
 Tools used: **Godot 4**, **GDScript** (runtime generation). No pre-made
@@ -73,11 +85,15 @@ skeletal meshes; no external DCC in the creature pipeline as described.
 
 **Do**
 1. Foot planting via IK: feet stay planted while the body moves.
-2. Lean the body into turns.
+2. Vertical body bobbing on footfall: the body bobs down as each foot
+   lands. (New detail, 2026-11-09 post.)
+3. Lean the body into turns.
 
 **Check**
 - Feet do not slide or float during walks and turns in the clip; the body
   banks into the turn.
+- The bob must land on the footfall, not drift: a bob out of phase with
+  the steps reads as floating, not walking.
 
 **Why**
 - IK planting plus lean is what makes a generated skeleton read as alive
@@ -99,6 +115,85 @@ skeletal meshes; no external DCC in the creature pipeline as described.
 **Why**
 - Schedule-driven behaviour makes the ecosystem visible without scripting
   every creature: time of day is the director.
+
+## Phase 5: Place parts where they work (placement is gameplay)
+
+(New detail, 2026-11-09 post.) Where a part sits changes what it does.
+Author comment, quoted in substance: "Fringes (the cilia) give you
+acceleration and turning, and they turn better when they're on the
+sides. Tails are your main thrust from the back: the long lash is fast
+but turns badly, the quick flick is twitchy. Jets boost sprinting,
+spikes hurt anything you ram, venom leaves a cloud, shock is an active
+zap, armour makes you tanky but slow, and eyes let you see further."
+
+**Do**
+1. Cilia (fringes): acceleration and turning; they turn better on the
+   sides of the creature.
+2. Tail (main thrust from the back): the long lash is fast but turns
+   badly; the quick flick is twitchy.
+3. Jets: boost sprinting.
+4. Spikes: hurt anything the creature rams.
+5. Venom: leaves a cloud.
+6. Shock: an active zap.
+7. Armour: makes the creature tanky but slow.
+8. Eyes: let the creature see further.
+9. Procedural parts inventory (from the 2026-11-09 post, same list as
+   Phase 1, now confirmed as the buildable set): curved Bezier horns,
+   tapered ears, bi-lobed tail clubs, glide wings, shader eyes with
+   blinking eyelids.
+
+**Check**
+- A part's effect must follow its position: cilia on the sides turn,
+  a tail at the back pushes. If moving a part changes nothing, the
+  placement system is decoration, not gameplay.
+- Trade-offs must be visible in play: the long lash trades turning for
+  speed; armour trades speed for toughness.
+
+**Why**
+Placement-as-gameplay is the push beyond Spore: a part's position is a
+build decision with combat and movement consequences, not decoration.
+The design thesis, in the author's words: "Spore came out 18 years ago
+and we never got a real sequel, so honestly even a modern version of
+the same game would've been enough for me. But obviously I'm trying to
+push it further."
+
+## Phase 6: Design deltas vs Spore
+
+(New detail, 2026-11-09 post.) The author states these deltas
+explicitly; use them as the design brief when building a Spore-like
+game rather than copying Spore.
+
+**Do**
+1. Build from scratch with a modern engine, fully procedural bodies,
+   mod support and Steam Workshop planned from day one.
+2. Let the player stay in any stage as long as they want; no stage
+   forces the player onward.
+3. Carry the species over: what the creature ate, tamed and hunted
+   shapes the tribe instead of everything resetting between stages.
+4. Give stages more depth: "where you put a part actually matters,"
+   and the creature stage adds hunger, stamina, predators tracking
+   scent, nests and eggs.
+5. Living ecosystem and tribe stage: herds follow the daily schedule
+   from Phase 4; later the player founds a tribe whose members gather,
+   hunt, defend and play instruments.
+
+**Check**
+- The editor backdrop drew criticism in the comments ("Instead of a
+  lily pad, make it look like you're in a focused circle... to mimic
+  you looking through a microscope"); the author agrees the lily pad
+  is "a bit silly for a simple organism" and that the bright green is
+  distracting, and will think of something better. The backdrop is a
+  settings pick among a few, not a load-bearing choice.
+- Commenters asked what leg ranges are possible ("Can you make a
+  millipede?") and what resources the author used to learn procedural
+  generation; the author did not answer either in the retrieved
+  comments.
+
+**Why**
+The arc is the player's choice, and the species is continuous: the
+creature stage's choices (what it ate, tamed, hunted) are the tribe
+stage's starting conditions, so nothing the player built is thrown
+away at a stage boundary.
 
 ## AAA studio practice
 
@@ -255,6 +350,14 @@ without a human watching the clip.
    believability.
 4. **Schedule, don't script.** Daily routines produce living-ecosystem
    behaviour from a clock.
+5. **Placement is gameplay.** (New detail, 2026-11-09 post.) Cilia on
+   the sides turn; a tail at the back pushes. A part's position is a
+   stat.
+6. **Carry the species over.** (New detail, 2026-11-09 post.) What the
+   creature ate, tamed, and hunted shapes the tribe; nothing resets
+   between stages.
+7. **Let the player stay.** (New detail, 2026-11-09 post.) No stage
+   forces the player onward; the arc is the player's choice.
 
 ## Failure modes
 
@@ -268,4 +371,8 @@ without a human watching the clip.
 
 **Depth status:** PARTIAL (full author post text + 16 comments with exact
 technique inventory; no code, no numeric parameters, no performance figures
-disclosed; author offered Q&A).
+disclosed; author offered Q&A. Expanded 2026-11-09 with the second post:
+full author post text + 21 comments with part-placement gameplay effects,
+procedural parts inventory, IK specifics, daily schedule, and design
+deltas vs Spore; still no code, no numeric parameters, no performance
+figures).

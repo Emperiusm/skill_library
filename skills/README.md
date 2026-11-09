@@ -76,6 +76,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`unreal-pcg-village-generation`](procgen-worlds/unreal-pcg-village-generation/SKILL.md) | Generate a village with Unreal's PCG framework: derive placement rules, spawn points, drive Static Mesh Spawners through Transform Points, break uniformity with Random Choice fractions. |
 | [`ue-grass-cards-lod`](procgen-worlds/ue-grass-cards-lod/SKILL.md) | Build cheap game grass from crossed cards: rotate to hide the card look from above, then swap cheap crosses in the distance and detailed grass near the player with LODs. |
 | [`infinity-castle-seeded-grammar`](procgen-worlds/infinity-castle-seeded-grammar/SKILL.md) | Generate an infinite explorable castle from a seed in three.js: hash coordinates plus seed for zero stored state, an architectural grammar (chapters to rooms), ~2 draw calls per cell with vertex-baked AO, Karplus-Strong audio. |
+| [`cosmo-tree-gen-godot`](procgen-worlds/cosmo-tree-gen-godot/SKILL.md) | Generate procedural trees inside Godot 4.6+ with the free MIT cosmo_tree_gen addon: seed-driven recursive branching, live editor tuning, per-tree triangle and draw-call budgets, auto LODs and collisions, one-click glb export. |
+| [`project-prales-runtime-wilderness`](procgen-worlds/project-prales-runtime-wilderness/SKILL.md) | Generate 16 km2 of Central European wilderness at runtime in Unreal Engine 5 from a single seed: river-first terrain, whole-world hydrology, ecology-driven vegetation placement, world-hash determinism, and honest FPS reporting. |
+| [`blender-floaters-hard-surface-detail`](procgen-worlds/blender-floaters-hard-surface-detail/SKILL.md) | Fake hard-surface detail in Blender with floaters: model the base form clean, place separate small meshes (cylinders, vents, rings) on the surface instead of cutting booleans, sell the seam with a bevel, and unify with consistent materials. |
 
 ## AI video and film (`ai-video/`)
 
@@ -239,6 +242,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`hiraeth-agentic-game-dev-loop`](automation/hiraeth-agentic-game-dev-loop/SKILL.md) | Build a game in a month with an AI stack and hold quality with instruments: agent-skill design audits, a serendipity map for empty-but-walkable space, and a same-angle visual changelog. |
 | [`retrocrunch-ps1-godot-conversion`](automation/retrocrunch-ps1-godot-conversion/SKILL.md) | Convert any model into a PS1-style Godot 4 scene with Retrocrunch: OBJ/glTF/FBX and a triangle budget in, .glb + indexed .png + lossless .png.import + .tscn with the PS1 material assigned out. |
 | [`ai-game-feel-iteration-loop`](automation/ai-game-feel-iteration-loop/SKILL.md) | Build a game by feel in two weeks with an AI coding agent: feel before systems, each form a combat purpose, iterate by playing with vague complaints turned concrete, tuning values in config files, and focused tests plus browser checks protecting tuned feel. |
+| [`comfyui-readable-node`](automation/comfyui-readable-node/SKILL.md) | Rebuild messy ComfyUI workflows into readable ones with the Readable Node agent skill: six readability rules, full teardown-and-rebuild by a strong model, and a report page with a replay of the rebuild. |
+| [`nightshoal-opus-weekly-loop`](automation/nightshoal-opus-weekly-loop/SKILL.md) | Build a game in weekly loops with Claude Opus 5.5 in Godot: blind A/B critic rounds against mockups with a win-twice stop rule, an in-game performance panel plus --perf-log, Tripo 4-view asset generation with Blender MCP fixes, and a published weekly cost total. |
+| [`blender-nodemode`](automation/blender-nodemode/SKILL.md) | Do everything Blender does through a Houdini-style node graph with NodeMode: isotropic remesh, Still bake, cloth solving with explicit solver parameters, portal data routing, noise-driven surface deformation, and in-chain mesh repair. |
 
 ## No-tooling examples (`no-tooling/`)
 
