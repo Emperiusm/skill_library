@@ -168,6 +168,88 @@ phase: fix the geometry first, as a repeatable operation.
   description. No tooling content.
 - End card (frame 11): "BlenderNodeMode.com".
 
+## AAA studio practice
+
+NodeMode is a one-person Blender addon, but the idea it implements,
+do everything through a named, parameterized node graph, is exactly
+how AAA open worlds get built. The differences are scale, handoffs,
+and automation around the graph.
+
+- **Ubisoft, Far Cry 5: the graph lives inside the editor, and it
+  rebuilds nightly.** Technical artist Etienne Carrier's team built
+  the Hope County tools in Houdini and ran them through Houdini
+  Engine directly inside the Dunia editor, so game artists crafted the
+  world with Houdini tools from the editor they already worked in.
+  The same tools ran as nightly builds on build machines to fully
+  refresh the world daily. The NodeMode parallel: the graph is not a
+  side tool, it is the authoring surface, and a re-cook must be
+  runnable without the artist present.
+  (https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html)
+- **Sequential tools with data handoffs, not one big graph.** Far Cry
+  5's generation ran in a fixed order, freshwater, then cliffs, then
+  biomes, and each tool exported data the next one read: the freshwater
+  pass produced a water mask the biome tool consumed, and biome
+  recipes reacted to water proximity, altitude, and cliff erosion
+  lines. NodeMode's chain already runs in order (remesh, bake,
+  simulate, deform, repair); the AAA discipline is to name each
+  stage's output data and make the next stage fail loudly if its input
+  is missing or stale, instead of silently cooking on old geometry.
+  (https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html)
+- **Ghost Recon Wildlands: rules beat hand-placement at scale.**
+  Ubisoft generated the geography of a fictional Bolivia and
+  populated it with vegetation and infrastructure from real data plus
+  procedural rules, roughly 5x faster than hand-placing terrain
+  content, with a comparatively small team. The node graph's job is
+  the same in NodeMode: the artist defines rules (target edge length,
+  noise scale, pick probability) and the graph fills the world.
+  (https://www.bsm3d.com/articles/houdini-environments-production.html)
+- **One asset definition, many outputs.** SideFX Labs ships tools
+  (Auto UV, PolyReduce, LOD Generate) that let a technical artist
+  build one HDA taking a high-poly asset and outputting several LODs
+  plus an imposter sprite, ready to import, often wired into the
+  build pipeline via PDG/Deadline. The NodeMode equivalent of the
+  Bake node is that freeze step: one cooked result feeding every
+  downstream consumer (export, LOD, collision), never a live graph
+  evaluated differently per consumer.
+  (https://www.bsm3d.com/articles/houdini-environments-production.html)
+- **Portals are HDA inputs and outputs, done by name.** In Houdini
+  production, a digital asset exposes named parameters and inputs;
+  data moves between tools by name and by contract, not by tracing
+  wires across a network. NodeMode portals do the same job inside one
+  graph. The AAA rule that follows: every portal pair gets a written
+  contract (name, data type, expected range), and an unmatched Receive
+  is a build failure, not a silent empty socket.
+  (Inference from the Far Cry 5 HDA practice above, labeled as such.)
+
+### Agent-executable upgrades
+
+1. **Graph contract file.** Before running the graph, write
+   `graph-contract.json` next to the .blend: every node name, its
+   parameters (e.g. Isotropic Triangle Remesh target 0.1 m, 7
+   iterations, sharp angle 30 deg; Cloth Solver 4 substeps, 4
+   iterations, delta 0.042, gravity -9.81 Z), and the expected output
+   of each stage (mesh name, approximate vertex count). After each
+   re-cook, diff the baked mesh against the contract; a parameter that
+   drifted without an entry in the contract is a regression, not a
+   tweak.
+2. **Portal registry.** List every Transmit/Receive pair (name, data
+   type, source node, consumer node) in the contract file. A Receive
+   with no matching Transmit, or two Transmits sharing one name, fails
+   the gate before the bake runs.
+3. **Stage-order gate.** Enforce the Far Cry 5 order as a rule:
+   remesh, then bake, then simulate, then deform, then repair. A graph
+   that repairs before it deforms, or bakes before it remeshes, fails
+   the gate; the stage outputs are named per stage
+   (`<asset>_remeshed`, `<asset>_baked`, `<asset>_simulated`) so a
+   stale stage is visible in the outliner.
+4. **Re-cook hash log.** After every bake, export the baked mesh
+   (glb or obj) and record its SHA-256 plus vertex count in
+   `recook-log.jsonl` with the date. A re-cook that changes the hash
+   without a contract change means an upstream parameter moved; find
+   it before exporting. This is the small-scale version of Far Cry 5's
+   nightly full-world rebuild: the world is re-derived from the rules
+   every time, and the log proves it.
+
 ## The human method, distilled
 
 1. **Nodes for everything.** Remesh, bake, cloth, deformation, and

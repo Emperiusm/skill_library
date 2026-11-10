@@ -149,6 +149,93 @@ And the paint-tool analogy: to remove a mole next to someone's eye,
 painting over it is faster than typing "remove the mole," which is why
 paint tools have not gone away.
 
+## AAA studio practice
+
+Readable Node is a one-person agent skill, but the problem it solves,
+a workflow that only its author can read, is a production problem
+AAA studios already pay for. Their answers converge on the same
+point: the workflow is a long-term production asset, not a sketch.
+
+- **Ubisoft La Forge, CHORD: ComfyUI is the AAA workflow platform,
+  chosen for control.** Ubisoft open-sourced its CHORD PBR material
+  estimation model with ComfyUI custom nodes because ComfyUI is "an
+  efficient framework to build integrated workflows doing texture
+  image synthesis, material estimation and material upscaling," and
+  because large studios need "a controllable and integratable AI
+  workflow platform" rather than another image generator. The
+  three-stage pipeline (texture generation, CHORD image-to-material
+  estimation, PBR upscaling to 2K/4K) is built as ComfyUI workflows
+  that integrate directly into DCC tools and game engines. The
+  readability lesson: when the workflow is the pipeline, an unreadable
+  node graph is an unmaintainable pipeline, and the nodes must be
+  readable by the next artist, not just the author.
+  (https://blog.comfy.org/p/ubisoft-open-sources-the-chord-model)
+- **Series Entertainment: workflows as long-term production assets.**
+  Series rebuilt game and video production around ComfyUI node
+  workflows, treating them as long-term production assets rather than
+  one-off steps, and built four streamlined pipelines covering the
+  full cycle from exploration to production. The result: 100,000+
+  assets across games and video, multiple shipped Netflix titles,
+  workflows delivering up to 180x faster than manual processes, and
+  the same workflows carrying a project from a 512x512 single-emotion
+  test to high-resolution batch production. A workflow that cannot be
+  read cannot be promoted from test to production; Series' test-to-
+  production ladder only works because the graphs are legible enough
+  to reuse.
+  (https://comfy.org/customers/series-entertainment/)
+- **Moment Factory: one operator, templates, low-res-first review.**
+  Moment Factory built a custom ComfyUI workflow for architectural
+  projection mapping, grounded in real production parameters (20+
+  artistic directions, 20-40 iterations each), with outputs
+  pre-mapped through architectural surface templates (flat UVs, 360
+  layouts, camera-projection setups) and ControlNet enforcing scale
+  and spatial logic. They reviewed intentionally low-resolution
+  outputs around 2K, generated variations live on site, and once the
+  system was stable, one main artist operated inside ComfyUI. Late in
+  the process they swapped the surface template and reran the entire
+  pipeline without re-authoring a single asset. That swap is only
+  possible because the workflow's structure was readable enough to
+  re-target: the template is a named, swappable input, not a hidden
+  wire.
+  (https://blog.comfy.org/p/case-study-how-moment-factory-reimagined)
+- **The handoff standard, from the Nuke counterpoint already in this
+  skill:** compositors write readable scripts "by law" because scripts
+  get handed off around the facility. AAA practice extends that law to
+  every node graph: a graph that cannot be read at a glance by the
+  next person on the team is not finished, however good its output.
+
+### Agent-executable upgrades
+
+1. **Readability audit script.** Before running Readable Node, parse
+   the workflow JSON with a script and emit `readability-report.json`:
+   count hidden-wire nodes (Set/Get, Anything Everywhere, wireless
+   links), count custom nodes vs core nodes, count nodes stacked on
+   top of each other (overlapping coordinates), and check left-to-right
+   ordering (node x-coordinates monotonic with execution order).
+   Each finding lists the node names. After the rebuild, re-run the
+   audit; every count must be lower or zero, and any remaining hidden
+   wire must be named in the report with its reason.
+2. **Handoff manifest.** Ship the rebuilt workflow with
+   `handoff-manifest.json`: workflow JSON path, model used for the
+   rebuild (must be Opus 5.5-class or the manifest flags the
+   model-floor risk from Phase 3), node counts before/after, the
+   report-page URL, and the replay. ComfyUI embeds the full workflow
+   JSON in the metadata of every PNG it produces, so any output image
+   from the rebuilt workflow is itself a check: drag it back onto the
+   canvas and confirm the graph reconstructs identically.
+   (PNG-embedded-workflow mechanism per https://www.growthhunt.ai/growth-story/comfyui)
+3. **Template-input rule (Moment Factory).** If the workflow takes a
+   structural input (a template, a reference image, a mask), it must
+   be a named, top-level input node on the left of the graph, never
+   buried mid-graph. The audit script checks that every input the
+   workflow depends on is reachable within one hop of the left edge.
+4. **Test-to-production ladder (Series).** Keep two saved variants of
+   the rebuilt workflow: a low-resolution test variant (fast, cheap,
+   for iteration) and the full production variant. Both must be the
+   same graph with different parameter values, not two different
+   graphs; the manifest records both parameter sets so the promotion
+   from test to production is a parameter change, not a rebuild.
+
 ## The human method, distilled
 
 1. **Readability is understanding plus change, not looks.** At a glance,

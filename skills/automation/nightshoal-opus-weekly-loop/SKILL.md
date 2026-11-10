@@ -208,6 +208,98 @@ A weekly cost total is part of the devlog: the loop's price is visible
 next to its output, so the reader can judge whether 15 weeks at
 roughly $1,100 a week is the deal they want.
 
+## AAA studio practice
+
+Nightshoal's loop, let agents build, let blind critics judge, let a
+profiler decide what is slow, with the human as the stop rule, is a
+one-person version of three AAA practices that all exist separately.
+The AAA lesson is that each half of the loop is a system, not a habit.
+
+- **Ubisoft/Massive, The Division: AI players that playtest the game
+  (GDC 2019).** Ubisoft Reflections tested The Division with "Client
+  Bots", AI that takes control of the player, mimicking human input
+  while reporting issues: automated mission playthrough and report
+  generation, follow bots that help QC and level designers test
+  multiplayer missions solo, street wandering for performance data
+  gathering, a general-purpose platform for bespoke testing, and a
+  tool to assist bug reproduction. A second class, server bots, logs
+  into the server and stress-tests grouping, phasing, and disconnects.
+  Lead AI programmer Philip Dunstan's verdict: without the bots they
+  "would not have been able to ship a stable Division 1 or Division
+  2." Nightshoal's `--perf-log` plus Opus scan is the same shape at
+  indie scale: the agent plays the game like a player, gathers
+  performance data, and writes the report. The AAA difference is that
+  the bots run continuously and their reports are structured data,
+  not prose.
+  (https://gdconf.com/article/see-how-ubisoft-tested-the-division-with-automated-players-at-gdc-2019/)
+  (https://www.gamedeveloper.com/design/the-secret-ai-testers-inside-tom-clancy-s-the-division)
+- **EA SEED: reinforcement-learning QA agents in shipped AAA
+  titles.** EA's SEED research group deployed reinforcement-learning
+  agents for game testing in production titles including Battlefield
+  2042 and the 2023 Dead Space remake, presented at the IEEE
+  Conference on Games 2023, with the engineering work focused on
+  integrating the RL system into an existing automated test pipeline
+  rather than treating it as a research toy. The agents explore the
+  game, find bugs and balance problems, and run at machine speed
+  overnight. The Nightshoal parallel is the effort-level picker Jev:
+  AAA practice says the test agents deserve the maximum effort budget
+  precisely because they run while humans sleep, which is exactly
+  what the author did when he let the performance scan run at max.
+  (https://scihub101.com/gaming/ai-game-testing-quality-assurance)
+- **Blind comparison is the eval discipline, not a preference.**
+  Blind side-by-side review, same prompts and seeds on both sides,
+  random order, no labels, ties reported, worst cases inspected
+  rather than the average, is the standard way to tell whether a
+  change made images better or worse. Nightshoal's Gauntlet-Loop
+  already implements the core of it (the critic does not know which
+  image is the game). The AAA-grade addition is the discipline around
+  it: fixed comparison sets, recorded seeds, and a written stop rule,
+  so a win is a measurement, not a mood.
+  (https://www.clockingcloud.com/blog/open-evals-and-quality-monitoring;
+  general eval practice, not a game-studio source, labeled as such)
+- **Cost accounting is a production practice, not a devlog flourish.**
+  Ubisoft has stated that bug-fixing work can consume up to 70% of
+  total development costs on a AAA project, which is why publishers
+  fund internal AI testing teams. Nightshoal's published weekly cost
+  total ($1,100-1,150/week) is the same instinct: the loop's price
+  sits next to its output so the reader can judge the deal. The AAA
+  version adds a threshold: when a cost line crosses a set fraction
+  of the budget, the loop pauses by rule, not by hitting a plan limit
+  mid-week.
+  (https://scihub101.com/gaming/ai-game-testing-quality-assurance;
+  the 70% figure is reported there, not a primary Ubisoft source)
+
+### Agent-executable upgrades
+
+1. **Critic-round manifest.** Log every Gauntlet-Loop round to
+   `gauntlet-rounds.jsonl`: round number, piece, the two images
+   compared (game render path, mockup path), which one the critic
+   picked, and the running win count per piece. A script enforces the
+   stop rule: a piece with 2 wins is marked done and is never
+   scheduled for another round; a piece that loses twice goes to a
+   human-decision queue instead of looping. No round runs without an
+   entry in the manifest first.
+2. **Guard-rule registry.** Keep `guard-rules.json`: the list of
+   features the game already has that the loop may never remove to
+   match a mockup (lighthouse beam, and anything added later). The
+   critic prompt includes the registry verbatim, and any critic verdict
+   that removes a guarded feature is rejected by the script before it
+   reaches the build step.
+3. **Perf-log parser.** Parse `--perf-log` output with a script into
+   `perf-report.json`: one entry per named cost (first-dock freeze,
+   first-rain freeze, HUD redraw rate, map VRAM, startup time, far-
+   harbour load), each with before/after numbers and the hardware it
+   was measured on. Gate: any first-load freeze over 0.5 s, any map
+   VRAM over 0.5 GB, or any startup regression fails the week; the
+   report, not a feeling, decides what Opus fixes next.
+4. **Cost ledger with a pause threshold.** Keep `cost-ledger.json`
+   with the week's line items (Claude plan, Astra, ElevenLabs,
+   TripoAI, OpenAI credits, other) and the running total. Set the
+   pause threshold at 90% of the weekly plan limit: when the ledger
+   crosses it, the loop stops scheduling new performance fixes until
+   the reset, by rule, instead of discovering the limit mid-fix as
+   happened this week at 94%.
+
 ## The human method, distilled
 
 1. **Blind critics, fixed stop rule.** Compare against the mockup

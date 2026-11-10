@@ -167,6 +167,98 @@ is what the eye reads.
   tune the leaf angle down; the author calls the in-video willow "not
   the best willow tree ever" for exactly this reason.
 
+## AAA studio practice
+
+Procedural trees are one of the oldest solved problems in AAA
+production, and the solutions all converge on the same shape as
+cosmo_tree_gen: rules plus seeds plus budgets, with the highest LOD
+built first and everything else derived from it.
+
+- **SpeedTree: the industry-standard procedural tree tool, now
+  Unreal's official vegetation tool.** SpeedTree (IDV) is a
+  procedural modeling application built around rules and algorithms
+  (including a phyllotaxy branching algorithm) instead of
+  hand-placing leaves: artists define how a tree grows, the tool
+  generates the form, and the Compiler optimizes it for real-time use
+  with LOD management, wind simulation, and material optimization.
+  Version 10 (2024) made SpeedTree the official vegetation generation
+  tool for Unreal Engine. Its customer list spans Bethesda, Insomniac,
+  Ubisoft, SEGA, and Volition. cosmo_tree_gen is the same idea inside
+  Godot: the generator, the LODs, and the wind live in one tool, and
+  the artist tunes rules, not vertices.
+  (https://www.oreateai.com/blog/speedtree-crafting-digital-forests-with-artistic-precision/a9d9a8f3e67c3d232186229d98128082)
+  (https://www.psu.com/news/psu-interview-speedtree/)
+- **MPC, The Jungle Book (SIGGRAPH 2016): build at the highest LOD,
+  simplify down.** MPC Paris built 200+ unique trees and vines with
+  SpeedTree, merging hand-modeled high-resolution trunks and branches
+  from Maya into the SpeedTree node configuration, representing leaves
+  as cards that could be swapped for high-resolution leaf models at
+  render time. All trees were built at the highest required LOD and
+  subsequently simplified to generate lower LODs, the export from
+  SpeedTree and the packaging were distributed on the render farm, and
+  the SpeedTree hierarchy was preserved so the pipeline could tell
+  tree parts apart for LOD creation. That is exactly cosmo_tree_gen's
+  LOD rule (trunk simplified, tris budget goes to leaves) with the
+  direction made explicit: never author the low LOD and upscale.
+  (https://www.mpcvfx.com/en/news/the-trees-of-the-jungle-book/)
+- **Sucker Punch, Ghost of Tsushima: procedural tools for scale,
+  limited variety per biome, wind as one system.** The team built
+  procedural tools because hand-placing every blade of grass on the
+  largest map they had ever made was impossible, and the tools had to
+  stay flexible when the team changed its mind later. The world holds
+  40+ biomes, and the team deliberately limited the types of foliage
+  in each biome, which made each area more memorable. Foliage is
+  rigged with joints that respond to local wind speed, with separate
+  controls for trunks and branches, and the procedural grass renders
+  about 83,000 individual blades per frame in roughly 2.5 ms through
+  a compute-shader pipeline. The cosmo_tree_gen parallels: presets
+  are the per-biome limited set, the leaves shader's wind sway is the
+  one-wind-system rule, and the toolbar tris/draw-call counters are
+  the budget discipline.
+  (https://blog.playstation.com/2020/07/09/crafting-the-world-of-tsushima/?ref-cat=249748)
+  (https://blog.playstation.com/2021/01/12/how-stunning-visual-effects-bring-ghost-of-tsushima-to-life/)
+  (https://gameindustrylibrary.com/documents/procedural-grass-in-ghost-of-tsushima)
+- **Gnomon: the hero-tree pipeline is multi-tool by design.** Senior
+  environment artist Colin Valek's foliage workshop sculpts and
+  textures hero plants in ZBrush and Maya, bakes them onto texture
+  atlases in Substance Designer, assembles them in SpeedTree, and
+  integrates them in Unreal Engine 5. The lesson for cosmo_tree_gen:
+  the generator handles the forest, but hero trees still get a
+  hand-authored atlas and a bake step; the two pipelines meet at the
+  texture atlas, not inside the generator.
+  (https://www.thegnomonworkshop.com/workshops/creating-foliage-for-videogames)
+
+### Agent-executable upgrades
+
+1. **Preset manifest with budgets.** Keep `tree-presets.json`: one
+   entry per preset with seed, preset name, per-tree triangle count,
+   draw calls, and LOD ratios/distances. The toolbar counters are
+   read during tuning; the manifest is the record, and a preset whose
+   tris exceed its budget fails the gate instead of shipping because
+   it looked fine in the editor.
+2. **LOD parity check.** After generating LODs, render LOD0, LOD1,
+   and LOD2 from the same camera and distance and diff the
+   silhouettes. A LOD that changes the silhouette beyond tolerance
+   fails; the trunk-simplified/leaves-keep-tris rule exists to protect
+   exactly this. Log the diff scores in the manifest.
+3. **Collision audit.** With `preview_collision` on, verify by script
+   (a small Godot editor script run headless) that collision shapes
+   exist for the trunk and every branch level up to
+   `collision_level`, and that no shape extends above
+   `collision_max_height`. A tree whose collision drifts from its
+   visible mesh fails; same seed, same tree, same collision is a
+   check, not a slogan.
+4. **Atlas draw-call gate.** Track the roadmap item 10 target (one
+   texture atlas per bark plus foliage) as a manifest field: current
+   draw calls per tree vs the one-atlas target. When the atlas lands,
+   re-measure and log the before/after draw-call count; the
+   improvement is the acceptance proof.
+5. **Distance survival check.** Render each preset at three
+   distances (near, mid, far) and confirm the canopy does not pop out
+   of existence as mipmaps shrink (the limited-mipmaps rule from
+   Phase 3). A preset that disappears at distance fails even if it
+   looks right up close.
+
 ## The human method, distilled
 
 1. **Build the pipeline inside the engine.** The whole creation pipeline
