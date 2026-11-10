@@ -79,6 +79,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`cosmo-tree-gen-godot`](procgen-worlds/cosmo-tree-gen-godot/SKILL.md) | Generate procedural trees inside Godot 4.6+ with the free MIT cosmo_tree_gen addon: seed-driven recursive branching, live editor tuning, per-tree triangle and draw-call budgets, auto LODs and collisions, one-click glb export. |
 | [`project-prales-runtime-wilderness`](procgen-worlds/project-prales-runtime-wilderness/SKILL.md) | Generate 16 km2 of Central European wilderness at runtime in Unreal Engine 5 from a single seed: river-first terrain, whole-world hydrology, ecology-driven vegetation placement, world-hash determinism, and honest FPS reporting. |
 | [`blender-floaters-hard-surface-detail`](procgen-worlds/blender-floaters-hard-surface-detail/SKILL.md) | Fake hard-surface detail in Blender with floaters: model the base form clean, place separate small meshes (cylinders, vents, rings) on the surface instead of cutting booleans, sell the seam with a bevel, and unify with consistent materials. |
+| [`godot-grass-lod-wind`](procgen-worlds/godot-grass-lod-wind/SKILL.md) | Build Godot 4.7 steppe grass with per-blade LOD and vertex-shader wind: 13-vert blades dropping to 9, 5, 3 with geomorphing, travelling gusts with per-blade sway and tip flutter, rank-based density falloff with a canopy-lit carpet under the blades, and 10 grass styles with dynamic debris. |
 
 ## AI video and film (`ai-video/`)
 
