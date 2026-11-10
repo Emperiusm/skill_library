@@ -235,8 +235,19 @@ anchors matter.
 5. **Report the real FPS and label the trailer.** 60/90/120 at 1080p
    is the claim; 4K60 is an offline render.
 
+## Known defect, from the 2026-11-10 re-scan
+
+- **Floating grass blades.** Around 0:14 in the video there are "a few
+  loose grass blades hanging in the air right in front of the camera"
+  (commenter almostsweet, confirmed by the author: "It's on my fix list
+  now"). A commenter notes Claude makes this mistake a lot while Astra does
+  not, and the fix is to tell Claude to go back and make sure plants are
+  grounded. Add a grounded-plants check to the vegetation pass: every placed
+  plant must touch terrain, verified before the forest is accepted.
+
 **Depth status:** PARTIAL (full author post text + 13 comments with
-exact placement rules, species-by-slope mapping, and measured FPS; no
+exact placement rules, species-by-slope mapping, and measured FPS; re-scanned
+2026-11-10 with 17 comments, adding the floating-grass defect note above; no
 node graph, code, or parameters beyond those quoted; plant models are
 disclosed as Quixel assets, not generated; the full trailer on YouTube
 was not downloaded, the run's 2-download allowance was spent on the
