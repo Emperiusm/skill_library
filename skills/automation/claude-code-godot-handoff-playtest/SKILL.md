@@ -132,6 +132,120 @@ an expensive one.
   agreed on the spot. Lesson: list the target platform's input schemes
   before building, not after shipping.
 
+## AAA studio practice
+
+The three instruments in this skill, content as data, a handoff doc, and
+an automated playtest, are all AAA practice. The handoff doc itself has
+no named-studio source found this run (noted as a gap below); the other
+two are documented at studio scale.
+
+- **Content as data is the AAA default.** Jason Gregory's Game Engine
+  Architecture, the standard AAA engine text, describes how AAA games
+  externalize game logic into structured data files: instead of
+  embedding behaviors in C++ code, developers load AI rules, game
+  levels, item descriptions, and story dialogues from easily editable
+  files like YAML or JSON, which "dramatically accelerated iteration,
+  empowering non-programmers, artists, designers, and writers, to
+  directly experiment and refine experiences without requiring code
+  recompilation or redeployment." The lineage goes back to id
+  Software's Quake, which defined entities in text files.
+  (https://dev.to/methodox/data-driven-design-leveraging-lessons-from-game-development-in-everyday-software-5512 ;
+  https://frostywren.com/journal/articles/data-driven-registries/)
+  This is the AAA version of Phase 2: items, recipes, enemies, biomes,
+  and quests as JSON is not a shortcut, it is the standard way large
+  teams let designers change content without a programmer. The
+  upgrade is the contract: data files get schemas and validation, the
+  way code gets types.
+- **Ubisoft Massive, The Division: client bots play the game like
+  players.** In a GDC 2019 talk, Ubisoft Reflections' Jose Paredes
+  and Pete Jones described "Client Bots," AI that takes control of
+  the player, mimicking human input while also reporting issues. The
+  applications were automated mission playthrough and report
+  generation, follow bots that help QC and level designers test
+  multiplayer missions solo, streets wandering for performance data
+  gathering, and a general-purpose platform for bespoke testing and
+  bug reproduction. Massive lead AI programmer Philip Dunstan: "We
+  had those in the Division, we honestly would not have been able to
+  ship a stable Division 1 or Division 2."
+  (https://www.gamedeveloper.com/design/the-secret-ai-testers-inside-tom-clancy-s-the-division ;
+  https://gdconf.com/article/see-how-ubisoft-tested-the-division-with-automated-players-at-gdc-2019/)
+  This is the AAA version of Phase 3's 96-step playtest: the bots are
+  players first and tests second, and they report issues instead of
+  just failing. The author's screenshot-taking playtest is the same
+  instrument at one-developer scale; the upgrade is the report, a
+  structured log of what the bot did and where it stopped, not just
+  the screenshots.
+- **Rare, Sea of Thieves, GDC 2019: testing required with every
+  check-in.** Rare runs automated testing from day one: 10,000 tests,
+  run remotely with TeamCity, with the core set run before every
+  check-in and longer-running tests run periodically, across different
+  platforms, configurations (shipping, debug), and conditions (high
+  latency, high packet variance). The result: over 100 shipped
+  releases in 2 years, with a fix reaching players in about 30 hours.
+  (https://docslib.org/download/1319348/automated-testing-for-multiplayer-game-ai-in-sea-of-thieves)
+  This is the tiering the author's loop is missing: his 96-step
+  playtest runs when he runs it. Rare's rule is that the fast tier
+  gates the check-in and the slow tier runs on a schedule, so a
+  content change can never land untested.
+- **Screenshot regression is engine-vendor practice (labeled: no
+  named shipped title found for the playtest-screenshot gate).**
+  Epic's Unreal Engine 5.8 Automation System documentation covers
+  automation tests and a separate Screenshot Comparison area for
+  rendering comparisons, with results grouped by machine, platform,
+  and operating-system version and CSV export. Unity's Graphics
+  Testing package does the same shape: capture a screenshot at a key
+  moment, compare it to a golden reference, flag for human review if
+  pixels differ beyond a threshold (the documented example uses a
+  0.5% average pixel-difference allowance).
+  (http://umatechnology.org/how-to-test-a-game-across-screen-sizes-with-automated-screenshots/ ;
+  https://code-note-vr.vercel.app/game-testing--and--qa-automated-testing)
+  The author's screenshots are the golden images; the upgrade is the
+  comparison, automated against the approved baseline with a stated
+  threshold, instead of a human eyeballing each run. The 0.5%
+  figure is a vendor-package example, not a AAA number; pick a
+  threshold and record it, do not borrow it as a studio standard.
+- **Gap, labeled: no named-studio source found for the handoff doc.**
+  The handoff doc (decisions, architecture, open items, updated as
+  features are built) is the skill's own instrument and the author's
+  first-named practice, but no GDC talk, studio blog, or vendor doc
+  found this run describes a handoff-doc convention by that name.
+  The nearest AAA analogues are design-doc discipline and the
+  data-driven content files above, which carry the same decisions in
+  a different form. Do not claim AAA precedent for the handoff doc
+  itself until a source is found.
+
+### Agent-executable upgrades
+
+1. **Handoff-freshness check.** Record the handoff doc's last-updated
+   commit and compare it against the latest code commit on every
+   run. A handoff doc older than the newest feature commit fails the
+   gate; a stale handoff doc is the same failure as no handoff doc,
+   which is the skill's own Phase 1 rule.
+2. **Content schema validation.** Keep `content-schema.json`: a JSON
+   Schema per content type (items, recipes, enemies, biomes,
+   quests). A validation script runs on every content change and
+   fails the build on a missing or mistyped field. This is the
+   contract that makes "content is data" safe at scale: the data
+   files get the same checking code gets.
+3. **Playtest manifest.** Keep `playtest-manifest.json`: the 96 steps
+   with the expected state and screenshot path per step. Each run
+   writes `playtest-log.jsonl` (step reached, failure step,
+   screenshots taken). A run that stops early names the step; the
+   Division client-bot model is a report, not a pass/fail.
+4. **Golden screenshot diff gate.** Keep golden screenshots per
+   playtest checkpoint. After each run, diff the new screenshots
+   against the goldens with a stated pixel-difference threshold (the
+   0.5% Unity example is a starting point, labeled vendor example).
+   Diffs go to human review; a diff is never auto-accepted as the
+   new golden, and a golden is only replaced with an explicit
+   approval recorded in the log.
+5. **Input-scheme checklist.** Keep `input-schemes.md`: every input
+   scheme the target platform supports (touch, phone controller,
+   keyboard, mouse) listed before building starts. A shipped build
+   without the checklist fails the gate; this is the fix for the
+   skill's own failure mode, phone controllers discovered after
+   shipping.
+
 ## The human method, distilled
 
 1. **Handoff doc first.** Decisions, architecture, open items, updated as

@@ -185,6 +185,118 @@ makes trailer footage usable without a separate build.
 about 5 years ago and started a Tremors game in Core (coregames.com) back
 then; this game is directly inspired by it.
 
+## AAA studio practice
+
+Every instrument in this skill has a AAA analogue at studio scale, and the
+studios all reached the same conclusion: the bots play the routes, the
+humans judge the feel, and the numbers are measured, not guessed.
+
+- **Ubisoft Massive, The Division: client bots play the game like
+  players.** In a GDC 2019 talk, Ubisoft Reflections' Jose Paredes and
+  Pete Jones described "Client Bots," AI that takes control of the
+  player, mimicking human input while also reporting issues. The
+  applications were automated mission playthrough and report
+  generation, follow bots that help QC and level designers test
+  multiplayer missions solo, streets wandering for performance data
+  gathering, and a general-purpose platform for bespoke testing and
+  bug reproduction. The client bots run as if they are playing a build
+  of the game client-side, adhering to all the same rules as a regular
+  player, with no special modifications that let them manipulate or
+  cheat, and they run on any platform. Massive lead AI programmer
+  Philip Dunstan: "We had those in the Division, we honestly would
+  not have been able to ship a stable Division 1 or Division 2."
+  (https://www.gamedeveloper.com/design/the-secret-ai-testers-inside-tom-clancy-s-the-division ;
+  https://gdconf.com/article/see-how-ubisoft-tested-the-division-with-automated-players-at-gdc-2019/)
+  This is the AAA version of Phase 3's bots-as-tests: the bots are
+  players first and tests second, they report issues instead of just
+  failing, and they gather performance data while they play. The
+  author's ~5,000 probes and ~1,000 clicks are the same instrument at
+  one-developer scale; the upgrade is to give each bot route a
+  report, not just a pass or fail.
+- **EA SEED: reinforcement-learning agents for AAA game testing.**
+  SEED's CoG papers describe the scale that forces automation:
+  Battlefield V requires testing 601 different features, "amounting
+  to around 0.5M hours of testing if done manually," about 300 work
+  years. Scripted bots still do much of the work, and SEED's RL agents
+  are the additional search layer on top of them, deployed in
+  Battlefield V and Dead Space (2023). One concrete result: a
+  quadratic-Bezier ground-vehicle path-following method, implemented
+  in Battlefield 2042 with AI-driven vehicles, achieved faster average
+  vehicle speeds, far fewer stuck vehicles, and a 39% decrease in the
+  mean total time to navigate a path.
+  (https://www.ea.com/technology/news/seed-ml-research-aaa-game-testing)
+  The lesson for this skill: scripted route-bots (the author's bots)
+  are the base layer and learned agents are the expansion, not the
+  replacement. A route bot proves the route still works; an RL agent
+  finds the route nobody scripted. Both report into the same test
+  ledger.
+- **Rare, Sea of Thieves, GDC 2019: testing required with every
+  check-in.** Rare runs automated testing from day one: 10,000 tests,
+  run remotely with TeamCity, with the core set run before every
+  check-in and longer-running tests run periodically, across different
+  platforms, configurations (shipping, debug), and conditions (high
+  latency, high packet variance). The result: over 100 shipped
+  releases in 2 years, with a fix reaching players in about 30 hours.
+  (https://docslib.org/download/1319348/automated-testing-for-multiplayer-game-ai-in-sea-of-thieves)
+  This is the tiering the author's loop is missing: his bots run when
+  he runs them. Rare's rule is that the fast tier gates the check-in
+  and the slow tier runs on a schedule, so a tuning change can never
+  land untested.
+- **Monolith, Middle-earth: Shadow of War, GDC performance and memory
+  postmortem.** The talk covers the engineering strategies used to
+  optimize the game for 30 fps performance and constrained memory:
+  threading, synchronization, rendering, frame pacing, and mipmap
+  streaming.
+  (https://www.classcentral.com/course/youtube-performance-and-memory-postmortem-for-middle-earth-shadow-of-war-158051)
+  This is the AAA version of Phase 5's performance lock: the fps
+  target and the memory figure are the acceptance numbers, and
+  streaming (here, mipmap streaming) is the mechanism that holds the
+  memory budget when content grows. The author's 650 MB down to
+  ~220 MB is the same shape: a measured budget with a named mechanism
+  behind the reduction.
+- **Player-hosted co-op is a shipped pattern, not a compromise
+  (labeled: indie shipped titles, not AAA).** Among Us, Lethal
+  Company, and PEAK all use a player-hosted model: one player is the
+  host, no dedicated server, no server costs. The trade is explicit:
+  the session ends when the host disconnects, and host migration is
+  optional.
+  (https://www.slashskill.com/multiplayer-netcode-fundamentals-for-indie-developers-a-complete-guide/)
+  The author's PeerJS choice is the same trade at browser scale. The
+  AAA gap is that no named AAA co-op title was found using a
+  host-browser-as-server model; the pattern's evidence is indie
+  shipped titles, and the skill should not claim AAA precedent for
+  it.
+
+### Agent-executable upgrades
+
+1. **Playtest manifest JSON.** Keep `playtest-manifest.json`: one entry
+   per bot route (character route, level path, co-op scenario) with
+   steps, expected state at each step, and screenshot checkpoints.
+   The bots log a structured report per run (route, steps completed,
+   failure step, screenshots), not just a pass or fail, following the
+   Division client-bot model of report generation.
+2. **Tiered test gate.** Split the bots into a fast core set that runs
+   before every commit and a full playthrough that runs nightly
+   (the Rare Sea of Thieves tiering). A commit whose core set fails
+   does not land; a nightly failure is a morning triage item, not a
+   surprise at release.
+3. **Performance budget ledger.** Keep `perf-budget.json`: fps target
+   per device class (30 fps Intel iGPU, 60 fps desktop GPU), GPU
+   memory ceiling (~220 MB), and the measured value per build. A build
+   that regresses past either number fails the gate; the fix is a
+   named mechanism (texture streaming, mip levels, render-target
+   reduction), following the Shadow of War postmortem shape.
+4. **Desync hunt as a scheduled phase.** Keep a `desync-log.jsonl`:
+   per-peer state hash per tick, so a desync is found by comparing
+   hashes, not by noticing it in play. The hunt is a phase item with
+   its own prompt budget, the way the author scheduled it in Phase 5,
+   not a bug found by luck.
+5. **Design-doc freeze gate.** Record the design doc's hash in the
+   repo. A content change that contradicts the doc fails the gate
+   until the doc is updated first. This enforces the author's own
+   lesson (Phase 2: "Settling the design before the implementation")
+   as a check instead of a memory.
+
 ## The human method, distilled
 
 1. **Design doc before content.** Wasted prompts come from building before

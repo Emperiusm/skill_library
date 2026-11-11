@@ -175,6 +175,111 @@ tasks are sized to one morning of agent work and one evening of human review.
   replacement. Fix: budget cleanup per sound, and be willing to replace
   rather than repair.
 
+## AAA studio practice
+
+The author's loop, agree the picture, build fast, judge by feel, is the
+same loop AAA studios run at scale. The differences are that the studios
+write the feel check down and run the tests on a schedule.
+
+- **Dynamix, Starsiege: Tribes: the movement bug became the game.**
+  Skiing began as a physics exploit in the Tribes beta: tapping the
+  jump button rapidly while going down hills made friction disappear,
+  and players used it to cross maps at speeds exceeding 100 km/h.
+  It was so widespread and loved that Tribes 2 designed its maps
+  around skiing and included tutorials on how to do it, and every
+  sequel since has kept it as the signature mechanic.
+  (https://www.pcgamer.com/great-moments-in-pc-gaming-learning-to-ski-in-tribes/ ;
+  https://giantbomb.com/wiki/Games/Starsiege_Tribes)
+  This is the AAA precedent for the author's Phase 4: the movement
+  is the game, and it is found by playing, not by specifying. Tribes
+  also shows the second half of the lesson: once the feel is proven,
+  the maps are designed around it. A momentum speedrunner's levels
+  should be built around the ski, not the other way round.
+- **Naughty Dog and People Can Fly: concept first, then the model,
+  then the game.** Naughty Dog begins character work with a concept
+  that outlines the character's major attributes, using concepts,
+  reference photos, and photos of actors for faces. People Can Fly's
+  Bulletstorm pipeline is the executable version: orthogonal drawings
+  of the character in a default pose, adjusted to fit the studio's
+  standard skeletal rig so typical animations can be reused; a base
+  mesh is quickly rigged, given temporary textures, and exported to
+  the engine "so that the team can get an early feel of the
+  character"; at each step the character is tested in the game
+  environment, "because it's only after the artists see the character
+  in the level with in-game lighting during actual gameplay that final
+  adjustments and fixes can be tweaked."
+  (https://digital.copcomm.com/i/17873-august-september-2010/21)
+  This is the AAA version of Phase 2: the agreed picture is the
+  contract, the base mesh goes into the engine early for a feel check,
+  and the final adjustments happen in the game, not in the modeling
+  tool. The author's sketch-plus-imagen loop is the same contract at
+  one-developer scale; the upgrade is the early in-engine feel check
+  as a formal gate.
+- **Rare, Sea of Thieves, GDC 2019: tests on a schedule, feel by
+  playing.** Rare runs 10,000 automated tests, with the core set
+  before every check-in and longer-running tests periodically, across
+  platforms, configurations, and conditions, shipping over 100 times
+  in 2 years. The tests prove the game still works; they do not
+  prove it feels good, which is exactly the author's Phase 4
+  distinction: "Sometimes something sounds sensible, passes its
+  tests, and feels rubbish."
+  (https://docslib.org/download/1319348/automated-testing-for-multiplayer-game-ai-in-sea-of-thieves)
+  The AAA discipline is to keep the two verdicts separate: the test
+  suite verdict and the playtest feel verdict are different fields,
+  and a build needs both.
+- **Respeecher and CD Projekt Red: AI voice ships with a human
+  performance underneath.** Respeecher's speech-to-speech conversion
+  takes an actor's recorded line, with the timing and emotion the
+  director wants, and re-voices it as a target speaker while keeping
+  the performance intact. It recreated the young Luke Skywalker's
+  voice for The Mandalorian and The Book of Boba Fett, and revived
+  the voice of the late Polish actor Milogost Reczek for CD Projekt
+  Red's Cyberpunk 2077: Phantom Liberty. Every voice requires
+  written consent from the speaker or their estate before cloning.
+  (https://www.respeecher.com/faq ;
+  https://www.exploreai.directory/tools/respeecher)
+  This is the production end of the author's Phase 3: generation is
+  quick, fitting it properly takes ages, and at studio scale the
+  fitting is done by sound engineers in a managed service, with a
+  consent chain for every voice. The author's ElevenLabs cleanup
+  budget is the same cost, just unbilled; the upgrade is to track it
+  per sound and to replace rather than repair when the cleanup
+  exceeds the budget.
+
+### Agent-executable upgrades
+
+1. **Feel-regression manifest.** Keep `feel-regression.json`: one
+   entry per movement tuning change (collision, air control, landing
+   behaviour, timings) with the values changed, the test-suite
+   verdict, and a separate human feel verdict (feels good, feels
+   rubbish, undecided). A change that passes its tests but has no
+   feel verdict is not done; this is the author's Phase 4 rule made
+   into a file.
+2. **Concept-agreement gate.** Record the agreed picture before any
+   Blender build: the sketch, the style-guide version, and the imagen
+   concept that was approved, with a hash. A build that starts
+   without an agreed picture fails the gate. This is the Phase 2
+   contract ("Having an agreed picture of what we're aiming for makes
+   a massive difference") enforced as a check.
+3. **Overnight test manifest.** Keep `overnight-tests.jsonl`: one
+   line per scheduled run with the tests run, pass/fail per test, and
+   a feel-verdict field that stays empty until a human plays. The
+   manifest makes the author's distinction explicit: overnight
+   testing proves the build works, playtesting proves it feels good,
+   and the two are never merged into one verdict.
+4. **SFX cleanup ledger.** Keep `sfx-ledger.json`: one entry per
+   generated sound with artifact flags (sharp, artifacted), cleanup
+   minutes spent, and a replace-or-repair decision. A problem sound
+   stays in the ledger until it is replaced or repaired; it does not
+   silently ship, which is the current state of the author's few
+   problem sounds.
+5. **Daily task manifest.** Keep `tasks.json`: one or two tasks per
+   day, each with a clear target and a stated done-check, matching
+   the author's Phase 5 schedule (agent works in the morning, human
+   reviews in the evening). A task without a done-check is not
+   started; "Leave too much open to interpretation and Claude will
+   just Claude."
+
 ## The human method, distilled
 
 1. **Agree the picture first.** Sketch plus style guide plus imagen rounds

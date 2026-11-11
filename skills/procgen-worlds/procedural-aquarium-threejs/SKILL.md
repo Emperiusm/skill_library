@@ -110,6 +110,110 @@ time it is watched, for free.
   blur during strikes. Fix (inference, labeled): treat the post chain as a
   budget line item of its own, not as free.
 
+## AAA studio practice
+
+The aquarium's three ideas, generation as compression, simulation
+instead of animation, and the real world as the clock, each have a
+shipped-title precedent. The studios all report both numbers: the
+shipping size and the runtime cost.
+
+- **Hello Games, No Man's Sky: generation is compression.** No Man's
+  Sky holds over 18 quintillion planets in a 6 GB install at launch,
+  most of it audio. The game does not store a pre-made asset for each
+  planet; it stores the algorithms and the seeds, generates the
+  planet's terrain, flora, fauna, weather, and buildings on the fly
+  when the player approaches, and discards the detail when the player
+  leaves.
+  (https://www.dualshockers.com/no-mans-sky-takes-only-6-gb-on-disk-passed-certification-in-europe-u-s-and-asia/ ;
+  https://www.gameslearningsociety.org/wiki/how-is-no-mans-sky-so-small/)
+  This is the AAA version of Phase 1: the 650 KB HTML file is the
+  recipe, the 500 MB runtime is the baked cake, and the gap between
+  them is the painted skins. No Man's Sky states the same gap the
+  same way: shipping size and runtime cost are different numbers,
+  and the skill's Phase 3 rule, report both sizes, is the studio
+  rule too.
+- **Giant Squid, Abzu: simulate the fish, don't animate them.**
+  Abzu renders schools of tens of thousands of fish dynamically.
+  Most fish are animated using mathematical motion in their materials
+  alongside morph target posing, which "freed them from needing
+  expensive skeletal rigs. This was key to letting us render schools
+  of tens of thousands of fish dynamically." Kelp forests use
+  procedural motion based on rope simulations and tidal forces. The
+  engineering version: 10,000 to 20,000 individually animating fish
+  on PS4, as instanced static meshes with a single draw call per
+  species, morph target animation for the mouths, and a working
+  simulation of the food chain, so predators hunt prey and fish
+  break apart and coalesce into schools.
+  (https://80.lv/articles/interview-with-the-creative-director-of-abzu?amp=1 ;
+  https://www.gamedeveloper.com/design/-i-abzu-i-and-the-challenge-of-conveying-emotions-through-game-design)
+  This is the AAA version of Phase 2: the gape rule and the hunger
+  states are the aquarium's food chain, and the shad bursting apart
+  is the same break-apart behavior Abzu's schools show. The upgrade
+  is the instancing rule: one draw call per species, not one per
+  fish, and the behavior as a legible rule (a viewer can see why a
+  strike happened) rather than keyframed animation.
+- **Nintendo, Animal Crossing: the real clock is the game clock.**
+  The series was premised on the Nintendo 64DD's real-time clock:
+  days and seasons pass according to the calendar, the village is
+  blanketed in snow in winter and cherry blossoms bloom in spring,
+  different fish and insects emerge depending on the time of year,
+  and holidays are celebrated as they occur in real life. The game
+  was built so the world keeps living when the player is not playing.
+  (https://www.gamespot.com/articles/how-animal-crossing-was-born-from-one-of-nintendos-biggest-flops/1100-6475342/?ftag=CAD-01-10abi2f)
+  This is the AAA version of Phase 3: day, night, and weather
+  following the real clock at Lake Fork, Texas, is the same design
+  decision, a scene that is different every time it is watched for
+  free. The lesson is the same one Animal Crossing learned: the clock
+  is a gameplay condition, not just atmosphere, so the parity between
+  the game clock and the real clock has to be checked, not assumed.
+- **Boids, the foundational algorithm (labeled: academic, not a
+  shipped-title case).** Craig Reynolds' 1986 boids model gives
+  schooling from three steering rules per fish: separation (avoid
+  crowding neighbours), alignment (match the average heading), and
+  cohesion (move toward the average position). Blender's manual
+  documents boids particle systems as "ideal for simulating flocks,
+  swarms, herds and schools of various kind of animals, insects and
+  fishes or predators vs. preys simulations."
+  (https://docs.blender.org/manual/de/2.81/physics/particles/emitter/physics/boids.html)
+  The aquarium's shad bursting apart on attack is the separation
+  rule firing; the bass stalking is a predator rule on top of the
+  same three. No named shipped title was found this run using boids
+  specifically for fish schooling in production, so boids is cited
+  as the algorithm behind the behavior, not as a studio precedent.
+
+### Agent-executable upgrades
+
+1. **Memory budget manifest.** Keep `memory-budget.json`: one line
+   per budget item (painted skins, multisampled render buffers,
+   vertex buffers) with the shipping size and the runtime cost side
+   by side, following the author's own Phase 3 numbers (JS heap
+   ~60 MB, GPU ~500 MB: ~340 MB textures, ~190 MB render buffers,
+   ~30 MB vertex buffers). A build that grows any line past its
+   budget fails the gate; the mobile 1024-wide skin rule is a gate
+   with acceptance renders, not a note.
+2. **Simulation-rules manifest.** Keep `sim-rules.json`: the gape
+   rule, hunger states, hold/stalk/strike sequence, and burst-apart
+   rule as data with their parameters. Acceptance: a strike happens
+   only when the prey's body depth fits the gape, and the shad burst
+   apart on attack. A rule that cannot be stated as data is not in
+   the simulation yet.
+3. **Boids parameter record.** Keep the separation, alignment, and
+   cohesion weights per species in the manifest, with a burst-apart
+   check: trigger an attack and require the school to split and
+   re-form. A school that clumps or ignores the attack fails the
+   check, which is the failure mode the boids literature warns about
+   when alignment overwhelms separation.
+4. **Real-clock parity check.** Log the in-game time and weather
+   against the real Lake Fork clock and weather per session, and
+   fail the gate on drift past a stated threshold. Animal Crossing's
+   lesson is that the clock is a gameplay condition; a scene that
+   claims to follow the real clock has to prove it.
+5. **Texture-resolution ladder.** Render acceptance frames at both
+   2048-wide (desktop) and 1024-wide (mobile) skins and diff them.
+   The author's "almost no visible difference" becomes a measured
+   diff, not an impression, and the ladder is what makes the mobile
+   budget a decision rather than a hope.
+
 ## The human method, distilled
 
 1. **Generation is compression.** Code that paints scales beats images of
