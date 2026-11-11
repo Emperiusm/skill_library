@@ -13,7 +13,7 @@ skill.
 
 ## The skills
 
-214 skills in 9 categories, growing with every daily scout run. The full grouped
+215 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
@@ -26,7 +26,7 @@ reports under [`docs/scout-reports/`](docs/scout-reports/).
 | [`simulation-vfx`](skills/simulation-vfx/) | 19 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 17 | Material authoring, shaders, texturing |
 | [`engine-runtime`](skills/engine-runtime/) | 46 | Engine systems, runtime and render tech, browser and WebGPU |
-| [`automation`](skills/automation/) | 32 | Agent-driven pipelines, DCC bridges, productized generation |
+| [`automation`](skills/automation/) | 33 | Agent-driven pipelines, DCC bridges, productized generation |
 | [`no-tooling`](skills/no-tooling/) | 2 | Negative examples: footage with no extractable workflow, kept on purpose |
 
 ## The tool

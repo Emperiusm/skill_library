@@ -1,6 +1,6 @@
 ---
 name: minimax-h3-image-native-comfyui
-description: "Run MiniMax H3 Image natively in ComfyUI on day 0: one checkpoint does text-to-image and reference-image editing in 6 steps at guidance 1, with native resolutions up to 6272x2688, multi-reference editing via <Picture N> tags, and VAE anchoring for edits. Includes the commenters' P-H3-Image comparison (community fine-tune is better at small sizes, identity, and LoRA support) and the garbled-at-full-resolution failure report. Trigger when an H3 Image job needs the official native workflow, or when choosing between official H3 Image and P-H3-Image."
+description: "Run MiniMax H3 Image natively in ComfyUI on day 0: one checkpoint does text-to-image and reference-image editing in 6 steps at guidance 1, with native resolutions up to 6272x2688, multi-reference editing via Picture N tags, and VAE anchoring for edits. Includes the commenters' P-H3-Image comparison (community fine-tune is better at small sizes, identity, and LoRA support) and the garbled-at-full-resolution failure report. Trigger when an H3 Image job needs the official native workflow, or when choosing between official H3 Image and P-H3-Image."
 ---
 
 # MiniMax H3 Image, Native in ComfyUI (Day-0 Support)

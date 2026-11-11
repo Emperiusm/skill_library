@@ -76,6 +76,7 @@
         "./skills/automation/magic-studios-agent-first-sprite-video",
         "./skills/automation/nightshoal-opus-weekly-loop",
         "./skills/automation/nomad-blender-live-link",
+        "./skills/automation/persistent-stateful-agent-systems",
         "./skills/automation/retrocrunch-ps1-godot-conversion",
         "./skills/automation/steam-publish",
         "./skills/automation/url-to-skill",
@@ -306,6 +307,7 @@
         "./skills/automation/magic-studios-agent-first-sprite-video",
         "./skills/automation/nightshoal-opus-weekly-loop",
         "./skills/automation/nomad-blender-live-link",
+        "./skills/automation/persistent-stateful-agent-systems",
         "./skills/automation/retrocrunch-ps1-godot-conversion",
         "./skills/automation/steam-publish",
         "./skills/automation/url-to-skill"
