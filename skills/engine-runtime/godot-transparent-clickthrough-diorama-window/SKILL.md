@@ -95,6 +95,83 @@ retrieved, YouTube bot wall). No code is disclosed in the post.
 - One simulation with two front-ends (live and fast-forward) cannot
   drift apart the way a live sim plus a separate offline calculator can.
 
+## AAA studio practice
+
+The diorama look is a shipped AAA style with a documented recipe:
+2D figures inside a 3D scene, modern lighting and depth of field
+doing the depth work, and a disciplined balance between pixel charm
+and 3D richness.
+
+- **Square Enix / Acquire, Octopath Traveler (2018), the original
+  HD-2D game.** Pixel-art characters and billboard sprites inside
+  fully 3D environments, with dynamic lighting, depth of field, and
+  tilt-shift producing the diorama appearance. The team took a long
+  while to perfect it: at first they did not add enough depth and it
+  was uninteresting; another time they went too far on resolution
+  and saturation and lost the appeal of pixel art. Sprites looked
+  lonely and simple on a larger screen, so the team increased the
+  density of tile variations and colours to make a richer view, and
+  added a point light so characters cast shadows onto the
+  environment.
+  (https://www.siliconera.com/project-octopath-traveler-developers-answer-project-started-troubles-developing-hd-2d/ ;
+  https://en.wikipedia.org/wiki/HD-2D)
+  The direct parallel: this skill's Phase 1 is the same recipe at
+  Godot scale, flat cutouts in a 3D scene with shadows and lighting
+  for depth. The Octopath lesson is the failure mode to check for:
+  a diorama that reads as empty is a density problem, not a lighting
+  problem.
+- **Square Enix / Team Asano, Dragon Quest III HD-2D Remake
+  (2024).** Producer Masaaki Hayasaka says that in HD-2D, depth of
+  field is "extremely important", and that the team thought they had
+  mastered background blur from earlier HD-2D titles until series
+  creator Yuji Horii told them the blur was far too intense and made
+  him feel like there was something wrong with his eyes; they dialed
+  it back, and the change made the remake stand out from other HD-2D
+  titles. The only common thread across all HD-2D titles, Hayasaka
+  says, is pixelated characters placed in a 3D world.
+  (https://blog.playstation.com/2024/11/08/dragon-quest-iii-hd-2d-remake-interview-how-the-classic-rpg-was-revamped-for-its-ps5-debut/)
+  The direct parallel: the depth-of-field strength is a tuned value
+  with a named failure (too intense reads as broken vision), so it
+  belongs in a manifest with a recorded value and a dial-back test,
+  not as a hardcoded guess.
+- **Nintendo / Grezzo, The Legend of Zelda: Link's Awakening
+  (Switch, 2019).** A diorama world with toy-like plasticine
+  characters and a tilt-shift effect, built on the vision of Link as
+  a roughly 10 cm figurine in a miniature world, with detail budgeted
+  against that imagined scale.
+  (https://nintendoeverything.com/graphic-refining-director-yoshiki-haruhana-on-reimagining-the-visuals-of-zelda-links-awakening/)
+  The direct parallel: the window-as-viewport trick in Phase 3 is
+  the same miniature-world instinct made interactive, the camera
+  moves because the viewer moves around the diorama.
+
+**Agent automation**
+
+1. **Depth-of-field dial-back ladder.** Render the diorama at three
+   depth-of-field strengths and record the chosen strength in
+   `diorama-manifest.json` with the reason. The strongest render
+   must be rejected if background blur makes the scene hard to read;
+   that is the Horii rule from Dragon Quest III, and the recorded
+   strength is the fix, not the shader.
+2. **Density check.** Count tile and prop variations visible per
+   screen and record the count in the manifest. A diorama that reads
+   as empty fails the Octopath test: sprites look lonely when the
+   variation density is too low, so add variations before adding
+   lights.
+3. **Window-position camera test.** Scripted: place the window at
+   three different screen positions, capture the camera angle at
+   each, and assert the angle changes monotonically with position.
+   Log the positions and angles to `diorama-window-test.json`; a
+   fixed camera at any position fails Phase 3.
+4. **Click-through hit-test matrix.** Scripted: probe a grid of
+   screen points inside and outside the diorama outline and assert
+   passthrough outside the outline and capture inside it. Log the
+   grid result; a rectangular passthrough region fails Phase 2.
+5. **Offline-progress determinism test.** Run the simulation live
+   for N simulated minutes and fast-forwarded for the same N, then
+   diff the resulting state hash. The two must match; a mismatch
+   means the offline path has drifted from the live sim, which is
+   exactly the two-systems failure Phase 4 exists to prevent.
+
 ## The human method, distilled
 
 1. **The window is the viewport**: position drives the camera.

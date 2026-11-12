@@ -133,6 +133,87 @@ Turbo**, **MOSS**, **KREA2**, **RefMod**, MiniMax H3 LoRAs.
   commenters' own tests, and the official model's edge is speed and
   maximum size.
 
+## AAA studio practice
+
+A day-0 native ComfyUI integration is a distribution win, and AAA
+studios treat it that way: ComfyUI is the workflow framework they
+build production pipelines on, with the model itself judged by
+measured output, not by who shipped it first.
+
+- **Ubisoft La Forge, Generative Base Material (SIGGRAPH Asia
+  2025).** La Forge open-sourced a three-stage pipeline for PBR
+  material generation, texture synthesis, then material estimation
+  with its CHORD diffusion model, then upscaling, and built it on
+  ComfyUI: "ComfyUI provides us with an efficient framework to build
+  integrated workflows doing texture image synthesis, material
+  estimation and material upscaling." The same honest gap as this
+  skill's Phase 4 is stated outright: artists said the results are
+  "not production-ready yet, but a solid first step," and the CHORD
+  model is optimized for 1024 while production textures are usually
+  2048 or 4096.
+  (https://www.ubisoft.com/en-us/studio/laforge/news/1i3YOvQX2iArLlScBPqBZs/generative-base-material-an-opensource-prototype-for-pbr-material-estimation-debuting-at-siggraph-asia-2025)
+  The direct parallel: the official H3 Image native workflow is the
+  same shape, a vendor-blessed ComfyUI pipeline whose quality is
+  still catching up to the community fine-tune. Judge it the way La
+  Forge judges CHORD, against a stated production resolution, not
+  against the announcement.
+- **Series Entertainment (ComfyUI case study).** Series rebuilt game
+  and video production around repeatable ComfyUI workflows and
+  shipped multiple Netflix titles on them: 100,000+ assets generated,
+  180x faster production speed, six character emotions generated in
+  seconds, and workflows that keep characters and backgrounds
+  consistent across complex branching narratives. The case study's
+  point is that ComfyUI worked because its node-based structure makes
+  workflows explicit and reusable, turning video generation into "a
+  repeatable system rather than a one off process."
+  (https://blog.comfy.org/p/case-study-how-series-entertainment)
+  The direct parallel: the H3 Image templates are only the starting
+  point; the production move is to freeze them into a versioned,
+  repeatable workflow with a manifest, the way Series freezes its
+  four pipelines.
+- **Moment Factory (ComfyUI case study).** Moment Factory reimagined
+  architectural projection mapping with ComfyUI by generating
+  intentionally low-resolution outputs around 2K, reviewing them
+  quickly, running 20 to 40 iterations per direction across 20+
+  artistic directions, and upscaling only the selected outputs (to
+  18K in about 20 minutes). ControlNet injected structural
+  information from surface templates directly into the diffusion
+  process, enforcing scale, layout, and spatial logic early.
+  (https://blog.comfy.org/p/case-study-how-moment-factory-reimagined)
+  The direct parallel: low-res-first review is the production answer
+  to this skill's garbled-at-full-resolution failure report. Judge
+  the small version fast, promote only what survives, and never
+  upscale to reach a resolution the model should generate natively.
+
+**Agent automation**
+
+1. **Run manifest.** Keep `h3-run-manifest.json` per job: checkpoint
+   file hash, text encoder file, steps (6), guidance (1),
+   resolution, prompt hash, and output dimensions. A check asserts
+   the output dimensions equal one of the native sizes in the Phase 2
+   table; an output that had to be upscaled to reach its size fails
+   the manifest.
+2. **Workflow JSON contract check.** Scripted check on the edit
+   workflow JSON: a VAE node must be present and connected whenever
+   image inputs are connected (the Phase 3 anchoring rule), and every
+   `<Picture N>` tag in the prompt must match a connected image slot
+   in input order. A prompt tag with no matching slot fails the
+   check before any generation runs.
+3. **Full-zoom acceptance.** Export 100% crops at fixed coordinates
+   from every output and record the crop paths in the manifest; the
+   acceptance review reads the crops, never the preview. The
+   garbled-at-full-resolution report in Phase 4 is exactly the
+   failure preview hides, so a job with no crops is unreviewed.
+4. **Low-res-first ladder (Moment Factory).** Run the explore pass
+   at small size first, record the accepted prompt in the manifest,
+   and promote only accepted prompts to native resolution. The
+   explore size and the native size are both recorded; a job that
+   jumps straight to native resolution skips the ladder.
+5. **Identity decision record.** When identity matters, generate the
+   same edit with H3 Image and with P-H3-Image and record which won
+   and why in the manifest. The Phase 4 comparison becomes a logged
+   decision with evidence, not a comment to re-argue next time.
+
 ## The human method, distilled
 
 1. **One checkpoint, two modes**: no images means text-to-image, images
