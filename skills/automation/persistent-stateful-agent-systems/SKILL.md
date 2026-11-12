@@ -195,6 +195,49 @@ checkpoint, never from a summary of the last session.
   month beats building. The counter to that is that persistence is table
   stakes for any product weaving AI in as a core workflow.
 
+## Production practice
+
+This is not a game-studio technique, so there is no AAA game anchor to
+cite. The production-grade equivalents are the systems that already run
+durable agent and workflow state at scale. Each one maps directly onto a
+pattern above.
+
+- **LangGraph checkpointers** (LangChain docs,
+  https://docs.langchain.com/oss/javascript/langgraph/checkpointers): a
+  checkpointer saves a snapshot of graph state at each super-step,
+  organized into threads keyed by `thread_id`. Compiling a graph with a
+  checkpointer enables human-in-the-loop workflows, time-travel debugging,
+  fault-tolerant execution, and conversational memory. Node-level writes
+  are persisted separately from the full snapshot, so a node that finished
+  does not rerun after a crash. Time travel means replaying a prior
+  execution or forking state at an arbitrary checkpoint to explore an
+  alternative trajectory. This is Patterns 1, 2, and 5 as shipped code,
+  and the human-in-the-loop step is Pattern 6: a human inspects,
+  interrupts, and approves graph steps before execution continues.
+- **Event sourcing** (Martin Fowler, 2005,
+  http://martinfowler.com/eaaDev/EventSourcing.html): capture all changes
+  to application state as a sequence of events. The log supports three
+  facilities: complete rebuild (discard the state entirely and rebuild it
+  by re-running the events), temporal query (state at any point in time by
+  replaying up to that event), and event replay (correct a past event by
+  reversing it and later events, then replaying). Events are immutable: a
+  wrong event is never edited, it is corrected by a new compensating
+  event. This is Pattern 4 as a twenty-year-old discipline (supersession
+  by compensation, never silent rewrite) and Pattern 5 (rehydration is
+  replay).
+- **Temporal durable execution** (demonstrated end to end in
+  https://github.com/dalenguyen/dalenguyen.github.io/blob/HEAD/apps/blog-app/src/content/2026-07-20-getting-started-with-temporal.md):
+  workflow code is deterministic orchestration, activities are the
+  side effects, and every state transition is appended to an immutable
+  event history. Kill the worker mid-run and a fresh worker replays the
+  history through the deterministic workflow function to reconstruct
+  every local variable and the exact position in the code, then continues
+  as if nothing happened. Activities that already completed are not
+  re-run; their recorded results are returned from the history. This is
+  Patterns 1 and 5 at production scale, and it sets the bar the restart
+  drill in this skill should meet: resume must be exact, not
+  approximate.
+
 ## Agent automation upgrades
 
 These make the patterns checkable by an agent instead of aspirational:
@@ -219,3 +262,16 @@ These make the patterns checkable by an agent instead of aspirational:
 - **Restart drill:** a scripted test that kills a session mid-task,
   starts a fresh one, and asserts the new session resumes from the
   checkpoint with identical pending work.
+- **Checkpoint-file convention (from LangGraph):** one JSON checkpoint
+  per super-step, named by `thread_id` plus `checkpoint_id`, append-only.
+  Never overwrite a checkpoint in place; a new step writes a new file,
+  and the thread's history lists every checkpoint newest first.
+- **Event-log replay test (from Fowler):** a scripted test that discards
+  all derived state, replays the event log from empty, and asserts the
+  rebuilt state is byte-identical to the live state. A second assertion
+  replays only up to a past event and checks the temporal query returns
+  the state as of that event.
+- **Time-travel fork test (from LangGraph):** resume from an older
+  checkpoint on a forked thread, take a different action, and assert the
+  original thread's state is untouched and both threads remain
+  independently resumable.
