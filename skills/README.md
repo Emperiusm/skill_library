@@ -39,6 +39,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`character-animation-pipeline-rig-mocap`](characters/character-animation-pipeline-rig-mocap/SKILL.md) | Take a character from model to game animation: joint-and-control rig with painted weights, interruptible layered clips, mocap, cleanup and exaggeration. |
 | [`anime-character-lookdev-grease-pencil`](characters/anime-character-lookdev-grease-pencil/SKILL.md) | Take an illustrated character into 3D and keep the illustrated feeling: Maya blocking, ZBrush detail, Blender lookdev, Substance Painter textures, Grease Pencil outlines with noise, Eevee render. |
 | [`godot-runtime-procedural-creatures`](characters/godot-runtime-procedural-creatures/SKILL.md) | Generate creatures at runtime in Godot 4 with GDScript: build the skeleton and a single skin mesh from the creature design, animate with IK foot planting and body lean, drive behaviour with a daily schedule; no pre-made skeletal meshes. |
+| [`soft-body-sewing-garment-glb`](characters/soft-body-sewing-garment-glb/SKILL.md) | Design garments from sewing patterns in the browser, simulate them as soft bodies on an animated mannequin, and export free GLB plus textures: set particle resolution before simulating, bake with subdivision and smoothing modifiers, retopo down for low-poly targets, and fit to a Mixamo rig for skinned export. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -124,6 +125,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`minimax-h3-addguide-longform-automation`](ai-video/minimax-h3-addguide-longform-automation/SKILL.md) | Make 60 seconds of MiniMax H3 video on a 6 GB RTX 3050: six 260-frame shots at 864x480 and 25 steps, stitched with the H3 Add Guide node carrying the last 22 frames and audio forward, queued by a Python script through the ComfyUI API; 6h35m unattended. |
 | [`minimax-h3-anime-4step-12gb`](ai-video/minimax-h3-anime-4step-12gb/SKILL.md) | Generate a 20-second anime video with audio in about 200 seconds on a 12 GB card: MATLOW fused INT8 ConvRot at 4 steps, Comfy Kitchen Attention, BlockSparseAttention SLA 20%, Chunk FeedForward 8 chunks, sigma shift 12/3, then Real-ESRGAN anime upscale to 1080p. |
 | [`minimax-h3-image-pose-studio`](ai-video/minimax-h3-image-pose-studio/SKILL.md) | Pose characters with a dummy instead of a prompt in the all-in-one H3 Image workflow: text2image, image2image, ref2image, and pose transfer via Pose Studio, character sheets from Krea 2, template prompt structure; v1.1 improves pose adherence. |
+| [`trixope-h3-filmmaking-comfyui`](ai-video/trixope-h3-filmmaking-comfyui/SKILL.md) | Make feature-length films in ComfyUI with the triXope MiniMax H3 nodes: H3 Screenwriter turns any screenplay into a shot list with locked-name character sheets, Film Auteur runs the whole H3 pipeline in one node with cross-shot reference conditioning that never re-encodes finished shots, H3 Upscaler upscales and details faces, and the Timeline Editor exports libx264 MP4 with no external NLE. |
 
 ## Simulation and VFX (`simulation-vfx/`)
 
@@ -149,6 +151,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`ue-wind-shader-grass`](simulation-vfx/ue-wind-shader-grass/SKILL.md) | Animate grass with wind in a material shader: RotateAboutAxis driven by a time-fed sine, per-card phase offsets, tip-only masking, painted flow map. |
 | [`godot-vfx-pack-shell-stacking`](simulation-vfx/godot-vfx-pack-shell-stacking/SKILL.md) | Stack multiple Godot VFX shell effects on one character without z-fighting: give each shell its own offset distance from the surface, name every addon with its pack prefix in its own folder, prove all 13 packs in one continuous mannequin walkthrough. |
 | [`fluid-forge-ue-water-sim`](simulation-vfx/fluid-forge-ue-water-sim/SKILL.md) | Add real-time water to Unreal Engine with Fluid Forge 1.0: bounded pouring/running water sim plus a player-following infinite mode, ocean, liquid metal and slime, voxel visualization layer; two Blueprints and Play after enabling distance fields. |
+| [`niagara-explosion-sprite-sheets-godot`](simulation-vfx/niagara-explosion-sprite-sheets-godot/SKILL.md) | Make Godot explosions look like Unreal Niagara: build the explosion in Niagara, render it out to sprite sheets with depth and thermal data baked in, and import the sheets into Godot, where they play at zero frame cost. |
 
 ## Materials and shaders (`materials-shaders/`)
 
@@ -171,6 +174,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`material-painter`](materials-shaders/material-painter/SKILL.md) | Paint PBR materials in material-painter, the free open-source Substance Painter alternative: node-graph material design, WGSL custom shader nodes, GPU baking with caching, engine export presets for Unreal/Unity/Godot/Blender. |
 | [`normal-maps-parallax-occlusion`](materials-shaders/normal-maps-parallax-occlusion/SKILL.md) | Fake surface detail: bake high-poly detail into tangent-space normal maps, then add height maps and view-dependent UV offset with parallax occlusion mapping. |
 | [`rind-godot-pbr-texture-painter`](materials-shaders/rind-godot-pbr-texture-painter/SKILL.md) | Paint PBR textures directly in the Godot editor with Rind: non-destructive layer stacks, channel-ticked brushes (color, roughness, metallic), masks, material presets, and the exact shortcuts. |
+| [`spa-materials-baker-lumen-texture-bake`](materials-shaders/spa-materials-baker-lumen-texture-bake/SKILL.md) | Bake active Lumen lighting and reflections into textures in Unreal Engine with SPA Materials Baker V3.1: capture the rendered scene appearance as textures, one texture per material with Combine Lighting, Draft then Standard quality, and GLB export for reuse outside Unreal. |
 
 ## Engine and runtime (`engine-runtime/`)
 
@@ -223,6 +227,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`bone-animation-textures-gpu-instancing`](engine-runtime/bone-animation-textures-gpu-instancing/SKILL.md) | Animate thousands of skinned instances on the GPU with bone animation textures (BAT): bake each clip once into a texture, let the vertex shader read the bones, keep the CPU out of skeleton updates; 10k monsters, 2M-tri bottleneck measured. |
 | [`meshlet-forest-scene-threejs`](engine-runtime/meshlet-forest-scene-threejs/SKILL.md) | Apply three.js r187 MeshletDrawingPipeline to a real forest scene: cull static triangle-heavy geometry (logs, terrain, stones) down to ~25% of ~2M tris, 20-25 to 30-35 fps on M1 Mac; keep wind-animated leaves and tile-based grass out. |
 | [`vulkan-particle-neighbour-search-benchmark`](engine-runtime/vulkan-particle-neighbour-search-benchmark/SKILL.md) | Benchmark a Vulkan 2D particle sim against its CPU twin: Atencio 2025 circumference-sampled neighbour search, two GLSL compute shaders, atomicAdd and dedup array; GPU 2.85x at 8000 particles, 5.33x at 512x512 grid on i7-7700 + GTX 1080 Ti, with the impulse cap labelled a cheat. |
+| [`xogot-modeler-godot-mesh-editing`](engine-runtime/xogot-modeler-godot-mesh-editing/SKILL.md) | Build and edit 3D meshes directly inside the Godot editor with Xogot Modeler: block out levels with basic shapes, edit vertices, edges, and faces, extrude and bevel, draw curved shapes, apply materials, adjust UVs, and generate collision shapes, all output as standard Godot meshes and nodes with no proprietary format. |
+| [`threejs-lod-editor-meshoptimizer`](engine-runtime/threejs-lod-editor-meshoptimizer/SKILL.md) | Tune three.js LOD thresholds by eye with the three.ez LOD editor on meshoptimizer: define each level by an Error budget and a Ratio, test skinned and morph-target models, and export ready-to-use TypeScript/JavaScript for InstancedMesh2 per-instance level selection; 5,000 characters, 76M to 500K drawn. |
 
 ## Automation and bridges (`automation/`)
 
