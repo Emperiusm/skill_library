@@ -81,4 +81,26 @@ This is a distinct long-form method from the other H3 long-video skills in this 
 3. Automate the queue; the human's job is 10 minutes of setup.
 4. Finish the audio first, then generate the video to it. (Commenter principle, adopted by the thread.)
 
+## AAA studio practice
+
+Studios are solving the same long-form problem from the other end: short generations stitched into minutes, with the stitching treated as a pipeline discipline rather than an editing afterthought.
+
+- **Runway and Lionsgate (2024 partnership).** Runway's first direct agreement with a major studio builds a custom AI video production and editing model on Lionsgate's library of 20,000+ films and TV shows, applied first to storyboard creation, background design, and special effects, with generated footage iterated through Runway's controllable toolset.
+  (https://www.aibase.com/news/11859)
+  The direct parallel: the Add Guide overlap is the indie version of the same workflow, short generations plus a continuity mechanism, with the model doing the stitching instead of an editor.
+- **Studios piloting long-form AI video (2025-2026).** Current R&D at Runway, Google DeepMind, and NVIDIA targets scene-level generation with consistent characters, editable camera moves, and reliable 24 fps playback, aiming at 1-3 minute sequences usable for previz, B-roll, or stylized inserts. The hard problems named are preserving identity and style over minutes and shot-to-shot control that follows script intent; integration with ShotGrid and Premiere/After Effects is called critical so AI assets can be versioned, reviewed, and cleared like any other plate.
+  (https://business20channel.tv/studios-pilot-long-form-ai-video-as-runway-google-and-nvidia-step-up-r-d-on-scene-level-control-12-12-2025)
+  The direct parallel: the six-shot script with a frozen prompt skeleton is the same shot-list discipline, and the 22-frame overlap is the continuity mechanism the studios are still formalizing.
+- **Frame chaining (field practice, 2026).** The last-frame chain is the standard technique across models: take the last frame of one clip as the first frame of the next, keep the prompt skeleton word for word and change only the action, and join the pieces. Two failure modes the field has named: the deceleration tail (models slow the camera as a clip ends, so trim the tail before chaining, not after) and drift (re-anchor to the original character reference every 2-3 clips instead of chaining from generated frames). One audio bed across the whole edit, not per-clip audio, is the stated rule for sound.
+  (https://hackernoon.com/how-to-chain-ai-video-clips-into-one-shot-without-the-hidden-stutter-at-every-cut)
+  The direct parallel: H3's 22-frame overlap does in-model what the field does by hand, and the skill's finish-the-audio-first rule is the same single-audio-bed discipline.
+
+**Agent automation**
+
+1. **Shot manifest.** Keep `h3-longform-manifest.json` per job: one entry per shot with the prompt-skeleton hash, the character-reference file hashes, the overlap frame count (22), the audio-reference file hash, and the shot's start/end frame numbers in the final cut. A check asserts every shot's prompt skeleton is identical except the action line.
+2. **Overlap extraction.** After each shot, extract its last 22 frames with ffmpeg (`ffmpeg -sseof -0.92 -i shotN.mp4 -vf fps=24 shotN_tail_%03d.png`, 22 frames at 24 fps) and feed exactly those frames to the Add Guide node; never eyeball the overlap count.
+3. **Seam acceptance.** After the encode, run a frame-diff check across each join (the last frame of shot N vs the first frame of shot N+1 after trimming): log the mean pixel difference per join in the manifest and flag any join whose difference exceeds the median join by 2x for a re-render of that shot.
+4. **Re-anchor rule.** Every third shot, re-supply the two original character images alongside the 22-frame overlap instead of relying on the overlap alone; record which shots were re-anchored in the manifest.
+5. **Audio-bed check.** Assert a single finished audio file covers the full 60 seconds before the first shot is queued; if any shot's audio reference differs from that file, the queue does not start.
+
 **Depth status:** FULL (full post text with exact shot counts, resolution, steps, sampler, scheduler, node name, and runtime; 25 comments including the author's clarifications and Support_Marmoset's comparative numbers and TTS advice).

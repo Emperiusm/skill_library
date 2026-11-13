@@ -70,4 +70,25 @@ This is a distinct workflow from the official H3 Image skill (`minimax-h3-image-
 2. v1.1 over v1.0: pose adherence is a versioned fix, not a prompt trick.
 3. Two characters at once is untested; build them one at a time and composite.
 
+## Production practice
+
+No named AAA game studio has published a Pose Studio production case, so this section is labeled production practice, not AAA: the studio anchor is the turnaround-sheet discipline the workflow automates, and the pose-control anchor is the ControlNet practice the dummy replaces.
+
+- **Turnaround sheets (studio character-design discipline).** A character turnaround shows the finished design from multiple fixed angles, typically front, three-quarter, side, and back, all at a consistent scale in a neutral pose, with horizontal guideline markers confirming proportions stay consistent across every angle. A studio picking up a character eighteen months after its original design relies entirely on the turnaround and expression sheets to stay on-model.
+  (https://www.pixelstudiosinc.com/blog/character-design-process)
+  The direct parallel: the Krea 2 sheet plus the four-view crop rule is the same deliverable, and the skill's "identity from the sheet, pose from the dummy" split is the turnaround discipline enforced by separating the two inputs.
+- **ComfyUI four-view turnaround pipeline (indie production playbook, 2026).** The working indie pattern is FLUX dev plus IP-Adapter as style anchor plus ControlNet OpenPose as a four-view rig, producing turnaround sheets, color variants, and outfit options in about twenty minutes, with the workflow JSON saved in the repo and every character starting from the same ref-sheet template. The output is reference, not final art; a human artist still does the production pass.
+  (https://www.strayspark.studio/blog/comfyui-game-asset-pipeline-indie-2026)
+  The direct parallel: Pose Studio's dummy is the same four-view rig with direct manipulation instead of an OpenPose map, and the versioned workflow file is the same template discipline.
+- **FLUX ControlNet pose mode.** The FLUX.1 ControlNet Union adapter packs seven control modes into one checkpoint; pose mode keeps a figure's limb position fixed while changing lighting or wardrobe, and depth mode holds camera blocking and set geometry constant across coverage angles.
+  (https://studio.aifilms.ai/blog/flux-controlnet-flux-2-gguf-open-weights-shot-design)
+  The direct parallel: the dummy plus sliders is the manual version of pose-mode conditioning, and the thread's finding (prompt guidance matters more than the dummy when poses are ignored) matches the field rule that pose, identity, and style must be separate channels, with pose owning joint layout only.
+
+**Agent automation**
+
+1. **Pose manifest.** Keep `h3-pose-manifest.json` per character: character-sheet file hash, the four view crops present (portrait, front, side, back), template-prompt hash, dummy pose screenshot file, and workflow version (v1.1 or later). A check asserts all four views are present before any generation is queued.
+2. **Sheet gate.** Before queuing, assert no reference image contains a zoomed detail area; a sheet with one fails the gate and must be re-cropped to the four views first (the bleed fix from Phase 4, enforced instead of remembered).
+3. **Pose-adherence record.** Save a screenshot of the dummy pose alongside each generated image and log a pose-adherence verdict (match / partial / ignored) per pose in the manifest. If two consecutive poses score ignored, the fix is prompt guidance (per the thread), not a different dummy pose.
+4. **Two-character build order.** For two characters, generate character A alone, load the result as the reference image, then place character B; log the intermediate image file in the manifest so the composite is reproducible.
+
 **Depth status:** PARTIAL (downloaded video + 12 frames reviewed + 22 comments; the video has subtitles but the fetch hit HTTP 429, so no transcript; the Civitai workflow page was not retrieved, so node-level detail beyond the frames is unverified).

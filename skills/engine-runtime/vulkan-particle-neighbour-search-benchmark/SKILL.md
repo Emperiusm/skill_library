@@ -83,4 +83,22 @@ Main reference paper: Atencio et al. 2025 (neighbour search for varying-size par
 3. Report the number that embarrasses the paper (2.85x, not "orders of magnitude") with the hardware attached.
 4. Label a hack as a hack: the impulse cap is in the code and in the write-up.
 
+## AAA studio practice
+
+The author's port follows the canonical GPU particle recipe almost exactly, and the canonical sources name the tradeoffs the author discovered by hand.
+
+- **NVIDIA CUDA Particles (Simon Green, 2007).** The reference implementation for particle systems with local interactions on a uniform grid: subdivide the space into uniformly sized cells with the cell size equal to the particle size (double its radius), assign each particle to a cell by its center point, and rebuild the grid from scratch every timestep. Two grid-build paths are documented: atomic operations (simple, needs atomic support) and sorting by hash (the fallback for hardware without atomics).
+  (http://developer.download.nvidia.com/compute/cuda/1.1-Beta/x86_website/projects/particles/doc/particles.pdf)
+  The direct parallel: the author's atomicAdd cell-index build plus one-thread-per-particle update is the atomic path, and the dedup array is the fix for the exact failure the paper's design anticipates (a particle overlapping multiple cells being processed twice).
+- **Locally perfect spatial hashing (Haug).** The fixed-radius near-neighbors problem on the GPU is usually solved by imposing a regular grid and searching adjacent cells, but hash collisions make hash tables tricky to implement efficiently on the GPU. The locally perfect approach constructs spatial hash functions that preserve equivalence classes between positions and buckets, eliminating hash collisions in the immediate vicinity of a particle and removing the need for hash-table bookkeeping.
+  (https://haug.codes/blog/locally-perfect-hashing/)
+  The direct parallel: if the dedup array's capacity limit is the remaining velocity bug, a collision-free hash is the next fix to try before blaming the solver, and the skill's open question (an alternative to the impulse cap) is the same problem stated from the solver side.
+
+**Agent automation**
+
+1. **Benchmark manifest.** Keep `particle-benchmark.json` per run: particle count, grid resolution, hardware (CPU model, GPU model), CPU time, GPU time, and speedup. A check asserts the speedup is reported with the hardware attached; a speedup with no hardware is not a result.
+2. **Scaling sweep.** Measure at three or more particle counts and three or more grid resolutions and record the speedup curve, not a single point. The author's hypothesis (more particles might approach the paper's claim) becomes a testable curve; a flat or falling curve at higher counts falsifies it.
+3. **Impulse-cap disclosure.** Any artificial force cap in the solver (such as `if (impulse > 1.0) impulse = 1.0;`) must be logged in the manifest with its threshold, the reason it was added, and the settling behavior it buys. A cap that is not logged is a hidden tuning constant; a logged cap is a documented hack.
+4. **Dedup-capacity log.** Record the dedup array's capacity, the maximum occupancy reached per frame, and any frame where occupancy hit capacity. If impossible velocity appears on a frame where occupancy hit capacity, the dedup array is the prime suspect, per the author's own diagnosis.
+
 **Depth status:** FULL (8,150-character post text with method, code-level detail, benchmarks, hardware, and failure analysis; the linked GitHub repo was not retrieved; note: the post was removed by the r/GraphicsProgramming mods for a missing AI disclosure).

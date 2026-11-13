@@ -64,6 +64,27 @@ This is a distinct Fable 5.2 workflow from the 2026-11-10 steering post (Opus-cl
 3. Experience still matters after generation: "Someone who spent years in 3D still understands why something works, what looks wrong, what to ask for, and how to push a result further." (author)
 4. Measure locomotion (foot drift), do not eyeball it.
 
+## AAA studio practice
+
+AAA locomotion is measured against foot slide, not eyeballed, and the industry's two poles are the procedural route (derive the motion from a few poses plus IK) and the data route (search a mocap bucket for the best-matching clip). The mech sits on the procedural pole; the honest comparison is against both.
+
+- **Wolfire Games, Overgrowth (GDC 2014 Animation Bootcamp).** David Rosen's talk shows how simple procedural techniques achieve interactive, fluid animation using very few keyframes, with examples from Overgrowth, Receiver, and Black Shades: interpolate bone transforms between sparse keyframes with spring-like easing instead of linear interpolation, and use simple trigonometry for IK rather than complex solvers.
+  (https://www.gamedeveloper.com/design/video-an-indie-approach-to-procedural-animation)
+  The direct parallel: the mech's analytic two-bone IK plus procedural gait is the same construction, and Rosen's rule (automate with math what an artist would tweak by hand) is the test the one-shot output passes or fails.
+- **Naughty Dog, The Last of Us Part II (GDC 2021).** The motion-matching system replaces the state machine with a bucket of hundreds of mocap clips chopped into small pieces; at runtime the system finds the clip that matches the path the character is already taking and blends frame by frame, with as little blending as possible at every foot plant, applied to the player, NPCs, horses, and dogs.
+  (https://www.naughtydog.com/blog/naughty_dog_at_gdc_2021)
+  The direct parallel: motion matching is the data-driven answer to the same foot-plant problem, and its discipline (minimal blending at the plant, measured per plant) is the standard the mech's 0 mm drift claim should be judged against.
+- **Foot-slide elimination (field practice).** The standard toolkit is velocity-based play-rate scaling, root motion, IK foot locking, distance matching, and stride warping. IK foot locking works by recording the exact world-space transform where the foot touched down (signaled by an animator-placed contact curve), pinning the foot bone there with a two-bone IK solver while the plant lasts, then blending out as the curve drops. Root motion is preferred for single-player precision; IK locking and stride warping are the standard for responsive or multiplayer titles.
+  (https://salivity.github.io/game-development/article/preventing-foot-sliding-in-game-animation)
+  The direct parallel: the mech's 0 mm drift is a foot-locking claim, and the field's measurement is world-space foot position during the plant phase, which is how an agent should verify it rather than trusting the demo.
+
+**Agent automation**
+
+1. **Locomotion acceptance log.** Keep `mech-locomotion.json` per build: for each gait (walk, turn, stop, crouch) record the maximum foot drift in millimetres measured from foot world positions during plant phases, plus the frame range of each plant. The 0 mm claim becomes a measured number per gait, not a single headline.
+2. **Foot-slide measurement procedure.** During a walk, log each foot's world position at plant start and at lift-off; drift is the horizontal distance between them. Any gait whose max drift exceeds 5 mm is flagged for a gait fix before the demo is shown.
+3. **Library-vs-custom decision record.** For each system the session wrote (IK solver, camera system, terrain sampling, foot placement), record whether it was custom code or a sourced library and one line on why. Reinvented systems are flagged as capability signal plus quality risk, the honest reading from Phase 3, and any system a battle-tested library exists for gets a "sourced alternative" note.
+4. **One-shot test harness.** Re-run the same brief in a fresh session and diff the two outputs' measured numbers (triangle count, joint count, max foot drift). A one-shot claim is only meaningful with the variance across runs recorded.
+
 **Depth status:** PARTIAL (full post text with exact counts and measurements + 22 comments including the author's IK/camera disclosure; code not public, prompt not shared, so the one-shot claim and the 0 mm measurement are the author's reports, not independently verified).
 
 **Gap note:** this workflow is a meaning-match for the Aegis P1 rigging / skinning / animation-retarget gap (audit-verified absent): it demonstrates automated rig creation plus procedural locomotion. It is a research lead, not a drop-in stage: the rig lives in Three.js, not Blender/UE, and the code is not public. Compare against the Tripo P2.0 route in `aegis-pipeline/rigging-stage-design.md` and the GEM-X mocap-retarget lead from 2026-11-11.

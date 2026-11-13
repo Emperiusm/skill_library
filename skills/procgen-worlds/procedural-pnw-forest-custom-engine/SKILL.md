@@ -77,4 +77,23 @@ Custom engine (**C++20** + **DirectX 12**, Windows only); heightfield terrain; *
 3. Fix patchiness by changing the scatter math, not by placing more trees.
 4. Optimise in public: report the fps before and after (80-90 to 100-115 on a laptop 4060).
 
+## AAA studio practice
+
+The author's three core decisions, rivers carve first, scatter by coverage, and GPU-culled impostors, are the same three decisions Ubisoft and Sucker Punch made at AAA scale, with the same justifications.
+
+- **Ubisoft Montreal, Far Cry 5 (GDC 2018; PlayStation Blog).** The procedural pipeline built in Houdini and Houdini Engine generates freshwater networks, cliffs, and vegetation as one ecosystem: artists lay down splines for rivers, and procedural generation creates the water surface, waterside assets, and terrain texturing from the spline parameters. Biome recipes react to the physical features of the land (altitude, humidity, cliff erosion lines) to spawn appropriate assets, and the cliff tool extends its mask with a flow simulation for the erosion effect.
+  (https://blog.playstation.com/2018/03/22/the-procedural-world-generation-of-far-cry-5/)
+  The direct parallel: rivers-carve-first is the Far Cry 5 freshwater tool in miniature, and the biome bands by elevation are the same recipe-reacts-to-terrain rule.
+- **Sucker Punch, Ghost of Tsushima (GDC 2021).** Procedural tools built the island's 40+ biomes and three million trees because hand-placement was impossible at that scale; the procedural grass system renders about 83,000 blades per frame in roughly 2.5 ms on a compute-shader pipeline, using a clumping algorithm on artist-authored parameters, Bezier-shaped blades, a per-blade hash for unique sway, and a two-tier LOD that drops three of every four blades at distance. The same wind system drives grass, trees, and bushes so the foliage matches.
+  (https://gameindustrylibrary.com/documents/procedural-grass-in-ghost-of-tsushima)
+  (https://blog.playstation.com/2020/07/09/crafting-the-world-of-tsushima/?ref-cat=249748)
+  The direct parallel: baked impostors plus GPU culling through ExecuteIndirect is the custom-engine version of the same density-at-distance problem, and the author's fps-before/after reporting (80-90 to 100-115) is the same optimization discipline.
+
+**Agent automation**
+
+1. **Terrain contract.** Keep `forest-terrain.json` per world: heightfield hash, per-tile erosion-bake hash, river channel polylines, and a water-surface agreement check (sample the water height against the channel bed at N points; any point where the surface floats above or sinks below the bed fails the bake).
+2. **Scatter-coverage audit.** For each biome band, record the target coverage fraction and the measured placed-instance density, plus a patchiness check (largest empty disc inside the band, in metres). A band whose largest empty disc exceeds the author's stated fix threshold is flagged for a scatter-math change, not more trees.
+3. **LOD budget log.** After each optimization pass, append fps (min/median/max), instance counts, and the change made to the log, the way the author reports 80-90 to 100-115. A pass with no before/after numbers is not an optimization.
+4. **Floating-origin rebase test.** Assert the 1 km rebase triggers at the documented distance and that no visible pop occurs at the rebase; log the rebase distance and any pop frames as a regression check.
+
 **Depth status:** PARTIAL (full post text + 25 of 26 comments; the author's long state-of-the-world comment is truncated mid-sentence in the Arctic Shift source at "wind is rotation aroun", so the vegetation/wind detail ends there; no engine code or parameters beyond what is quoted above).

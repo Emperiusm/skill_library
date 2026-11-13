@@ -72,4 +72,22 @@ This is a distinct tool from the Tideglass web fluid sim skill (`tideglass-fluid
 2. Simulate only the water near the player; preplace the rest.
 3. Ship the ocean as a secondary feature and say so, rather than overselling it.
 
+## AAA studio practice
+
+Fluid Forge's architecture is the shipped-title architecture: a 2D shallow-water grid projected on a heightfield, simulated only where the player is, with the frame-time cost as the buying criterion.
+
+- **Fluid Flux in Senua's Saga: Hellblade II.** Fluid Flux is a real-time shallow-water simulation for UE5 whose simulation is calculated on a 2D grid projected on the captured ground heightfield, with fixed axis-aligned simulation areas (multiple sims for separate areas, at a cost), a cheap ripple solver that moves with the character, advected foam and caustics, and a Niagara fluid async readback system for sampling height and flow in Blueprints. Its project list includes Senua's Saga: Hellblade II.
+  (https://forums.unrealengine.com/t/imaginaryblend-fluid-flux/2420009)
+  The direct parallel: Fluid Forge's heightmap-based sim with a player-following infinite mode is the same architecture with the fixed areas replaced by a moving one, and the same tradeoff (area size vs GPU cost) governs both.
+- **Crimson Desert (Pearl Abyss, 2026).** Former Rockstar artist David O'Reilly, who worked on Red Dead Redemption 2's water physics, called Crimson Desert's water a step above RDR2's fluid mechanics, describing it as effectively a live particle simulation in creeks and rivers, while noting minor inconsistencies he attributed to a bug or an optimization choice.
+  (https://www.notebookcheck.net/Former-Rockstar-Games-artist-Crimson-Desert-s-water-physics-better-than-Red-Redemption-2-s.1257889.0.html)
+  The direct parallel: the player-following sim is the same idea at a different scale, and O'Reilly's "bug or optimization choice" caveat is the standard the benchmark must meet: report the cost with the artifact attached.
+
+**Agent automation**
+
+1. **Benchmark manifest.** Keep `fluid-forge-benchmark.json` per test: map, sim resolution, sim area size, frame time with the sim off, frame time with the sim on, and object count in the sim. A check asserts every number is measured on the same map; a frame-time claim from a different map is not a comparison.
+2. **One-to-one comparison protocol.** Build the commenters' fair demo as a scripted procedure: the same map, the same mountain, the same floating object, run once in Fluid Forge and once in Fluid Flux (and Fluid Ninja if available), recording the same manifest fields for each. The comparison is only valid when the map and object are identical.
+3. **Sim-area budget table.** Record the resolution-to-cost table (e.g. 512x512 vs 1024x1024 grid) with measured frame times, so the "user-definable size" choice is a budget decision, not a guess.
+4. **Settings preflight check.** Before the first Play, assert both required project settings are enabled (Generate Mesh Distance Fields; Niagara Static Mesh DI Allow Distance Fields) and log them in the manifest. If the sim does not appear, the preflight log is the first thing checked, not the Blueprints.
+
 **Depth status:** PARTIAL (downloaded trailer + 12 frames reviewed + full post text + 9 comments; no captions exist for the trailer; no tutorial content in the video itself; no benchmarks published).

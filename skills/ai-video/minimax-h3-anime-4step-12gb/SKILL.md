@@ -79,4 +79,25 @@ This is a distinct recipe from the other low-VRAM H3 skills in this library: it 
 2. Post raw output; the speed claim is only credible if the clip is unedited.
 3. Hands and backgrounds are where 4-step generation fails first; judge accordingly.
 
+## AAA studio practice
+
+The 4-step recipe is not a hack on top of the model; it is the same stack the research frontier ships, and the anime industry has already run the human-in-the-loop version of it on a shipped title.
+
+- **TurboDiffusion (ShengShu/Tsinghua TSAIL, arXiv 2512.16093).** The framework stacks exactly the three accelerations this skill uses: rCM timestep distillation cutting sampling from 100 steps to 1-4 (~25x speedup), sparse-linear attention (~2-3x), and INT8 quantization of attention (~1.5-2x), for 100-200x end-to-end speedup while maintaining visual quality. On a single RTX 5090, Wan2.1-T2V-1.3B at 480p drops from 184 s to 1.9 s.
+  (https://www.mlwires.com/turbodiffusion-makes-video-diffusion-models-100-200x-faster/)
+  The direct parallel: the skill's 4 steps plus BlockSparseAttention SLA plus fused INT8 is the ComfyUI community's build of the same three-layer stack, and the 200-second 20-second clip is what that stack buys on a 12 GB card.
+- **Diffusion acceleration field guidance.** The step budget follows the experience, not the model: 4 steps is the common production sweet spot, 1 step is the sharpest trade, and fewer steps trade away fine detail and motion richness. Distilled models bake CFG in, so turn it off (usually 1.0); washed-out distilled clips almost always mean CFG was left turned up.
+  (https://cdn.prod.website-files.com/64e8910adc5a63966a68acea/6aca641baa22f258daec2247_6aca6419a420cec5c76033a4_diffusion-acceleration-cheat-sheet.pdf)
+  The direct parallel: the skill's failure modes (hands, lip-sync, drifting backgrounds) are the documented cost of the 4-step trade, and the CFG rule is a check the skill should carry explicitly.
+- **WIT Studio and Netflix, The Dog & the Boy (2023).** The first Netflix Anime Creators Base production to use generative AI: backgrounds were hand-drawn as concept art, processed by AI several times, then tweaked by hand again, with the background designer credited as "AI + Human". The AI program was trained exclusively on 5,000-6,000 pieces of background art from Netflix original programming.
+  (https://en.wikipedia.org/wiki/The_Dog_%26_the_Boy)
+  The direct parallel: the shipped-title pattern is human concept art, AI processing, human correction, never raw AI output. The skill posts raw output to prove speed; the production move is to treat the 4-step clip as the draft and budget a human pass for the hands and backgrounds.
+
+**Agent automation**
+
+1. **Step-budget manifest.** Keep `h3-anime-manifest.json` per job: model build hash, steps (4), sampler, attention stack with keep percentage (SLA 20%), chunk count (8), sigma shift (12/3), resolution, frame count, and generation seconds. A check asserts generation time stays within 1.5x of the author's ~200 s on comparable hardware; a large overrun means the sparse attention stack is not active.
+2. **Distilled-CFG gate.** Assert CFG is at the distilled model's value (usually 1.0) before queuing; a washed-out first frame fails the run and the fix is the CFG value, not a re-prompt.
+3. **Failure-mode acceptance log.** After each generation, score the clip on the skill's three failure axes separately (hands, lip-sync, background drift) as pass/fail in the manifest, with the frame range of each failure. A clip that fails hands but passes character consistency is a draft for the human pass, not a re-roll.
+4. **Character-sheet gate.** Before queuing, assert every reference image is cropped to portrait, front, side, or back with no zoomed detail areas; a sheet containing a detail crop fails the gate and must be re-cropped first.
+
 **Depth status:** FULL (full post text with exact model, steps, sampler, attention stack, chunk count, sigma shift, frame count, resolution, and runtime; 25 comments including a commenter reproduction with timings and two actionable tips).

@@ -66,4 +66,22 @@ This is a distinct recipe from the other low-VRAM H3 skills in this library (`mi
 2. One workflow, five modes; the mode is a reference choice.
 3. When the Manager says nothing is missing but nodes are red, the source label is wrong. Check the pack, not the install.
 
+## AAA studio practice
+
+Quantization is how production ships models that do not fit, and the discipline is quantize, then validate against the full-precision model on a fixed acceptance set, never ship on the fit alone.
+
+- **NVIDIA ModelOpt (post-training quantization).** ModelOpt's PTQ supports FP8, INT8, and INT4 with SmoothQuant, AWQ, and SVDQuant, and the workflow is load, calibrate to obtain scaling factors, produce the quantized checkpoint, then evaluate it on benchmarks. The stated benefits are reduced memory and increased throughput on consumer GeForce RTX GPUs.
+  (https://developer.nvidia.com/blog/model-quantization-post-training-quantization-using-nvidia-model-optimizer/)
+  The direct parallel: the pruned int8/w4a8/GGUF builds are the community's PTQ, and the author's per-mode timings are the evaluation step; a build with no timings is unvalidated.
+- **6Bit-Diffusion (arXiv, CogVideoX).** The paper's mixed-precision framework allocates NVFP4 to temporally stable layers and preserves INT8 for volatile layers, based on a measured correlation between a block's input-output difference and its quantization sensitivity, achieving 1.92x speedup and 3.32x GPU memory reduction on CogVideoX while preserving comparable video quality to the full-precision baseline. Full-precision CogVideoX generating a 49-frame 1080p video takes about 22 minutes on an RTX 5090.
+  (https://arxiv.org/html/2603.18742v1)
+  The direct parallel: the skill's int8 model plus sparse attention plus chunk feedforward is the same sensitivity-aware stack, and the 6 GB timings (18-45 minutes per mode) are the price of running it on a card the paper never targets.
+
+**Agent automation**
+
+1. **Quantization manifest.** Keep `h3-singularity-manifest.json` per job: model build (pruned int8 / w4a8 / GGUF) file hash, attention nodes active (H3 SLA, Low VRAM, Chunk FeedForward), LoRA triggers (TaoMate 3-step, R34L1SM), mode, resolution, and measured minutes. A check asserts the measured time is within 1.5x of the author's per-mode numbers; a large overrun means a quantized build or an attention node is not active.
+2. **Node-ownership check.** Before the first run, assert the installed packs match the ownership table (H3SLAAttention from ComfyUI-PlagueKind-Nodes; Low VRAM Attention and Chunk FeedForward from ComfyUI-KJNodes) and log the installed versions in the manifest. Red nodes with nothing missing in the Manager fail this check, not the install.
+3. **Quantized-vs-baseline acceptance set.** Run the same five prompts (one per mode) on the quantized build and record a drift verdict per mode (identity holds / drifts / breaks) in the manifest. A mode that breaks identity on the acceptance set is quarantined to draft use until a different build is tried.
+4. **Mode-timing regression log.** Append each run's mode and minutes to the manifest as a time series; a mode whose time grows by more than 20% across runs without a settings change is flagged for a node audit before the next job.
+
 **Depth status:** FULL (full post text with timings, node attributions, and LoRA triggers; 14 comments; the linked YouTube tutorial was not retrieved, so the workflow file itself is unverified).
