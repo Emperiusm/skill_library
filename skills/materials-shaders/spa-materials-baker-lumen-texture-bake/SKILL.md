@@ -123,6 +123,74 @@ settings change.
 The deliverable is a reusable texture-based asset, not a render. The GLB
 export is what lets the baked look leave Unreal.
 
+## AAA studio practice
+
+Baking a real-time look into textures is a production pattern, not just a
+plugin trick. EA's Frostbite team baked precomputed global illumination for
+FIFA 17, Madden, and Star Wars Battlefront II with their in-house path tracer
+Flux: lightmaps carried indirect lighting only ("Lightmaps in SWBF2 only
+contain indirect lighting. All direct contributions (except sky) are computed
+dynamically"), lightmap UVs were created for low-poly proxy geometry and
+projected onto all LODs of the display geometry, and the texel-density budget
+was 25 cm per texel for Battlefront II (50 cm per texel for the first game).
+The workflow was staged: author live in the editor, bake at 50,000 to 500,000
+rays per texel (minutes to hours), then run a final check that verifies the
+lightmap irradiance volume before the bake is accepted. Sources: EA/Frostbite,
+"Precomputed Global Illumination in Frostbite", GDC 2018,
+https://media.contentapi.ea.com/content/dam/eacom/frostbite/files/gdc2018-precomputedgiobalilluminationinfrostbite.pdf ;
+NVIDIA Technical Blog, "Real-Time Ray Tracing for Interactive Global
+Illumination Workflows in Frostbite",
+https://developer.nvidia.com/blog/video-real-time-ray-tracing-workflows-frostbite/
+
+MADFINGER's Shadowgun shipped on mobile by baking lighting detail directly
+into textures instead of relying on normal maps, with an in-house "Render to
+Texel" editor tool that rendered one fullscreen pass per light and averaged
+results from several vantage points; the baked shader needed 2 texture reads
+against 5 for the real-time version. Their rule, and the general one in
+Unity's docs: create the look first without worrying about performance, then
+bake it down to something simple to render, keeping low-frequency light in
+the baked texture, high-frequency detail in the albedo, and cheap dynamic
+gloss (a per-vertex additive "Virtual Gloss") so the baked result still
+shines. Source: Unity, "Rendering Optimizations" (Shadowgun case study),
+https://docs.unity3d.com/2017.3/Documentation/Manual/MobileOptimizationPracticalRenderingOptimizations.html
+
+The performance case is measured, not assumed: the same Unreal scene at 4K
+native on an RTX 4090 ran 80 fps with Lumen and over 140 fps baked, with very
+similar visuals (baked shadows slightly more detailed in close-ups). The rule
+of thumb from that comparison: baked lightmaps are the choice for lower-spec
+consoles; the cost is that nothing static may move after the bake or the
+lighting breaks and the whole scene must be rebaked. Source: Pasquale
+Scionti, "Baked Lightmaps vs Lumen for Videogames",
+https://pscionti.artstation.com/projects/n02xg6?album_id=2066894
+
+Two differences from the AAA pattern, stated plainly: Frostbite baked
+indirect light only and kept direct light dynamic, while SPA bakes the full
+lit look (including reflections) into the albedo, which is a stronger freeze;
+and no source documents SPA Materials Baker itself or a studio baking
+Lumen-to-texture specifically. The practices above are the analogous
+production patterns, not an endorsement of the plugin.
+
+### Agent automation
+
+- **Pre-bake manifest and UV/density gate.** Before any bake, write a
+  manifest listing every mesh with its lightmap UV channel present, UV-overlap
+  check pass/fail, and texel density against a per-asset-class budget recorded
+  in the manifest. Do not proceed to Standard if any mesh lacks a valid UV or
+  exceeds its budget. (Grounded in Frostbite's proxy/UV pipeline and density
+  budget; the 25 cm/texel figure is Battlefront II's target, not a universal
+  rule, so per-class budgets are the user's choice, recorded in the manifest.)
+- **Bake manifest and Draft-vs-Standard verification gate.** After each bake,
+  record per-material bake settings and bake time, then verify Standard against
+  Draft side by side before promoting Standard to export; export is blocked
+  until the verification passes. (Grounded in the Flux workflow's final check
+  step.)
+- **Split-frequency export check.** After GLB export, inspect the baked
+  texture from several viewing angles for baked-in specular highlights that
+  read wrong off-angle, and keep one cheap dynamic gloss layer in the target
+  material instead of baking reflections fully in. (Grounded in Shadowgun's
+  frequency split and multi-viewpoint averaging; the angle count is the skill's
+  own choice.)
+
 ## The human method, distilled
 
 1. Bake the look, not the light: the captured lighting is a snapshot, and the

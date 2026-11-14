@@ -104,6 +104,139 @@ A static garment is a prop; a skinned garment is a wearable. The rig is the
 interface, so the tool should fit to the rig instead of asking the user to
 re-rig the garment.
 
+## AAA studio practice
+
+Pattern-based garment authoring is the AAA standard, and Marvelous Designer
+is the tool that standard runs on. CD Projekt Red principal character artist
+Grzegorz Chojnacki: "Almost all the characters' clothes in Cyberpunk 2077
+were created with [Marvelous Designer]." The named technique is the
+two-layer approach: a firm fabric preset (e.g. Leather_Cowhide) as the
+bottom cloth base, a softer preset (e.g. Nylon_Featherweight) on top with
+slightly increased Shrinkage to finalize fold detail; Layer Clone plus
+internal lines plus cut-and-sew plus pressure for puffy/cushioned parts
+(e.g. V's vest); Trim_Full_Grain_Leather preset for cables, collars, and
+zippers, exported as a starting point for the final model. Hard-surface
+objects are imported as patterns (Trace 2D Patterns from UV Map) for cloth
+on Adam Smasher's pipes and armor plates, and negative pressure plus freeze
+keeps cloth from falling off the avatar. Fabric parameters (Bending, Shear,
+Buckling) are tuned by hand without changing patterns. Source: Cartoon Brew,
+"How Marvelous Designer Helped Bring The Immersive Dystopia Of 'Cyberpunk
+2077' To Life",
+https://www.cartoonbrew.com/sponsored-by-marvelous-designer/how-marvelous-designer-helped-bring-the-immersive-dystopia-of-cyberpunk-2077-to-life-210422.html
+(Sponsored post, but the quotes are firsthand from CDPR's principal
+character artist.)
+
+A studio pipeline case study shows the automation model: for complex hero
+costumes (layered fabrics, armor, fitted garments, capes), costume design
+ran in a simulation feedback loop ("assess clothing before the characters
+were fully rigged"), and a project script called AutoSim, after final body
+animation, automatically ran Marvelous Designer cloth simulations for
+background characters with default settings and saved them directly to
+rendered shots, which the CFX lead credited with reduced manual work. Hero
+garments were usually driven by the simulated garment in the render;
+background characters were rendered from raw Marvelous Designer geometry
+because of outfit variation. Source: Marvelous Designer, "Marvelous
+Designer Workflow: A Studio Pipeline Case Study",
+https://www.marvelousdesigner.com/explore/marvelous-designer-studio-workflow
+(Vendor-published case study; the studio name is only inferable via the
+linked Digic project page, not stated in the article text.)
+
+Epic's MetaHuman plus Marvelous Designer/CLO workflow documents the
+garment-to-rig handoffs: USD garment export (MD to MetaHuman USD Garment
+Integration Workflow), importing a MetaHuman in DNA format as an MD avatar,
+MD LiveSync 2 to send an animated MetaHuman to MD, simulate clothing, and
+send garments back to Unreal, and Chaos Cloth in-engine for runtime cloth
+responding to motion, gravity, and wind. Source: Epic Games, "Tailoring for
+MetaHumans: CLO and Marvelous Designer to Unreal Engine demo",
+https://www.unrealengine.com/news/tailoring-for-metahumans-clo-and-marvelous-designer-to-unreal-engine-demo
+
+The low-density-then-dense discipline is documented in a Gnomon
+hero-character workflow (Kasita Wonowidjojo, Character Creation for Games
+class taught by Damon Woods): "I took apart real-life sewing patterns to
+understand how each garment is constructed and then tried to replicate them
+within Marvelous Designer", simulating one garment piece at a time, each in
+its own project, importing frozen OBJs of finished pieces as collision/fit
+references instead of simulating everything at once. Density discipline:
+"I tend to work as low as possible in MD but when I'm happy with the
+overall look, I simulate a dense version of the pattern piece to get better
+clothing folds." Export thin and unwelded for ZBrush autogrouping, Panel
+Loop for thickness, sculpt high poly, then retopology in Maya with Quad
+Draw, UV in RizomUV, "explicitly to bake as well as possible." Source: 80
+Level, "Game Character Production from a 2D Concept",
+https://80.lv/articles/game-character-production-from-a-2d-concept
+(Practitioner-grade: a Gnomon student project, not a shipped AAA title; the
+method matches AAA practice but the article itself is not a studio source.)
+
+The retopo and bake half is documented in a second 80 Level workflow
+(Yuriy Barchuk, Think Tank Training Centre; references Larian's Baldur's
+Gate 3 kobolds): after the MD sim and UVs, export flat patterns to ZBrush,
+ZRemesh to lower topology, then in Maya overlay flat patterns, fix topology
+with Quad Draw, transfer UVs from the old mesh with Transfer Attributes,
+then transfer again in UV space to move the retopologized mesh onto the 3D
+sim, and Transfer Attributes again "to allow the mesh to conform to my
+Marvelous Designer simulation better." Final bake in Marmoset Toolbag 5
+("tweak the cage and skew easily"), plus Substance 3D Painter for material
+ID; texturing uses baked AO, curvature, cavity, and thickness maps. Source:
+80 Level, "How to Make a Scaled Creature Using ZBrush & Marvelous
+Designer",
+https://80.lv/articles/sculpting-scales-simulating-clothes-for-creature-chef-in-zbrush-marvelous-designer
+
+CRYENGINE's VCloth 2.0 docs state the sim-vs-skin decision rule this skill
+needs: "A simulation of a lo-res mesh in combination with the skinning of a
+hi-res mesh, which is used for rendering, make it possible for a fast yet
+high quality and detailed cloth simulation." Stiff/tight cloth (T-shirts,
+trousers, tight-fitting) "don't need a full cloth simulation, since plausible
+movement can be achieved by skinning"; swinging cloth (capes, skirts,
+jackets, soft attachments) simulates well. Hybrid recommended: skin most of
+the garment and simulate only the moving ends. Source: CRYENGINE
+Documentation, "Cloth",
+https://www.cryengine.com/docs/static/engines/cryengine-5/categories/23756816/pages/25535602
+
+For the planned Mixamo weight transfer, the nearest sourced analog is a
+Marvelous Designer to Character Creator handoff (labeled indie/tool-specific,
+not AAA, and not a Mixamo source): export the avatar in a usable A-pose,
+fit in MD using the fitting suit via Re-target Draping / Auto Fitting,
+export unrigged OBJ, then Transfer Skin Weights with a preset, using Lateral
+Partitioning to auto-detect left/right garment halves, then the mandatory
+cleanup pass, "go through every single [bone], smoothing/adding/subtracting
+where appropriate" with weight brushes, testing movement via Edit Pose; not
+all bones should carry weight (e.g. hip none; only twist bones on
+arms/legs). Garments must be designed/simulated/fitted in A- or T-pose (T
+preferred); shirts weighted in a hands-down pose produce "unrecoverable
+mess." Source: Versluis, "How to import clothing from Marvelous Designer to
+Character Creator",
+https://www.versluis.com/2024/09/how-to-import-clothing-from-marvelous-designer-to-character-creator/
+
+### Agent automation
+
+- **Two-pass simulation manifest with a silhouette gate.** Record per
+  garment: a low-density pass (silhouette/fit approval) then a dense pass
+  (folds only), with the particle/resolution setting per pass. The dense sim
+  runs only after the low-res silhouette is approved. (Grounded in the
+  Gnomon "work as low as possible... simulate a dense version" discipline
+  and CRYENGINE's sim-low/render-high split. Mapping alterproduct's
+  "particle resolution set before simulating" to Marvelous Designer's
+  low/high-density workflow is an analogy, not a verified equivalence.)
+- **Layer-order and freeze checklist.** Manifest per garment: layer list in
+  simulation order (base layer first, e.g. firm preset base, softer top),
+  fabric preset per layer, freeze state after each layer, and frozen-OBJ
+  reuse for upper layers. Check each layer is simulated alone and frozen
+  before the next starts. (Grounded in CDPR's two-layer approach and the
+  one-piece-at-a-time/frozen-OBJ method.)
+- **Bake/retopo and weight-transfer verification checklist.** After the dense
+  sim: (a) retopo step naming the tool path (Quad Draw/ZRemesh), UV transfer
+  via Transfer Attributes, conform-to-sim transfer pass; (b) Marmoset-style
+  bake check naming cage/skew review and AO/curvature/cavity/thickness maps;
+  (c) rig-fitting gate: garment fitted in A/T-pose (T preferred), weights
+  transferred from nearest body verts, then a pose test plus per-bone weight
+  inspection (smooth/add/subtract) before export; (d) CRYENGINE skin-vs-sim
+  gate: tight/stiff garments default to skin-only, swinging garments to
+  simulation, hybrid where only ends move. Also an AutoSim-style gate:
+  re-run simulation only after final body animation is marked ready.
+  (AutoSim is Marvelous Designer-specific and must not be presented as
+  transferable to alterproduct; no source verifies alterproduct supports
+  scripting or batch runs.)
+
 ## The human method, distilled
 
 1. Design from real sewing patterns, not from a shrink-wrapped mesh.

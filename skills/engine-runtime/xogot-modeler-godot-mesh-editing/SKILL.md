@@ -92,6 +92,97 @@ Compatibility is the design constraint the authors call out explicitly: the
 tool must never hold a project hostage. That is also why it ports cleanly to
 desktop Godot (Xogot is written in Swift; the desktop port uses SwiftGodot).
 
+## AAA studio practice
+
+In-editor modeling and blockout-first level design are AAA disciplines, not
+just convenience features. Naughty Dog's Uncharted 2 postmortem (GDC 2010)
+documents the block-mesh-first rule: "Levels were first designed using block
+mesh, which let the team sketch out an experimental flow, and they simply
+began building out the level with art, play testing, and iterating." The same
+talk carries the caution: rushing from block mesh straight into art without a
+reflection beat meant the team missed opportunities to create interesting
+scenes and produced misleading, confusing design. Source: GameSpot report of
+Richard Lemarchand's GDC 2010 talk,
+https://www.gamespot.com/articles/naughty-dog-dissects-uncharted-2/1100-6253470/
+
+Insomniac started Manhattan for Marvel's Spider-Man (9,800+ buildings, their
+densest city to date) with early block-outs "based on more polygon like
+structures as the building blocks", then ran a Houdini modularization pass
+that cut per-building time from 30 minutes to 4 hours by hand to 5 to 15
+minutes, freeing artists to dress and polish; a Polyline tool turned standard
+building blocks into varied architecture, and the city was split into
+districts with "beautiful corners" carrying each district's dressing. The
+pattern is blockout primitives, then procedural/modular variation, then dress,
+without rebuilding the layout. Insomniac's procedural systems were
+"originally designed to support iterations and dependencies" and were used to
+"author, modify and monitor much more content than planned", so the blockout
+layer is treated as a monitored, re-generable system, not disposable scratch
+geometry. Sources: VR Voice report of the GDC 2019 talk,
+https://vrvoice.co/world-building-spider-mans-manhattan-with-substance/ ;
+Game Developer summary of David Santiago's GDC 2019 talk,
+https://www.gamedeveloper.com/programming/video-procedurally-creating-manhattan-for-i-marvel-s-spider-man-i-
+(The per-building time figures come from a secondary report of the GDC panel,
+not from Insomniac's own published text.)
+
+Epic's UE5 Modeling Mode is the direct engine-side analogue to Xogot: a full
+in-editor polygon-modeling toolkit (Shapes, PolyEdit, TriEdit, deform, UV
+tools) built so artists stop round-tripping to a DCC. "How do you block out
+your level, and sculpt some rocky terrain? ... These workflows typically
+require you to jump out of Unreal Engine, go back to your DCC, make
+adjustments, and reimport. That process could repeat numerous times with
+multiple artists. UE5's modeling tools can help make those changes directly
+in the editor, cutting out costly transfers." It also documents the hazard
+that comes with in-editor editing: edits operate on the saved asset itself
+and affect every instance ("your interactions are operating directly on the
+saved version of the static MeshAsset and this will impact any instances of
+that asset"), with an Accept/Cancel commit model and per-user subfolders plus
+random-string suffixes so generated assets never collide or overwrite shared
+data. Source: Epic Games, "Unreal Engine 5's modeling mode takes shape",
+https://www.unrealengine.com/tech-blog/unreal-engine-5-s-modeling-mode-takes-shape
+
+Ubisoft Massive built Snowdrop (The Division, The Settlers, South Park)
+around a unified game and editor and fast iteration as a core principle:
+"The game and the editor are unified, and everything in the engine runs in
+real time, which means that the ongoing project is always playable", and
+"for Snowdrop, it was important to prioritize iteration so we could start
+and test the game quickly", explicitly contrasted with a prior engine that
+took up to 45 minutes to compile. The Xogot parallel: the value of in-editor
+modeling is not the modeling per se, it is that the level stays playable
+while it is being shaped. Source: Ubisoft Massive, "The History of Snowdrop:
+From R&D Concept to AAA Engine",
+https://www.massive.se/blog/games-technology/snowdrop/the-history-of-snowdrop-from-rd-concept-to-aaa-engine/
+
+No source documents a specific AAA studio using Xogot, Godot in-editor
+modeling, or equivalent Godot tooling. All AAA evidence above is from
+Unreal, Snowdrop, and proprietary engines with Houdini/Maya pipelines; the
+transferable claim is the workflow discipline, not the tool. No source was
+found documenting AAA use of in-editor collision generation as a distinct
+practice, or AAA UV/material authoring inside the engine editor; do not
+invent claims for those Xogot features.
+
+### Agent automation
+
+- **Blockout gate.** Before any material, UV, or detail work, playtest the
+  level from the blockout with a character controller at real scale, and label
+  each space by gameplay intent (combat, puzzle, safe, traversal). Record a
+  `blockout_manifest` (scene metadata or a text file listing each blockout
+  mesh, its gameplay intent, and its playtest status); every mesh must be
+  marked playtested or explicitly untested before detailing begins.
+  (Grounded in Naughty Dog's block-mesh-then-playtest loop.)
+- **Proxy-swap promotion check.** Keep blockout meshes as named, separable
+  assets (e.g. a `*_blockout` naming convention) so a finished mesh can
+  replace a blockout mesh in place without touching transforms or collision.
+  A scripted scan of the scene verifies every `*_blockout` mesh still has a
+  matching collision shape and no blockout mesh carries final materials.
+  (Labeled inference: an adaptation of Insomniac's blockout-to-modular
+  pipeline, not a pattern any source documents for Godot.)
+- **Shared-asset safety check.** Before accepting any in-editor mesh edit,
+  verify whether the edited mesh resource is shared by other scenes or
+  instances, and warn that the edit hits the saved asset and all its
+  instances. Automatable as a GDScript/EditorScript scan listing scenes
+  referencing the edited `.res`/mesh. (Grounded in Epic's explicit Modeling
+  Mode warning; the Godot-side scan implementation is an inference.)
+
 ## The human method, distilled
 
 1. Bring the missing tool to where the work happens, instead of round-tripping

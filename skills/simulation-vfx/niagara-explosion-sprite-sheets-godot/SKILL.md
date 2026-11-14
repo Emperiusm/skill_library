@@ -80,6 +80,101 @@ thermal data are what keep a flat sheet from looking flat.
 Disk is cheap and frames are not. Baking an expensive effect into a large,
 cheap-to-play asset is the right trade for a 2D game.
 
+## AAA studio practice
+
+Baking a simulation out to a flipbook is the shipped-game path; heavyweight
+caches are the cinematic path. CCP Games (EVE Online) generates explosions
+in EmberGen and renders them out as animated texture atlases for the live
+game: "In the development of these missile impact visuals we generated
+explosions of different types and rendered them out as animated texture
+atlases, sometimes bringing them into After Effects to make them tileable
+(for applying to a sphere...) or to add some distortion." In the Viridian
+expansion (June 2023), "somewhere between 60-80% of the textures were
+created using Embergen." The deciding factor was authoring speed: "the
+faster we can generate and author the resources to create the visual
+effects, the better", with real-time authoring and curve-animated parameters
+letting "a small team to deliver a good big mix of assets." CCP also shows
+the data-size discipline AAA applies to baked sims: raw DDS volumes were
+"300-400 megabytes", so they built in-house compression (re-digitizing,
+run-length-encoding, zlib) for "around a 10x decrease in file size", and ship
+half-resolution textures for low-quality settings. Source: JangaFX,
+"Insight: CCP Case Study", https://jangafx.com/insights/ccp-case-study
+
+The grid follows the frame, not a default square. Kirill Anchikov created
+flame bursts in EmberGen and baked them into an 8x4 flipbook "since the
+elongated flame shape allowed for a 1:2 frame aspect ratio", assembling them
+in Niagara (GlueIT for sheet packing), with texture generation first and
+blockout in the particle system second, timing tuned "almost like classical
+2D animation", and color driven through the material rather than the particle
+system. Source: 80 Level, "Creating a Flame Burst Effect With Unreal Engine
+5", https://80.lv/articles/creating-a-flame-burst-effect-using-unreal-engine-5
+
+Daryll Espanola (whose portfolio includes VFX for Lords of the Fallen) used
+"8 x 8 flipbooks 'for game optimization and polished visuals' to export the
+project to Unreal Engine", and advises against Alembic "unless it is a
+cinematic" (VAT "works too but you have to deal with some artifacts"). The
+rule is direct: flipbooks are the game path, heavyweight caches are the
+cinematic path. Source: 80 Level, "Gunshot VFX Made with EmberGen &
+LiquiGen", https://80.lv/articles/cool-gunshot-effects-created-with-embergen-liquigen
+
+The industry-standard version of baking extra data into sheets renders
+separate passes so lighting is not baked into color. SideFX Labs' Flipbook
+Textures ROP renders "Final Color, Non-emissive Color, Depth,
+Multi-directional Contribution (MDC)", where "MDC maps... are designed to
+achieve full-dynamic realistic volumetric relighting in engine", and supports
+"SideFX Labs' new motion vector encoding technique that offers close to
+16-bit quality at half the memory." That is the direct precedent for this
+skill's depth/thermal data: the production version renders depth plus
+multi-directional lighting contribution as separate passes, plus motion
+vectors for frame interpolation. Source: SideFX Labs, "Labs Flipbook
+Textures", https://sidefxlabs.artstation.com/projects/o2AX8k
+
+Epic's own guidance confirms the premise: "Most performant will be a
+flipbook, which can be generated from the baker tab" (Niagara Baker); the
+alternative is a simulation cache asset, sampled "at a low rate and then use
+interpolation option, that way you don't have to save a lot of cache
+frames", triggered at runtime with SetSimCache() on a Niagara component.
+Source: Epic Developer Community Forums, Michael Galetzka,
+https://forums.unrealengine.com/t/cached-baked-fluid-sim-as-in-game-triggered-fx/1304091
+
+The engine side has to consume those passes. O3DE documents six-point
+lighting for lit flipbook smoke/clouds: "approximates how each texture
+should be lit from any given direction by using six tangent lightmaps that
+represent the top, bottom, left, right, front, and back of a plume of smoke",
+with a depth texture option and a depth pass shader. Source: O3DE,
+"Custom Lighting Tutorial with Flipbook Animation",
+https://version-2305--o3deorg.netlify.app/docs/learning-guide/tutorials/rendering/six-point-lighting-tutorial/
+
+Two flags, stated plainly: no source documents a "thermal" pass by that
+name (SideFX documents Depth and MDC; packing a thermal/heat channel like
+the non-emissive color pass is this skill's own convention, not an AAA
+practice), and no source documents a Godot shader consuming depth/MDC
+passes, so any Godot shader code is skill-authored. "Zero frame cost" is
+also the skill's own measured claim, not an AAA attribution; the sources
+support flipbooks as the cheapest runtime path, not literally zero cost.
+
+### Agent automation
+
+- **Flipbook spec manifest and grid gate.** Before rendering, write a
+  manifest (effect name, grid such as 8x8 or shape-matched 8x4, frame count,
+  frame aspect ratio, source sim file) and check that the exported sheet's
+  grid matches the manifest and every frame cell is non-empty. (Grounded in
+  Anchikov's aspect-ratio-matched 8x4 and Espanola's 8x8-for-optimization
+  rule; the manifest format is a skill-design choice.)
+- **Multi-pass render checklist with per-pass validation.** Require the four
+  passes SideFX Labs documents (Final Color, Non-emissive Color, Depth, MDC)
+  or explicitly record which are omitted and why, and check that each pass
+  file exists and matches the color sheet's grid and frame count. The
+  receiving Godot shader must consume those passes; a color-only sheet does
+  not use the depth/thermal data.
+- **Bake-vs-simulate decision gate and size budget.** If the effect must
+  trigger in gameplay, bake to flipbook (Niagara Baker or EmberGen export);
+  reserve sim caches, Alembic, and VAT for cinematics only. Record sheet
+  resolution and memory in the manifest and keep a half-resolution tier for
+  low-quality settings. (Grounded in Espanola's "no Alembic unless
+  cinematic", Epic's "most performant will be a flipbook", and CCP's 10x
+  compression plus half-res tier.)
+
 ## The human method, distilled
 
 1. When the engine fights you for 3 weeks, change the tool, not the goal.
