@@ -17,10 +17,12 @@ triangle count follows.
 
 Creator: agargaro. Reddit post:
 https://www.reddit.com/r/threejs/comments/1xuhlmz/i_built_a_lod_editor_for_threejs_on_top_of_meshoptimizer/
-(r/threejs post 1xuhlmz, score 45, 4 comments). Library:
+(r/threejs post 1xuhlmz, score 67, 6 comments; all fetched).
+Library:
 https://github.com/agargaro/simplify-geometry. InstancedMesh2:
 https://github.com/agargaro/instanced-mesh. Try it:
-https://agargaro.github.io/simplify-geometry/. 2026-11-13 scout run, audit 5.
+https://agargaro.github.io/simplify-geometry/. 2026-11-13 scout run, audit 5;
+expanded 2026-11-14 with the author's replies on skinned-model support.
 
 This is a distinct tool from the InstancedMesh2 bone-animation-textures skill
 (`bone-animation-textures-gpu-instancing`): that one bakes animation clips into
@@ -88,7 +90,7 @@ Per-instance selection is the win: a crowd is mostly far away, so most
 instances should be cheap. A single global LOD would either waste triangles
 or visibly pop.
 
-## Phase 4: Do not break the skin (commenter caveat)
+## Phase 4: Do not break the skin (commenter caveat; author mechanism confirmed 2026-11-14)
 
 **Do**
 1. For skinned models, feed the skin weights into meshoptimizer's
@@ -96,7 +98,14 @@ or visibly pop.
    Commenter PurchaseCommercial34: "with position only it'll happily collapse
    verts across a joint, so a level looks fine in bind pose and then bends
    wrong once an elbow or knee moves."
-2. Confirm the author's model: the library's simplification is error-driven
+2. The wrapper already supports both, per the author's 2026-11-14 reply:
+   per-level attribute weights (converted from the three.js bufferAttribute
+   and passed to `simplifyWithAttributes`, so skin weights can be weighted in
+   the error metric) and a `vertexLock` array to lock verts with mixed bone
+   influence. The author has not tested either on skinned models yet ("I
+   haven't tried it yet... I should definitely test it on the skinned models,
+   thanks for pointing it out!").
+3. Confirm the author's model: the library's simplification is error-driven
    decimation ("Meshoptimizer removes details that have the least impact on
    the shape, within the error limit set"), so the fix is to make the error
    metric see the skin weights, not to simplify less.
@@ -245,11 +254,15 @@ https://www.strayspark.studio/blog/crowd-traffic-simulation-ue5-mass-ai
 
 - **Position-only simplification on skinned models.** Lower LODs collapse
   verts across joints and bend wrong once animated. Feed skin weights into
-  `simplifyWithAttributes` or lock mixed-influence verts.
+  `simplifyWithAttributes` or lock mixed-influence verts. The wrapper already
+  supports both (2026-11-14 author reply); the author has not tested them on
+  skinned models, so verify yourself before trusting a skinned LOD.
 - **Judging LODs in bind pose.** The failure only appears in motion. Always
   pose-check every level.
 - **Setting triangle targets directly.** A triangle target without an error
   budget is not comparable across models; the Error number is the contract.
 
-**Depth status:** FULL (full post text, 1,643 characters, plus all 4 comments;
-the author confirms the error-driven decimation in the thread).
+**Depth status:** FULL (full post text, 1,643 characters, plus all 6 comments;
+the author confirms the error-driven decimation in the thread and, in the
+2026-11-14 replies, that per-level attribute weights and `vertexLock` are
+already implemented but untested on skinned models).

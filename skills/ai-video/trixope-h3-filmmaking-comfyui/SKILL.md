@@ -17,10 +17,13 @@ intervention.
 
 Creator: Visible-Project-2354 (triXope). Reddit post:
 https://www.reddit.com/r/comfyui/comments/1xunyzm/fully_automated_featurelength_minimaxh3/
-(r/comfyui post 1xunyzm, score 98, 24 comments). Repo:
+(r/comfyui post 1xunyzm, score 147, 42 comments; 24 fetched 2026-11-14).
+Repo:
 https://github.com/triXope/ComfyUI-triXope (install via ComfyUI Manager or drop
 into custom_nodes/). The repo includes a basic workflow that is the exact
-workflow used to generate the sample video. 2026-11-13 scout run, audit 3.
+workflow used to generate the sample video. 2026-11-13 scout run, audit 3;
+expanded 2026-11-14 with the comment evidence that was unobtainable on
+2026-11-13.
 
 This is a distinct workflow from the other MiniMax H3 long-form skills in this
 library: it is the triXope script-to-screen node set, not the Add Guide
@@ -32,7 +35,9 @@ merge them.
 ## Tools used
 
 **ComfyUI-triXope custom nodes** (H3 Screenwriter, Film Auteur (H3), H3
-Upscaler, Video Timeline Editor), **MiniMax H3**.
+Upscaler, Video Timeline Editor), **MiniMax H3**, **Ollama** (local LLM,
+currently required; a local option without Ollama is planned for the next
+update).
 
 ## Phase 1: Write the screenplay with H3 Screenwriter
 
@@ -83,6 +88,14 @@ that makes feature length possible at all.
 1. Upscale in pixel or latent mode.
 2. Apply the face swap/detailer for face accuracy, the experimental smart
    sharpener (Refine), DLSS5, and Color FX as needed.
+3. The upscaler node has a built-in face detailer. Ghosted faces in the
+   upscale are a settings problem, not a model limit: "The ghosted faces can
+   be resolved by tweaking a few settings" (author, 2026-11-14 comments).
+4. If the upscale is too slow, disable face detailer, DLSS5, and Color FX —
+   all three add time. If DLSS5 crashes, disable it; a user on a 4090 with
+   64 GB RAM reported the upscaling step running for hours with DLSS5 on, and
+   the author could not give a time estimate ("The upscaler could take a
+   while depending on the length of the video and settings you have enabled").
 
 **Check**
 - The demo run upscaled from 0.2 MP to 1080p; the author notes the face
@@ -99,6 +112,13 @@ detailer is where the quality budget goes, since faces are where viewers look.
 1. Assemble in the editor's two image lanes and two audio lanes, with scrub
    preview, trim, A/V link, and undo/redo.
 2. Export a libx264 MP4 with one click and no external NLE.
+3. Correct bad segments by cutting them in the timeline editor: the final
+   video is displayed in that node and you can chop it up and remove bad
+   segments. There is no per-segment regenerate/inpaint yet (author:
+   "An inpaint/'redo' feature is definitely on my wishlist for a future
+   update... until I can tackle the inpaint, which will most likely need to
+   be integrated into the timeline editor, cutting bad segments is the best
+   we can do").
 
 **Check**
 - The exported MP4 is the finished film; no round-trip through Premiere or
@@ -107,6 +127,39 @@ detailer is where the quality budget goes, since faces are where viewers look.
 **Why**
 The point of the node set is end-to-end automation; an export that requires an
 external editor would break the "script to screen" promise.
+
+## Phase 6: Run the local LLM, and know its limits (2026-11-14 comment evidence)
+
+**Do**
+1. Run Ollama: it is currently required ("It does require Ollama. I wanted to
+   keep it all local with out depending on other APIs"). The author is working
+   on a local option that does not require Ollama for the next update, and
+   notes ComfyUI now has a built-in first-party way to handle a local LLM.
+2. Let the LLM decide each shot's length from context, from 5 seconds up, with
+   no cap. Film Auteur (H3) uses sliding context windows for longer shots.
+3. Expect face drift on long sliding-window shots; that is where it starts,
+   per a commenter, and the author has no test data for it ("I have no way of
+   testing").
+4. Do not rely on the repo's workflow JSON files without checking them: they
+   were corrupt once and the author re-uploaded them ("You were right to
+   question. I just checked on the repo and for some reason the workflow json
+   files got corrupt so I re-uploaded them").
+5. Linux is untested by the author ("I have no way of testing on Linux, but I
+   would imagine so"); one user hit a Windows DLL load on Linux. ROCm
+   compatibility is unanswered in the thread.
+
+**Check**
+- Cross-shot context works with all modes and "should help in reverse angle
+  situations as well" (author, untested on that exact case). Verify reverse
+  angles and prop positions yourself; the author has not tested them.
+
+**Why**
+Local-only is a design constraint, not a preference: no API dependency means
+Ollama (today) or ComfyUI's built-in local LLM handling (next update). And a
+fully automated run can only cut bad segments, not regenerate them, until the
+inpaint feature ships — so the timeline editor's chop is the correction
+mechanism, and the shot-length and context rules above are what keep the
+number of bad segments low.
 
 ## Phase 5: Run it fully automated, at any length
 
@@ -257,19 +310,31 @@ the strongest material is the ILM StageCraft and previs practice above.
 3. Automate the boring parts (shot list, references, upscale, edit, export) so
    the human's job is the screenplay.
 4. Prove automation with a full unedited run, not a cherry-picked clip.
+5. When a segment glitches, cut it; per-segment regenerate is wishlist, not
+   shipped.
+6. Face quality is a settings budget (face detailer vs. upscale time), not a
+   model property.
 
 ## Failure modes
 
+- **DLSS5 crash / hours-long upscale.** Disable DLSS5, face detailer, and
+  Color FX to cut upscale time; a 4090 with 64 GB RAM ran the upscale step for
+  hours. No time estimate exists from the author.
 - **Face detailer run quickly.** The demo's face detailer was run on quick
   settings and shows it. Budget time for the detailer pass; it is the visible
-  quality bottleneck.
+  quality bottleneck. Ghosted faces are fixed by tweaking the detailer
+  settings.
 - **Names drifting between shots.** If a character's name changes between
   prompts, the reference sheets stop matching and continuity breaks. The
   locked-name rule is load-bearing, not cosmetic.
 - **Treating this as a quality showcase.** The author is explicit that the post
   demonstrates that fully automated long runs are possible, not that the output
   is finished quality.
+- **Corrupt workflow JSON in the repo.** It happened once; verify the workflow
+  files load before a long run.
+- **Linux / ROCm untested.** The author has no Linux test setup; a Windows DLL
+  load was reported on Linux, and ROCm compatibility is unanswered.
 
-**Depth status:** PARTIAL (full post text, 3,761 characters, with node-level
-detail; the 24 comments could not be retrieved: Arctic Shift HTTP 422, old
-Reddit JSON 403, PullPush API 403).
+**Depth status:** PARTIAL (full post text plus 24 of 42 comments fetched
+2026-11-14; the native video itself was not frame-reviewed, and 18 comments
+remain unfetched).
