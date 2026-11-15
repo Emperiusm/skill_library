@@ -188,6 +188,80 @@ decision; the video is the advertisement.
 **Why**
 A checklist decision survives the demo. A beauty-shot decision does not.
 
+## AAA studio practice
+
+The AAA bar for a grass system is a published frame budget plus a measured
+LOD ladder, not a beauty shot. The numbers below are the shipped-title
+references the eight checks should be measured against.
+
+- **Sucker Punch / Ghost of Tsushima (GDC 2021): the frame-budget
+  reference.** About 83,000 individual grass blades per frame in roughly
+  2.5 ms on PS4-class hardware, via compute-shader instance generation per
+  tile and indirect draw calls. Blades are cubic Bezier curves with a
+  per-blade hash driving unique sway; Voronoi clumping groups blades so
+  fields look natural instead of uniform; grass maps per tile store type and
+  height; the two-tier LOD drops three of every four blades at distance.
+  The bar for the tier table: every tier needs a blade count and a
+  millisecond figure, and the LOD step is a measured drop, not a feeling.
+  Sources:
+  https://gameindustrylibrary.com/documents/procedural-grass-in-ghost-of-tsushima
+  and https://www.gdcvault.com/play/1027033/Advanced-Graphics-Summit-Procedural-Grass
+- **Sucker Punch / Ghost of Tsushima (PlayStation Blog, VFX): interaction
+  is displacement with a damped return.** Grass is pushed aside by the
+  player and horse via particle displacement, and it bounces back with a
+  damped wave so it does not snap back linearly. Wind is two layers: a
+  large scrolling noise pattern for gusts plus a finer scrolling texture for
+  detail, and the same gust noise drives trees and bushes so foliage
+  matches. The bar for Phase 5: the trail must persist and return with
+  damping, and the wind that moves the grass must be the same wind that
+  moves the trees. Source:
+  https://blog.playstation.com/2021/01/12/how-stunning-visual-effects-bring-ghost-of-tsushima-to-life/
+- **Guerrilla / Horizon Forbidden West (GDC 2022): foliage cost is a
+  shading problem, not just a triangle problem.** Decima accelerates foliage
+  and alpha-tested geometry with a loosely tiled deferred texturing system:
+  a visibility buffer pre-pass, then analysis and shading entirely in
+  compute shaders, overlapping G-buffer rendering and cascaded shadow maps.
+  The bar for the tier table: add an alpha-test/shading cost column, because
+  a grass system can pass on triangle count and still fail on shading cost.
+  Source:
+  https://www.guerrilla-games.com/read/adventures-with-deferred-texturing-in-horizon-forbidden-west
+- **SpeedTree (industry-standard vegetation middleware): LOD is king, wind
+  is tiered, and transitions never pop.** The SDK docs: "GPU performance is
+  perhaps most impacted by the overall LOD settings of a given forest... No
+  other single adjustment will impact the frame rate as much as scaling the
+  LOD parameters down." Wind scales from full to branch to global with no
+  wind as soon as possible, with gradual transitions so popping never
+  appears, and hero trees get the expensive wind while shrubs get none.
+  Fewer unique models (3-5 per species, randomly scaled and rotated) beat
+  many unique ones; interior leaf triangles are trimmed to control overdraw;
+  draw distance is kept short because billboard counts grow exponentially
+  with it. The bar for Phases 3, 4, and 7: the tier table is a LOD table
+  first, wind has its own per-tier ladder, and the free-alternative
+  comparison must include overdraw and draw-distance costs, not just blade
+  counts. Source:
+  https://docs9.speedtree.com/sdk/doku.php?id=gpu-performance
+
+**Agent automation**
+- `grass-tier-table.json`: extend the Phase 3 tier table into a
+  machine-readable manifest with one row per tier: `tier`,
+  `blades_per_frame`, `ms_full_screen`, `ms_typical`, `lod_drop` (e.g.
+  3-of-4 blades at distance), `wind_lod` (full/branch/global/none),
+  `alpha_test_cost` (shading cost note), `draw_distance`. Gate: a tier row
+  missing `ms_full_screen` or `lod_drop` fails the Phase 3 check; the
+  Sucker Punch reference (83k blades, about 2.5 ms) is recorded in the file
+  as the shipped-title bar, labeled as a PS4-class reference, not a Godot
+  target.
+- `grass-lod-transition-test.md`: scripted check at 200-350 FPS (the Phase
+  4 range) that records, per tier, whether LOD and wind transitions are
+  gradual or visibly popping, and whether the trail return is damped or
+  linear. Gate: any visible pop or linear snap-back fails the tier.
+- `grass-overdraw-check.md`: per-tier record of overdraw cost and draw
+  distance, with the SpeedTree rule applied (trim interior leaf triangles,
+  keep draw distance short, billboards grow exponentially with distance).
+  Gate: the free-alternative comparison in Phase 7 must quote
+  overdraw/draw-distance for both the paid asset and the free route, or the
+  comparison is marked incomplete.
+
 ## The human method, distilled
 
 1. Price is evidence: at $69 the thread demands editor screenshots, perf

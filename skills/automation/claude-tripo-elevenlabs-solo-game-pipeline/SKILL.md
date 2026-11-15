@@ -132,6 +132,85 @@ That is the lesson to carry, not "AI can't make games." A commenter who
 spent 200 hours on a 5-level 2D platformer as a wedding invitation puts the
 scale plainly: "Game dev with or without AI is very hard and time consuming."
 
+## AAA studio practice
+
+AAA studios already run the same shape of pipeline, AI generates the bulk
+and a human directs and cuts, but with two disciplines this pipeline lacks:
+a formal accept/edit/ditch gate on every AI output, and a scheduled cut
+ritual.
+
+- **Ubisoft Ghostwriter (GDC 2023): AI drafts, the human selects and
+  polishes.** Ghostwriter generates first drafts of NPC barks, background
+  lines, and UI text, integrated into Ubisoft's narrative tool Omen. The
+  writer is offered a pair of outputs and is free to accept, edit, or ditch
+  each one, and the accept/reject data feeds back into the model. It is
+  explicitly not used for cinematics or lore. The rule transfers directly:
+  AI owns the repeatable bulk (props, variations, barks, music beds); the
+  authored core (story beats, hero characters, cinematics) stays human, and
+  every AI output carries a human verdict before it ships. Source:
+  https://www.gamedeveloper.com/marketing/here-are-more-details-on-ubisoft-s-narrative-ai-tools-from-gdc-2023?hl=en-US
+- **Activision / Call of Duty: AI helps, humans touch everything.**
+  Activision's Steam disclosure confirms its teams use generative AI tools
+  to "help develop some in-game assets," and the Black Ops 7 team states
+  "everything that goes into the game is touched by the team a hundred
+  percent." The Wired 2024 report behind the disclosure is also the
+  cautionary half: the same pipeline shipped an AI-made cosmetic (the
+  Yokai's Wrath bundle) after the studio had told artists AI would only be
+  used for internal concepts. The discipline is the human-touch gate, logged
+  per asset, not assumed. Sources:
+  https://www.gamespot.com/articles/call-of-duty-uses-generative-ai-for-some-content-activision-admits/1100-6529691/
+  and
+  https://www.gamespot.com/articles/call-of-duty-black-ops-7-dev-embraces-ai-but-not-to-replace-humans/1100-6534113/
+- **CD Projekt Red / Respeecher: AI voice with a consent chain.** For
+  Cyberpunk 2077: Phantom Liberty (2023), a stand-in actor performed Viktor
+  Vektor's new lines and Respeecher converted them into the late Milogost
+  Reczek's voice with his family's endorsement. In 2026 CDPR repeated the
+  pattern for The Witcher 3: Songs of the Past, with Jacek Rozenek recording
+  every line himself and the model only reshaping the timbre toward his 2015
+  performance, with his consent. The pattern is actor-performs-first,
+  model-second, consent-on-file, never a voice generated from nothing. For
+  an ElevenLabs pipeline that means a voice manifest per character: who
+  performed (or consented), what the model did, consent on file. Source:
+  https://www.notebookcheck.net/CD-Projekt-Red-is-using-AI-to-preserve-Geralt-s-voice-in-The-Witcher-3-s-upcoming-Songs-of-the-Past-DLC.1450118.0.html
+- **Sucker Punch / Ghost of Yotei (GDC 2026): cutting is a scheduled,
+  celebrated ritual.** Co-creative director Jason Connell: the studio cut
+  content every week and celebrated the cuts, people stood up in front of
+  the team and announced what they had cut, to applause. "Cutting the game
+  is sharpening. If you have four things you can work on, and you got rid
+  of one of them, then suddenly your game is a lot better." The cut test was
+  identity: "does that make you feel like a wandering ronin?" If a feature
+  failed that test, it went. Source:
+  https://gamingbolt.com/ghost-of-yotei-studio-encouraged-developers-to-be-proud-of-cutting-out-unnecessary-content
+
+**Agent automation**
+- `ai-output-verdicts.jsonl`: one line per AI-generated asset (code file,
+  model, voice line, music bed) with fields `asset`, `tool`, `verdict`
+  (accept/edit/ditch), `human_touch` (who reviewed, what changed), `date`.
+  Gate: no asset ships with a missing verdict; the export step fails if any
+  asset in the manifest lacks one. This is the Ghostwriter accept/edit/ditch
+  loop and the Activision 100%-touched rule, as a file.
+- `voice-manifest.json`: per character, `performer`, `consent_on_file`
+  (yes/no plus date), `model_action` (generated from scratch / converted
+  from a performance), `source_voice_owner`. Gate: a voice line with
+  `consent_on_file: no` blocks the build. This is the CDPR/Respeecher
+  consent chain.
+- `weekly-cut-log.md`: one entry per week listing what was cut, what it
+  frees, and the one-sentence identity test the game must pass (Yotei's was
+  "does this make you feel like a wandering ronin?"; the solo dev writes
+  their own equivalent). Gate: a week with no cut entry is a flag, not a
+  pass; if nothing was cut, the log says why.
+- Vertical-slice gate (GDC session "The Vertical Slice Challenge," Greg
+  Donovan): before scaling content, build one slice of the game at final
+  quality across all disciplines (one level, one enemy, real art, real
+  sound, working menu). If the slice cannot be built in the time budgeted
+  for it, cut scope before generating more assets. Record the slice cost in
+  the cut log and multiply by planned content to get the real schedule.
+
+**Honest gap:** no AAA source was found for automating the rigging/animation
+stage of AI-generated low-poly characters (Tripo P2 output still needs a
+human rig/retarget pass); the animation bottleneck in Phase 3 stays a human
+stage, not an automated one.
+
 ## The human method, distilled
 
 1. "I wrote my vision and planned the implementation" — the human plans, the
