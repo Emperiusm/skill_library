@@ -29,6 +29,13 @@ Rust, wgpu (the plan doc names WGSL shaders), Claude Fable 5.2
 (architecture) and Opus 5.5 (code), Google Photorealistic 3D Tiles (Google
 Maps 3D Tiles API), OpenStreetMap (aeroway lines, z14 vector tiles).
 
+## AAA studio practice
+
+- **Microsoft Flight Simulator is the shipped reference for exactly this problem, and it splits the world the same way the plan doc does (Microsoft/Asobo, Blackshark.ai).** Bing Maps photogrammetry "only yielded exact 1:1 replicas of 400 cities — for the vast majority of the planet, though, that data doesn't exist. Microsoft and Asobo Studios needed a system for building the rest." Blackshark.ai reconstructed 1.5 billion buildings from 2D satellite images by computer vision (footprints, heights from shadows), because "at these numbers, you cannot do traditional Q&A anymore" ([TechCrunch, via Blackshark interview](https://socmedtech.com/news-media/techcrunch-128/18/08/2020/)). MSFS 2024 streams about 5 GB per hour from Azure, and its ground-classification ML was trained on 28,000 tiles in four stages ([GamingBolt, MSFS 2024 graphics analysis](https://gamingbolt.com/microsoft-flight-simulator-2024-graphics-analysis-a-gorgeous-sequel-that-needs-more-optimization)). The plan doc's split (photoreal mesh where it exists, procedural world elsewhere, coverage mask blending the two) is MSFS's architecture at one-developer scale: the difference is that MSFS's procedural side is AI-reconstructed buildings, while this project's is hand-built.
+- **The datum problem has a standard engine-side answer: georeference, don't reproject (Cesium for Unreal).** Cesium's tutorial for Google Photorealistic 3D Tiles in Unreal: add the tileset through Cesium ion, then "use the CesiumGeoreference component to geoposition your scene on the globe," because "by default, Unreal Engine does not account for many geospatial variables, such as Earth's curvature or its radial direction of gravity." CesiumSunSky supplies realistic light intensity for the relighting step ([Cesium, Photorealistic 3D Tiles tutorial](https://cesium.com/learn/unreal/unreal-photorealistic-3d-tiles)). The plan doc's measured-datum approach (measure the WGS84-to-sea-level offset per area instead of shipping a geoid model) is the same principle with the georeference done by measurement rather than by a component; the check to copy from Cesium is the datum regression below.
+- **Photoreal tiles are the slow path in production flight sims, and the tuning knob is screen-space error (Cesium community, flight-sim users).** "Cesium for Unreal has been used for a variety of flight simulators... most of these applications use Cesium World Terrain with Bing Maps Aerial imagery, which have more manageable payloads for real-time flight visualization. Google's Photorealistic 3D Tiles offer high visual fidelity (especially with all the available city photogrammetry), but naturally the higher detail will take longer to load." The recommended tuning: adjust Maximum Screen Space Error (lower number prompts higher detail) and MaximumSimultaneousTileLoads, and disable frustum culling so tiles load outside the camera frustum ([Cesium Community](https://community.cesium.com/t/resolution-streaming-google-3d-tiles/44919/2)). The plan doc's numbers (100 MB a minute over a city, 600-650 MB GPU budget) are the same conversation in measured form; the Cesium knob is what to turn when those numbers are too high.
+- **Agentic game dev at AAA is writer-in-the-loop, not hands-off (Ubisoft La Forge, Ghostwriter, GDC 2023).** Ghostwriter, unveiled at GDC 2023, generates first drafts of NPC barks; "the machine learning model learns from each selection" as writers accept or regenerate lines, and it is explicitly not used for cinematics or lore. "Ghostwriter isn't replacing the video game writer, but instead, alleviating one of the video game writer's most laborious tasks" ([Game Developer, GDC 2023](https://www.gamedeveloper.com/marketing/here-are-more-details-on-ubisoft-s-narrative-ai-tools-from-gdc-2023?hl=en-US)). The author's split (Fable 5.2 for architecture, Opus 5.5 for code, plan docs as the interface, human judging the visuals) is the same shape: the model drafts, the human selects and polishes, and the plan doc records what the plan got wrong.
+
 ## Phase 1: Build the game with Claude, from plan docs
 
 **Do**
@@ -197,6 +204,45 @@ Maps 3D Tiles API), OpenStreetMap (aeroway lines, z14 vector tiles).
 **Why**
 - A photoreal mesh that costs less than the procedural buildings is a free
   win; the measurements are what prove it is free.
+
+## Phase 7: Extend the measurement discipline to the tiles
+
+Phases 2 to 6 already measure fps, MB per minute, and GPU memory. The
+tile pipeline needs the same treatment for the three numbers that can
+silently regress: datum drift, session/billing counts, and the destruction
+cut budget.
+
+**Do**
+1. Write `tiles-manifest.json` per zone: datum offset measured (with the
+   area and the sample method, per Phase 2), billed root sessions counted
+   in the usage panel, tiles downloaded, MB per minute over the zone,
+   and GPU memory used by tiles.
+2. Run the datum regression on every zone change: re-measure the offset
+   the plan doc's way (terrain minus mesh at sample vertices, densest
+   metre of the upper half). The plan doc's own bound is 4 m of drift
+   after excluding the project's own building footprints; if a zone
+   drifts more than 4 m, the zone stays off until the datum is
+   re-measured, exactly as Phase 2 requires.
+3. Run the destruction cut gate: the shader supports up to 16 cuts
+   (`photo_cut`); count the live cuts in a crash test scene and fail the
+   gate if a scene needs a 17th. The 16-cut limit is a shader constant,
+   not a suggestion.
+4. Record the tile-quality tradeoff per zone the Cesium way: the maximum
+   screen-space error (or the project's equivalent refinement setting)
+   that produced the measured fps, so a later reader can reproduce the
+   62-82 fps number instead of guessing which refinement level it was.
+
+**Check**
+- `tiles-manifest.json` exists per zone with datum, sessions, MB/min,
+  and GPU memory.
+- No zone drifts more than 4 m from its measured datum.
+- No crash test needs more than 16 cuts.
+- The refinement setting behind the published fps is recorded.
+
+**Why**
+- MSFS's lesson is that at planetary scale you cannot do traditional QA;
+  the numbers are the QA. A zone whose datum, billing, and cut budget
+  are all in a file is a zone that can be trusted at a distance.
 
 ## The human method, distilled
 

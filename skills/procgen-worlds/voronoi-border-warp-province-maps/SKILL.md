@@ -25,6 +25,17 @@ scout run, audit 8.
 C++ and OpenGL (author's game, Contours of War, a grand strategy game).
 Provinces are Voronoi cells.
 
+## Production practice
+
+Labeled production practice, not AAA: no AAA studio source was found for
+warping Voronoi province borders specifically. The nearest anchors are a
+shipped indie game using the same warp-the-field idea, and the standard
+domain-warping references the author's formula is a special case of.
+
+- **A shipped game warps its Voronoi map with noise the same way (DwarfCorp, Game Developer).** DwarfCorp's continents start from fault lines, build a Voronoi diagram of the fault map ("compute the distance from every pixel to the nearest fault line"), and then "apply random distortion to the Fault Map using Simplex Noise." The game's own framing: "One of the most powerful tools in procedurally generated games is the use of Perlin (or in our case Simplex noise)" ([Game Developer, "How we Generate Terrain in DwarfCorp"](https://www.gamedeveloper.com/programming/how-we-generate-terrain-in-dwarfcorp)). DwarfCorp distorts the distance field; the author distorts the query point. The two are the same idea from opposite sides: never rebuild the Voronoi geometry, bend the field it is read from.
+- **Domain warping is the canonical recipe, and the author's formula is a three-octave instance of it (Red Blob Games; Nolithius).** The Red Blob Games recipe stack: "the sample point gets domain-warped first: you offset each coordinate by another noise field, p'=p+noise(p)*s, which bends the ridges into something organic instead of axis-locked" ([Cinevva, open-world browser series, part 27](https://app.cinevva.com/blog/2026-05-13-open-world-browser-part-27-island-and-terrain)). Nolithius's domain-warping guide makes the author's seed discipline explicit: "generate two additional Perlin noise maps for displacement: one for the X values, and one for the Y" ([Nolithius, "World Generation Techniques: Domain Warping"](https://www.nolithius.com/articles/world-generation/world-generation-techniques-domain-warping)). The author's rule (separate seeds per octave and per axis, "so the offset isn't diagonal") is that guide's X/Y split, formalized.
+- **The honest gap: province borders at strategy-game scale.** DwarfCorp warps terrain faults; Red Blob warps heightfields. Neither source addresses what the author is doing, which is warping political borders that must stay readable as territories. The 5.5-texel bound is the author's own answer to that gap, and it is what the regression test below guards. No studio source was found that states a border-warp bound for provinces; the bound stays the author's, labeled as such.
+
 ## Phase 1: Warp the classified point
 
 **Do**
@@ -67,6 +78,43 @@ Provinces are Voronoi cells.
 **Why**
 - Splines through Voronoi nodes would give smooth, editable borders instead
   of warped ones. It is the alternative design, not the chosen one. (Inference, labeled.)
+
+## Phase 3: Guard the warp with regression tests
+
+The formula is FULL depth and exact. The tests below are what keep it
+exact across refactors, and what catch the one failure the bound exists
+to prevent: a cell swallowing its neighbor.
+
+**Do**
+1. Run the warp-budget test: sample the warp offset on a dense grid over
+   the province texture and assert the maximum offset never exceeds 5.5
+   texels (3.6 + 1.4 + 0.5). If any sample exceeds it, a constant changed
+   and the bound no longer holds.
+2. Run the determinism test: same seeds and same province seeds twice
+   must produce a byte-identical province map (hash the output). The
+   seeds are the map; a map that drifts between runs cannot be shared or
+   debugged.
+3. Record the border-likeness metric, not as a gate but as a number: total
+   warped border length divided by total straight border length on the
+   same province set. The author's motivation is "looks like a map, not a
+   mosaic"; the ratio is the measurement of that claim. Log it per
+   release; if a constants change drops the ratio toward 1.0, the warp
+   stopped doing its job.
+4. Run the diagonal check: warp a test point with the x-seed and y-seed
+   swapped. If the output is identical to the unswapped warp, the seeds
+   are not actually separate per axis, and the author's "so the offset
+   isn't diagonal" rule is broken.
+
+**Check**
+- Max sampled offset is at most 5.5 texels.
+- Two runs with the same seeds hash identically.
+- The border-length ratio is recorded and above 1.0.
+- Swapping x/y seeds changes the output.
+
+**Why**
+- The bound is the whole safety argument: bounded warp means the
+  topology cannot break. A bound that is never tested is a comment, not
+  a guarantee.
 
 ## The human method, distilled
 

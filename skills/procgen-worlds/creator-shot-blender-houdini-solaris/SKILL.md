@@ -29,6 +29,13 @@ Blender (modeling), Substance Painter (texturing), Houdini + Solaris
 scattering, by beatreichenbach), KTT terrains, Megascans cliffs, vegetation
 assets (external).
 
+## AAA studio practice
+
+- **The real *The Creator* shot plates first and built VFX after (ILM, 20th Century Studios).** Director Gareth Edwards shot the plates he knew he would use, then ILM designed and executed the effects around, over, and within the live-action shots, with no previs and no tracking markers. VFX supervisor Jay Cooper's framing, via the film's production record: shoot in 360 degrees, anything could become a VFX shot. The budget discipline: spend 10 units of a 100-unit budget on the shoot and keep 90 for VFX and post ([TheWrap](https://www.thewrap.com/the-creator-visual-effects-oscar-nomination/)). The author's recreation follows the same order (model, then light, then comp) for the same reason: the plate, or the modeled shot, is fixed first; everything else serves it.
+- **Build only what the shot needs, and extend the rest with paint (ILM, RenderMan).** "We were very optimized throughout the production process, making only what was needed for a shot and implying a larger world without having to build out massive environments all the time, extending things with matte painting layers when needed," said ILM VFX supervisor Charmaine Chan. For the test footage, "ILM would paint things in 2D and then project them onto simple geometry. 'It gave that illusion of parallax,' Edwards said. 'What would normally take a month to do we would do in two or three days.'" ([Pixar RenderMan, ILM on The Creator](https://prod.renderman.pixar.com/stories/renderman-at-ilm--the-creator); [TheWrap](https://www.thewrap.com/the-creator-visual-effects-oscar-nomination/)). The author's buy-the-big-stuff rule is the same discipline at indie scale: bought-in vegetation, terrain, and cliffs are the matte-painting layer; the modeled temple and monks are the "only what the shot needs" part.
+- **Match the plate by making things imperfect (ILM).** "We tried to really match the plates by profiling everything and making things imperfect, including lens aberrations and noise. Our lighters were amazing at getting us beautiful renders and we also extended the fidelity of the renders with some wonderful compositing using RenderMan AOVs and LPEs in Nuke," said ILM VFX supervisor Ian Comley ([Pixar RenderMan](https://prod.renderman.pixar.com/stories/renderman-at-ilm--the-creator)). The critique the author received (comp too crunchy for the distance, needs more atmosphere) is the same failure mode in reverse: the comp did not match the plate's distance behavior.
+- **Solaris is the studio answer to the author's exact handoff: light and assemble separately from modeling (SideFX, RISE).** "At RISE, Solaris has become the backbone of a USD-based pipeline, giving the team scalability and efficiency for complex projects. On Fallout, it streamlined large environments and FX by reusing caches and enabling quick shot-specific changes." USD works in layers: a base geometry layer, a lighting layer on top, variants as toggleable layers instead of duplicated scenes, and a senior lighter mapping the general scheme that is tweaked non-destructively per shot with the Light Mixer ([SideFX, Solaris](https://www.sidefx.com/products/houdini/lookdev/solaris/)). The author's Blender-to-Solaris split is the same layering idea with the modeling layer living in Blender instead of USD; the discipline to copy is that lighting never edits geometry, it layers over it.
+
 ## Phase 1: Model in Blender
 
 **Do**
@@ -103,6 +110,40 @@ assets (external).
 
 **Why**
 - The comp is where scale is finished or broken. (Inference, labeled.)
+
+## Phase 6: Apply the studio gates
+
+The thread's only technical critique is a checklist in disguise. Turn it
+into gates the agent runs before calling the shot done.
+
+**Do**
+1. Write `shot-manifest.json` for the shot: every asset, tagged bought-in
+   (vegetation, terrain, cliffs) or built (temple, monks), with its source
+   file. If an asset is neither tagged nor in the manifest, the shot is not
+   done.
+2. Run the wear-scale gate from Phase 2 as a check, not a feeling: list every
+   wear/grunge layer on the hero asset with its world-space feature size;
+   any wear feature larger than the fine-detail layers gets dialed back
+   before the comp, per the 59vfx91 critique.
+3. Run the distance-atmosphere gate from Phase 4: render the hero asset at
+   its shot distance and at half that distance; the far render must read
+   softer (lower contrast, more atmospheric haze) than the near render, or
+   the comp fails the gate.
+4. Keep the layer discipline from the Solaris section: the Blender model
+   file, the Solaris lighting layer, and the Nuke comp are three separate
+   files. Lighting changes never edit the model file; comp changes never
+   edit the lighting file.
+
+**Check**
+- `shot-manifest.json` exists and every asset in the frame is tagged.
+- No wear layer on the hero asset exceeds the fine-detail scale.
+- The far render is measurably softer than the near render.
+- A lighting change can be reverted without touching the model.
+
+**Why**
+- ILM's rule is "make only what was needed for a shot." A manifest is how a
+  one-person pipeline proves it did that, and the two gates are the
+  critique, automated, so the next shot does not repeat it.
 
 ## The human method, distilled
 

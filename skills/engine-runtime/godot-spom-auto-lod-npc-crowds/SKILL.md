@@ -29,6 +29,13 @@ Godot (author's own SPOM and Nanite-like auto-LOD implementations, NPC
 optimization); Unity, Unity AI Navigation package, Mecanim, Unity Job System,
 GPU Instancer Pro, Meshy AI 6 (in the linked video).
 
+## AAA studio practice
+
+- **Parallax occlusion mapping is a production technique with known failure modes (Tatarchuk, GDC 2006).** Natalya Tatarchuk's "Practical Parallax Occlusion Mapping for Highly Detailed Surface Rendering" is the canonical production reference: per-pixel ray tracing of a height field in tangent space, with motion parallax, self-shadowing, and soft shadows, integrated into game materials. The talk is explicit about what breaks: linear search with piecewise-constant height fields gives "significant aliasing at grazing angles" and is "unsuitable for production quality rendering," and depth biasing toward the horizon "introduces excessive feature flattening at oblique angles." The fix is linear search plus a high-precision intersection computation ([GDC 2006 slides, Tatarchuk](https://www.realtimerendering.com/advances/s2006/Tatarchuk-POM.pdf)). The author's open question (does the SPOM implementation really handle silhouettes?) is exactly the failure mode to test: POM fakes depth on the face; the silhouette is where it is caught.
+- **Nanite is virtualized geometry, and its win is per-part swaps, not ZBrush meshes (Epic, SIGGRAPH 2021).** Brian Karis's Nanite paper: a mesh is preprocessed into a hierarchy of clusters (meshlets of at most 128 triangles) across LOD levels, and the GPU picks per pixel the level that gives about 1 triangle per pixel, so drawn-triangle count is bounded by screen resolution, not source complexity ([Karis et al., SIGGRAPH 2021, via the Virtualized Geometry Systems survey](https://docs.graphical-playground.com/blog/virtualized-geometry-systems)). Epic's own team learned the same lesson the thread's commenter states: Nanite "should not, just from a theoretical point of view, work well for foliage. I just knew for a fact that it was not going to work as well," yet Fortnite Chapter 4 shipped foliage on Nanite and "it worked out" — with the caveat that foliage "is still an area that you need to be very careful in" ([Brian Karis, Building the Open Metaverse](https://www.buildingtheopenmetaverse.org/episodes/populating-the-metaverse)). The commenter's correction (Nanite is best on standard models with normal polycounts) matches Epic's own guidance.
+- **AAA crowds are a two-tier system: cheap bulk plus a few real AIs (Ubisoft, Assassin's Creed Unity, GDC 2015).** "With the limit of 40 real AIs and 120 high resolution models, we could successfully create a scene where 10,000 crowd NPCs are on screen at the same time," by pooling: a simplistic AI brain animates the thousands, and the system swaps low-res NPCs to high-res without the player noticing ([GDC Vault, "Massive Crowd on Assassin's Creed Unity: AI Recycling"](https://www.gdcvault.com/play/1022411/Massive-Crowd-on-Assassin-s)). The same split in the press record: "two very complex systems that are cooperating. The first one is what we call the bolt crowd... And then dipping in and out of the bolt crowd are individual complex AI. If they go away from you they become part of that bolt crowd, and when they step out, boom, full AI" ([TechRadar](https://www.techradar.com/news/gaming/inside-assassin-s-creed-unity-ubisoft-s-leap-of-faith-1268435/2)). The video's rule (built-ins near the player, custom system far away) is the same two-tier architecture with the tiers named by distance.
+- **Flow fields are the shipped-game answer to the video's exact problem (Gas Powered Games, Supreme Commander 2; Uber, Planetary Annihilation).** "Flow Fields are a technique for efficient crowd pathfinding. They are most suitable for situations where you want to move a large group of agents to a common destination." One Dijkstra flood fill from the destination gives every cell a cost; each cell points at its cheapest neighbor; every agent with that destination shares the one field. Supreme Commander 2 added line-of-sight shortcuts near the goal and flow-field tiling, generating fields only for the tiles on the hierarchical path, because a whole-map field is too big for memory ([How to RTS, "Basic Flow Fields"](https://howtorts.github.io/2014/01/04/basic-flow-fields.html); [Game AI Pro, Emerson ch. 23](http://www.gameaipro.com/GameAIPro/GameAIPro_Chapter23_Crowd_Pathfinding_and_Steering_Using_Flow_Field_Tiles.pdf)). The video's unsigned-short cost field with 10/15 move costs is the same algorithm; the shipped refinement is tiling, which is what the video's granulation step (Phase 3, step 15) reaches for by another name.
+
 ## Phase 1: SPOM, silhouette parallax occlusion mapping (Godot)
 
 **Do**
@@ -164,6 +171,46 @@ evidence. How the author adapted each step to Godot was not disclosed.
 - Measure with capsules first, or rendering noise hides the nav cost.
 - The transform-parent gotcha is the kind of bug that costs hours: one sentence
   in the docs, 0.28 ms to 0.09 ms.
+
+## Phase 4: Run the AAA measurement gates
+
+The video's method is a measurement ladder (1.9 ms, 1.3 ms, 0.7 ms,
+0.39 ms). Make the ladder a file, and add the two gates the AAA sources
+name that the video never runs.
+
+**Do**
+1. Write `crowd-perf.json` after every optimization pass: agent count,
+   ms for nav, ms for animation, ms for rendering, ms total, FPS, and the
+   machine. One row per pass, so the ladder is visible in the file, not
+   only in the video.
+2. Run the SPOM silhouette probe: render the same SPOM wall from straight
+   on and from a steep oblique angle, side by side. If the silhouette stays
+   flat at the oblique angle, SPOM fails its own premise; log it as a known
+   limit (Tatarchuk's grazing-angle failure) rather than shipping it as
+   done.
+3. Run the crowd-tier gate: define the near/far distance threshold in the
+   manifest (built-in/full AI inside, flow field outside), then count
+   agents on each side of the threshold in a test scene. If the far tier
+   ever holds fewer agents than the near tier, the split is backwards.
+4. Run the flow-field determinism check: same destination and same grid
+   twice must produce a byte-identical cost field (hash it). A field that
+   drifts between runs cannot be tiled or cached, which is the SupCom 2
+   refinement the video's granulation step depends on.
+
+**Check**
+- `crowd-perf.json` has one row per pass with nav/animation/render split,
+  and the newest row is faster than the built-in baseline (1.9 ms for 500
+  agents in the video's numbers, or the project's own baseline).
+- The oblique SPOM render is in the repo next to the straight-on render,
+  with the verdict written in the manifest.
+- The near/far threshold and the agent count per tier are recorded.
+- The flow-field hash matches across two runs.
+
+**Why**
+- Ubisoft's crowd rule is "focus on making common NPCs as cheap as
+  possible." A manifest with per-subsystem milliseconds is how an agent
+  proves it did that, and the silhouette probe is the one test that
+  decides whether SPOM is real or a flat texture with a fancy name.
 
 ## The human method, distilled
 

@@ -27,6 +27,12 @@ The selftext below is from the scan record.
 
 C++ and Vulkan, from scratch. No engine, no libraries named.
 
+## AAA studio practice
+
+- **The author's table architecture is the published reference method (Bruneton and Neyret, EGSR 2008).** "Precomputed Atmospheric Scattering" precomputes transmittance, single scattering, multiple scattering, and ground irradiance into compact textures, then evaluates the light transport equation at runtime "in constant time, without any sampling," reproducing daylight and twilight sky color and aerial perspective from any viewpoint, ground level to outer space ([Bruneton and Neyret, Computer Graphics Forum 27(4), 2008](https://archive.org/download/random-papers14/Precomputed%20Atmospheric%20Scattering%20%28EGSR%202008%29.pdf)). The paper's own framing names the use case: "especially true for applications that target realism, such as flight simulators." The author's design (trace on the CPU into tables, interpolate on the GPU, blurred tables for diffuse) is the same architecture with the precompute step moved to the CPU.
+- **The reference implementation names the tables the author's skill leaves unnamed (Bruneton, implementation notes).** The model precomputes four quantities into textures: transmittance (a small 2D texture, since it depends on only two parameters), single scattering, multiple scattering by iterative accumulation of scattering orders, and ground irradiance (2D textures for horizontal surfaces, approximations for the rest). The precompute programs "must be called in the correct order, with the correct input and output textures (via framebuffer objects), to precompute each scattering order in sequence" ([Bruneton, implementation](https://ebruneton.github.io/precomputed_atmospheric_scattering/atmosphere/functions.glsl.html)). The skill's gap (no table sizes, no scattering parameters) is exactly the missing spec: record the table per quantity, or the method cannot be reproduced.
+- **Unreal Engine's production sky is the same LUT idea, shipped (Hillaire, EGSR 2020; sebh research renderer).** Unreal's Sky Atmosphere precomputes lookup tables and samples them at runtime: Transmittance LUT 256x64 RGBA32F, Scattering LUT 256x128x32 RGBA32F, multiple scattering accumulated iteratively up to the 4th order, plus camera-specific volume textures for aerial perspective. The comparison in the accompanying research renderer rates the Bruneton LUT approach "real-time production" quality with "fast (texture lookups)" runtime cost and high memory use, against path tracing as ground-truth reference and ray marching as the balanced middle ([sebh/UnrealEngineSkyAtmosphere, research renderer accompanying Hillaire's EGSR 2020 paper](https://deepwiki.com/sebh/UnrealEngineSkyAtmosphere/2.4-bruneton-2017-lut-system)). The author's CPU-precompute/GPU-interpolate split is the same trade (memory for runtime speed) at hobby scale: the tables are the product, and their resolutions are the spec.
+
 ## Phase 1: Model the atmosphere on the CPU
 
 **Do**
@@ -79,6 +85,43 @@ C++ and Vulkan, from scratch. No engine, no libraries named.
 - Low resolution is a choice, not a limit: at 480x270 the atmosphere tables
   and procedural landscape fit in the budget of any machine, and the
   aesthetic is the point. (Inference, labeled.)
+
+## Phase 4: Publish the table spec and the day-cycle regression
+
+The skill's own Depth status names the gap: no table sizes, no scattering
+parameters. Close it with a manifest and a regression, so the next reader
+can reproduce the sky instead of re-deriving it.
+
+**Do**
+1. Write `atmosphere-manifest.json` with one entry per table: quantity
+   (transmittance, single scattering, multiple scattering, ground
+   irradiance, blurred diffuse variants), resolution, format, the
+   scattering order it was computed to, and the gas/haze/weather
+   parameters for the planet it belongs to. Bruneton's reference
+   dimensions (transmittance 2D, scattering 3D) are the shape to copy;
+   the author's own numbers go in the file.
+2. Run the day-cycle regression: sample the sky color at fixed sun
+   elevations (noon, golden hour, sunset, night) from the same camera,
+   hash the four frames, and store the hashes in the manifest. A code
+   change that moves any hash must be explained in the commit, or the
+   sky drifted silently.
+3. Run the direct/diffuse consistency check: render one frame with
+   direct light only and one with diffuse only from the same tables, and
+   confirm both read as the same sky at the same sun elevation. If they
+   disagree, the two reads drifted apart, which the single-table design
+   is supposed to make impossible.
+
+**Check**
+- `atmosphere-manifest.json` exists and every table in the code has an
+  entry with resolution, format, and scattering order.
+- The four sun-elevation hashes match the manifest after a rebuild.
+- Direct-only and diffuse-only renders agree on the sky at the same sun
+  elevation.
+
+**Why**
+- Bruneton's paper is reproducible because the tables are specified. A
+  sky whose tables are undocumented is a demo, not a method, and the
+  manifest is what turns this one into a method.
 
 ## The human method, distilled
 
