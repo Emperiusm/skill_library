@@ -1,6 +1,6 @@
 ---
 name: nightshoal-opus-weekly-loop
-description: "Build a game in weekly loops with Claude Opus 5.5 in Godot: blind A/B critic rounds against mockups with a win-twice stop rule, an in-game performance panel plus --perf-log, Tripo 4-view asset generation with Blender MCP fixes, and a published weekly cost total. Trigger when an agent-driven game loop needs a stop rule, profiling, or honest cost accounting."
+description: "Build a game in weekly loops with Claude Opus 5.5 in Godot: Fable 5.2 as manager with Opus 5.5 builders, blind A/B critic rounds against mockups with a win-twice stop rule and a metre-blueprint stop rule, Tripo 4-view asset generation with Blender MCP fixes, Mixamo rigging plus a Tripo-skeleton retarget script, a fresh-eyes adversarial plan audit, an in-game performance panel plus --perf-log, and a published weekly cost total. Trigger when an agent-driven game loop needs a stop rule, profiling, rigging, or honest cost accounting."
 ---
 
 # The Nightshoal Opus Weekly Loop (Claude Opus 5.5 + Godot)
@@ -8,12 +8,13 @@ description: "Build a game in weekly loops with Claude Opus 5.5 in Godot: blind 
 ## Purpose
 
 This skill reconstructs the exact workflow in RUSuper's week-15 update
-for Nightshoal (r/aigamedev, 2026-11-09), step by step, so another
+for Nightshoal (r/aigamedev, 2026-11-09) and its week-16 update
+(r/vibecoding, 2026-11-16), step by step, so another
 agent can follow the same process. Every phase has three parts: **Do**
 (the action), **Check** (how the human verifies it), and **Why** (the
-principle). The workflow's core method is: let Opus build, let blind
-critics judge against mockups, let a profiler decide what is slow, and
-keep the human as the stop rule.
+principle). The workflow's core method is: let Fable manage, let Opus
+build, let blind critics judge against mockups, let a profiler decide
+what is slow, and keep the human as the stop rule.
 
 ## Source
 
@@ -21,11 +22,13 @@ Creator: RUSuper (Nightshoal).
 
 Source: https://www.reddit.com/r/aigamedev/comments/1xrknnf/15_weeks_of_making_game_with_claude_opus_in_godot/
 (r/aigamedev post 1xrknnf, score 91, 27 comments) | 2026-11-09 scout
-run. Demo: https://profactor.itch.io/nightshoal.
+run. Week 16: https://www.reddit.com/r/vibecoding/comments/1xxioq5/16_weeks_of_making_game_with_claude_opus_in_godot/
+(r/vibecoding post 1xxioq5, score 48; crossposted to r/aigamedev as
+1xxikfy) | 2026-11-16 scout run. Demo: https://profactor.itch.io/nightshoal.
 Evidence: complete author post text with exact numbers, costs, and
-quoted method + 25 comments. The video clip is a gameplay trailer with
-no captions and no narration; a media download would add gameplay
-frames only, not pipeline detail.
+quoted method + 25 comments (week 15) and 9 comments (week 16). The
+video clips are gameplay trailers with no captions and no narration; a
+media download would add gameplay frames only, not pipeline detail.
 
 ## Tools used
 
@@ -207,6 +210,211 @@ effort.
 A weekly cost total is part of the devlog: the loop's price is visible
 next to its output, so the reader can judge whether 15 weeks at
 roughly $1,100 a week is the deal they want.
+
+## Week 16 update
+
+Week 16 changes who does what and adds two new review loops. **Fable
+5.2 is now the manager**: it finds things to fix, writes the tasks,
+and checks the results. Opus 5.5 agents build. Jev still picks the
+effort level per task. The phases below are the week-16 additions, in
+the same Do / Check / Why format; Phases 1-6 above still apply.
+
+### Phase 7: Plan the whole game on paper first
+
+**Do**
+1. Plan every zone up front: where each zone is and what is in it
+   (every island, harbour, person, quest, item, fish), each zone with
+   a top-down blueprint.
+2. Ask Opus to settle the economy question on the game's own gold
+   simulator: Opus built a model on top of the simulator and answered
+   that more time in later zones is not enough, fish need to pay a bit
+   more each zone.
+3. Rezone as the plan settles: Bridge city is now zone 2, tropics
+   moved to zone 3.
+
+**Check**
+- The plan is a written document Jev can pick from ("Every pick is
+  saved with its percentage so I can overrule it later").
+- Economy tuning comes from the author playing it personally plus
+  player feedback once all zones are done, not from the simulator
+  alone. Commenter Total-Reasonable (score 7) flags the exact failure
+  mode: "the economy model Opus built on your gold simulator only
+  tells you what a simulated player does, and the sim player is
+  probably an optimal or scripted one. Real players wander, fish
+  badly, and skip content, so 'fish need to pay more each zone' could
+  overshoot. Log real session data from the demo (gold earned per
+  hour, time per zone) and compare it to the sim."
+
+**Why**
+Planning the whole game before building zone 2 means "later I (Well
+Claude) only have to build it." The simulator answers direction (pay
+more per zone); real play answers magnitude.
+
+### Phase 8: Gauntlet-loop the scene, but blueprint in metres first
+
+**Do**
+1. OpenAI (image API) makes a mockup of the place.
+2. Opus builds the scene in Blender through MCP.
+3. Critics compare the game to the mockup blind (Gauntlet loop).
+   Black market harbour took 30 rounds.
+4. At round 12, stop the loop and make a top-down blueprint first (in
+   metres), then resume. Rule added: a mockup of a place that already
+   exists has to be made from the game's own view, not from
+   imagination.
+5. For the second harbour (Bridge city), do not chase the mockup as
+   long: once the scene is overall good, stop the critics and fix it
+   piece by piece from the author's notes.
+
+**Check**
+- Blind comparison against the mockup is the judge, not the author's
+  eye.
+- The round-12 intervention is the tell that the loop was failing:
+  "the loop was placing things by where they land in the picture and
+  picture is never actually 'proper' so to say, so something could
+  look right and still stand in the wrong place."
+- Bridge city harbour: 8 people on the dock, works at day/dusk/night/
+  dawn, lamps turn on in the evening; hover-and-click people, fish
+  trader and yard foreman open counters, every window shows the
+  person's face "taken live from the 3D model."
+- Black market harbour: only at night (by day "the market is shut");
+  4 people on the dock (rod seller with leads to two more, fuel
+  seller, boat repairer); sell protected fish for 3x if the patrol
+  does not catch you; rest until dawn and "you wake up outside the
+  chain."
+
+**Why**
+A picture can look right while the layout is wrong; the blueprint in
+metres is the ground truth the picture cannot supply. And a loop
+without a stop rule burns rounds: the second harbour shows the human
+stopping the critics once the scene is good enough and finishing from
+notes.
+
+### Phase 9: Characters — TripoAI, then Mixamo, then a retarget script
+
+**Do**
+1. Make all 12 people for the two harbours in TripoAI.
+2. Rig them in Mixamo for standing and talking animations. Mixamo
+   does not accept Tripo's skeleton, so upload the model without a
+   skeleton and let Mixamo rig it itself. This worked for 3 of them.
+3. For the rest (including the rum seller, whom Mixamo "just couldn't
+   rig, no idea why"): download the rigged version from Tripo and
+   have Opus write a script that copies the Mixamo animations onto
+   Tripo's skeleton.
+4. Fix tearing in Blender: long coats and one apron tore when the arms
+   moved, so Opus fixed the weights in Blender.
+
+**Check**
+- Two uploaded images show how the characters look outside the game
+  (imgur.com/a/d9k1sAh).
+- In-game check: faces in the dialogue windows come live from the 3D
+  model; animations are standing/talking only.
+
+**Why**
+Mixamo's auto-rig is the fast path when it accepts the model; the
+retarget script is the fallback that keeps the pipeline moving when
+it does not. Weight fixes are a Blender job, not a generation job.
+
+### Phase 10: Sound without ears — ElevenLabs, measured not listened to
+
+**Do**
+1. ElevenLabs makes the black market's sounds: night ambience, small
+   dock sounds, a murmur for each of the four people (murmurs made
+   but "nothing plays them yet").
+2. Opus picks the takes by measuring them: "Opus can't listen to
+   them, so it picks the takes by measuring them lol."
+
+**Check**
+- (Inference, labeled:) no listening check exists in this loop;
+  measurement is a proxy for quality, and the murmurs are unverified
+  in-game since nothing plays them yet.
+
+**Why**
+An agent that cannot hear can still select audio by measurable
+properties; the gap is explicit, not hidden.
+
+### Phase 11: Fresh-eyes audit of the whole plan
+
+**Do**
+1. After the plan is written, let one more agent read all of it with
+   fresh eyes; its only job is to prove it wrong.
+2. It found 21 problems. Best one (author's words): "the plan sent
+   the missing boat south when the game itself says it went north
+   lol."
+
+**Check**
+- 21 problems found is the metric; the boat-direction catch is the
+  proof the audit is real, not ceremonial.
+
+**Why**
+The builder cannot audit its own plan: the same context that wrote it
+will re-read it as correct. A separate agent with an adversarial job
+description is the cheapest reviewer available.
+
+### Phase 12: Trailer filmed inside the game
+
+**Do**
+1. Author says vaguely what he wants; Opus comes up with options;
+   Jev picks between them.
+2. Opus films the trailer inside the game and cuts it together. First
+   version had too little gameplay (basically only fishing), so the
+   author listed what to show and Opus made a second one.
+3. The keys lighting up on screen are the real key presses, not added
+   in editing.
+
+**Check**
+- Trailer contents (author's list): fishing with the keys pressed,
+  gear on the boat, exploring an island at night, finding a ship in a
+  bottle, the Cabinet (one ship "fires its cannons inside the
+  bottle"), a whale, a boat in trouble you can save, picking a talent,
+  a storm, the 2 new harbours.
+
+**Why**
+A trailer cut from real play with real key presses is evidence, not a
+promise. The second version exists because the author, not the model,
+decided what "enough gameplay" means.
+
+### Phase 13: Performance fixes and cost accounting, week 16
+
+**Do**
+1. Fix the talent chart freezing the game the first time it opened.
+2. Ship the sea's map ready instead of rebuilding it on every start.
+3. Replace render scale with one normal RESOLUTION list in settings;
+   draw the Cabinet sharper.
+4. Fix the white fog on the waterfall: it was the sun's reflection on
+   the still river.
+5. Total the week: Claude Max $200 x 4 = $800; Astra $100 x 1 = $100;
+   ElevenLabs $11; TripoAI $20 x 2 = $40; OpenAI API credits $80;
+   other things forgotten ~$100. "Around 1100-1150$." Hit 91% of the
+   weekly limit again.
+
+**Check**
+- Zone 1 "works" because the author test-played it "like a gazillion
+  times"; future zones need testing too, and the whole game at the
+  end. "It will take some time though as I don't expect game to be
+  finished for several months at least."
+
+**Why**
+A weekly cost total next to the output is what makes the loop
+auditable: 16 weeks at roughly $1,100 a week is the deal, stated
+plainly.
+
+### Week-16 additions to the human method
+
+8. **A picture is not a plan.** If the loop places things by picture
+   position, stop and blueprint in metres first.
+9. **A mockup of a place that already exists must come from the
+   game's own view, not imagination.**
+10. **The builder does not audit its own plan.** A fresh-eyes agent
+    whose only job is to prove it wrong does.
+11. **Stop the critics once the scene is good and finish from your
+    own notes.**
+12. **Plan everything on paper, then let Claude build it.** "Once you
+    enjoy the process everything becomes so much easier."
+
+**Depth status (week 16):** FULL (complete author post text with exact
+numbers, costs, and quoted method + 9 comments; video clip is a
+gameplay trailer with no captions; a media download would add gameplay
+frames only, not pipeline detail).
 
 ## AAA studio practice
 

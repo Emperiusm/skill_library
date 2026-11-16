@@ -13,7 +13,7 @@ skill.
 
 ## The skills
 
-238 skills in 9 categories, growing with every daily scout run. The full grouped
+240 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
@@ -21,7 +21,7 @@ reports under [`docs/scout-reports/`](docs/scout-reports/).
 |---|---|---|
 | [`capture`](skills/capture/) | 10 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
 | [`characters`](skills/characters/) | 19 | Character pipelines, consistent identities, rigging, cloth and hair |
-| [`procgen-worlds`](skills/procgen-worlds/) | 41 | Procedural generation: terrain, cities, creatures, whole games from a seed |
+| [`procgen-worlds`](skills/procgen-worlds/) | 43 | Procedural generation: terrain, cities, creatures, whole games from a seed |
 | [`ai-video`](skills/ai-video/) | 38 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
 | [`simulation-vfx`](skills/simulation-vfx/) | 21 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 19 | Material authoring, shaders, texturing |
