@@ -3,6 +3,7 @@
 Every directory here is one executable skill: a `SKILL.md` playbook that teaches one workflow end to end. Skills are grouped by category, one level deep. New skills land here with every daily scout run, each assigned a category when it is created.
 
 ## Capture and reconstruction (`capture/`)
+| [`opentwin-3dgs-point-maps`](capture/opentwin-3dgs-point-maps/SKILL.md) | Build a 3D Gaussian splat digital twin from as few as 5 drone photos: point maps as the base format, COLMAP plus DroneSplat flow augmented with CVPR projects, SAM 3.1 car removal. |
 
 | Skill | What it teaches |
 |---|---|
@@ -90,6 +91,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`voronoi-border-warp-province-maps`](procgen-worlds/voronoi-border-warp-province-maps/SKILL.md) | Bend Voronoi province borders with 3 octaves of value noise: warp the classified point, not the edges (lambda 26/10/4.5, a 3.6/1.4/0.5, max offset 5.5 texels), separate seeds per octave and per axis. |
 
 ## AI video and film (`ai-video/`)
+| [`viggle-motion-transfer-comfyui`](ai-video/viggle-motion-transfer-comfyui/SKILL.md) | Transfer motion from any video onto a character image with the NeuroVigal/Viggle Remake model in ComfyUI on 6GB VRAM: INT8 ConvRot, Qwen VL auto-prompting, 6 Euler steps, RelayVSR upscale. |
+| [`qwen-image-21-comfyui-local`](ai-video/qwen-image-21-comfyui-local/SKILL.md) | Use Qwen-Image-2.1 locally in ComfyUI: 7B parameters, Turbo 8-step generation at 16 seconds per image on an RTX 4080, multi-image edit with up to 10 references, character sheets, transparent PNG background removal. |
 
 | Skill | What it teaches |
 |---|---|
@@ -133,6 +136,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`trixope-h3-filmmaking-comfyui`](ai-video/trixope-h3-filmmaking-comfyui/SKILL.md) | Make feature-length films in ComfyUI with the triXope MiniMax H3 nodes: H3 Screenwriter turns any screenplay into a shot list with locked-name character sheets, Film Auteur runs the whole H3 pipeline in one node with cross-shot reference conditioning that never re-encodes finished shots, H3 Upscaler upscales and details faces, and the Timeline Editor exports libx264 MP4 with no external NLE. |
 
 ## Simulation and VFX (`simulation-vfx/`)
+| [`deterministic-sim-reversal-glass-word`](simulation-vfx/deterministic-sim-reversal-glass-word/SKILL.md) | Make a collapsing glass shelf spell out a word in Unity: run the sim once, color shards by final position, replay the baked sim so the word appears as the pile settles. |
 
 | Skill | What it teaches |
 |---|---|
@@ -159,6 +163,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`niagara-explosion-sprite-sheets-godot`](simulation-vfx/niagara-explosion-sprite-sheets-godot/SKILL.md) | Make Godot explosions look like Unreal Niagara: build the explosion in Niagara, render it out to sprite sheets with depth and thermal data baked in, and import the sheets into Godot, where they play at zero frame cost. |
 
 ## Materials and shaders (`materials-shaders/`)
+| [`morphing-bas-relief-baked-lighting`](materials-shaders/morphing-bas-relief-baked-lighting/SKILL.md) | Recreate the Immersive Garden morphing bas-relief effect in Three.js with TSL: bake 6 lighting/shadow levels into 2 textures in Blender, extrude by mouse, interpolate the baked shadows. |
+| [`surface3d-normal-map-sculpting`](materials-shaders/surface3d-normal-map-sculpting/SKILL.md) | Sculpt tufts and cloth detail straight into the normal map with surface3d, a free standalone app: no high-poly mesh, no bake step. |
 
 | Skill | What it teaches |
 |---|---|
@@ -183,6 +189,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`bismith-browser-procedural-textures`](materials-shaders/bismith-browser-procedural-textures/SKILL.md) | Generate procedural textures in the browser with bismith.dev: start from a starter template, preview tiling live, export greyscale diffuse (gradient ramp plus Tonemapping off) and separate height maps. |
 
 ## Engine and runtime (`engine-runtime/`)
+| [`godot-steam-deck-frame-budget-perf`](engine-runtime/godot-steam-deck-frame-budget-perf/SKILL.md) | Make a Godot game run smoothly on the Steam Deck: spare frame budget builds the next procedural city, GDExtension C++ rewrites, 3 ms destruction budget, per-frame telemetry. |
+| [`rust-webgl2-tree-simulator`](engine-runtime/rust-webgl2-tree-simulator/SKILL.md) | Build a zoomable tree simulator in Rust with a raw WebGL2 viewer: cohesion-tension water, pipe-model trunk, full HDR post stack, no shadow maps or path tracing. |
 
 | Skill | What it teaches |
 |---|---|
