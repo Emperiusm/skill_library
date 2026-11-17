@@ -44,6 +44,64 @@ improved Perlin + ridged multifractal (Musgrave-style) terrain; single
 GPU buffer + one draw call per camera; background-thread generation
 and sorting.
 
+## AAA studio practice
+
+- **First-principles formation simulation is the shipped AAA galaxy
+  generator (Frontier Developments, Elite: Dangerous, Stellar
+  Forge).** Lead render programmer Doc Ross: generation is a
+  top-down hierarchy, where "the smallest details on planets are
+  informed by the results of planet-scale information generation,
+  which are informed by star-system scale information, which are
+  informed by galactic information," starting from "galaxy-scale
+  material and age distribution functions." The one non-programmatic
+  input is a top-down view of the distribution: "it ensures the
+  spiral arms and galactic bulge form the correct shape." Each
+  simulated planet "knows its rough classification based on how much
+  mass it has, the types of materials it is made from, its volcanic
+  parameters, a temperature differential of the crust, mantle and
+  core, trapped gases/atmosphere, and heating from tidal effects and
+  direct radiation from the parent stars"
+  ([80 Level, 2018](https://80.lv/articles/generating-the-universe-in-elite-dangerous?amp=1)).
+  The author's density maps are Stellar Forge's top-down distribution
+  view at indie scale: the shape authored once as an image, the seed
+  doing the rest. And the chemistry derivation in Phase 2 is Stellar
+  Forge's formation simulation in miniature: Frontier "rolls time
+  backwards toward the Big Bang, and extrapolates from there the
+  composition of hundreds of thousands of celestial bodies using the
+  first principles that astrophysicists believe govern our universe,"
+  and validates the generator by checking it accounts for known
+  exoplanets and their orbits — the same calibration idea as the
+  author's "Earth comes out within about a point"
+  ([Polygon, 2014](https://www.polygon.com/2014/12/4/7333709/elite-dangerous-milky-way-stellar-forge-human-cruelty)).
+- **Scale needs 64-bit coordinates or a floating origin (Cloud
+  Imperium Games, Star Citizen).** Digital Foundry: CIG converted the
+  engine to use 64-bit coordinates "to enable solar system-sized
+  game spaces — 536,870,912 times larger than a space based on 32-bit
+  float coordinates," with object containers streaming in and out in
+  the background "in an efficient multithreaded manner" so the player
+  can travel at great speeds while keeping detail at both macro and
+  micro level
+  ([Digital Foundry, 2020](https://www.digitalfoundry.net/articles/digitalfoundry-2020-star-citizen-tech-focus-alpha-3-point-8)).
+  The author's universe-moves-around-the-camera is the other
+  standard answer to the same problem: keep coordinates near the
+  origin where floats are precise. The two approaches are the
+  tradeoff to record: 64-bit everywhere costs performance on some
+  hardware; floating origin costs a rebase discipline.
+- **Nothing stored is the Hello Games rule (No Man's Sky, GDC
+  2017).** One seed number to a deterministic engine defines the
+  whole universe; "there are no load times, because nothing needs to
+  load, as the planets are entirely computer-generated"
+  ([PlayStation.Blog, 2014](https://blog.playstation.com/archive/2014/08/26/exploring-18446744073709551616-planets-mans-sky/);
+  [Polygon, GDC 2017](https://www.polygon.com/2017/3/2/14790028/no-mans-sky-was-flat-procedural-world-generation-maths)).
+  Hello Games could not QA 18 quintillion planets by hand, so it
+  built virtual space probes that flew around the universe, made gifs
+  of the planets, and reported back
+  ([Fast Company](https://www.fastcompany.com/3048667/how-4-designers-built-a-game-with-184-quintillion-unique-planets/)).
+  The author's census — walking the whole galaxy star by star with
+  the client code — is the probe idea applied to generation itself:
+  the census is both the proof and the regression test (see
+  Phase 6).
+
 ## Phase 1: Place the galaxy with density maps
 
 **Do**
@@ -178,6 +236,66 @@ pinned.
 One draw call plus background generation is the only shape that fits
 hundreds of millions of stars; and at that scale, float precision is a
 rendering problem solved by never letting coordinates get large.
+
+## Phase 6: Lock the galaxy down with regression tests
+
+Phases 1 to 5 describe a generator whose value is that it is
+bit-exact and self-checking: same seed, same galaxy, zero
+contradictions, ~400 fps. Every one of those claims is a number, and
+numbers that are never re-measured drift. The five checks below turn
+the author's own claims into files an agent can run on every
+generator change, following the Hello Games space-probe idea from
+the AAA section above: the census is the QA.
+
+**Do**
+1. Write `galaxy-manifest.json` per generator version: the seed, the
+   full census (467,561,373 stars; ~4.9 billion planets; 8.2 billion
+   moons; ~185 million liquid-water-ocean planets; 1,852,531 with
+   life; 281,081 neutron stars; 186,578 black holes), the
+   contradiction count (zero), and the render budget (fps and draw
+   calls per camera). Any generator change that moves a census number
+   is a visible diff, not a silent drift.
+2. Run the cross-platform determinism test: run the same seed on Mono
+   (editor), IL2CPP, and .NET; hash every star temperature, or a
+   sampled 25,000-star slice (the author's own failure scale: roughly
+   7 in 25,000 stars differed before the fix). Gate: zero differing
+   stars across runtimes.
+3. Run the PNG-decoder regression: decode a reference density map
+   with the custom decoder and with Unity import; assert the custom
+   decoder is bit-identical to the source PNG and record the
+   Unity-import delta (the author measured 36% of pixels changed).
+   If the delta ever drops to zero, the custom decoder can be
+   retired; until then it stays.
+4. Run the origin-drift check: log the maximum coordinate magnitude
+   the camera ever reaches during a flight test; assert it stays
+   within the float-precision budget the floating-origin design
+   assumes (the universe moves, the camera stays near the origin,
+   Phase 5).
+5. Log the render budget on every render change against the author's
+   baseline: 19 fps for GameObject-per-star, ~400 fps for the single
+   buffer with one draw call per camera. A change that costs fps
+   without adding visible quality fails the gate.
+
+**Check**
+- `galaxy-manifest.json` exists per generator version with seed,
+  census, contradiction count, fps, and draw calls.
+- Zero differing stars across Mono, IL2CPP, and .NET on the same
+  seed.
+- The custom PNG decoder is bit-identical to the source; the
+  Unity-import delta is recorded.
+- The camera never drifts beyond the float-precision budget.
+- Fps and draw calls per camera are logged against the 19-to-400
+  baseline.
+
+**Why**
+- The census is the only feasible QA for a galaxy no one can look
+  at in full. Hello Games sent probes; this generator walks the
+  galaxy with its own client code. Either way, the numbers are the
+  QA, and a number that is not written down cannot regress.
+- "Same bits, not same algorithm" (Phase 4) is a promise about every
+  layer that can silently change a value. The determinism test and
+  the PNG regression are the two layers the author already caught;
+  the tests exist so the next silent layer gets caught the same way.
 
 ## The human method, distilled
 
