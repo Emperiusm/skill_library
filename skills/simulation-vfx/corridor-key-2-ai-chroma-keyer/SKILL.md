@@ -211,3 +211,58 @@ Sources:
 - https://nofilmschool.com/corridorkey-ai-chroma-keyer
 - https://github.com/iamjoshuadavies/corridorkey-ae
 
+
+## Expansion 2026-11-18: production use on a 100-shot sci-fi short (Jetset + Blender + EmberGen + Fusion)
+
+Source: "Breakdown for Scifi Short. Jetset, Blender, and of course CorridorKey v2.0" by No_Bee_499, r/vfx post 1xykcs3 (score 135, 24 comments; full post text and comments read) | 2026-11-18 scout run, audit 4. This is CorridorKey 2.0 in a full traditional VFX pipeline, not a keying demo: the keyer is one stage among on-set tracking, Blender 3D, EmberGen sims, and a Fusion comp, across 100+ VFX shots in a 3-minute short.
+
+### Phase K1: Track the camera on set with a phone
+
+**Do**
+1. Mount an iPhone running Lightcraft Jetset to the cine camera.
+2. Shoot on the Blackmagic Pocket Cinema Camera 6K Pro; Jetset records all the camera motion.
+3. Sync the two; the offset between them is calculated (author's words: "They sync together, and the offset between the two is calucated").
+
+**Check**
+- The tracked motion matches the shot footage well enough that Blender 3D sits in the plate without visible slip. The author paused the whole project while waiting for CorridorKey 2.0 ("Compared to v1, it's night and day"), which sets the bar: the pipeline waits for the tool that makes the shot work.
+
+**Why**
+On-set tracking removes the matchmove step: the camera solve is recorded, not reconstructed. A phone taped to a cinema camera is the cheapest tracking rig that works.
+
+### Phase K2: Build the world in Blender, blow it up in EmberGen, composite in Fusion
+
+**Do**
+1. Do all 3D in Blender.
+2. Do the explosions in EmberGen.
+3. Build most of the set kitbashed from paid assets made by CG artists; make the rest by hand.
+4. Composite everything in Fusion.
+
+**Check**
+- Commenter arshbio009, on the result: "the cg lighting being motivated by on set lights complemented by good quality comps". The lighting check is that CG light follows set light.
+- The author plans more detailed breakdowns; commenters asked for formats and render passes, which the author has not answered yet in the thread.
+
+**Why**
+Kitbashing buys the set; hand-building buys the shots no asset covers. Blender plus EmberGen is the whole 3D side: one tool for the world, one for the fire.
+
+### Phase K3: State the AI line in writing, and expect it to be argued
+
+**Do**
+1. Key with CorridorKey 2.0 and keep generative AI out of the images entirely. The author's own words: "there's no generative AI in these images. Since we live in a world where probably anyone could generate this sort of stuff using a single prompt, it's an important distinction. This is a traditional vfx pipeline, not 'Seedance 2.5'." The project's guidelines are published at https://notbyai.fyi/.
+2. Know the counterpoint before you publish the claim. Commenter lvl5ll (score 3): CorridorKey 2.0 runs on features from three frozen, externally developed foundation models: NVIDIA C-RADIOv4-SO400M, Microsoft MoGe-2 ViT-B, and Google DeepMind RVM small. C-RADIOv4 was trained on about 700 million images, distilling from teachers including Meta's DINOv3-7B, itself trained on 1.689 billion images curated from roughly 17 billion public Instagram posts. CorridorKey 1.0's base was Meta's facebook/hiera_base_224.mae_in1k, pretrained and fine-tuned on ImageNet-1k's 1,281,167 training images. (These figures are the commenter's, from the cited model cards and papers, not the author's.)
+3. The author's answer: "while corridor key is AI powered (as in, it's machine learning), it's not the same thing" as generating final frames from prompts. Commenters split: Specific_Dingo6709 (score 11): "Using ML roto and keying tools isn't the same thing as creating final frames from a bunch of prompts"; thrillhouse900 (score -5): "it quite literally generates parts of the image that didn't exist before. But I'm fine with people making the distinction for themselves."
+
+**Check**
+- The honest record: the pipeline uses ML keying trained on massive external data while claiming "no generative AI". Whether that counts as generative AI is the thread's open dispute; the pipeline itself is fully traditional otherwise (tracked camera, hand-built/kitbashed 3D, EmberGen sims, Fusion comp).
+
+**Why**
+The distinction the author draws is between tools that isolate what was filmed (keying, roto) and tools that invent what was never there (prompted generation). The thread shows the line is defensible for the workflow and contested for the keyer: the keyer is ML, and its training data is other people's images at internet scale. Name it plainly instead of hiding it.
+
+### Production human method, distilled
+
+1. Track on set, don't matchmove later: a phone on the camera records the solve.
+2. Pause for the tool that makes the shot work: the project waited for CorridorKey 2.0.
+3. Kitbash the set, hand-build the rest.
+4. Light CG from the set lights; judge the comp by whether the light agrees.
+5. State the AI line in writing (notbyai.fyi) and expect it to be argued: ML keying sits on the line, so name it plainly instead of hiding it.
+
+**Depth status (expansion):** FULL (full post text + all 24 top comments, including the author's answers and the foundation-model breakdown).

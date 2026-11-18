@@ -234,3 +234,54 @@ No AAA studio is documented as shipping on MiniMax H3 SyncTile itself, so this s
 
 **Why**
 - In the research lineage, seams are a sampling-architecture defect, not a rendering accident. Catching them at the parameter level (grid, matching windows) is cheaper than re-rendering 600 frames at 4K, and inspecting join frames is the only acceptance test that actually tests the claim.
+
+## Expansion 2026-11-18: alaintural single-clip 4K upscale (not the long-video use)
+
+Source: "SyncTile: a node that takes a MiniMax H3 clip to 4K on one RTX 4090, with no seams (free, MIT)" by alaintural, r/comfyui post 1xywymr (score 76, 18 comments; no selftext, the audit rests on the author's detailed comment answers) | 2026-11-18 scout run, audit 8. This is the single-clip 4K-upscale use of SyncTile, distinct from the 600-frame long-video use above: same nodes, different job (one short clip to 4K, not a long timeline without seams).
+
+### Phase S1: Tile the clip so each tile covers the full length
+
+**Do**
+1. Run the MiniMax H3 clip through SyncTile tiles. Each tile covers the full length of the clip, not one frame, "so H3 keeps time consistent inside a tile and the blend keeps the tiles consistent with each other."
+2. The tiles agree in latent space first, "so the decoder gets one clean latent and there is no seam left to hide."
+
+**Check**
+- No seams between tiles in the output. The author's sentence for the design: "the tiles agree in latent space first, so the decoder gets one clean latent and there is no seam left to hide."
+
+**Why**
+Agreeing in latent space before decoding is what makes the seam disappear: by the time pixels exist, there is only one image. Hiding seams after decode is a repair; preventing them in latent space is the design.
+
+### Phase S2: Give the face its own pass
+
+**Do**
+1. After the tiles, run a separate face pass on the face in the clip.
+
+**Check**
+- The face holds up at 4K; the tile pass alone is not trusted for faces.
+
+**Why**
+Faces are where viewers look and where upscalers fail first. A dedicated pass is the admission that the general pass is not enough for the most scrutinized pixels.
+
+### Phase S3: Know the tested limits, and what was not tested
+
+**Do**
+1. Tested scope, stated by the author: 5-second clips only ("I only tested 5 second clips, so I can not tell you about long ones yet. A longer clip makes each tile heavier on VRAM"). Fast motion not tested. The face pass is the only face handling tested.
+2. Hardware: the author only has a 4090 to test on, so 12 GB cards are unanswered ("The tiles are small, so 1080 might fit, but I can't promise. Tell me how it goes if you try it", in answer to a 4070 12 GB question).
+3. Honest limit, author's words: "Real native 4K quality is hard to reach with H3, harder than I thought when I started. The tile pass can only add detail that the model itself knows, so it does not look like 4K from a camera yet."
+
+**Check**
+- Compare against SeedVR2 7B on an earlier base clip: SeedVR2 was sharper on a still frame, but the texture changed from frame to frame in playback, and it took about 35 minutes on the author's 4090. SyncTile's output is a normal video file, so SeedVR2 can run after it.
+- Commenter pushback (VirusCharacter, score 2): "That is 4K resolution. It is NOT 4K quality and that is the problem with almost all these 4K-upscalers! It NEVER becomes 4K quality!" The author agrees: "Yes, I know, and I am still working on it."
+- Commenter data point (SRhyse): native 4K out of MiniMax "takes many hours" and longer clips risk colour desaturation; on a 6000 Pro, about 30 minutes for 5 s at ~4 MP, 100 minutes for 10 s, 3.5 hours for 15 s. At 0.4 MP prompt adherence is high, dips at 2 MP, then rises again toward 8 MP/4K.
+
+**Why**
+Resolution is not quality: a 4K file of model-known detail is still model-known detail. The SeedVR2 comparison is the honest control: sharper stills, worse motion, 35 minutes. The author's "this month I will run new experiments with different tests, and the results will go into the repo" is the open loop: this is a work in progress, not a finished upscaler.
+
+### Single-clip human method, distilled
+
+1. Agree in latent space first; the decoder should never see a disagreement.
+2. Faces get their own pass; the general pass is not trusted for them.
+3. State the tested scope (5 s, 4090, no fast motion) and refuse to promise beyond it.
+4. Resolution is not quality: say plainly that it does not look like 4K from a camera yet.
+
+**Depth status (expansion):** PARTIAL (no selftext; the audit rests on the author's detailed comment answers plus the post title; clip length, tile counts, and step counts are not stated anywhere in the thread).

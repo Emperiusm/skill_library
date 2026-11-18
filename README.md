@@ -13,7 +13,7 @@ skill.
 
 ## The skills
 
-248 skills in 9 categories, growing with every daily scout run. The full grouped
+253 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
@@ -21,8 +21,8 @@ reports under [`docs/scout-reports/`](docs/scout-reports/).
 |---|---|---|
 | [`capture`](skills/capture/) | 11 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
 | [`characters`](skills/characters/) | 19 | Character pipelines, consistent identities, rigging, cloth and hair |
-| [`procgen-worlds`](skills/procgen-worlds/) | 43 | Procedural generation: terrain, cities, creatures, whole games from a seed |
-| [`ai-video`](skills/ai-video/) | 40 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
+| [`procgen-worlds`](skills/procgen-worlds/) | 45 | Procedural generation: terrain, cities, creatures, whole games from a seed |
+| [`ai-video`](skills/ai-video/) | 43 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
 | [`simulation-vfx`](skills/simulation-vfx/) | 22 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 21 | Material authoring, shaders, texturing |
 | [`engine-runtime`](skills/engine-runtime/) | 54 | Engine systems, runtime and render tech, browser and WebGPU |

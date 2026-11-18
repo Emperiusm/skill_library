@@ -154,6 +154,73 @@ Every failure here has a named workaround that respects what the model is: gener
 3. Read the helper's shown text before running: invented dates and details are visible there, before they are baked into an image.
 4. Generate small, then upscale; never generate big directly, and never ask a generation model to edit.
 
+## Expansion 2026-11-18: wjc_5 tuned fusion (layer-specific Base/SFT blend + Guanlan LoRA)
+
+Source: "MOSS Image: All-Purpose Text-to-Image | Stunning Aesthetics, Blazing Speed, Top-Tier Quality | Tuned Fusion Parameters | Beat Closed-Source Models" by wjc_5, r/comfyui post 1xxs8k1 (score 35, 17 comments; full post text read) | Video walkthrough: https://youtu.be/oOwUkO7qLps | Workflow: https://www.runninghub.ai/ai-detail/2120396101965631490 (free download, no login; also runnable online) | 2026-11-18 scout run, audit 2. This is a distinct recipe from the Ep40 Pixaroma workflows above: same model, a tuned fusion instead of the stock SFT checkpoint.
+
+### Phase F1: Blend Base and SFT per layer, not per model
+
+**Do**
+1. Start with the individual Base and SFT models, then test uniform blends from 90% Base / 10% SFT to the reverse.
+2. Move to different ratios for different parts of the model and refine through image tests. The workflow stores those layer-specific settings; it is not a single global blend percentage.
+3. Judge by the failure each extreme has alone: SFT alone looks overly polished; Base alone lacks visual appeal. The blend keeps appeal without the polish.
+
+**Check**
+- Compare the same prompt across the blend sweep; the preferred blend is the one where the polished look recedes but appeal stays.
+
+**Why**
+A global blend percentage averages the two models' behaviour everywhere; per-layer ratios let the blend keep SFT's finish where it helps and Base's character where SFT would flatten it. The author is explicit that the preference is specific to this blend, not a general claim.
+
+### Phase F2: Add the Guanlan LoRA at low strength
+
+**Do**
+1. Apply KOOK's Guanlan SFT LoRA after the blend, at strength 0.2.
+2. Keep the separate switch that skips Guanlan while keeping the Base/SFT blend intact.
+
+**Check**
+- Higher weights smooth away more character texture than the author wants in this setup; 0.2 is the point where character texture survives.
+
+**Why**
+The LoRA is a seasoning, not the dish: at 0.2 it adds the SFT character the blend wants; higher, it erases the texture the blend was built to preserve.
+
+### Phase F3: Pick a sampling route by what matters, speed or texture
+
+**Do**
+1. Everyday generation: Base 8-step DMD acceleration LoRA on, 8 steps, CFG 1, Euler with sgm_uniform.
+2. More texture, longer wait: acceleration off, 50 steps, CFG 3, Euler with sgm_uniform.
+3. The author tested two SFT acceleration variants and two Base variants before settling on this Base option.
+
+**Check**
+- The 50-step route retains more texture but takes roughly 4-5 times as long in the author's tests.
+- The accelerated workflow, including upscaling, took about 90 seconds locally (7900XT) and 60 seconds on the online RTX 4090 setup.
+
+**Why**
+Steps buy texture, not just quality: 8 steps with the DMD LoRA is the daily driver, 50 steps is the texture route. The author warns the acceleration preference is specific to that LoRA and this blend, "rather than a claim that any acceleration LoRA will work equally well".
+
+### Phase F4: Prompt through a multimodal chat model, then upscale with colour matching
+
+**Do**
+1. Give the prompt template to a capable multimodal chat model, send the request or reference image in that conversation, and paste the resulting prompt into ComfyUI.
+2. The template handles short text requests, image-to-prompt reconstruction, and requests to change selected attributes. Instead of adding more adjectives, it asks for concrete composition, lighting, material, and typography decisions where relevant.
+3. Keep internal PE (prompt enhancement) off when using an already-finished prompt. The built-in options are more convenient, but the author found the stronger external chat models more consistent.
+4. Remember the limitation: on this route the chat model sees the reference image, but MOSS only receives the resulting text. It can regenerate a described scene; it does not directly edit the source pixels or guarantee the same face. To request a change, describe the complete target image, not just "change the clothes and keep everything else."
+5. Optionally run native SeedVR2 upscaling targeting 8 megapixels (roughly 4K-class output, dimensions depending on aspect ratio). Keep LAB colour matching enabled; disabling colour matching introduced a yellow shift in the author's tests.
+
+**Check**
+- Commenter pushback, taken seriously by the author: Treeshark12 says "Prompt enhancing is pretty much always garbage" and the example images have "poor anatomical proportions" and "strange" limb proportions; the author replies by asking "What anomalies do you see in the image I've shown?" and repeats "Don't forget to enhance the prompts." The disagreement is unresolved in the thread: the author stands by prompt enhancement, a commenter calls it garbage and the anatomy poor.
+- Another commenter (Riddy_93) reports downloading and using MOSS the day before: "the aesthetic looks better and realistic than Qwen 2.1".
+
+**Why**
+The prompt is doing the work the model cannot: MOSS receives text only, so the quality of the text is the quality ceiling. The anatomy criticism is the honest counterweight: no prompt template fixes a model's limb proportions. Upscaling without colour matching changes the image while enlarging it; LAB matching is the check that the bigger image is the same image.
+
+### Tuned-fusion human method, distilled
+
+1. Blend per layer, not globally; the setting lives in the workflow, not in one number.
+2. LoRA at 0.2: enough to add character, low enough to keep texture.
+3. Two sampling routes, chosen by the job: 8 steps/CFG 1 for everyday, 50 steps/CFG 3 for texture.
+4. Prompt outside the tool: a multimodal chat model writes the prompt, ComfyUI runs it; MOSS only ever sees text.
+5. Never ask for a partial edit in words; describe the complete target image.
+
 ## AAA studio practice
 
 AAA studios do not treat AI image generation as a final-art machine; they treat it as a supervised, directional stage with human review before anything ships. That maps directly onto this recipe:
