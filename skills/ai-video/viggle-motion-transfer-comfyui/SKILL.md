@@ -88,14 +88,23 @@ The model preserves motion and lip sync because it repaints a character onto the
 - Lip sync: the author claims it is handled (results at 11:20); a commenter asked specifically whether mouth motion preserves teeth identity. The video demonstrates lip sync on the walking test; teeth identity is not separately demonstrated.
 
 ## AAA studio practice
-Reference-frame discipline is the standard motion-transfer practice in production: the transfer is only as good as the input video and the chosen reference frame (the 2026-10-02 Viggle audit states the same rule: image-edit the character into the first frame and use that as the reference). The production version of this workflow adds a scored identity check per take (face-similarity score against the reference, the same pattern the OmniChar/.char format uses with sface + DINOv2), which is the missing gate here: the author judges identity by eye, and the comments show the eye catching drift after the fact.
+Reference-frame discipline is the standard motion-transfer practice in production: the transfer is only as good as the input video and the chosen reference frame (the 2026-10-02 Viggle audit states the same rule: image-edit the character into the first frame and use that as the reference). The production version of this workflow is built on the same anchor idea, one reference driving the whole shot. Runway's Act-One maps an actor's facial expression, gaze, eye-line, and micro-emotions from a single video input onto a generated character, with no motion-capture rig, and Runway's partnership with Lionsgate builds custom models on the studio's 20,000-title catalog. EbSynth is the older, non-generative form of the same discipline: paint or edit one keyframe and propagate it across the whole shot, preserving the keyframe content at pixel level; the tech was used in production on Richard Linklater's animated feature Apollo 10 1/2: A Space Age Childhood and on an animated sequence in Netflix's Wednesday, and for VFX tasks such as digital makeup and rotoscoping. Wonder Dynamics' Wonder Studio (Autodesk-acquired) does full CG actor replacement with Marvel/ILM validation, and Move AI's markerless mocap carries Sony/Epic adoption; both are the heavier, tracked versions of the same transfer, and both keep a scored acceptance pass per take.
+
+The production version of this workflow adds two gates the skill lacks: a scored identity check per take (face-similarity score against the reference, the same pattern the OmniChar/.char format uses with sface + DINOv2), and a consent record for the source performer, since face replacement requires actor consent under the SAG-AFTRA 2023 AI clause.
+
+Sources:
+- Runway Act-One / Act-Two and the Lionsgate partnership (single performance input, facial expression/gaze/micro-emotions, 20,000-title catalog): https://stagerunner.net/runways-just-introduced-a-new-ai-model-that-hopes-to-redefine-motion-capture-for-film-tv-and-games/
+- CG Channel, "EbSynth 2 can turn video into animation without using AI" (keyframe propagation, Apollo 10 1/2, Netflix Wednesday): https://www.cgchannel.com/2025/10/ebsynth-2-can-turn-video-into-animation-without-using-ai/
+- Wonder Dynamics vs Move AI vs Runway Act-One comparison (Wonder Studio Marvel/ILM validation, Move AI Sony/Epic adoption, SAG-AFTRA consent clause; secondary comparison source, labeled): https://en.ai-pedias.com/compare/wonder-dynamics-vs-move-ai-vs-runway-act-one
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
 - After each generation, run an automated face-similarity score (reference image vs sampled output frames) and a lip-sync check, and log both per take; reject takes below threshold automatically and re-run with the next seed.
+- Write a paint-frame manifest per take: which frames are pins, the reference-image hash painted at each pin, and the prompt's character description (including clothes) for that take, so a wrong-outfit take can be traced to the prompt that caused it.
+- Add a consent note field to the take log: record that the source performer consented or that the source footage is the user's own; refuse to log a take as shippable without it.
 **Check**
 - The log shows the per-take scores, so a drifted take is rejected by a number instead of by a viewer's comment.
 **Why**
-- The workflow's only quality gate is the author's eye after a 20-minute generation; scoring the output turns the 20 minutes into a measured take instead of a hope.
+- The workflow's only quality gate is the author's eye after a 20-minute generation; scoring the output turns the 20 minutes into a measured take instead of a hope, and the manifest plus consent field are the two production gates the reference-frame discipline already implies.
 
 **Depth status:** FULL (14-min ASR captions, 331 segments, mined firsthand; 12 frames from the downloaded video read firsthand, confirming the ComfyUI graph with Load Video Upload and frame-preview grid; Reddit post text + all 5 comments read firsthand).

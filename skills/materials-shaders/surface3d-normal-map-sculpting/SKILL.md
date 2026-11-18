@@ -54,14 +54,23 @@ The same rule the Cinematic Cavern guide states: a normal map can restore shadin
 - Deep displacement attempted in the normal map: out of scope by the author's own definition. Fix: use a real high-poly bake for anything that changes the silhouette.
 
 ## AAA studio practice
-Normal-map baking from a high-poly sculpt is the standard prop pipeline in shipped games, and the silhouette rule (a normal map restores shading, never silhouette) is stated in the Cinematic Cavern workflow guide and in standard baking practice. surface3d inverts the pipeline for the easy case: when the detail is shallow cloth work, skip the high-poly entirely and paint the map directly. The cost saved is the whole sculpt-and-bake loop; the cost paid is the hard scope boundary above.
+Normal-map baking from a high-poly sculpt is the standard prop pipeline in shipped games, and the silhouette rule (a normal map restores shading, never silhouette) is stated in the Cinematic Cavern workflow guide and in standard baking practice. surface3d inverts the pipeline for the easy case: when the detail is shallow cloth work, skip the high-poly entirely and paint the map directly. That inversion has a direct production precedent: Quixel's NDO (Normal, Diffuse, Occlusion), the Photoshop plugin for building normal maps meshless, straight from 2D shapes. Philip Klevestav's NDO tutorial records using it "on a pretty much daily basis at work" as "an absolutely essential tool," with a sculpt layer that lets the artist hand-paint and edit generated normals with any Photoshop brush, and a standing recommendation to work in 16 bits per channel for greater depth in the normals and superb gradients. The Polycount production thread states the same discipline from the other side: hand-building a normal map in NDO, meshless and up to 8K, beats processing a flattened texture through a converter ("nothing compares to hand-building a normal using NDO instead of using a conversion"), and a corrugated-metal normal map takes about 15 minutes that way. Game-ready PBR material sets built with NDO for normals, height, and AO ship the same way (ArtStation, Justin Naylor).
+
+The AAA rule that transfers: paint the normal map directly when the detail is shallow, hand-build rather than convert, work in 16-bit, and keep the high-poly bake path for anything that must change the silhouette. surface3d is the standalone descendant of the NDO idea; the scope boundary is identical.
+
+Sources:
+- Klevestav, "nDo Tutorial" (daily production use, sculpt layer, 16-bit/channel recommendation): http://www.philipk.net/tutorials/ndo/ndo.html
+- Polycount, "Best way to create this as a texture?" (meshless NDO up to 8K, hand-build beats conversion, ~15 min): https://polycount.com/discussion/197942/answered-best-way-to-create-this-as-a-texture
+- Naylor, "Seamless PBR Materials (Game Ready)" (NDO for normals/height/AO on game-ready materials): https://justinnaylor.artstation.com/projects/9z9DQ
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
 - Add a scope gate before the sculpt: measure the maximum depth the detail needs to read at, and refuse details deeper than a configured threshold (e.g. anything that must cast a silhouette edge), routing those to the high-poly bake path instead.
+- Add a bit-depth check: assert the normal map is exported at 16 bits per channel (the NDO production recommendation above) and flag banding risk if it is 8-bit.
+- Add a before/after acceptance pair: render the asset flat and with the sculpted normal map under the same light angle, and log the read (does the tuft read as cloth, does any button look pasted on) so the scope decision is recorded, not just eyeballed.
 **Check**
 - The gate lists the refused details by name with the reason (silhouette), so the artist sees the boundary instead of discovering it in the render.
 **Why**
-- The author's failure mode is a scope error, not a skill error: the gate makes the scope check automatic.
+- The author's failure mode is a scope error, not a skill error: the gate makes the scope check automatic, and the 16-bit check imports the one production rule the NDO lineage states explicitly.
 
 **Depth status:** FULL (post has no selftext; all 13 comments read firsthand, including the author's four replies naming the tool, its price, its scope, and the POM comparison).

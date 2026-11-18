@@ -72,14 +72,24 @@ The author's use is maintenance over time (a changing site), so a snapshot pipel
 - 5-image proof mistaken for scale proof: the author is explicit that the bigger-area load test is still to do.
 
 ## AAA studio practice
-Point clouds as the base format is standard photogrammetry practice: COLMAP is the standard open-source structure-from-motion solver, and every production capture pipeline (RealityCapture, Metashape, drone mapping) treats the point cloud as the intermediate everything else derives from. The distinctive choice here is designing for maintenance over time (augment/replace workflows, control points on permanent structures) instead of a one-off snapshot, which is how survey-grade digital twins are specified.
+Point clouds as the base format is standard photogrammetry practice, and the production capture chain around them is now a settled six-stage pipeline: capture, camera poses, training, cleaning, compression, publishing. The pose stage is COLMAP (or RealityScan/Metashape, which export COLMAP format that every splat trainer reads), the capture contract is 70-80% overlap between neighbouring photos and 60-70% between rings, and beyond a few million Gaussians a single file stops working: the scene is cut into streamed levels of detail (ARGO 3DGS production workflow, 2026). DICE's Star Wars: Battlefront photogrammetry pipeline (GDC 2016) ran the same discipline at AAA scale: overlap was "the single most important thing," every trip was planned from a shot-list breakdown of which assets needed capturing, and the photogrammetry pass replaced the high-topo sculpt phase with retouching. The author's distinctive choice, designing for maintenance over time (augment/replace workflows, control points on permanent structures), is how survey-grade digital twins are specified in AEC: 3DGS is used as a rapid capture method for documenting change on construction sites, with a LiDAR trajectory and point cloud as the geometric backbone and splats providing texture and realism, re-flown as the site changes.
+
+The AAA rule that transfers: the point map (or COLMAP pose set) is the interchange format everything downstream reads, the capture is planned from a shot list before anyone goes out, and a twin that is not re-captured on a schedule rots. The author's augment/replace pair is the maintenance schedule made into a feature.
+
+Sources:
+- ARGO, "Gaussian Splatting Workflow: From Capture to the Web (2026 Guide)" (six stages, 70-80% overlap, COLMAP 4.0, SPZ/SOG compression, streamed LODs): https://www.ar-go.co/blog/gaussian-splatting-production-workflow/
+- AEC Magazine, "Introducing Gaussian Splats for AEC" (3DGS for documenting change, LiDAR backbone plus splat texture): https://aecmag.com/technology/introducing-gaussian-splats-for-aec/
+- DICE, "Star Wars: Battlefront and the Art of Photogrammetry" (GDC 2016, via 3dmag; overlap discipline, shot-list breakdowns, retouch replaces sculpt): https://www.3dmag.com/inspiration/3d-scanning-star-wars-battlefront/
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
 - Automate the generality check the author does by hand: run every stitched stage against two disjoint image sets (different days, different light) and diff the point maps; any stage whose output changes materially between sets gets flagged for review.
+- Add an overlap-coverage gate: compute pairwise overlap from the solved camera poses and fail the capture if any consecutive pair falls below 70% overlap, the production contract above.
+- Add a shot-list manifest: list the planned assets/areas before capture, record which were captured and which were missed, and carry the misses into the next flight as the augment list.
+- Log the cleaning stage per set: how many moving objects SAM removed and how many control points were matched on permanent structures, so the augment/replace decision has numbers instead of a feeling.
 **Check**
 - The diff report names the stage and the magnitude of the change, so the LLM-integration failure mode is caught by a test instead of by the author's eye.
 **Why**
-- The author already knows the failure mode ("making the solution work with the input instead of being universal"); a two-set diff turns that knowledge into a gate.
+- The author already knows the failure mode ("making the solution work with the input instead of being universal"); a two-set diff turns that knowledge into a gate, and the overlap and shot-list gates are the same planning discipline DICE used before any camera left the studio.
 
 **Depth status:** FULL (full post text, 2,777 characters, + all 6 comments read firsthand; the ~12 CVPR projects are unnamed by the author, so no individual project is claimed).

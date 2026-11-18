@@ -67,14 +67,23 @@ Event-hooked sound sells the physics: the ear confirms what the eye sees, and a 
 - Scoring the glass first (commenter asdf3011): if the shards need to break along designed lines, score the glass before the run so it breaks the way you want, then figure out how everything will fall.
 
 ## AAA studio practice
-Baked, pre-rendered cinematics are the standard way shipped games show expensive physics in intros: the sim runs once offline and the result plays back, while the game runs the same systems live at lower cost. The extra step here, coloring by final position, is the same "read the future, paint the past" trick used in deterministic replay systems: the recording is the source of truth, and the art is derived from it rather than imposed on it.
+Deterministic replay is how shipped games get a recorded run to play out the exact same way every time, and the author's "run it once, read the future, paint the past" is the single-machine version of the same contract. Ensemble Studios' Age of Empires I and II ran the exact same simulation on every machine and sent only player commands; the recorded-games feature fell out of that determinism: "Because our simulation is deterministic, and recorded games are synchronous in the same way that multiplayer is synchronous, a game recording gave us a great way of passing around repro cases for bugs because it was guaranteed to play out the exact same way every time" (Bettner and Terrano, GDC 2001). Wube Software's Factorio runs the same lockstep design: each peer runs the full simulation and only player actions are transferred, so any floating-point nondeterminism leaks in as a desync where players see completely different games (Friday Facts #76). The GDC 2011 Networked Physics talk states the rule for physics specifically: deterministic lockstep requires "exactly the same result down to the floating point bits. Not close. Not near. Exactly the same," and the rewind-and-replay correction used by Halo, Quake, Unreal, Counter-Strike, TF2, Left 4 Dead and Portal 2 is the production form of "run it, read the future, replay it."
+
+The AAA rule that transfers: record the input stream (the initial state plus the cart push), not the positions. The recording is small, the replay is the source of truth, and the art (the colors) is derived from the recorded final state. That only holds under a fixed timestep, a seeded PRNG, and no wall-clock or unseeded randomness inside the sim; anything else makes the replay diverge and the word unreadable.
+
+Sources:
+- Bettner and Terrano, "1500 Archers on a 28.8: Network Programming in Age of Empires" (GDC 2001): https://web.cs.wpi.edu/~claypool/courses/4513-B03/papers/games/aoe.pdf
+- Wube Software, Friday Facts #76, "MP inside out" (lockstep, desync): https://direct.factorio.com/blog/post/fff-76
+- GDC 2011, "Networked Physics" (deterministic lockstep, rewind and replay): https://www.slideshare.net/slideshow/gdc-networked-physics-2011-7663974/7663974
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
+- Before painting, verify determinism: replay the recorded input stream headless, hash the per-frame shard transforms, and fail the bake if the replay hash differs from the recorded run. Only paint colors after the replay matches.
+- Add a determinism preflight: scan the sim for variable-delta-time physics steps and unseeded random calls; fail the bake if either is found, since both break the replay contract above.
 - Automate the word check: after the bake, render the final frame, run OCR or a template match against the target word, and fail the bake if the read confidence is below threshold; only then paint the colors and re-render.
 **Check**
-- The check reports the per-letter read score, so a failing letter can be fixed by re-coloring that shard set instead of re-running the sim.
+- The check reports the replay-hash match (pass/fail), the preflight violations by name, and the per-letter read score, so a failing letter can be fixed by re-coloring that shard set instead of re-running the sim.
 **Why**
-- The author's method already separates sim from coloring; automating the read makes the separation testable instead of eyeballed.
+- The author's method already separates sim from coloring; verifying the replay and automating the read makes the separation testable instead of eyeballed, and the hash is the same proof Factorio and Age of Empires rely on: same inputs, same outcome, bit for bit.
 
 **Depth status:** FULL (full post text + all 24 comments read firsthand; exact numbers: ~90 s compute for 14 s of footage; the fixed-seed detail is labeled inference from a commenter, not author-confirmed).

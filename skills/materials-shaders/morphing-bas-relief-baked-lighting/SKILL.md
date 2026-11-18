@@ -85,14 +85,24 @@ Six discrete baked states, smoothly interpolated, are enough for the eye to acce
 - Shadows not changing while the geometry morphs: the blend is not wired yet; the geometry phase and the shadow phase are separate steps, and this state is expected between Phase 3 and Phase 4.
 
 ## AAA studio practice
-Baked lightmaps are the standard static-lighting technique in shipped games (Unreal Lightmass, Unity baked GI): expensive lighting is computed once offline and sampled at runtime. This workflow is the same idea pushed one step further: bake several lighting states instead of one, and blend between them. The cost is texture memory (two textures holding six states); the saving is zero runtime shadow-map passes.
+Baked lightmaps are the standard static-lighting technique in shipped games, and this workflow is the same idea pushed one step further: bake several lighting states instead of one, and blend between them. Naughty Dog's The Last of Us was built on that exact trade: "From the very beginning, we knew that to achieve this level of quality, relying purely on runtime lighting would not be enough. We knew that we had to compute our lighting offline, so we decided to use lightmaps" (Michal Iwanicki, SIGGRAPH 2013, "old lightmaps, new tricks"), with an ambient-plus-directional term stored per lightmap texel so normal maps still read. The Last of Us Part II kept the same baked-ambient system and held a 30 fps target inside a limited memory budget (SIGGRAPH 2020). The engines ship the multi-state version of this directly: Unreal's Precomputed Lighting Scenarios bake several different lighting setups for one map and switch between them at runtime, and Unity's Lighting Scenarios do the same, including blending between scenarios at runtime (the probe positions must match across scenarios for the blend to work). The runtime alternative to baking the relief is parallax occlusion mapping (Tatarchuk, I3D 2006), which fakes depth per pixel but cannot change the silhouette and costs shader instructions every frame; the baked-blend route spends texture memory once and zero runtime shadow passes.
+
+The AAA rule that transfers: bake offline what runtime cannot afford, keep the number of baked states small enough to fit the memory budget, and make the blend the only runtime operation. The skill's six states in two textures is the per-relief version of a Lighting Scenario set, and the channel-order contract is the part that must never drift.
+
+Sources:
+- Iwanicki, "Lighting Technology of The Last of Us" (SIGGRAPH 2013; offline bake, ambient+directional per texel): https://www.academia.edu/36437526/Lighting_Technology_of_The_Last_Of_Us
+- Doghramachi, "Lighting Technology of The Last of Us Part II" (SIGGRAPH 2020; baked ambient lighting, 30 fps, memory budget): https://history.siggraph.org/wp-content/uploads/2022/08/2020-Talks-Doghramachi_Lighting-Technology-of-The-Last-of-Us-Part-II.pdf
+- Unity docs, "Bake different lighting setups with Lighting Scenarios" (switch or blend between baked scenarios at runtime): https://docs.unity.com/en-us/engine/6000.5/manual/lighting-overview/lighting/probevolumes/probe-volumes-change-lighting-at-runtime/bakedifferentlightingsetups
+- Tatarchuk, "Practical Dynamic Parallax Occlusion Mapping" (I3D 2006; POM integration into games): https://Docslib.Org/doc/5655170/practical-dynamic-parallax-occlusion-mapping
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
 - Generate the six bake states with a Blender Python script: one script that renders the relief at six extrusion heights, writes each result into one channel of the two textures, and exports the glTF with the channel layout documented in a sidecar JSON.
+- Record the light setup used for each state (light positions, intensities, and the extrusion value) in the sidecar, and hash each state; fail the build if a re-bake produces a different hash for a state whose setup did not change.
+- Add a memory-budget check: total the two textures' bytes against the project's texture budget and fail if the six-state set exceeds it; if it does, drop to fewer states (four, then three) and re-check the shadow read before accepting.
 **Check**
 - The sidecar JSON lists the channel order (T1.B through T2.R) and the extrusion value each level corresponds to; the TSL shader reads the same file at build time so the blend can never drift from the bake.
 **Why**
-- The manual version of this workflow fails silently when a channel is misassigned (the author debugged it live by walking channels on screen). A scripted bake with a shared channel contract removes that failure mode.
+- The manual version of this workflow fails silently when a channel is misassigned (the author debugged it live by walking channels on screen). A scripted bake with a shared channel contract removes that failure mode, and the hash plus memory gate are the same discipline Naughty Dog applied to its lightmap bakes: the bake is versioned, budgeted, and reproducible.
 
 **Depth status:** FULL (69-min ASR captions mined firsthand; 12 frames from the downloaded video read firsthand; Reddit post text and live demo corroborate the 6-levels-in-2-textures claim).

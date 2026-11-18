@@ -71,14 +71,24 @@ Transparent output removes the keying step entirely: the image is already an ass
 - No content filter: the model is uncensored. Fix: do not assume any safety filtering; keep generations in a reviewed pipeline.
 
 ## AAA studio practice
-Character model sheets (front/side/back + detail views) are the standard consistency mechanism in animation and film production: every character that must survive multiple shots gets one. The video's contribution is that a local 7B model can now consume the sheet directly as reference images, so the sheet stops being a human-only document and becomes a model input. The same sheet-as-input pattern is what the MiniMax H3 character-swap workflows use for video.
+Character model sheets (front/side/back + detail views) are the standard consistency mechanism in animation and film production: every character that must survive multiple shots gets one. The video's contribution is that a local 7B model can now consume the sheet directly as reference images, so the sheet stops being a human-only document and becomes a model input. The same sheet-as-input pattern is what the MiniMax H3 character-swap workflows use for video. AAA studios now run local ComfyUI pipelines in exactly this shape. Ubisoft La Forge open-sourced CHORD, its PBR material estimation model, with ComfyUI nodes for an end-to-end material workflow: a three-stage pipeline (texture image generation from prompts or reference inputs, CHORD image-to-material estimation into Base Color/Normal/Height/Roughness/Metalness, then industrial-grade upscaling from CHORD's 1024 resolution to 2K and 4K production assets), described as "a significant step toward integrating ComfyUI into AAA-scale video game production workflows." Ubisoft's DigiPro 2025 agentic asset pipeline runs a ComfyUI image-generation pipeline that converts briefs into asset casting lists with concept previz imagery, retrieves from a library of over 30,000 production-indexed USD assets, and populates Blender scenes via MCP. The reference discipline shows up in consumer tools too: Leonardo AI's trainer locks a style from 10-20 references, after which a whole asset pack becomes a few clicks rather than a few hundred generations.
+
+The production rule that transfers: reference-driven, multi-stage, with an explicit upscaling ladder and a license logged per model. CHORD itself ships under a Research-Only license, and Qwen-Image-2.1 is not open for commercial use; the manifest must carry the license, not just the model name.
+
+Sources:
+- ComfyUI blog, "Ubisoft Open-Sources the CHORD Model and ComfyUI Nodes" (3-stage pipeline, 1024 to 2K/4K upscale, ComfyUI in AAA production): https://blog.comfy.org/p/ubisoft-open-sources-the-chord-model
+- DigiPro 2025, "From Brief to Scene: Agentic AI for Asset Production at Ubisoft" (ComfyUI image pipeline, 30k USD asset library, Blender MCP): http://digiproconf.org/program/program-4/
+- Leonardo AI review (reference/seed consistency controls, 10-20 reference trainer locks style; tool review, labeled): https://getaitoolnav.com/leonardo-ai/
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
 - Automate the sheet-to-close-up loop: generate the character sheet first, then feed its detail views back as reference images for every close-up generation, and log which sheet version each output used.
+- Add a model-license field to the run manifest: record the license and the commercial-use flag for every model version used, and fail the run if a commercial-use asset is generated with a model flagged non-commercial (Qwen-Image-2.1 is not open for commercial use; CHORD is Research-Only).
+- Add a reference-count gate: assert no generation uses more than 10 reference images, the model's stated limit, and fail with the count attached if it does.
+- Add an upscaling ladder: generate at Turbo 8-step low resolution first, promote only the accepted images to full resolution, mirroring CHORD's 1024-to-2K/4K stage split.
 **Check**
 - Every close-up names its sheet version in its metadata, so a drifted asset can be traced to the sheet that produced it.
 **Why**
-- The author's consistency mechanism only works if the sheet is actually reused; logging the reuse makes it auditable instead of habitual.
+- The author's consistency mechanism only works if the sheet is actually reused; logging the reuse makes it auditable instead of habitual, and the license field keeps the commercial-use restriction from being discovered after the asset ships.
 
 **Depth status:** FULL (10-min ASR captions, 241 segments, mined firsthand; description and model card link corroborate the 7B / 8-step Turbo / 10-reference claims; no media download was used, none was needed: captions + description carry the full workflow).

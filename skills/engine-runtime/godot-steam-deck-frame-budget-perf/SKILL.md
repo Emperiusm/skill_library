@@ -84,14 +84,23 @@ The author frames it as a min-max offloading problem: you cannot budget what you
 - One commenter asked whether GDExtension C++ beat C# compiled to a native DLL; the author did not answer with a comparison. Do not claim C++ beats C# here; the claim is only that the C++ rewrite halved load times or better versus the author's own GDScript loops.
 
 ## AAA studio practice
-Every shipped console game runs on a frame budget with per-system attribution: Unreal, Unity, and Godot all ship profilers that break frame time down by system for exactly this reason. The difference here is that the author built the attribution into the game (per-frame records with system tags) instead of relying on an external profiler, which makes the data available on the Steam Deck itself, where a desktop profiler is not attached.
+Every shipped console game runs against a fixed frame budget with per-system attribution, and the Steam Deck is a console-like target: one fixed AMD APU, one fixed 1280x800 screen, and a hard bar from Valve. Valve's Steam Deck Verified check requires 30 fps at 800p in default settings, and Valve's Steamworks guidance recommends games ship with an FPS limit (either in-game or through Steam's global limiter); the practical tuning rule is frame-target first (30 fps, or 40 fps with a matched 40 Hz refresh), then lower TDP until performance dips. The author's 16 ms main-thread target is stricter than Valve's 30 fps bar (60 fps), and his per-frame telemetry with system tags is the in-game version of what the engine profilers do: Godot's own performance docs insist on measuring first (built-in profiler, plus external profilers such as PIX, Nsight Graphics, and Radeon GPU Profiler) and on profiling on the real low-end device, not the developer's desktop. For Godot specifically, the Deck-ready discipline is to detect Deck hardware and take lighter defaults (GodotSteam's `isRunningOnSteamHardware()` and `getSteamHardwareDefaultConfig()`), lower the 3D render scale with FSR upscaling first since it costs the least visually, then reduce shadow resolution and distance.
+
+The AAA rule that transfers: pick the frame target before tuning anything, attribute every millisecond to a named system, and ship lighter defaults on the fixed hardware instead of asking the player to find them.
+
+Sources:
+- Valve Steamworks guidance via Steam Deck tuning guide (FPS-limit recommendation, 30/40 fps target-first rule, matched refresh): http://rottenwifi.com/steam-deck-gaming-balance-performance-and-battery-life-in-demanding-games/
+- Flockbay, "Godot on Steam Deck" (Valve Verified 30 fps at 800p check, GodotSteam Deck detection, lighter defaults, FSR render scale): https://flockbay.com/blog/godot-steam-deck/
+- Godot Engine docs, "Performance" (measure first, built-in profiler, external profilers PIX/Nsight/RGP): https://docs.godotengine.org/en/stable/tutorials/performance/index.html
 
 ### Agent automation upgrade (Do / Check / Why)
 **Do**
 - Add a CI gate that runs the game's heaviest scene headless, dumps the per-frame telemetry to JSON, and fails the build if main-thread time exceeds 16 ms on more than 1% of frames or if any single system's CPU split regresses more than 10% against the stored baseline.
+- Add a Deck-profile gate: run the same scene a second time with the Deck defaults (FSR 3D render scale on, reduced shadow resolution and distance) and fail if it does not hold 30 fps at 1280x800 sustained, which is Valve's Verified bar.
+- Keep a per-system budget ledger in JSON (destruction, city-build, crowd, light pool, HUD, and the rest), each with its ms budget; the gate fails on any system over budget, not just on the frame total.
 **Check**
 - The gate prints the top three regressing systems by name from the frame tags, so the failure points at the system, not at "performance".
 **Why**
-- The author's method only works if the telemetry is read after every change; a gate turns a habit into a contract.
+- The author's method only works if the telemetry is read after every change; a gate turns a habit into a contract, and the Deck-profile run proves the game passes Valve's bar instead of assuming the desktop numbers transfer.
 
 **Depth status:** FULL (full post text + all 9 comments read firsthand; exact numbers: 10-20 fps before, 16 ms main-thread target, 3 ms destruction budget, load time halved or better by the C++ rewrite, batched shadows 1,200 to 400).
