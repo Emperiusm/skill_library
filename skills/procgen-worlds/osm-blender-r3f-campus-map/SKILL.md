@@ -70,6 +70,17 @@ A budget nobody enforces is a wish. The CI gate is what makes 150k tris and 800 
 **Why**
 The walking graph is free: the generator already built the walking network, so navigation reuses it instead of maintaining a second map.
 
+## AAA studio practice
+
+- **Procedural systems are designed for iteration and dependencies, and they preserve hand work (Insomniac, Marvel's Spider-Man, GDC 2019).** David Santiago's GDC 2019 talk shows each procedural system "originally designed to support iterations and dependencies," and the SIGGRAPH paper adds the three improvements that made it survive production: preserve hand-authored work if it still meets specifications, place encounter components with higher fidelity, and flag what needs artist attention ([Game Developer](https://www.gamedeveloper.com/programming/video-procedurally-creating-manhattan-for-i-marvel-s-spider-man-i-), [SIGGRAPH](https://history.siggraph.org/wp-content/uploads/2022/09/2019-Talks-Santiago_Procedural-System-Assisted-Authoring.pdf)). Houdini modularization cut per-building time from 30 minutes to 4 hours by hand to 5 to 15 minutes across 9,800+ buildings ([VR Voice](https://vrvoice.co/world-building-spider-mans-manhattan-with-substance/)). The skill's generator already follows this shape; the missing piece is the preservation rule: a GeoJSON/CSV fix must survive a regeneration, which is exactly what the skill's Phase 1 does by keeping fixes as data.
+- **Bake the light in the editor; the best optimizations sidestep runtime math (Madfinger, Shadowgun, via Unity).** Unity's rendering-optimization manual uses Shadowgun as the case study: an editor tool called Render to Texel bakes light into the texture, and "the best graphics optimizations... sidestep tons of calculations by preforming them in the editor or before the game runs" ([Unity docs](https://docs.unity3d.com/2017.3/Documentation/Manual/MobileOptimizationPracticalRenderingOptimizations.html)). The skill's vertex-colour AO plus one 2048 px shadow texture is the same move at map scale.
+- **Baked lighting is the predictable-performance choice, including on handhelds (Autodesk).** Pre-computed lighting is baked to vertices, textures, or light-probe points, gives runtime performance "independent of light setup" and "independent of GI algorithm," and "worked in Quake 1... used on handheld devices today... used in today's high end games" ([Autodesk, via Readkong](https://www.readkong.com/page/pre-computing-lighting-in-games-8326424)). The same source notes the cost: light-build time in CPU hours and the need for automatic rebuilds so lighting stays current. The skill's CI gate is the rebuild discipline at small scale.
+
+**Agent automation**
+- Write a `map-budget.json` per build: triangles per category (buildings, roads, trees, props), file size, material count, texture count, and the 150,000-triangle / 800 KB limits. The CI check script fails on any overrun and logs the offending category.
+- Add a z-fighting audit to the CI gate: render the map from the default camera at three zoom levels and flag any coplanar-surface flicker; the fix (polygon offset or small vertical separation) is applied in the generator, not in the mesh.
+- Log a per-build regeneration hash (OSM extract date + CSV hash + DEM hash) so a regenerated map is provably identical when its inputs have not changed; a changed hash without a changed input is a generator regression.
+
 ## The human method, distilled
 
 1. Generate from data; fix data errors as data (GeoJSON + CSV offsets), never as mesh surgery.

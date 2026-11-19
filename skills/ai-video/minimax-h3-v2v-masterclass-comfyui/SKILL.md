@@ -98,6 +98,18 @@ Upscaling a generation re-generates its flaws at higher resolution; generating a
 **Why**
 The model needs to be told what drives what: the video drives motion, the picture drives look. Without those two sentences, the model re-decides both on every window, and the video drifts.
 
+## AAA studio practice
+
+- **Studios buy a custom, IP-locked video model and use it for pre/post, not for final frames (Lionsgate + Runway).** Lionsgate's deal with Runway, signed September 2024 and expanded to an equity stake in June 2026, trains a custom model on Lionsgate's 20,000-title catalog that only Lionsgate filmmakers can access, used for preproduction (storyboarding, drafting scenes) and postproduction (backgrounds, special effects) ([Sacra](https://sacra.com/research/runway-vs-openai/)). The pattern matches this skill: the original video drives motion and the reference frame drives look, and the AI output is a draft to be iterated with controllable tools, not a finished shot. Amazon's House of David Season 2 shipped over 350 AI-generated shots under the same discipline.
+- **Face replacement in production is a reference repository plus shot-by-shot supervision (ILM, Indiana Jones and the Dial of Destiny).** ILM's proprietary FaceSwap "used every nuance and detail of Harrison's performance on-set" and "boils down to having a good repository of imagery to work from, either from reference or for helping to process through machine learning," combined with a full CG head and a FLUX facial-capture rig with two extra cameras per setup ([postPerspective](https://postperspective.com/vfx-supervisors-talk-de-aging-indiana-jones-and-more/)). The film ran roughly 2,350 VFX shots with 100+ artists over three years. The lesson for this skill's Phase 3: the masked-latent inpaint is the indie version of the same structure (original performance preserved, only the face denoised), and the reference pack is what makes it consistent, not the model.
+- **When traditional CGI is too slow, ML face replacement carries whole sequences (Here, 2024).** About 53 minutes of the final film needed full digital face replacement of the four leads, and "traditional CGI would have been too slow and expensive, so the team relied heavily on machine learning and AI-based techniques" ([nigelcamp](https://www.nigelcamp.com/video-blog/video-deepfakes-hollywood-future)). The production rule is the same as the skill's Phase 4 verdict: generate at target resolution and distrust the upscaler, because a second pass re-generates flaws.
+- **Rotoscoping is the measured automation win (Runway).** Runway's AI tools cut rotoscoping "from 6+ hours per shot to ~10 minutes" ([Sacra](https://sacra.com/research/runway-vs-openai/)). Masked-latent inpainting in Phase 3 is the same class of win: automate the mask and the stitch, keep the human on the performance.
+
+**Agent automation**
+- Write a `v2v-windows.json` manifest per video: window frames (56), overlap (5), carry overlap, tile mode (sync), bleed scale, and the measured drift limits (192 frames at 0.5 MP, about 147 at 1 MP). Reject any run whose window frames exceed 56 at 1 MP.
+- Script the difference-map check from Phase 1 (ffmpeg blend difference between generated and original) and log a per-window drift score; any window above the baseline drift is re-generated with a smaller window before the next window starts.
+- Log saved latents per window (video 001, audio 001) in the manifest so a decode crash resumes from the manifest, not from memory.
+
 ## The human method, distilled
 
 1. Split before you generate: windows of 56, overlap 5, sync tiles; drift is a window-size problem.

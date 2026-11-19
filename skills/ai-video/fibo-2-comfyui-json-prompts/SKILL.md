@@ -106,6 +106,17 @@ A comparison in each model's own workflow with the same prompts is the only hone
 
 FIBO 2 is free for personal and non-commercial use only. Commercial use needs a license from Bria (pricing link in the video description). H3 Image has a better license for the author, though some countries (including ones in Europe) need a separate MiniMax license first.
 
+## AAA studio practice
+
+- **The prompt is a structured specification, not prose (Bria AI, FIBO).** FIBO is "the first open-source, JSON-native text-to-image model trained exclusively on long structured captions," trained on structured JSON captions up to 1,000+ words, which Bria calls the Visual GenAI Language (VGL) paradigm: the JSON lists every object, the light, the camera, and the words in the image, so a generation is inspectable, repeatable, and editable as data rather than as a vibe ([Bria FIBO README](https://huggingface.co/briaai/FIBO/blob/main/README.md)). FIBO 2 "expands each prompt into a structured scene description before rendering" and edits or combines up to four images from a plain instruction ([Layer](http://layer.ai/models/bria-fibo-2)). The skill's Phase 2 already works this way (read the helper's JSON before running); the AAA discipline is to treat that JSON as the versioned asset and the one-line idea as the throwaway input.
+- **Licensed data plus indemnity is the shipping gate, not a footnote (Bria AI enterprise).** Bria trains exclusively on licensed data from Getty Images, Alamy, and Envato, with full IP indemnification on generated outputs, SOC 2 Type II, ISO 27001, GDPR, and EU AI Act compliance ([Bria](https://bria.ai/?hsLang=en)). Its AWS Marketplace listing names Media and Entertainment and Gaming among the verticals its pipelines serve ([AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uznygg566w4ke)). The skill's License section already states the open weights are non-commercial only; the production rule is to check the license tier before any output goes into a shipped game, because the same image is free to prototype with and unusable commercially under the CC-BY-NC weights.
+- **Control-first models exist for teams that need auditability (independent assessment).** FIBO is "the control-first model for teams that want a generation to be inspectable, repeatable, and editable as a structured visual specification" ([z.tools](https://z.tools/blog/bria-generation-commercial-safe)). That is the property that matters for a game pipeline: when a texture or key-art element must be regenerated identically six months later, a stored JSON spec reproduces it while a prose prompt does not.
+
+**Agent automation**
+- Write a `fibo-prompt-spec.json` per generation: the one-line idea, the helper's full JSON, seed, model (Turbo/Dev), size, and license tier. Validate the JSON before running: required keys are objects, lighting, camera, and text-in-image; reject a run whose JSON is missing the text-in-image key when the idea names words on a surface (the "Pixa" mug case).
+- For edits, diff the edit JSON against the generation JSON and log only the changed keys; if more than one top-level key changed, the edit violated the single-change rule in Phase 3 and the run is flagged before generation.
+- Add a license field to the manifest and gate any export to a shipped asset on it: `non-commercial` blocks export, `commercial-api` allows it. Log the gate decision per asset.
+
 ## The human method, distilled
 
 1. Read the JSON the helper wrote before running: invented details are visible there.
