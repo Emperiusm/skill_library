@@ -3,6 +3,7 @@
 Every directory here is one executable skill: a `SKILL.md` playbook that teaches one workflow end to end. Skills are grouped by category, one level deep. New skills land here with every daily scout run, each assigned a category when it is created.
 
 ## Capture and reconstruction (`capture/`)
+| [`lidar-roof-rebuild-photogrammetry`](capture/lidar-roof-rebuild-photogrammetry/SKILL.md) | Complete a ground-level photogrammetry model by rebuilding its unseen top from national survey LiDAR: keep the scan where photos saw the stone, rebuild terrace and crest from IGN LiDAR HD, sample stone texture from the scan, account for the model in percentages. |
 | [`opentwin-3dgs-point-maps`](capture/opentwin-3dgs-point-maps/SKILL.md) | Build a 3D Gaussian splat digital twin from as few as 5 drone photos: point maps as the base format, COLMAP plus DroneSplat flow augmented with CVPR projects, SAM 3.1 car removal. |
 
 | Skill | What it teaches |
@@ -93,6 +94,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`osm-blender-r3f-campus-map`](procgen-worlds/osm-blender-r3f-campus-map/SKILL.md) | Build a low-poly 3D map that runs on phones from OpenStreetMap: one Blender Python script generates the campus from footprints plus a CSV and a 30 m DEM, lighting baked to vertex colours and one 2048 px ground texture, glTF Meshopt plus WebP export, 150k-triangle budget enforced by a CI check script. |
 
 ## AI video and film (`ai-video/`)
+| [`h3md-director-multi-person-swap`](ai-video/h3md-director-multi-person-swap/SKILL.md) | Swap up to 5 people in any live-action video with MiniMax H3 in ComfyUI: SAM3.1 tracks people by identity, Qwen Image 2.1 builds a keyframe plan at every crossing, the Director renders with the Remake LoRA. |
+| [`h3-facerefine-plus`](ai-video/h3-facerefine-plus/SKILL.md) | Refine faces in MiniMax H3 video with ComfyUI-H3-FaceRefine-Plus v0.2.0: one Mode dropdown picks the V1 or V2 recipe, heavy steps run on the GPU for a 2.7x speedup, default strength 0.30. |
 | [`viggle-motion-transfer-comfyui`](ai-video/viggle-motion-transfer-comfyui/SKILL.md) | Transfer motion from any video onto a character image with the NeuroVigal/Viggle Remake model in ComfyUI on 6GB VRAM: INT8 ConvRot, Qwen VL auto-prompting, 6 Euler steps, RelayVSR upscale. |
 | [`qwen-image-21-comfyui-local`](ai-video/qwen-image-21-comfyui-local/SKILL.md) | Use Qwen-Image-2.1 locally in ComfyUI: 7B parameters, Turbo 8-step generation at 16 seconds per image on an RTX 4080, multi-image edit with up to 10 references, character sheets, transparent PNG background removal. |
 
@@ -194,6 +197,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`bismith-browser-procedural-textures`](materials-shaders/bismith-browser-procedural-textures/SKILL.md) | Generate procedural textures in the browser with bismith.dev: start from a starter template, preview tiling live, export greyscale diffuse (gradient ramp plus Tonemapping off) and separate height maps. |
 
 ## Engine and runtime (`engine-runtime/`)
+| [`karles22-cycles-houdini-solaris`](engine-runtime/karles22-cycles-houdini-solaris/SKILL.md) | Render Blender Cycles inside Houdini 22 Solaris with the karles22 Hydra 2 delegate: one Render Settings node, MaterialX native, even per-pixel sampling, photon caustics, and one-click in-render post FX. |
 | [`godot-steam-deck-frame-budget-perf`](engine-runtime/godot-steam-deck-frame-budget-perf/SKILL.md) | Make a Godot game run smoothly on the Steam Deck: spare frame budget builds the next procedural city, GDExtension C++ rewrites, 3 ms destruction budget, per-frame telemetry. |
 | [`rust-webgl2-tree-simulator`](engine-runtime/rust-webgl2-tree-simulator/SKILL.md) | Build a zoomable tree simulator in Rust with a raw WebGL2 viewer: cohesion-tension water, pipe-model trunk, full HDR post stack, no shadow maps or path tracing. |
 

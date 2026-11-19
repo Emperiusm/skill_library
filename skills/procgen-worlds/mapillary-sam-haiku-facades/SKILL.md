@@ -11,7 +11,7 @@ This skill reconstructs the exact workflow chartojs demonstrates for procedurall
 
 ## Source
 
-Creator: chartojs. Post: "Procedurally generating details for real map data" https://www.reddit.com/r/proceduralgeneration/comments/1xytqcn/ (score 31, 5 comments; full post text and the author's full pipeline comment read) | Live demo: http://reakt.io/dash2.html (Porvoo, Finland; lat 60.39667, lon 25.65521) | 2026-11-18 scout run, audit 3.
+Creator: chartojs. Post: "Procedurally generating details for real map data" https://www.reddit.com/r/proceduralgeneration/comments/1xytqcn/ (score 31, 5 comments; full post text and the author's full pipeline comment read) | Live demo: http://reakt.io/dash2.html (Porvoo, Finland; lat 60.39667, lon 25.65521) | 2026-11-18 scout run, audit 3. Re-scanned 2026-11-19 (score 44, 9 comments): the author's new tree-placement comment is added in Phase 4 below; the post is otherwise unchanged.
 
 ## Tools used
 
@@ -66,6 +66,9 @@ Two Haiku passes separate description from correction: the first pass extracts s
 2. Model street furniture, vehicles, and hundreds of plant species in code using GPT Astra.
 3. Extrude OSM buildings and paint the Haiku-described facades on as procedural textures and decals.
 4. Serve it in the browser with WebGL 2.
+5. Place trees from map data, not by hand: OSM already maps many individual trees and patches of forest well. Use the Copernicus Global Dynamic Land Cover 2020 raster (10 m, global, annual) for global coverage and eco-region shapefiles for species selection. The author had GPT Sol researching species and habitats within the hundreds of regions for several months; that research is not reflected in the demo yet, until the pipeline is improved to process the entire globe.
+6. Place individual trees in a forest semi-randomly using Owen scrambling.
+7. Reject sparse evidence: scenes with only 1–2 matched building corners are rejected. The author's first version marked matching building corners by hand; that did not scale, which is why the pipeline moved to the automatic fit in Phase 1.
 
 **Check**
 - It runs on an old iPhone 11, though with short draw distance. Coverage so far: Scandinavia and Baltic countries for the map, facades only in one city (Porvoo). Global coverage and more varied facade test areas are in progress.
@@ -98,4 +101,4 @@ Everything is generated from map data plus descriptions, so the world scales wit
 - **"Unintentional" mistakes in the description:** the second Haiku pass exists for these. A single-pass description ships them.
 - **Coverage gaps:** facades exist only where street photos and OSM agree. Outside Porvoo, buildings currently have no facades; the pipeline degrades to plain extruded buildings, not to errors.
 
-**Depth status:** FULL (full post text + the author's full pipeline comment; the live demo was not exercised). Distinct from skill `city-diffusion-osm-training` (diffusion-trained city layout) and from `osm-blender-r3f-campus-map` (OSM + CSV generation, no street-photo facades).
+**Depth status:** FULL (full post text + the author's full pipeline comment; the live demo was not exercised). Distinct from skill `city-diffusion-osm-training` (diffusion-trained city layout) and from `osm-blender-r3f-campus-map` (OSM + CSV generation, no street-photo facades). Expanded 2026-11-19 with the author's tree-placement comment (Copernicus land-cover raster, eco-region shapefiles, GPT Sol species research, Owen scrambling, 1–2-corner rejection) from the re-scanned post.

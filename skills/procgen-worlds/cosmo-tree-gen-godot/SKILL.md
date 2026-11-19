@@ -1,6 +1,6 @@
 ---
 name: cosmo-tree-gen-godot
-description: "Generate procedural trees inside Godot 4.6+ with the free MIT cosmo_tree_gen addon: seed-driven recursive branching, live editor tuning, per-tree triangle and draw-call budgets, auto LODs and collisions, one-click glb export. Trigger when a game needs a forest of varied trees without hand-modeling each one."
+description: "Generate procedural trees inside Godot 4.6+ with the free MIT cosmo_tree_gen addon: seed-driven recursive branching, live editor tuning, per-tree triangle and draw-call budgets, auto LODs, automatic impostors (v1.1.0), and collisions, one-click glb export. Trigger when a game needs a forest of varied trees without hand-modeling each one."
 ---
 
 # Procedural Tree Generation in Godot with cosmo_tree_gen
@@ -21,6 +21,8 @@ Creator: CosmonautFrog.
 
 Source: https://www.reddit.com/r/godot/comments/1xqxbys/i_got_tired_of_modeling_trees_so_i_made_a_free/
 (r/godot post 1xqxbys, score 1418, 107 comments) | 2026-11-09 scout run.
+v1.1.0 update: https://www.reddit.com/r/godot/comments/1xzlvaf/cosmo_tree_gen_v110_is_out_automatic_impostors_18/
+(r/godot post 1xzlvaf, score 135, 20 comments) | 2026-11-19 scout run, audit 1.
 Repo: https://github.com/FrogCosmonaut/cosmo_tree_gen (109 stars, 11 forks,
 MIT, created 2026-10-27, Godot 4.6+, developed in 4.6.2.stable).
 Evidence: full post text + 25 comments with exact author method +
@@ -141,20 +143,56 @@ shape can never drift from the visible mesh.
 **Check**
 - Read the per-tree tris and draw-call counters before export; the LOD
   ratios are the budget, not a suggestion.
-- Roadmap (author's priority order): billboard impostor PNG generation
-  for the last LOD is item 1 (the author is working on automatic
-  octahedral impostor generation now, and points to
-  https://github.com/hdrsniped/octahedral-impostor-lod-godot as a
-  reference implementation); tree age slider is item 3; stumps, fallen
-  trunks and felled trees from the same seed is item 8 (requested in the
-  comments for tree-chopping mechanics); one texture atlas per bark plus
-  foliage to reduce 1 draw call is item 10.
+- v1.1.0 shipped the roadmap item 1 below (automatic impostors); see
+  Phase 6. The remaining roadmap (author's priority order): tree age
+  slider is item 3; stumps, fallen trunks and felled trees from the same
+  seed is item 8 (requested in the comments for tree-chopping
+  mechanics); one texture atlas per bark plus foliage to reduce 1 draw
+  call is item 10.
 
 **Why**
 Export carries the LODs and the collisions with the mesh, so the asset
 arrives in the game the way it looked in the editor. The budget rule
 (trunk simplified, leaves keep the tris) protects the silhouette, which
 is what the eye reads.
+
+## Phase 6: Automatic impostors (v1.1.0)
+
+**Do**
+1. Export the tree. The export bakes an impostor and adds it as the last
+   LOD, with the visibility ranges, AABB, and shadow settings already
+   written in the import file. Nothing to set up by hand: export, drop
+   the `.glb` in the scene, done.
+2. Pick one of two impostor types, both a single quad (2 triangles):
+   - **Static**: one view of the tree, Y-Billboard.
+   - **Octahedral**: 144 views blended by camera angle; looks right from
+     any side and from above. Shown in the v1.1.0 video.
+3. Use the exported trees with Terrain3D multi-mesh instancing; they
+   follow the `_LODX` convention.
+4. Use leaf gravity and leaf position offset for weeping willows
+   (requested in issue #1 after the v1.0 post). Make shrubs and bushes
+   as a small tree without the trunk; a bush preset is included.
+
+**Check**
+- An impostor is "basically a quad with an image of the tree that
+  rotates to face the camera" (author's reply to a commenter asking what
+  "impostor" means).
+- Measure on the author's scene: the same default ash in a forest with
+  102k trees, on a GTX 1660 GPU. Without impostors about 18 FPS; with
+  impostors about 76 FPS. More comparison videos on the author's
+  YouTube channel (@cosmonautfrogstudios).
+- A commenter (DrevioGames) argued low-poly trees are less useful now
+  because AI generates convincing low-poly trees, while realistic trees
+  are still hard; the author's goal is trees "from low-poly stylized
+  trees to high quality ones so every kind of 3D game can use it," and
+  conifers/pines are already possible.
+
+**Why**
+At forest scale the last LOD is where the frame budget is won or lost.
+Baking it at export means the optimization ships with the asset instead
+of depending on an artist remembering to set it up per tree, and
+measuring on a weak card is the honest test: if the forest holds up on
+a GTX 1660, it holds up anywhere.
 
 ## Failure modes
 
@@ -163,9 +201,11 @@ is what the eye reads.
   shadowmap is too small because I use mobile." The author's suggested
   workaround is commenting out the AO / AO_LIGHT_AFFECT lines on the
   leaves shader. (Comment thread, quoted in substance.)
-- **Willow shape without leaf gravity:** use a long leaf texture and
-  tune the leaf angle down; the author calls the in-video willow "not
-  the best willow tree ever" for exactly this reason.
+- **Willow shape without leaf gravity:** pre-v1.1.0, use a long leaf
+  texture and tune the leaf angle down; the author calls the in-video
+  willow "not the best willow tree ever" for exactly this reason.
+  v1.1.0 adds leaf gravity and leaf position offset for weeping
+  willows, so use those instead of the texture workaround.
 
 ## AAA studio practice
 
@@ -270,11 +310,17 @@ built first and everything else derived from it.
    checked during tuning, not after export.
 4. **Same seed, same tree, same collision.** Seeds plus presets make the
    forest reproducible and the physics shape consistent.
-5. **Ship the roadmap in priority order.** Impostor LOD3 and the age
-   slider are next because commenters asked for them; the author asks
-   the thread what to prioritize.
+5. **Ship the roadmap in priority order.** Impostor LOD was item 1 and
+   shipped in v1.1.0 because commenters asked for it; the age slider is
+   next because commenters asked for it; the author asks the thread what
+   to prioritize.
+6. **Export must need zero hand setup.** Ranges, AABB, and shadow
+   settings ride in the import file; the tree arrives ready for
+   Terrain3D.
 
 **Depth status:** FULL (full post text + 25 comments with exact author
 method + repo README with exact parameters, presets, collision types,
 LOD rules, install and usage steps; the native Reddit clip has no
-transcript and adds nothing the post and README do not already state).
+transcript and adds nothing the post and README do not already state.
+v1.1.0: full post text + 20 comments with the impostor types, the
+18-to-76 FPS measurement, and the leaf-gravity addition).
