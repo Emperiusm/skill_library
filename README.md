@@ -13,20 +13,20 @@ skill.
 
 ## The skills
 
-257 skills in 9 categories, growing with every daily scout run. The full grouped
+262 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
 | Category | Skills | What it covers |
 |---|---|---|
 | [`capture`](skills/capture/) | 12 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
-| [`characters`](skills/characters/) | 19 | Character pipelines, consistent identities, rigging, cloth and hair |
-| [`procgen-worlds`](skills/procgen-worlds/) | 45 | Procedural generation: terrain, cities, creatures, whole games from a seed |
-| [`ai-video`](skills/ai-video/) | 45 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
+| [`characters`](skills/characters/) | 20 | Character pipelines, consistent identities, rigging, cloth and hair |
+| [`procgen-worlds`](skills/procgen-worlds/) | 46 | Procedural generation: terrain, cities, creatures, whole games from a seed |
+| [`ai-video`](skills/ai-video/) | 46 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
 | [`simulation-vfx`](skills/simulation-vfx/) | 22 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 21 | Material authoring, shaders, texturing |
-| [`engine-runtime`](skills/engine-runtime/) | 55 | Engine systems, runtime and render tech, browser and WebGPU |
-| [`automation`](skills/automation/) | 36 | Agent-driven pipelines, DCC bridges, productized generation |
+| [`engine-runtime`](skills/engine-runtime/) | 56 | Engine systems, runtime and render tech, browser and WebGPU |
+| [`automation`](skills/automation/) | 37 | Agent-driven pipelines, DCC bridges, productized generation |
 | [`no-tooling`](skills/no-tooling/) | 2 | Negative examples: footage with no extractable workflow, kept on purpose |
 
 ## The tool
