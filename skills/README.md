@@ -259,6 +259,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`godot-volumetric-cloud-painting`](engine-runtime/godot-volumetric-cloud-painting/SKILL.md) | Paint cloudscapes and sunsets in volumetric 3D in Godot: a Nubis3-style cloud sim from SIGGRAPH papers, all render and compute shaders, 3D stamps moving to simulated brush strokes. |
 | [`godot-spom-auto-lod-npc-crowds`](engine-runtime/godot-spom-auto-lod-npc-crowds/SKILL.md) | Cheap crowds and cheap depth in Godot: SPOM silhouette parallax mapping, Nanite-like per-part auto-LOD, and a flow-field NPC system (1.9 ms to 0.39 ms for 500 agents) with spatial hashing, Jobs, and GPU Instancer Pro. |
 | [`custom-atmosphere-scattering-vulkan`](engine-runtime/custom-atmosphere-scattering-vulkan/SKILL.md) | Model a daylight cycle from scratch in C++ and Vulkan: trace light through the atmosphere on the CPU into sky-colour tables, interpolate them on the GPU, split direct and diffuse light from one table, hold 60 FPS at 480x270. |
+| [`godot-vertex-animation-texture-crowds`](engine-runtime/godot-vertex-animation-texture-crowds/SKILL.md) | Bake any Blender animation into vertex animation textures (VAT) and play it back on the GPU in Godot: position + normal textures, MultiMeshInstance3D crowds with a unique animation per instance, the 8-bit jitter fix with measured precision, and the Birdteeth indie case. |
 
 ## Automation and bridges (`automation/`)
 
