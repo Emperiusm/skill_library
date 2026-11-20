@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="257 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="262 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">257 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">262 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 257 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">55</span></h2>
+  <input id="search" type="search" placeholder="Search 262 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">56</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -176,6 +176,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-ui-control/SKILL.md">godot-ui-control</a></h3>
   <p>Build Godot 4.7 user interfaces with Control nodes: anchors and offsets for responsive layout, Container nodes (VBox/HBox/Grid/Margin) for automatic arrangement, Theme resources for consistent styling, and...</p>
 </article>
+<article class="card" data-search="godot-volumetric-cloud-painting build a cozy godot game about painting cloudscapes and sunsets in volumetric 3d: a cloud simulation modeled on the nubis3 engine from decima (horizon games), built from siggraph papers with everything in render or...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-volumetric-cloud-painting/SKILL.md">godot-volumetric-cloud-painting</a></h3>
+  <p>Build a cozy Godot game about painting cloudscapes and sunsets in volumetric 3D: a cloud simulation modeled on the Nubis3 engine from Decima (Horizon games), built from SIGGRAPH papers with everything in render or...</p>
+</article>
 <article class="card" data-search="instancing-vs-copying-perf choose instancing over copying for repeated assets: one mesh plus coordinates in vram and a single draw call, with the copy-swap trick for the moment a player interacts with an individual instance. trigger when...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/instancing-vs-copying-perf/SKILL.md">instancing-vs-copying-perf</a></h3>
   <p>Choose instancing over copying for repeated assets: one mesh plus coordinates in VRAM and a single draw call, with the copy-swap trick for the moment a player interacts with an individual instance. Trigger when...</p>
@@ -261,7 +265,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build and edit 3D meshes directly inside the Godot editor with Xogot Modeler (first public beta, Godot Asset Store): block out levels with basic shapes, edit vertices, edges, and faces, extrude and bevel, draw curved...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">45</span></h2>
+<section><h2>AI video <span class="count">46</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -346,6 +350,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="minimax-h3-character-swap-nomask-lowvram swap a character in video with minimax h3 + character swap lora in comfyui with no masking: 0.4 mp at 8 steps, runs on 6 gb vram. reference-video latent injection, qwen2.1 start-frame trick, and the wan2gp low-vram...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-character-swap-nomask-lowvram/SKILL.md">minimax-h3-character-swap-nomask-lowvram</a></h3>
   <p>Swap a character in video with MiniMax H3 + Character Swap LoRA in ComfyUI with no masking: 0.4 MP at 8 steps, runs on 6 GB VRAM. Reference-video latent injection, Qwen2.1 start-frame trick, and the wan2gp low-VRAM...</p>
+</article>
+<article class="card" data-search="minimax-h3-image-gguf-lowvram run minimax h3-image locally in comfyui on a low-vram or pascal card: abiray gguf models with the comfyui-gguf node by city96 and a fix script, comfyui 0.45.0 or newer, cuda 13/driver 580 on rtx 40-series, cuda 12.6...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-image-gguf-lowvram/SKILL.md">minimax-h3-image-gguf-lowvram</a></h3>
+  <p>Run MiniMax H3-Image locally in ComfyUI on a low-VRAM or Pascal card: Abiray GGUF models with the ComfyUI-GGUF node by city96 and a fix script, ComfyUI 0.45.0 or newer, CUDA 13/driver 580 on RTX 40-series, CUDA 12.6...</p>
 </article>
 <article class="card" data-search="minimax-h3-image-native-comfyui run minimax h3 image natively in comfyui on day 0: one checkpoint does text-to-image and reference-image editing in 6 steps at guidance 1, with native resolutions up to 6272x2688, multi-reference editing via picture n...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/minimax-h3-image-native-comfyui/SKILL.md">minimax-h3-image-native-comfyui</a></h3>
@@ -444,7 +452,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Clone a voice locally with ZONOS3-Mini (Zyphra, ~800M params, 43 languages, Apache 2.0) in ComfyUI or Promptus: 8-round blind comparison vs ElevenLabs v4, voice-profile vs raw-clip cloning, 25-slider voice design...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">45</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">46</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -473,6 +481,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="blender-floaters-hard-surface-detail fake hard-surface detail in blender with floaters: model the base form clean, place separate small meshes (cylinders, vents, rings) on the surface instead of cutting booleans, sell the seam with a bevel, and unify with...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/blender-floaters-hard-surface-detail/SKILL.md">blender-floaters-hard-surface-detail</a></h3>
   <p>Fake hard-surface detail in Blender with floaters: model the base form clean, place separate small meshes (cylinders, vents, rings) on the surface instead of cutting booleans, sell the seam with a bevel, and unify with...</p>
+</article>
+<article class="card" data-search="blender-gingerbread-house-build build a finished gingerbread-house scene in blender as a beginner tutorial series finale: flat-sculpted gingerbread man with one principled bsdf, mirrored tree with ornaments, botaniq scatter for dressing, one...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/blender-gingerbread-house-build/SKILL.md">blender-gingerbread-house-build</a></h3>
+  <p>Build a finished gingerbread-house scene in Blender as a beginner tutorial series finale: flat-sculpted gingerbread man with one Principled BSDF, mirrored tree with ornaments, Botaniq scatter for dressing, one...</p>
 </article>
 <article class="card" data-search="branch-propagation-tree-generator generate tree species in c++ from per-level branch propagation rules (end-only vs mid-branch splits, palmate or simple leaves, species and level angle intervals with upward biases), rendered as low-memory cylinder...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/branch-propagation-tree-generator/SKILL.md">branch-propagation-tree-generator</a></h3>
@@ -627,7 +639,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Bend Voronoi province borders with 3 octaves of value noise: warp the classified point instead of moving the edges, with exact constants (lambda 26/10/4.5, a 3.6/1.4/0.5, max offset 5.5 texels). Trigger when Voronoi...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">36</span></h2>
+<section><h2>Automation and pipelines <span class="count">37</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
@@ -704,6 +716,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="comfyui-readable-node rebuild messy comfyui workflows into readable ones with the readable node agent skill: six readability rules, full teardown-and-rebuild by a strong model, and a report page with a replay of the rebuild. trigger when a...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/comfyui-readable-node/SKILL.md">comfyui-readable-node</a></h3>
   <p>Rebuild messy ComfyUI workflows into readable ones with the Readable Node agent skill: six readability rules, full teardown-and-rebuild by a strong model, and a report page with a replay of the rebuild. Trigger when a...</p>
+</article>
+<article class="card" data-search="fable-headless-blender-game-pipeline build a whole game in 10 days with an ai coding agent: claude fable 5.2 writes python scripts that run blender headless to generate ships and buildings, meshy makes the crew, poly haven textures feed a game shader that...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/fable-headless-blender-game-pipeline/SKILL.md">fable-headless-blender-game-pipeline</a></h3>
+  <p>Build a whole game in 10 days with an AI coding agent: Claude Fable 5.2 writes Python scripts that run Blender headless to generate ships and buildings, Meshy makes the crew, Poly Haven textures feed a game shader that...</p>
 </article>
 <article class="card" data-search="fable-one-prompt-mech-rig test what fable 5.2 (high) can build in one shot: one written brief, one agent session, no sub-agents, no follow-up prompts, no manual fixes, and the output is a ~65k-triangle three.js mech with a 52-joint hierarchical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/fable-one-prompt-mech-rig/SKILL.md">fable-one-prompt-mech-rig</a></h3>
@@ -952,7 +968,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
 </article>
 </div></section>
-<section><h2>Characters and rigging <span class="count">19</span></h2>
+<section><h2>Characters and rigging <span class="count">20</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
@@ -961,6 +977,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="anime-character-lookdev-grease-pencil take an illustrated character into 3d and keep the illustrated feeling: maya blocking, zbrush detail, blender lookdev, substance painter textures, grease pencil outlines with noise, eevee render. trigger when a...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/anime-character-lookdev-grease-pencil/SKILL.md">anime-character-lookdev-grease-pencil</a></h3>
   <p>Take an illustrated character into 3D and keep the illustrated feeling: Maya blocking, ZBrush detail, Blender lookdev, Substance Painter textures, Grease Pencil outlines with noise, Eevee render. Trigger when a...</p>
+</article>
+<article class="card" data-search="blender-character-sculpt-reference sculpt a character in blender against a reference image: block the head from one sphere in profile with grab and dyntopo, sculpt the robe with clay strips at 70 px and 0.500 strength, dress it with procedural fabric...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-character-sculpt-reference/SKILL.md">blender-character-sculpt-reference</a></h3>
+  <p>Sculpt a character in Blender against a reference image: block the head from one sphere in profile with Grab and Dyntopo, sculpt the robe with Clay Strips at 70 px and 0.500 strength, dress it with procedural fabric...</p>
 </article>
 <article class="card" data-search="blender-fake-sim-rigging rig soft-body secondary motion with blender constraints instead of a simulation: stretch to + track to guide bones drive jiggle without cloth sim or blend shapes. trigger when a rig needs cheap secondary motion for...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/blender-fake-sim-rigging/SKILL.md">blender-fake-sim-rigging</a></h3>
@@ -1093,7 +1113,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-19 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-20 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
