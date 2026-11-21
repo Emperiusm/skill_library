@@ -15,6 +15,7 @@ This skill reconstructs the recipe from the release post and its comment thread,
 - Official workflow: https://huggingface.co/Comfy-Org/MOSS-Image
 - Evidence: full post selftext + 25 top-level comments, 2026-10-21 scout run
 - Expansion 2026-10-28: "MOSS Image in ComfyUI | Text to Image, Words & Layout (Ep40)" by pixaromadesign — https://youtu.be/l4R96NemQS8 (19 min, 13,752 views, full captions, 466 segments, + description); Reddit post https://www.reddit.com/r/comfyui/comments/1xgwtyb/ (score 39). ASR garbles brand names in places ("PixArt-Alpha" for Pixaroma nodes, "Laura" for LoRA); settings below are taken from the description and from caption passages where the meaning is unambiguous.
+- Expansion 2026-11-21: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas — https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20, full ASR captions, 252 segments, + description); 2026-11-21 scout run, audit 5. A distinct low-VRAM variant on the same model: int8 quantized generation-optimized workflow at 1-2 MP plus Ultimate SD Upscale, not the 50-step starter recipe and not the tuned fusion. Model file names are ASR-garbled in the captions and are taken from the workflow, not quoted.
 
 ## Tools used
 
@@ -220,6 +221,76 @@ The prompt is doing the work the model cannot: MOSS receives text only, so the q
 3. Two sampling routes, chosen by the job: 8 steps/CFG 1 for everyday, 50 steps/CFG 3 for texture.
 4. Prompt outside the tool: a multimodal chat model writes the prompt, ComfyUI runs it; MOSS only ever sees text.
 5. Never ask for a partial edit in words; describe the complete target image.
+
+## Expansion 2026-11-21: Olivio int8 + Ultimate SD Upscale (low-VRAM variant)
+
+Source: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas, https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20). Evidence: full ASR captions (252 segments) plus the description. This is a distinct workflow from the starter recipe and the tuned fusion: same model, a quantized generation-optimized workflow at 1-2 MP, then upscaling instead of generating big. No step count, sampler, CFG, or render-time number is stated in this video; do not borrow the starter recipe's 50 steps / CFG 3 / shift 5 for this variant.
+
+### Phase G1: Pick the optimized workflow, not the base workflow
+
+**Do**
+1. Go to the official Comfy-Org MOSS-Image page: "the structure where everything goes with different workflows" (diffusion model, text encoder, VAE under Files and versions).
+2. Download the workflow and drag it into ComfyUI; ComfyUI names the missing models and the folders they belong in (red frame, Details, Issues). "Click on download and point it to that folder inside of the ComfyUI folder inside of the models folder."
+3. Use the generation-optimized workflow, not the base text-to-image workflow: "the base uses a base model that has not been optimized and is better for image training. The other one up here uses the model that is better optimized for your purposes for image generation."
+4. Download the quantized model the workflow names (the ASR renders its name as "the int eight con rot" plus "these two other models"; the exact file names are in the workflow, not in the captions, so they are not quoted here) into the folders the workflow points to.
+5. "Always update ComfyUI and of course update your graphics driver" before starting.
+
+**Check**
+- The workflow opens naming its own missing files. If ComfyUI does not complain about a missing model, the files are in the right folders.
+
+**Why**
+The workflow is the install instructions: dragging it in surfaces exactly what is missing and where it goes, so there is nothing to guess about folders. The base-vs-optimized choice matters because the base checkpoint is for training, not for generation.
+
+### Phase G2: Generate at 1-2 megapixels, with the prompt enhancer
+
+**Do**
+1. Write the prompt in the workflow, then click the prompt enhancer: "this will optimize the prompt for the use with Moss image. However, this will take some extra time."
+2. Keep the resolution in the model's optimized band: "this model has been optimized for one to two megapixels. So unlike when 2.1 or MiniMax H3, this is not for 16 megapixels."
+3. Use the recommended megapixel resolutions listed on the model page for the workflow you chose.
+
+**Check**
+- Judge the generated image at its native 1-2 MP size first, before upscaling: the author's portrait review praises the skin detail, round retinas, and soft lighting "already very good with the original image that is created without upscaling".
+
+**Why**
+Generating at the resolution the model was optimized for, then upscaling, is cheaper and safer than asking a 1-2 MP model for 16 MP directly. The prompt enhancer costs extra time per generation, so it is a choice, not a default the author forces.
+
+### Phase G3: Adapt the workflow for Ultimate SD Upscale
+
+**Do**
+1. Install the Ultimate SD Upscale node: ComfyUI Manager, Extensions, search "ultimate", install "ComfyUI ultimate SD upscale".
+2. Double-click the canvas background, search for the Ultimate SD Upscale node, place it where it is needed. It needs several inputs, "including an upscale model", so add a Load Upscale Model node too. Use the author's list of favorite upscale models "for the different purposes, might that be design or a photo with skin details".
+3. Wire the subgraph: click the subgraph icon, and on the right side "there is a gray dot for the outs". Connect the model, the VAE, the positive prompt, and the negative prompt to the subgraph outputs, rename them positive/negative carefully ("make sure that you write the right one here so that the right one is connected"), click the return button, and connect the outputs to the matching inputs outside.
+4. Drive the upscale size from the image itself: "use the get image size node, which is a base node that comes with ComfyUI and just connect the image and then connect this over here to the width and the height so that you automatically always get the same height as the original image."
+5. Run at 2x upscale. Note the arithmetic the author states: "we are doing a two times upscale, this means it's creating four additional images, but if you have another ratio, it needs more images than that."
+
+**Check**
+- The adapted workflow produces the generated image and its upscale in one run, at the original image's height, with no manual resolution entry per image. The Get Image Size wiring is what makes that automatic.
+
+**Why**
+An upscaler subgraph with unwired outputs does nothing: the model, VAE, and both prompts must be passed through, or the upscale has no generation to refine. Deriving the size from the image removes the one number that would otherwise drift between the generate step and the upscale step.
+
+### Phase G4: Review honestly, including the defects
+
+**Do**
+1. Review the test images: group portrait (face detail "more than actually from the MiniMax model"), mature-lady portrait, perfume advertisement ("very intense with the colors", reflection and foreground depth of field praised), chess/music poster (text "in the right positions and with a beautiful font" and "spelled correctly, exactly as I defined it"), character sheet (emotional expressions good; small faces "often not so great", rendered multiple times).
+2. For small faces, "use a face fixer before you do the upscaling so that you get a way better quality with that and also, of course, correct face details."
+3. Run the prompt-adherence test: red square on a shiny ball, seven apples side by side, a triangle behind a glass of water. "Most of that, to be honest, is correct... The only mistake it made is to place a triangle shape behind the glass of water, and you can see that this is a pyramid that's kind of floating in the air."
+4. Note the hand defect plainly: "on one of the hands we actually have six fingers. Now because the model is so lightweight and renders pretty fast you actually could render it just another time."
+5. Note the uncensored claim as the author's claim only: the model is "also uncensored, so I tried different prompts of the spicy variety, and yes, it actually got the anatomy right, also down to the details". No such image is shown or verified in the retrieved text.
+
+**Check**
+- Upscaled quality is judged against the two named rivals: "this rival[s] Qwen 2.1 or MiniMax H3 image model from the amazing details of a close-up portrait" (ASR rendering; the comparison is the author's judgment, not a measured benchmark).
+
+**Why**
+A fast, lightweight model changes the defect economics: a six-finger hand is a re-render, not a rescue job, because generation is cheap. That only holds if the defects are checked per image, which is why the review phase exists at all.
+
+### Int8-upscale human method, distilled
+
+1. The workflow names its own missing files; download exactly those.
+2. Generate at the model's optimized resolution (1-2 MP); upscale after, do not generate big.
+3. Wire the upscaler subgraph completely (model, VAE, both prompts) and derive its size from the image.
+4. Re-render defects instead of rescuing them; fix small faces before upscaling, not after.
+5. Review against named rivals and name the failures (six fingers, floating pyramid) in the same breath as the wins.
 
 ## AAA studio practice
 
