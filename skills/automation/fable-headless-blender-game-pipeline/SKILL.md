@@ -126,4 +126,29 @@ Playing the game is the only way to feel the loop; talking while playing capture
 5. Give the agent ways to check its own work: headless Chrome plays, clicks, times frames.
 6. Play it yourself, talk while you play, hand the transcript to the agents.
 
+## AAA studio practice
+
+Every part of this skill has a AAA production precedent, and the precedents all point the same way: script the generation, and give the machine ways to check its own work. On headless asset generation, Scenario's 3D OS decomposes 3D asset production into 80 discrete headless tool skills across six studio departments, executed entirely without a viewport: UV unwrapping, seam marking, armature alignment and vertex weighting become callable command-line primitives, so meshes become repeatable artifacts produced by headless scripts that integrate with CI and automated test harnesses. The analysis is explicit that this is a headless orchestration framework, not an autonomous black box, and that it needs a supervisory scaffold: long-running DCC tasks need an asynchronous supervisor daemon so harness timeouts do not orphan background processes leaking GPU VRAM. That is the production version of the author's verdict that headless scripts and MCP solve different things.
+
+On self-checking, Rare's Sea of Thieves shipped with test-driven development from day one: 10,000 tests, tiered so a core set runs before every check-in, longer tests run periodically, and the full suite runs across platforms and configurations (shipping, debug, high latency, high packet variance). The discipline that transfers is in the details: poll for the expected state with a generous timeout instead of waiting a fixed frame count; favour unit tests (90% of the suite) and use integration tests only for the golden path; retry a failing test once, turn the build red only on the second failure, record the flaky pass, and quarantine a test that keeps failing instead of letting it block check-ins. The result Rare reports: build verification fell from about two weeks on Kinect Sports Rivals to about a day and a half, and a fix could reach players in 30 hours. Ubisoft Reflections did the same for The Division with "client bots": AI that takes control of the player, mimics human input, and reports issues, used for automated mission playthroughs with report generation, follow bots that help QC and level designers test multiplayer missions solo, and street-wandering bots gathering performance data. EA's research arm SEED has run reinforcement-learning testing bots against live titles since 2020, deployed in Battlefield V and the Dead Space (2023) remake.
+
+The AAA rule that transfers: the harness is part of the pipeline, not an afterthought. Vaelen's headless-Chrome playtest scripts are the indie version of Rare's actor tests and Ubisoft's client bots; the gap to close is the same one Rare closed: make the checks poll for expected state, log every run, and quarantine flaky checks instead of re-running them by hand.
+
+Sources:
+- GDC 2019, Robert Masella (Rare), "Automated Testing of Gameplay Features in 'Sea of Thieves'" (10,000 tests, tiered runs, poll-don't-wait, flaky retry and quarantine, 30-hour fix-to-player): https://www.gamedeveloper.com/production/-i-sea-of-thieves-i-devs-share-automated-testing-tips-at-gdc-2019
+- 80 Level, "GDC: Using AI Controlled Players to Test The Division" (Ubisoft Reflections client bots, automated mission playthrough, report generation, performance-data wandering): https://80.lv/articles/gdc-using-ai-controlled-players-to-test-the-division
+- IndieBug, "What AI Game Testing Tools Really Do" (EA SEED RL testing bots in Battlefield V and Dead Space 2023 remake, Ubisoft Clever-Commit bug predictor): https://indiebug.dev/articles/ai-playtesting-bug-detection-tools
+- Applied AI POV, "How Scenario's 3D OS Turns Blender into Headless Tool Skills Without Context Collapse" (80 headless tool skills, six departments, supervisor daemon, CI integration; vendor analysis, labeled): https://piazr.github.io/applied-ai/applied-ai-pov-2026-11-04-3d-825299
+
+### Agent automation upgrade (Do / Check / Why)
+**Do**
+- Add a playtest-run manifest `playtest-run.json` written by the headless-Chrome harness on every run: regions sailed, clicks issued, errors found (with console text), and frame times before and after each render change. A run that finds no errors still writes the manifest, so "checked" is a file, not a memory.
+- Add Rare's flaky rule to the harness: a failing check retries once automatically; a check that passes on retry is logged as flaky, and a check that fails three runs in a row goes into a `quarantine.json` list that still runs but no longer blocks the build, with its owner (the agent session) named.
+- Add an asset-rebuild manifest `assets.json` mapping every generated asset to its script path and script hash; the rebuild command re-runs only the scripts whose hash changed, and the manifest diff is the review surface for "what changed since the last build".
+- Add a playtest-transcript issue extractor: after each Granola session, parse the transcript into a `playtest-issues.json` list (one entry per called-out problem, with the timestamped quote), and require the agent to close each entry with the fix commit or mark it deferred before the next session.
+**Check**
+- The harness prints the flaky list and the quarantine list at the end of every run, so a silently re-run check is impossible.
+**Why**
+- The author's method only works if the agent actually checks its own work every time; a manifest turns each check into a durable record, and the flaky/quarantine rules are the difference between a harness that catches regressions and one that the human stops trusting after the third false red.
+
 **Depth status:** FULL (method, tools, numbers, and quoted principles all disclosed in post text and 25 comments; Meshy generation settings and the playtest scripts' code are not disclosed).

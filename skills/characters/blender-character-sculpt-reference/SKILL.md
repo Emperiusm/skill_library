@@ -94,4 +94,30 @@ The render is the deliverable for a fan-art sculpt: the pose and the saber sell 
 3. Cloth is a material: procedural fabric over sculpted folds.
 4. Machined parts get Edit Mode: the hilt is modeled, not sculpted.
 
+## AAA studio practice
+
+AAA character work runs exactly the split this skill makes: sculpt the organic, hard-model the machined, and let the reference decide. At Santa Monica Studio, creature sculptor Luke Starkie received a simple base mesh with the general proportions from the studio, took it into ZBrush, and re-sculpted it against new concept art, refining forms and proportions before any detail work, with art director Raf Grassetti giving feedback in the loop. The studio's character-art lead, Glauco Longhi, describes the same discipline at department scale on God of War Ragnarok: a team of eight character artists working to a set bar and standards, with a pipeline for prototyping characters and enemies where each step is approved by department leads, and close work with design, tech art and animation on the pipeline. The decision rule is visible in the Kratos case: the team made a new high-detail sculpt of Kratos for Ragnarok but kept the original low-poly game mesh, because changing it would have broken facial blendshapes, UV textures and the rage animation system; instead they re-sculpted specific elements (armor, legs, beard) and baked the high-resolution detail onto the existing mesh. Character art is decisions under technical constraints, not pure sculpting.
+
+Blender Studio's own production modeling pipeline states the same order of operations: an approved concept design is required before modeling, the organic path runs concept and deformation tests first and ends in a final topology, sculpted surface details are reprojected onto the subdivided retopology via the multiresolution modifier, and shape keys carry the sculpted animation shapes. For clothing specifically, the production standard is a two-stage pipeline: Marvelous Designer builds the garment from sewn 2D patterns and simulates the drape over the character, then the high-resolution result goes into ZBrush for the final pass, stitches, extra folds, wear and weathering. One studio pipeline description is explicit that Marvelous Designer output is "good but not final quality" and that the ZBrush refinement pass is what makes garments believable for games; the low-resolution in-game model is then built to match the high-resolution shape, with textures baked from high to low.
+
+The AAA rule that transfers: the reference image in this skill is the indie version of the approved concept design, and the sculpt-vs-model split is the same split every studio pipeline enforces. What the skill is missing relative to production is the step after the sculpt: the Darth Maul figure is a still render, so no retopology or bake is needed, but any character that has to move needs the retopology and bake stages before it is game-ready, and cloth that has to read as tailored needs the simulation-first, sculpt-second pass rather than sculpted folds alone.
+
+Sources:
+- School of Motion, "Sculpting Creatures for 'God of War: Ragnarok' and More" (Luke Starkie: base mesh from the studio, re-sculpt against concept art, art-director feedback loop): https://schoolofmotion.com/blog/sculpting-creatures-for-god-of-war-ragnarok-and-more
+- Glauco Longhi, "God of War - Ragnarok" (character-art pipeline, eight-artist team, per-step department-lead approval, prototyping pipeline): https://www.glaucolonghi.com/work/god-of-war-ragnarok-jp7s5
+- Blender Studio, "Modeling" pipeline overview (approved concept required, sculpt to final topology, multires reprojection, shape keys for sculpted animation shapes): https://studio.blender.org/tools/pipeline-overview/asset-creation/modeling
+- Vertex School, "Kratos in God of War Ragnarok" explainer (secondary summary: new high-detail sculpt kept on the original low-poly mesh to protect blendshapes, UVs and the rage system; armor, legs and beard re-sculpted and baked): https://www.instagram.com/reel/DfqRdikDQBg/
+- ModDB, "A brief look of the character model workflow" (Marvelous Designer drape, ZBrush refinement pass, low-res in-game model matched to high-res, textures baked high-to-low): https://www.moddb.com/news/a-brief-look-of-the-character-model-workflow
+
+### Agent automation upgrade (Do / Check / Why)
+**Do**
+- Add a sculpt-stage manifest `sculpt-stages.json` before starting: one entry per stage (silhouette/profile, secondary forms, detail, cloth, hard-surface parts), each with its acceptance render path. The agent may not start the detail stage until the silhouette render matches the reference silhouette.
+- Add a part-type split gate at the start of the build: list every part of the character as organic (sculpt) or machined (Edit Mode), with the split written to the manifest. A part that changes type mid-build requires a manifest edit and a reason, so the split stays a decision instead of drifting.
+- Add a reference-check render after each stage: the same camera angle as the reference image, side by side with the reference, saved as `stage-<n>-vs-reference.png`. The comparison is the check the skill's Phase 2 does by eye, made into a file.
+- Add a fabric material record `fabric-material.json` with the Principled BSDF values (Metallic, Roughness, IOR, Alpha) and the texture-node chain, so the material is reproducible from the record instead of re-read from a screenshot.
+**Check**
+- Every stage has an acceptance render on disk before the next stage starts; a stage with no render is an unstarted stage.
+**Why**
+- The skill's method is "sculpt against the reference, not from memory", and a stage manifest with per-stage renders is that rule enforced by files: the reference comparison happens at every stage instead of only at the final render, and the part-type split stops a machined part from being sculpted by habit.
+
 **Depth status:** PARTIAL (12 frames with readable brush settings, material values, and vertex counts, plus the description links; no captions, so the spoken sculpting instruction is not captured).

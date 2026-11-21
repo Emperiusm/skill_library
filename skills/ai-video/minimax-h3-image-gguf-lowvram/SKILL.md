@@ -83,4 +83,28 @@ Each gate is a hard failure if missed: an old ComfyUI cannot load the model at a
 2. Hardware picks the distribution: official files for modern cards, GGUF for low VRAM and Pascal.
 3. The fix script and the node update are part of the install, not optional extras.
 
+## AAA studio practice
+
+ComfyUI has crossed from community tool into AAA production platform, and quantization is how studios put big models on ordinary hardware. Ubisoft La Forge open-sourced CHORD, its PBR material estimation model, together with ComfyUI custom nodes, explicitly because ComfyUI gives them "an efficient framework to build integrated workflows doing texture image synthesis, material estimation and material upscaling"; the three-stage pipeline (texture generation, CHORD material estimation, material upscaling to 2K/4K) produces PBR texture sets that integrate directly into DCC tools and game engines for prototyping and placeholder assets. At DigiPro 2025 Ubisoft presented the next step: an end-to-end agentic pipeline where an N8N workflow-automation platform with a ComfyUI image-generation pipeline converts meeting transcripts and creative briefs into structured asset casting lists with concept previz imagery in minutes, and an agent connected to Blender via MCP populates scenes from a library of over 30,000 production-indexed USD assets. The studio lesson is that the workflow graph, not the model, is the asset: the same graph runs on a laptop and as a deployed endpoint, and each stage (generation, estimation, upscaling) operates independently so a stage can be swapped without rebuilding the pipeline.
+
+The GGUF half of this skill is the same quantization discipline applied to local inference. On video diffusion models, GGUF quantization compresses 16-bit weights to 8/6/4-bit integers with layer-sensitive schemes: critical layers keep higher precision while less sensitive layers compress harder. The HunyuanVideo 1.5 guide measures the ladder as Q8 minimal quality loss at 12-14 GB VRAM, Q6 slight reduction at 10-12 GB, Q4 noticeable but acceptable at 8 GB, with Q4 cutting a 23 GB model to under 7 GB; quality degradation becomes noticeable at Q3 and below. Unsloth's LTX-2.5-GGUF ships Q4_K_M, Q5_K_M, Q8_0 and a BF16 baseline targeting 6-12 GB VRAM against 16 GB+ unquantized, with sensitive temporal attention heads and normalization layers preserved at higher bit-depth. *Inference:* those numbers are measured on video diffusion transformers, not on H3-Image; treat them as the shape of the ladder (Q8 near-lossless, Q4 the budget tier, Q3 the cliff), not as H3-Image measurements.
+
+The AAA rule that transfers: version-pin the whole stack and treat the quantization tier as a budget decision, not a preference. The skill's Phase 1 version check is the local version of Ubisoft's staged pipeline contract: the graph declares its model, node, and driver requirements up front, and a mismatched stage fails before any generation starts.
+
+Sources:
+- ComfyUI blog, "Ubisoft Open-Sources the CHORD Model and ComfyUI Nodes for End-to-End PBR Material Generation" (ComfyUI as AAA production platform, three-stage pipeline, 1024 to 2K/4K upscale): https://blog.comfy.org/p/ubisoft-open-sources-the-chord-model
+- DigiPro 2025, "From Brief to Scene: Agentic AI for Asset Production at Ubisoft" (N8N + ComfyUI brief-to-previz pipeline, 30k USD asset library, Blender MCP scene population): http://digiproconf.org/program/program-4/
+- Apatero, "HunyuanVideo 1.5 Low VRAM Guide - GGUF & 5G Builds" (Q8/Q6/Q4 VRAM ladder, 23 GB to under 7 GB at Q4, Q3 quality cliff): https://apatero.com/blog/hunyuanvideo-15-low-vram-gguf-5g-complete-guide-2025
+- ArtRealmAI, "LTX-2.5-GGUF: Lean Video Generation on Consumer GPUs" (Q4_K_M/Q5_K_M/Q8_0 tiers, 6-12 GB target, sensitive layers preserved): https://artrealmai.com/article/ltx-2-5-gguf-unsloth-image-to-video-quantized
+
+### Agent automation upgrade (Do / Check / Why)
+**Do**
+- Add a version-gate script that runs before any download: it prints PyTorch version, CUDA build, driver CUDA ceiling from `nvidia-smi`, and ComfyUI version into `version-gate.json`, and exits non-zero with the exact mismatch named if any of the three disagree with the chosen model path (GGUF vs official files).
+- Add a quantization-tier manifest `gguf-tier.json` recording the chosen tier (Q8, Q6, or Q4), the model file hash, the measured VRAM at load, and the acceptance image; a tier change is a manifest change, not a re-download guess.
+- Add a fix-script presence check to the gate: verify `minimax_h3_image_gguf_fix.py` exists in `ComfyUI/custom_nodes` and the ComfyUI-GGUF node version is current before starting ComfyUI, so a stale node fails at setup instead of mid-generation.
+**Check**
+- The gate fails with the named version (e.g. "driver supports CUDA 12.6, portable build needs 13.0") instead of a load error after the model download.
+**Why**
+- The skill's whole failure mode is version mismatch discovered late; a gate that runs before downloads turns the manual Phase 1 check into a contract, and the tier manifest makes the Q8/Q6/Q4 tradeoff explicit and reversible instead of a one-off download choice.
+
 **Depth status:** PARTIAL (files, links, version gates, and hardware rules are fully disclosed in the description; generation settings and quality steps are in-video only, no captions).

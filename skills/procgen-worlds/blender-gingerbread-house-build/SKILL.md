@@ -112,4 +112,28 @@ The last pass is a correction pass, not a new build: look at the finished image,
 4. One particle system, one snow object, 20,000 instances: snowfall without a simulation.
 5. Finish in the compositor: Glare and tone after the render, not in the scene.
 
+## AAA studio practice
+
+This skill is a beginner version of two production disciplines: rule-driven scatter for dressing, and one-object instancing for weather. Guerrilla's GPU-based run-time procedural placement in Horizon Zero Dawn is the AAA form of the Botaniq scatter in Phase 1: artists define placement rules in a graph editor, and GPU algorithms create the world around the player on the fly, assembling full environments (vegetation, rocks, sounds, effects, wildlife, gameplay elements), not just placing trees. The demo Guerrilla gives is the discipline: painting in a tree line and redirecting roads is as easy as moving mountains and changing a desert into a tropical swamp, because the placement is rules plus hand-authored assets, and the artist can alter the placement logic and keep working with hand-made pieces. The environment was built as a mix: vegetation and rivers used procedural placement while rock formations and mountains were hand-made. That mix is the production version of this skill's split: scatter library for the dressing, hand-modeled pieces for the hero gingerbread house and tree.
+
+The snowfall pass in Phase 4 is the same one-object-many-instances principle at production scale. In the BigWorld engine (World of Tanks), the snow system is a single particle definition, `snow_flakes.xml`, emitting 5,000 flakes from a large cylindrical volume around the player with wind interaction, while a separate rain-splash system caps at 105 short-lived particles because its 0.13-second lifetime only ever needs about 97 active at once. The production rules visible there are the ones this skill already follows by instinct: one cheap object instanced many times, a bounded emitter volume around the camera instead of particles over the whole map, and a particle count set by the lifetime math (rate times lifetime equals active count), not by feel. The weather-effects literature adds the failure mode to watch: generating particles over all outdoor portions of a map is memory-wasteful, so modern games generate them around the camera, and a fast-moving camera can outrun the particle volume for a second or two.
+
+The AAA rule that transfers: dressing is rules plus hero pieces, and weather is one instanced object with a count derived from lifetime math. The skill's 20,000 instances of one snow object is the right shape; the upgrade is to record the seed, the emitter bounds, and the count as data, so the snowfall is reproducible instead of a slider position.
+
+Sources:
+- 80 Level, "The Procedural Nature of the Horizon Zero Dawn" (Guerrilla GDC 2017: graph-editor rules, GPU placement, artist-alterable logic, hand-authored assets): https://80.lv/articles/the-procedural-nature-of-the-horizon-zero-dawn?amp=1
+- Wccftech, "Horizon Zero Dawn Uses New GPU-based Run-time Procedural Technology" (GDC 2017 session description: full environments assembled on the fly, painting tree lines and redirecting roads): https://wccftech.com/horizon-zero-dawn-gpu-based-procedural-tech/
+- DeepWiki, "Weather Particle Effects" (BigWorld engine production particle definitions: snow_flakes.xml at 5,000 flakes from a camera-centered cylinder, rain splashes capped by lifetime math): https://deepwiki.com/cyberjois/private-wot-server/2.3.2-weather-particle-effects
+
+### Agent automation upgrade (Do / Check / Why)
+**Do**
+- Add a scatter manifest `scatter-manifest.json` recording every Botaniq scatter pass: asset name, count, seed, ground mask, and transform mode (Ground/Random). A re-scatter with the same manifest must reproduce the same dressing; a changed seed is a manifest change.
+- Add a particle budget log `snow-budget.json`: emission number, lifetime, lifetime randomness, and the derived active count (rate times lifetime), plus the frame time of the snowfall pass. Fail the check if the derived active count exceeds the budget the project sets.
+- Add a compositor finish record `compositor-finish.json`: the Glare threshold, the Tone Image node-group version, and before/after render paths for the final composite, so the finish is reproducible from the record instead of re-read from a screenshot.
+- Add a hero-vs-dressing split check: list every object in the scene as hero (hand-modeled) or dressing (scattered), and fail if a dressing asset is edited by hand instead of through the scatter pass, since a hand edit is lost on the next re-scatter.
+**Check**
+- The manifest, budget log, and finish record all exist and match the current scene; a re-run of the scatter pass with the same manifest produces the same layout.
+**Why**
+- The skill's method is "dress with a library, finish in the compositor", and manifests turn each of those into reproducible data: the scatter is a rule set with a seed, the snowfall is a count derived from lifetime math, and the composite finish is a recorded node setup instead of a remembered slider.
+
 **Depth status:** PARTIAL (timestamps, resource links, and 12 frames with readable parameter values; no captions, so the spoken instructions and the exact compositing node values beyond the Glare threshold are not captured).

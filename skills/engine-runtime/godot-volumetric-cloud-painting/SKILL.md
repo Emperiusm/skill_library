@@ -85,4 +85,29 @@ A cozy painting game is also a volume-authoring tool if the volume can leave the
 3. Judge which layer is the gap: the renderer is done, the brushes are not.
 4. The voxel shapes are the resolution limit; stamps now, simulated strokes next.
 
+## AAA studio practice
+
+This skill reimplements the reference engine directly: Nubis is Guerrilla's real-time volumetric cloud system in the Decima engine, and the Sunset Painter author's method (SIGGRAPH papers, Nubis3 as the model, everything in shaders) is the published Guerrilla method. Andrew Schneider, Guerrilla's Atmospherics Lead, presented the system in three SIGGRAPH Advances in Real-Time Rendering courses and a GDC 2022 talk. The 2015 prototype raymarched through layered 3D noise textures (mixes of Perlin and Worley noise) shaped by a weather map controlling cloud coverage, type, and rain chance, and rendered a variety of cloud types in various lighting conditions in under 2 milliseconds on the PlayStation 4. The 2017 authoring talk added what turns a prototype into a production tool: authoring cloudscapes on a regional scale, animation and transitions, integration into the atmospheric system, and a lighting-model upgrade. For Horizon Forbidden West the system was reworked as "Nubis, Evolved" so players could fly through clouds on the Sunwing mount, delivering detailed results at 1080p without temporal upscaling, with a method to mitigate temporal artifacts in fast-moving clouds and a near-zero-cost method for internal lighting effects. The 2023 "Nubis, Cubed" talk moved from the widely adopted 2.5D methods to true voxel-based clouds, solving ray-march acceleration with compressed signed distance fields, fluid-simulation-based modeling of clouds, a method to up-rez dense voxel data that avoids memory-access bottlenecks, light-sampling acceleration, and approximations for cloud-specific lighting features like dark edges and inner glow, all built in under six months.
+
+Two Guerrilla decisions map directly onto this skill's diagnosis. First, the voxel shapes are the resolution limit: Nubis3's up-rez step exists precisely because dense voxel data is the memory bottleneck, and the author is right that brush fidelity, not renderer polish, is the gap, because the renderer's job is to faithfully render whatever voxels the brushes put down. Second, artist control stays explicit: the weather map is a deliberate control layer (coverage, type, rain chance) on top of procedural noise, so the clouds are authored, not just generated. The GDC 2022 superstorm talk adds the scaling discipline: tornadic superstorms, internal lighting and lightning were added without expensive simulations or lighting calculations, so the system could scale between current- and previous-generation PlayStation consoles.
+
+The AAA rule that transfers: budget the cloud pass in milliseconds and the voxel data in memory before adding features, and keep an explicit authoring layer (weather map, brush strokes) above the procedural noise. The author's "renderer is done, brushes are not" judgment is the same layering Guerrilla uses: the renderer renders voxels, the authoring layer decides what voxels exist.
+
+Sources:
+- Guerrilla Games, "Nubis: Authoring Real-Time Volumetric Cloudscapes with the Decima Engine" (SIGGRAPH 2017; under 2 ms on PS4, weather-map control, Perlin-Worley noise, regional authoring): https://www.guerrilla-games.com/read/nubis-authoring-real-time-volumetric-cloudscapes-with-the-decima-engine
+- Guerrilla Games, "Nubis, Evolved" (SIGGRAPH 2022; fly-through clouds, 1080p without temporal upscaling, internal lighting, temporal-artifact mitigation): https://www.guerrilla-games.com/read/nubis-evolved
+- Guerrilla Games, "Nubis³" (SIGGRAPH 2023; voxel-based clouds, compressed-SDF ray-march acceleration, fluid-sim modeling, voxel up-rez): https://www.guerrilla-games.com/read/nubis-cubed
+- Andrew Schneider, schneidervfx.com (talk index: SIGGRAPH 2015 prototype, SIGGRAPH 2023 course, GDC 2022 superstorms talk): https://www.schneidervfx.com/
+
+### Agent automation upgrade (Do / Check / Why)
+**Do**
+- Add a cloud-pass budget log `cloud-budget.json`: per frame, the cloud pass time in milliseconds at the target resolution and the voxel-grid memory in megabytes. Fail the build if the cloud pass exceeds the budget the project sets (Guerrilla's bar is under 2 ms on PS4 hardware for the skybox pass; a Godot project should set its own number and record it, not borrow Guerrilla's).
+- Add a voxel-resolution audit: record the voxel grid size and the smallest paintable feature (in world units) per brush, and fail if a brush stroke is finer than the voxel grid can represent, since that detail is silently lost.
+- Add a brush-fidelity acceptance set: render the same cloud volume from three distances (ground, mid-air, close fly-through) after every brush change, and keep the renders in `brush-acceptance/` so a brush regression is visible as a diff, not a feeling.
+- Add a weather-map parameter manifest `weather-map.json` recording coverage, cloud type, and rain chance per region, so the authoring layer is data the agent can diff and the renderer can read, instead of values buried in shader code.
+**Check**
+- The budget log shows the cloud pass time and voxel memory for the current build, and the acceptance renders exist for the latest brush version.
+**Why**
+- The skill's core diagnosis is a layering judgment (renderer done, brushes not), and a budget log plus acceptance renders turn that judgment into measurements: the renderer is proven done by its millisecond budget, and the brush gap is proven closed by renders at three distances instead of one look from the ground.
+
 **Depth status:** PARTIAL (method, tools, reference engine, and the brush-vs-renderer diagnosis are disclosed; no paper titles, shader code, or parameters).
