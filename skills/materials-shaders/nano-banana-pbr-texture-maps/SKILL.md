@@ -267,6 +267,92 @@ video.
   video proves it. The overlay flip and the Cycles render are the
   checks; the claim is not.
 
+## AAA studio practice
+
+Ubisoft La Forge built the closest production analogue to this
+workflow, and its design is the opposite of one-map-at-a-time
+conversion. Its Generative Base Material prototype is a three-stage
+ComfyUI pipeline: first generate a seamless, tileable texture from a
+text prompt or a reference input, then run CHORD, an image-to-material
+estimation model, which converts that single texture into a full PBR
+set (Base Color, Normal, Height, Roughness, and Metalness) in one
+chained decomposition with unified multi-modal prediction, then
+upscale all channels 2x or 4x, because CHORD operates optimally at
+1024 resolution, to produce 2K and 4K assets. Ubisoft chose ComfyUI
+because the prototype is multi-stage (texture synthesis, material
+estimation, upscaling) and ComfyUI lets those stages run as one
+integrated workflow with ControlNet and image guidance. The pipeline
+is positioned for prototyping and placeholder assets that integrate
+into DCC tools and engines, not as a drop-in replacement for
+hand-authored hero materials. Source: ComfyUI blog, "Ubisoft
+Open-Sources the CHORD Model and ComfyUI Nodes for End-to-End PBR
+Material Generation",
+https://blog.comfy.org/p/ubisoft-open-sources-the-chord-model
+
+Naughty Dog's Uncharted 4 texture practice is the other anchor, and
+it derives maps from geometry and height instead of repainting an
+RGB image. At GDC 2016, Bradford Smith and Rogelio Olguin showed a
+Substance Designer workflow in which blending materials and swapping
+the height map, with a few parameter tweaks, produced a whole new
+texture set, and Substance was also used to create bake maps; about
+80 percent of the textures in the E3 demo involved Substance. The
+driver was PBR correctness: material parameters had to be correct
+for a believable, consistent response to lighting, so the team
+needed a robust, standardized material library that still allowed
+handcrafted work, with a stricter black-box pipeline for outsource
+studios to keep results consistent across seven to ten vendors.
+Sources: DualShockers, GDC 2016 recap,
+https://www.dualshockers.com/amazing-uncharted-4-pictures-show-environments-and-more-naughty-dog-talks-texture-design-at-gdc/ ;
+GamesBeat, "How Uncharted 4's artists created their amazing
+landscapes",
+https://gamesbeat.com/how-uncharted-4s-artists-created-their-amazing-landscapes/
+
+Three differences from the AAA pattern, stated plainly. First,
+CHORD predicts all channels jointly from one input, so registration
+is a property of the model, while this skill's registration rests
+entirely on a text instruction (do not reposition) repeated per map,
+with only a visual flip as the check. Second, CHORD's input stage
+targets seamless, flat-lit, tileable textures and its output stage
+upscales to 2K/4K; this skill generates at 2K directly, has no
+tileability requirement beyond restrained tiling, and produces no
+metalness map. Third, Naughty Dog derived normal and bake maps from
+high-poly geometry and height data, which is a measured source;
+an AI model repainting an RGB image into normal-map colors has no
+such source, which is why this skill keeps "mathematically
+accurate" labeled as the creator's claim, not a measurement.
+
+### Agent automation
+
+- **Texture-set manifest.** For each set, record the base-color
+  prompt, the chosen candidate, the input image hash fed to each
+  conversion, the conversion prompt per map, and the overlay-flip
+  verdict per map (aligned or drifted, judged by eye). No map
+  enters Blender without a flip verdict. (Grounded in the skill's
+  own Phase 3 check; the manifest makes it auditable.)
+- **Edge-alignment score (agent-designed check).** In addition to
+  the visual flip, compute an edge-map overlap score between the
+  base color and each derived map and record it in the manifest,
+  with the threshold chosen per set and recorded, not assumed.
+  A map that looks aligned but scores far below the set's other
+  maps is re-converted. This check is this skill's own design,
+  labeled as such; no source claims such a score proves a normal
+  map correct.
+- **CHORD reference pass (optional, when CHORD is installed).**
+  Run the same chosen base color through the CHORD estimation
+  stage and keep its map set beside the Nano Banana set as a
+  reference, without overwriting either. Differences are
+  recorded, not resolved by assertion: the reference shows what
+  a jointly predicted set looks like from the same input.
+  (Grounded in the CHORD three-stage pipeline; CHORD is research
+  licensed, so check the license before shipping any output
+  from it.)
+- **Cost and resolution ledger.** Record credits and elapsed time
+  per map and per set, plus the resolution decision from Phase 4
+  (hero versus background). The creator's "under 50 cents in
+  under 60 seconds" claim is then checked against the ledger
+  for each set, not carried forward as a general fact.
+  (Grounded in the creator's own cost claim in Phase 5.)
+
 ## The human method, distilled
 
 1. Split the models: ChatGPT writes, Nano Banana draws.

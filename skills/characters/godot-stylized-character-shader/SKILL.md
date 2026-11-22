@@ -230,6 +230,87 @@ look-dev shader would couple two unrelated systems.
   almost always in the painted maps (Phase 1), not in more shader
   code. Re-check the textures before adding shader features.
 
+## AAA studio practice
+
+Arc System Works built Guilty Gear Xrd the same way this skill does, and
+in one respect the opposite way. The Xrd team adjusted vertex normals
+by hand to simplify shading while keeping the full 40,000-polygon
+character shape, because unedited normals produced complex shading
+that matched the polygons instead of the cel look they wanted. Face
+normals were adjusted vertex by vertex to produce simplified,
+intentional shading, shading thresholds were controlled with vertex
+colors, and outlines used the inverted-hull method with separate
+normals for the hull and for shading. The team also used two textures
+per surface, a base texture for lit areas and a tint texture for
+shaded areas, rather than painting all the shading into one diffuse
+map. Their stated tenet, from technical artist Junya C. Motomura's
+GDC 2015 talk, is that handcrafting beat calculation: every visual
+element had to be an intentional choice, not a mere calculation
+outcome. Sources: Polygon, "See how Guilty Gear Xrd's gorgeous 3D
+cel-shaded look was created",
+https://www.polygon.com/2015/5/26/8663003/guilty-gear-xrd-cel-shading-making-of ;
+Arc System Works design documents (4Gamer/CGWORLD translations),
+https://archive.org/stream/GGXrd-design-docs/4Gamer%20-%20The%20Secrets%20of%20GGXrd%27s%20Graphics_djvu.txt
+
+Tango Gameworks went further in the other direction for Hi-Fi Rush:
+instead of a per-character shader, the whole game, characters and
+environment, runs through a deferred toon renderer in Unreal Engine 4,
+with customized and added render passes combined in post-process
+volumes, at 60 FPS at native resolution. The team kept modern lighting
+features (deferred lights, volumetric fog, ambient occlusion, global
+illumination, real-time reflections, bloom) but stylized each one
+into the 2D look, including a dedicated toon face-shadow
+implementation, a comic shader, and toon light and shadow passes.
+Director John Johanas set three style keywords, "Colorful", "Sharp",
+and "Clean", and asked for no color gradations and nothing that would
+feel 3D. Sources: 80 Level, "The Making Of Hi-Fi Rush's 3D Toon
+Rendering Style",
+https://80.lv/articles/the-making-of-hi-fi-rush-s-3d-toon-rendering-style ;
+Unreal Engine, "Inside the creation of Tango Gameworks surprise hit",
+https://www.unrealengine.com/developer-interviews/hi-fi-rush-was-inspired-by-shaun-of-the-dead-and-futurama?lang=es-ES
+
+Two differences from the AAA pattern, stated plainly. First, Xrd
+carried the style in vertex properties (normals, vertex colors),
+which are resolution independent, and in a separate tint texture;
+this skill carries it in hand-painted diffuse maps and painted AO,
+which is the author's stated method, not Xrd's. Second, Hi-Fi Rush
+is a renderer-level decision for a whole game, not a single
+character shader; do not present this skill's spatial shader as the
+Hi-Fi Rush approach. No technical source was found for HoYoverse's
+Zenless Zone Zero shading (cited in this skill only as the author's
+reference for painted shading), so no HoYoverse practice is claimed
+here.
+
+### Agent automation
+
+- **Normal-edit record.** For every mesh whose normals are modified
+  in Phase 3, record the mesh, the region edited (face first), and
+  a before/after render pair from the same camera and light, saved
+  with the record. A normal edit with no render pair is not
+  finished. (Grounded in Xrd's handcrafted face normals; the
+  record format is this skill's own gate.)
+- **Component-isolation renders.** Render the character once per
+  component from Phase 2 (base only, shadows only, AO only,
+  specular only, rim only) from one fixed camera, and keep the
+  five renders with the shader parameters used. A component that
+  cannot be shown alone has not been isolated. (Grounded in the
+  devlog's own separate-component presentation and in Hi-Fi Rush's
+  separate toon passes.)
+- **Shadow-softness sweep.** Record the shadow-softness parameter
+  values tried, with one render per value at the same camera, and
+  the chosen value with the reason (hard outline versus soft
+  look). Keep the sweep; the flicker defect in the Failure modes
+  section is checked against the sweep renders, not by memory.
+  (Grounded in the author's adjustable-softness answer; the sweep
+  itself is this skill's own gate.)
+- **Flicker probe.** Before calling the shader done, capture a
+  short frame sequence while the light or camera moves slowly and
+  diff consecutive frames outside the moving shadow edge. Any
+  flicker in a static region fails the probe. The probe is a
+  check, not a fix; the devlog gives no fix, and none is invented
+  here. (Agent-designed check, labeled as such; grounded in the
+  reported flicker defect.)
+
 ## The human method, distilled
 
 1. Textures first: hand-painted maps carry the style; the shader

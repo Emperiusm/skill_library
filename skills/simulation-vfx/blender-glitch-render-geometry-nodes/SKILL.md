@@ -313,6 +313,92 @@ second build pass.
   and the outliner-screenshot scatter both failed on camera. Record
   them as dropped; do not present them as alternatives.
 
+## Production practice
+
+No AAA game-studio source was found for a glitch render, for
+Geometry Nodes in production, or for this video's specific
+technique, so no AAA claim is made here. What was found is the
+older, cross-DCC pattern this skill's stored attribute belongs to:
+per-point or per-instance attributes driving shader variation from
+one shared material, documented by the vendors whose tools ship it.
+
+SideFX documents the pattern for Houdini scattering: write
+attributes such as `orient` and `pscale` to scatter points to
+control instances and their shaders, randomize custom attributes
+such as `hue` and `saturation` over the points, then read those
+attributes out and connect them to the material. Its worked
+example keeps color variation subtle on purpose (hue randomized
+between 0.9 and 1.1, saturation between 0.7 and 1.0, since 0
+would be grayscale), separates the scatter-point stream from the
+terrain stream so attributes do not falsify the terrain, and
+deletes unneeded attributes afterward to save render resources.
+Source: SideFX, "Scattering: Attributes",
+http://www.sidefx.com/docs/houdini/heightfields/scatterattribs.html
+
+The same one-material, many-variations rule appears in Unreal
+Engine practice: a material uses the PerInstanceCustomData node
+and each foliage instance carries its own custom-data value, so
+one material can fade or change per instance instead of assigning
+a unique dynamic material per instance, which the engine does not
+support for foliage (all instances of a foliage type share the
+material). Sources: Epic Developer Community Forums, "Micro-tutorial:
+Per instance foliage logic/effects using per instance custom data",
+https://forums.unrealengine.com/t/micro-tutorial-per-instance-foliage-logic-effects-using-per-instance-custom-data/604191 ;
+"Assign unique dynamic material for every single foliage instance",
+https://forums.unrealengine.com/t/assign-unique-dynamic-material-for-every-single-foliage-instance-and-modify-them-independently-at-runtime/2077810
+(Both are community tutorials on Epic's forum, not Epic studio
+practice, and are labeled as such.)
+
+Blender's own manual states the mechanism this skill relies on:
+the Attribute node retrieves attributes attached to an object or
+mesh, with values varying per vertex, and Object and Instancer
+modes look the attribute up per object. Source: Blender Manual,
+"Attribute Node",
+https://docs.blender.org/manual/en/2.93/render/shader_nodes/input/attribute.html
+(The manual page is the 2.93 version; the attribute mechanism is
+the one the 5.3 workflow uses, and the version difference is
+noted rather than hidden.)
+
+Two differences from the production pattern, stated plainly.
+First, Houdini and Unreal vary attributes per scatter point or
+per instance; this skill stores one attribute value per object
+and drives the shader's mapping node, which is the Blender
+object-level analogue, not the same domain. Second, the
+Far Cry 5 point-cloud export story (Ubisoft feeding the engine
+PNG files and point clouds with attributes per biome) appears
+only as a SideFX forum report, not as a verified studio source,
+so it is not cited as evidence here.
+
+### Agent automation
+
+- **Attribute manifest.** For every object using the linked
+  Geometry Nodes system, record the attribute name, its domain
+  and type, the value stored per object, and the shader node
+  that reads it. Gate: every object in the set has an entry,
+  and the material count for the set is one. A second material
+  with the same node tree is a duplicated shader, not a
+  variation. (Grounded in the SideFX attribute pattern and the
+  Unreal one-material rule; the manifest format is this skill's
+  own gate.)
+- **Variation sweep.** Render the same object at three stored
+  attribute values (low, middle, high) from one fixed camera
+  and keep the three renders with the manifest. A value range
+  that produces no visible change, or that breaks the read,
+  is narrowed before the scene is scattered. (Agent-designed
+  check, labeled as such; grounded in SideFX's narrow-range
+  hue/saturation example.)
+- **Scatter accumulation check.** After weight-paint scattering,
+  record the scatter count and check the distribution reads as
+  accumulation (denser where painted, sparse elsewhere) rather
+  than a grid, from a top-down viewport capture kept with the
+  manifest. (Grounded in Phase 7's grass-accumulation rule;
+  the capture is this skill's own gate.)
+- **Dominant-color sample.** Sample the finished render's
+  pixels and record the dominant hue share against the other
+  hues, to check Phase 5's dominant-color rule with a number
+  instead of only by eye. The target share is recorded per
+  scene, not assumed. (Agent-designed check, labeled as such.)
+
 ## The human method, distilled
 
 1. Vibe first, details second: map the overall scene before

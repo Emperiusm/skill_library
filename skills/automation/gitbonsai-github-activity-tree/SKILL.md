@@ -188,6 +188,89 @@ render.
   because pots do not grow. Step the pot, center it, and repot
   realistically instead of scaling it with the tree.
 
+## Production practice (vendor docs, not AAA)
+
+No AAA game-studio source was found for growing a visualization
+from GitHub activity, and none is claimed here. What the research
+did find is vendor documentation that corrects and hardens the
+two automation claims in Phase 2, plus industry guidance showing
+where GitHub Actions sits in game build pipelines.
+
+Correction to Phase 2, stated plainly: GitHub's documented rule
+is narrower than "GitHub pauses schedules on repos with no
+activity." In a public repository, scheduled workflows are
+automatically disabled when no repository activity has occurred
+in 60 days; when a public repository is forked, scheduled
+workflows are disabled by default. The documentation does not
+state the same 60-day rule for private repositories, so do not
+apply it to them. The workflow's state distinguishes the cause:
+`disabled_inactivity` for the 60-day rule, `disabled_fork` for a
+fork, `disabled_manually` for a human disable. Re-enable from
+the Actions tab, with `gh workflow enable`, or by a commit that
+changes the cron schedule. Source: GitHub Docs, "Disabling and
+enabling a workflow",
+https://docs.github.com/en/enterprise-server@3.10/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/disabling-and-enabling-a-workflow ;
+state values per an independent write-up of the documented rule,
+http://dev.to/kalemi/scheduled-workflow-disabled-after-60-days-of-inactivity-1j45
+
+The second documented rule is the real mechanism behind part of
+the "bot never waters itself" principle, and it is separate from
+contribution counting. When a workflow uses the repository's
+`GITHUB_TOKEN` to perform tasks, events triggered by that token
+will not create a new workflow run, with the exceptions of
+`workflow_dispatch` and `repository_dispatch` (and, in current
+cloud docs, `pull_request` opened/synchronize/reopened events
+from a bot-created pull request, which create runs in an
+approval-required state). The stated purpose is preventing
+recursive workflow runs: a push made with `GITHUB_TOKEN` will
+not trigger a push workflow even if one exists. So the
+self-commit in Phase 2 cannot retrigger other workflows on its
+own; that loop protection is GitHub's, not the bot identity's.
+The contribution-graph claim (committing as `github-actions[bot]`
+keeps the regrowth from counting as the owner's work) remains
+the author's rationale as stated in Phase 2, and is not
+separately verified here. Source: GitHub Docs, "Triggering a
+workflow",
+https://docs.github.com/en/enterprise-cloud@latest/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow
+
+On where GitHub Actions sits in game production: an industry
+build-pipeline guide puts GitHub Actions with GameCI as the
+right answer for most indie and mid-size Unity teams already on
+GitHub, while Unreal teams more often use Jenkins, TeamCity, or
+Horde (Epic's own system), and larger studios lean on Jenkins
+or TeamCity for complex pipelines. That is guidance, not a named
+studio's practice, and it is why this skill's keepalive pattern
+is presented as a transferable automation pattern, not as AAA
+studio practice. Source: GameDevProducer, "How to Set Up a Build
+Pipeline for a Game",
+https://www.gamedevproducer.com/posts/how-to-set-up-a-build-pipeline-for-a-game/
+
+### Agent automation
+
+- **Workflow-state check.** Before relying on the Monday run,
+  read the workflow state with `gh api
+  repos/OWNER/REPO/actions/workflows/bonsai.yml --jq .state`
+  and record it. It must read `active`; `disabled_inactivity`,
+  `disabled_fork`, or `disabled_manually` each need their own
+  fix (re-enable, fork decision, or human review), not a
+  re-run of the workflow file. (Grounded in the state values
+  above and the `gh api` check in
+  https://hyperping.com/blog/how-to-monitor-github-actions-scheduled-workflows )
+- **Weekly heartbeat record.** After each Monday run, record
+  the run date, whether a commit landed, the commit author
+  (must be `github-actions[bot]`), and the week stamp recorded
+  in the SVG. A green run with no commit is the silent failure
+  named in Phase 2; a week with no run at all is checked
+  against the workflow state first, since a disabled schedule
+  produces no run and no failure notification. (Grounded in
+  the 60-day rule and the Phase 2 commit check.)
+- **Snapshot-presence gate.** Every regrow commit must include
+  the snapshot file alongside the light and dark SVGs, as in
+  Phase 2's `git add` step. A commit with SVGs but no snapshot
+  fails the gate: the next run would fetch the full history
+  instead of only recent months. (Grounded in Phase 2's
+  snapshot rationale; the gate is this skill's own check.)
+
 ## The human method, distilled
 
 1. Nothing is ever erased: every language, pause, and streak stays
