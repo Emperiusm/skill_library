@@ -101,6 +101,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`h3-facerefine-plus`](ai-video/h3-facerefine-plus/SKILL.md) | Refine faces in MiniMax H3 video with ComfyUI-H3-FaceRefine-Plus v0.2.0: one Mode dropdown picks the V1 or V2 recipe, heavy steps run on the GPU for a 2.7x speedup, default strength 0.30. |
 | [`viggle-motion-transfer-comfyui`](ai-video/viggle-motion-transfer-comfyui/SKILL.md) | Transfer motion from any video onto a character image with the NeuroVigal/Viggle Remake model in ComfyUI on 6GB VRAM: INT8 ConvRot, Qwen VL auto-prompting, 6 Euler steps, RelayVSR upscale. |
 | [`qwen-image-21-comfyui-local`](ai-video/qwen-image-21-comfyui-local/SKILL.md) | Use Qwen-Image-2.1 locally in ComfyUI: 7B parameters, Turbo 8-step generation at 16 seconds per image on an RTX 4080, multi-image edit with up to 10 references, character sheets, transparent PNG background removal. |
+| [`minimax-h3-image-ausboss-16mp-edit-lock`](ai-video/minimax-h3-image-ausboss-16mp-edit-lock/SKILL.md) | Put six characters from six photos into one 16 MP picture with MiniMax H3 Image in ComfyUI (AusBoss Generate + Edit v1.2): blind-tested vs Qwen/Klein, Edit Lock restores untouched pixels per step, license warning for US/EU/UK/Korea. |
 
 | Skill | What it teaches |
 |---|---|
@@ -206,6 +207,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`karles22-cycles-houdini-solaris`](engine-runtime/karles22-cycles-houdini-solaris/SKILL.md) | Render Blender Cycles inside Houdini 22 Solaris with the karles22 Hydra 2 delegate: one Render Settings node, MaterialX native, even per-pixel sampling, photon caustics, and one-click in-render post FX. |
 | [`godot-steam-deck-frame-budget-perf`](engine-runtime/godot-steam-deck-frame-budget-perf/SKILL.md) | Make a Godot game run smoothly on the Steam Deck: spare frame budget builds the next procedural city, GDExtension C++ rewrites, 3 ms destruction budget, per-frame telemetry. |
 | [`rust-webgl2-tree-simulator`](engine-runtime/rust-webgl2-tree-simulator/SKILL.md) | Build a zoomable tree simulator in Rust with a raw WebGL2 viewer: cohesion-tension water, pipe-model trunk, full HDR post stack, no shadow maps or path tracing. |
+| [`unity-per-frame-dynamic-mesh-jobs-burst`](engine-runtime/unity-per-frame-dynamic-mesh-jobs-burst/SKILL.md) | Generate room meshes per frame in Unity with one Jobs+Burst job: hexagon-mitered walls, BurstTriangulator Delaunay floors/roofs with constraints, wall-space window-hole clipping. |
+| [`threejs-toon-shrine-koi-instancing`](engine-runtime/threejs-toon-shrine-koi-instancing/SKILL.md) | Build a walkable phone-playable three.js shrine: one instanced koi mesh (638 tris/fish), 3-step toon ramp + kept-list ink outlines, one baked mesh per area, shared-clock shoal. |
 
 | Skill | What it teaches |
 |---|---|
@@ -306,6 +309,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`fable-one-prompt-mech-rig`](automation/fable-one-prompt-mech-rig/SKILL.md) | Test Fable 5.2 (High) in one shot: one brief, one agent session, and a ~65k-triangle Three.js mech with a 52-joint rig, analytic two-bone IK, procedural walk with 0 mm foot drift, combat mode, and 5 camera systems; the model reinvented the IK rather than sourcing it. |
 | [`claude-fable-rust-flight-sim-3d-tiles`](automation/claude-fable-rust-flight-sim-3d-tiles/SKILL.md) | Build an open-world flight sim in Rust in about a week with Claude Fable 5.2 and Opus 5.5 from plan docs, then replace the procedural world with Google Photorealistic 3D Tiles: measured datum, coverage-mask blending, destructible mesh buildings, published fps and MB numbers. |
 | [`gitbonsai-github-activity-tree`](automation/gitbonsai-github-activity-tree/SKILL.md) | Grow a Japanese maple bonsai from GitHub activity as an animated SVG: first language is the trunk, leaf color is the language, girth is every contribution, and a weekly Action regrows it without watering itself. |
+| [`enso-blender-godot-npr-link`](automation/enso-blender-godot-npr-link/SKILL.md) | Send a full anime/NPR scene from Blender to Godot 4.7 with one button (Enso Engine): node trees translated to Godot shaders, reflections, post stack, rigs/animation; particles, hair curves, volumes unsupported. |
 
 ## No-tooling examples (`no-tooling/`)
 

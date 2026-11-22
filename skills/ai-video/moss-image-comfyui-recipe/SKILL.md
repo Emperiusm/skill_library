@@ -15,7 +15,7 @@ This skill reconstructs the recipe from the release post and its comment thread,
 - Official workflow: https://huggingface.co/Comfy-Org/MOSS-Image
 - Evidence: full post selftext + 25 top-level comments, 2026-10-21 scout run
 - Expansion 2026-10-28: "MOSS Image in ComfyUI | Text to Image, Words & Layout (Ep40)" by pixaromadesign — https://youtu.be/l4R96NemQS8 (19 min, 13,752 views, full captions, 466 segments, + description); Reddit post https://www.reddit.com/r/comfyui/comments/1xgwtyb/ (score 39). ASR garbles brand names in places ("PixArt-Alpha" for Pixaroma nodes, "Laura" for LoRA); settings below are taken from the description and from caption passages where the meaning is unambiguous.
-- Expansion 2026-11-21: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas — https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20, full ASR captions, 252 segments, + description); 2026-11-21 scout run, audit 5. A distinct low-VRAM variant on the same model: int8 quantized generation-optimized workflow at 1-2 MP plus Ultimate SD Upscale, not the 50-step starter recipe and not the tuned fusion. Model file names are ASR-garbled in the captions and are taken from the workflow, not quoted.
+- Expansion 2026-11-21: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas — https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20, full ASR captions, 252 segments, + description); 2026-11-21 scout run, audit 5. A distinct low-VRAM variant on the same model: int8 quantized generation-optimized workflow at 1-2 MP plus Ultimate SD Upscale, not the 50-step starter recipe and not the tuned fusion. Model file names were ASR-garbled in the captions; the exact names and sampler/upscale numbers are now frame-verified in Phase G5 (2026-11-22 expansion).
 
 ## Tools used
 
@@ -224,7 +224,7 @@ The prompt is doing the work the model cannot: MOSS receives text only, so the q
 
 ## Expansion 2026-11-21: Olivio int8 + Ultimate SD Upscale (low-VRAM variant)
 
-Source: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas, https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20). Evidence: full ASR captions (252 segments) plus the description. This is a distinct workflow from the starter recipe and the tuned fusion: same model, a quantized generation-optimized workflow at 1-2 MP, then upscaling instead of generating big. No step count, sampler, CFG, or render-time number is stated in this video; do not borrow the starter recipe's 50 steps / CFG 3 / shift 5 for this variant.
+Source: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas, https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20). Evidence: full ASR captions (252 segments) plus the description. This is a distinct workflow from the starter recipe and the tuned fusion: same model, a quantized generation-optimized workflow at 1-2 MP, then upscaling instead of generating big. Expansion 2026-11-22 (frame review, Phase G5 below): 12 frames from the downloaded video, read directly, supply the exact model filenames and sampler/upscale numbers the captions garbled or omitted; the caveat in the previous version of this section no longer applies.
 
 ### Phase G1: Pick the optimized workflow, not the base workflow
 
@@ -232,7 +232,7 @@ Source: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide"
 1. Go to the official Comfy-Org MOSS-Image page: "the structure where everything goes with different workflows" (diffusion model, text encoder, VAE under Files and versions).
 2. Download the workflow and drag it into ComfyUI; ComfyUI names the missing models and the folders they belong in (red frame, Details, Issues). "Click on download and point it to that folder inside of the ComfyUI folder inside of the models folder."
 3. Use the generation-optimized workflow, not the base text-to-image workflow: "the base uses a base model that has not been optimized and is better for image training. The other one up here uses the model that is better optimized for your purposes for image generation."
-4. Download the quantized model the workflow names (the ASR renders its name as "the int eight con rot" plus "these two other models"; the exact file names are in the workflow, not in the captions, so they are not quoted here) into the folders the workflow points to.
+4. Download the quantized model the workflow names into the folders the workflow points to. The exact filenames, read from the workflow's Missing Models dialog on screen (frame review, 2026-11-22; the ASR captions rendered the first name as "the int eight con rot" and are not quoted here): `moss_image_base_int8_convrot.safetensors` (diffusion model, "Download all (5.04 GB)"), `qwen3.5_9b_w4a8_gptq.safetensors` (CLIP/text encoder), `flux2-vae_small.safetensors` (VAE). The full HuggingFace MOSS-Image repo is 68.8 GB; the int8 workflow needs only the 5.04 GB diffusion-models set named here, not the whole repo.
 5. "Always update ComfyUI and of course update your graphics driver" before starting.
 
 **Check**
@@ -283,6 +283,22 @@ An upscaler subgraph with unwired outputs does nothing: the model, VAE, and both
 
 **Why**
 A fast, lightweight model changes the defect economics: a six-finger hand is a re-render, not a rescue job, because generation is cheap. That only holds if the defects are checked per image, which is why the review phase exists at all.
+
+### Phase G5: Use the exact int8 sampler and upscale settings (frame-verified, 2026-11-22)
+
+Source for this phase only: 12 frames extracted from the downloaded video (632 s, 21.8 MB) and read directly in the 2026-11-22 scout run (re-scan of the same video; no transcript was obtained in that run, and the 2026-11-21 ASR evidence is cited, not re-derived). Filename and value panels were enlarged and re-read before quoting. These settings belong to the int8 variant; do not borrow the starter recipe's 50 steps / CFG 3 / shift 5 for this variant, and do not borrow these settings for the starter recipe.
+
+**Do**
+1. Sampler settings on the load/sampler node: sampler `er_sde`, scheduler `simple`.
+2. Resolution Selector: aspect ratio 1:1 (Square), 1.00 megapixels.
+3. Ultimate SD Upscale node: upscale model `4x-UltraSharp.pth` via Load Upscale Model; `upscale_by` 2.00; steps 25; CFG 2.5; sampler `er_sde`; scheduler `simple`; denoise 0.20; mode type Linear; `mask_blur` 8; tile padding 32. The seed shown on screen (804984349185531) is the author's shown seed with "control after generate" set to randomize; it is recorded for completeness and is not a required value.
+4. Frame evidence for outputs/defects in this run: group dinner portrait, violin-maker hands close-up, "VIENNA JAZZ NIGHTS" poster with legible text, prompt-adherence test (red cube on blue sphere, seven green apples, yellow pyramid behind a glass of water), and a distorted pink furry figure (garbled anatomy failure example). The six-finger hand defect reported 2026-11-21 was not isolated in this run's 12 frames and is not re-verified here.
+
+**Check**
+- The three filenames in Phase G1 step 4 match the workflow's Missing Models dialog exactly. If ComfyUI names different files, the workflow version differs and these filenames do not apply. The upscale settings are read from the on-screen node values; if the node shows different values, the on-screen values govern.
+
+**Why**
+Exact filenames remove the one guessing step the 2026-11-21 audit left open. Sampler/upscale numbers remove the second: the int8 variant now has stated settings of its own. ASR garbles filenames; the Missing Models dialog and node values are the source of truth for file and parameter names.
 
 ### Int8-upscale human method, distilled
 
