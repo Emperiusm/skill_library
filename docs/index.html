@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="286 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="290 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">286 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">290 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 286 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">65</span></h2>
+  <input id="search" type="search" placeholder="Search 290 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">67</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -108,6 +108,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-audio/SKILL.md">godot-audio</a></h3>
   <p>Play and mix audio in Godot 4.7: AudioStreamPlayer (2D/3D variants), audio buses with volume/mute and effects, music vs SFX routing, db/linear volume, and precise sync-to-beat playback timing. Use when playing sounds or...</p>
 </article>
+<article class="card" data-search="godot-biome-reactive-procedural-weather build procedural weather in godot 4 where fronts drift with the wind, each biome reacts differently, and grass, trees, and water all read the same global shader parameters. trigger when weather must arrive visibly as a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-biome-reactive-procedural-weather/SKILL.md">godot-biome-reactive-procedural-weather</a></h3>
+  <p>Build procedural weather in Godot 4 where fronts drift with the wind, each biome reacts differently, and grass, trees, and water all read the same global shader parameters. Trigger when weather must arrive visibly as a...</p>
+</article>
 <article class="card" data-search="godot-csharp use c#/.net in godot 4.7: partial classes extending nodes, the pascalcase lifecycle (_ready/_process/_physicsprocess), [export] fields, [signal] delegates as c# events, type-safe node lookup, and calling between c# and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-csharp/SKILL.md">godot-csharp</a></h3>
   <p>Use C#/.NET in Godot 4.7: partial classes extending nodes, the PascalCase lifecycle (_Ready/_Process/_PhysicsProcess), [Export] fields, [Signal] delegates as C# events, type-safe node lookup, and calling between C# and...</p>
@@ -131,6 +135,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="godot-gdscript-headless-testing run gdscript test suites from the command line with `godot --headless`, using a scenetree/mainloop runner script that exits non-zero on failure so ci can gate merges. use when a godot project needs unit tests without...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-gdscript-headless-testing/SKILL.md">godot-gdscript-headless-testing</a></h3>
   <p>Run GDScript test suites from the command line with `godot --headless`, using a SceneTree/MainLoop runner script that exits non-zero on failure so CI can gate merges. Use when a Godot project needs unit tests without...</p>
+</article>
+<article class="card" data-search="godot-geometry-wrapping-rappel-rope add a geometry-wrapping rappel rope in godot: fake the last curve3d segment as a tension-pulling pivot or pendulum, wrap it with physics shape casts, and clamp every non-input force along the rope axis. trigger when a...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-geometry-wrapping-rappel-rope/SKILL.md">godot-geometry-wrapping-rappel-rope</a></h3>
+  <p>Add a geometry-wrapping rappel rope in Godot: fake the last Curve3D segment as a tension-pulling pivot or pendulum, wrap it with physics shape casts, and clamp every non-input force along the rope axis. Trigger when a...</p>
 </article>
 <article class="card" data-search="godot-multiplayer build networked games with godot 4.7 high-level multiplayer: set up an enetmultiplayerpeer server/client, define rpcs with the @rpc annotation (call via rpc()/rpc_id()), set per-node multiplayer authority, and replicate...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-multiplayer/SKILL.md">godot-multiplayer</a></h3>
@@ -301,7 +309,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build and edit 3D meshes directly inside the Godot editor with Xogot Modeler (first public beta, Godot Asset Store): block out levels with basic shapes, edit vertices, edges, and faces, extrude and bevel, draw curved...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">49</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">50</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -486,6 +494,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="ue-grass-cards-lod build cheap game grass from crossed cards: start with two crossed cards, add rotated crosses for volume, hide the card look from top-down views, then swap cheap crosses in the distance and detailed grass near the player...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/ue-grass-cards-lod/SKILL.md">ue-grass-cards-lod</a></h3>
   <p>Build cheap game grass from crossed cards: start with two crossed cards, add rotated crosses for volume, hide the card look from top-down views, then swap cheap crosses in the distance and detailed grass near the player...</p>
+</article>
+<article class="card" data-search="unity-planet-database-burst-terrain build a procedural planet in unity with a lat/lon planet database queried by a burst cpu mesh generator, starting from an icosahedron subdivided around the camera. trigger when a planet must be flyable from orbit to the...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/unity-planet-database-burst-terrain/SKILL.md">unity-planet-database-burst-terrain</a></h3>
+  <p>Build a procedural planet in Unity with a lat/lon planet database queried by a Burst CPU mesh generator, starting from an icosahedron subdivided around the camera. Trigger when a planet must be flyable from orbit to the...</p>
 </article>
 <article class="card" data-search="unreal-pcg-village-generation generate a village with unreal&#x27;s pcg framework: break the environment into elements, derive placement rules, spawn points, drive static mesh spawners through transform points, and break uniformity with random choice...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/unreal-pcg-village-generation/SKILL.md">unreal-pcg-village-generation</a></h3>
@@ -691,7 +703,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Clone a voice locally with ZONOS3-Mini (Zyphra, ~800M params, 43 languages, Apache 2.0) in ComfyUI or Promptus: 8-round blind comparison vs ElevenLabs v4, voice-profile vs raw-clip cloning, 25-slider voice design...</p>
 </article>
 </div></section>
-<section><h2>Automation and pipelines <span class="count">40</span></h2>
+<section><h2>Automation and pipelines <span class="count">41</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-blender-asset-pipeline drive blender as an agent subroutine to build game-ready 3d assets: screenshot-measure-execute-assess loop via blender mcp, per-asset assessment.md files, non-destructive fit studies, human-in-the-loop mechanical...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/agentic-blender-asset-pipeline/SKILL.md">agentic-blender-asset-pipeline</a></h3>
@@ -744,6 +756,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="blender-nodemode do everything blender does through a houdini-style node graph with nodemode: isotropic remesh, still bake, cloth solving with explicit solver parameters, portal data routing, noise-driven surface deformation, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/blender-nodemode/SKILL.md">blender-nodemode</a></h3>
   <p>Do everything Blender does through a Houdini-style node graph with NodeMode: isotropic remesh, Still bake, cloth solving with explicit solver parameters, portal data routing, noise-driven surface deformation, and...</p>
+</article>
+<article class="card" data-search="claude-code-agent-office-threejs turn claude code session logs into a live three.js office where each session is a team lead, each sub-agent is a character at a role-based desk, and status is glanceable: a* pathfinding, canvas-texture monitors, led...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/claude-code-agent-office-threejs/SKILL.md">claude-code-agent-office-threejs</a></h3>
+  <p>Turn Claude Code session logs into a live three.js office where each session is a team lead, each sub-agent is a character at a role-based desk, and status is glanceable: A* pathfinding, canvas-texture monitors, LED...</p>
 </article>
 <article class="card" data-search="claude-code-godot-handoff-playtest ship a godot mobile game with claude code using three cheap instruments: a handoff doc that carries decisions between sessions, content as json data files, and a 96-step automated playtest mode with screenshots plus...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/automation/claude-code-godot-handoff-playtest/SKILL.md">claude-code-godot-handoff-playtest</a></h3>
