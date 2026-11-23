@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="280 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="283 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">280 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">283 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 280 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">62</span></h2>
+  <input id="search" type="search" placeholder="Search 283 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">64</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -68,9 +68,9 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/bone-animation-textures-gpu-instancing/SKILL.md">bone-animation-textures-gpu-instancing</a></h3>
   <p>Animate thousands of skinned instances on the GPU with bone animation textures (BAT): bake each clip once into a texture, let the vertex shader read the bones, and keep the CPU out of skeleton updates. Trigger when a...</p>
 </article>
-<article class="card" data-search="cave-expedition-render-tech ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, gpu-driven detail, each stage held to its budget. trigger when optimizing 3d rendering performance.">
+<article class="card" data-search="cave-expedition-render-tech ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, gpu-driven detail, each stage held to its budget. expanded 2026-11-22 with the firsthand instagram reel audit of the...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/cave-expedition-render-tech/SKILL.md">cave-expedition-render-tech</a></h3>
-  <p>Ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, GPU-driven detail, each stage held to its budget. Trigger when optimizing 3D rendering performance.</p>
+  <p>Ship heavy voxel-terrain visuals on a performance budget: mesh compression, virtual texturing, GPU-driven detail, each stage held to its budget. Expanded 2026-11-22 with the firsthand Instagram reel audit of the...</p>
 </article>
 <article class="card" data-search="custom-atmosphere-scattering-vulkan model a daylight cycle from scratch in c++ and vulkan: trace light through the atmosphere on the cpu into sky-colour tables, interpolate them on the gpu, split direct and diffuse light from one table, and hold 60 fps at...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/custom-atmosphere-scattering-vulkan/SKILL.md">custom-atmosphere-scattering-vulkan</a></h3>
@@ -232,6 +232,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/scripted-thrown-weapon-projectile/SKILL.md">scripted-thrown-weapon-projectile</a></h3>
   <p>Build a scripted thrown-weapon projectile in Godot 4: a spinning sword, axe, or spear driven by manual transform updates in _physics_process (the Before the Sun Sets pattern), with swept hit detection, a one-shot impact...</p>
 </article>
+<article class="card" data-search="sdf-collision-custom-terrain bake a signed distance field for custom terrain with overhangs and caves, and collide spheres, capsules, ropes, and particles against it in godot 4 with no physics-server sdf shape: blender bvhtree baking, trilinear cpu...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/sdf-collision-custom-terrain/SKILL.md">sdf-collision-custom-terrain</a></h3>
+  <p>Bake a signed distance field for custom terrain with overhangs and caves, and collide spheres, capsules, ropes, and particles against it in Godot 4 with no physics-server SDF shape: Blender BVHTree baking, trilinear CPU...</p>
+</article>
 <article class="card" data-search="seeded-squad-sim-deterministic-replay build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate rng streams per system; an event log with a hash plus replay checking proves determinism; per-soldier...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/seeded-squad-sim-deterministic-replay/SKILL.md">seeded-squad-sim-deterministic-replay</a></h3>
   <p>Build a seeded, exactly-reproducible browser simulation: one seed determines terrain, weather, and forces; separate RNG streams per system; an event log with a hash plus replay checking proves determinism; per-soldier...</p>
@@ -255,6 +259,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="threejs-toon-shrine-koi-instancing build a walkable, phone-playable three.js shrine with a toon look: koi as one instanced mesh (638 triangles per fish, varieties painted per instance in the fragment shader), a 3-step toon ramp plus a kept-list...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/threejs-toon-shrine-koi-instancing/SKILL.md">threejs-toon-shrine-koi-instancing</a></h3>
   <p>Build a walkable, phone-playable three.js shrine with a toon look: koi as one instanced mesh (638 triangles per fish, varieties painted per instance in the fragment shader), a 3-step toon ramp plus a kept-list...</p>
+</article>
+<article class="card" data-search="timed-dithered-lod-fade fade between lods without paying for both at once. a timestamp-triggered dithered crossfade for godot 4: camera distance only starts the fade, and the shader drives it over time, so only recently triggered trees draw...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/timed-dithered-lod-fade/SKILL.md">timed-dithered-lod-fade</a></h3>
+  <p>Fade between LODs without paying for both at once. A timestamp-triggered dithered crossfade for Godot 4: camera distance only starts the fade, and the shader drives it over time, so only recently triggered trees draw...</p>
 </article>
 <article class="card" data-search="ue-lod-impostors cut rendering cost with lods and impostors: swap high, medium, and low geometry by distance, skip occluded assets entirely, and use camera-facing billboards with normal-mapped lighting response for distant trees...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ue-lod-impostors/SKILL.md">ue-lod-impostors</a></h3>
@@ -842,7 +850,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Turn one Reddit post or YouTube video into a publishable skill for this library: summarize the source, extract the workflow at full depth, refine it with cited AAA studio practice and agent-automation upgrades, validate...</p>
 </article>
 </div></section>
-<section><h2>Simulation and VFX <span class="count">24</span></h2>
+<section><h2>Simulation and VFX <span class="count">25</span></h2>
 <div class="grid">
 <article class="card" data-search="armor-simulation-mode simulate armor impacts with sph fracture and contact modeling. trigger when adding destruction sims to games.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/armor-simulation-mode/SKILL.md">armor-simulation-mode</a></h3>
@@ -871,6 +879,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="corridor-key-2-ai-chroma-keyer pull production-grade chroma keys with corridor key 2.0, the open-source ml keyer: drag the shot in and press go, add a rough alpha-hint matte only for hard shots, pipe a magic mask into the hint channel, manage...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/corridor-key-2-ai-chroma-keyer/SKILL.md">corridor-key-2-ai-chroma-keyer</a></h3>
   <p>Pull production-grade chroma keys with Corridor Key 2.0, the open-source ML keyer: drag the shot in and press go, add a rough alpha-hint matte only for hard shots, pipe a Magic Mask into the hint channel, manage...</p>
+</article>
+<article class="card" data-search="crowd-simulation-behavior-rules move crowds through town streets with six local rules and no physics colliders: keep right, match a slower leader, overtake under 80 percent, step back right, side-step after 0.4 seconds stuck, walk through after 1.5...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/crowd-simulation-behavior-rules/SKILL.md">crowd-simulation-behavior-rules</a></h3>
+  <p>Move crowds through town streets with six local rules and no physics colliders: keep right, match a slower leader, overtake under 80 percent, step back right, side-step after 0.4 seconds stuck, walk through after 1.5...</p>
 </article>
 <article class="card" data-search="crushform-ue5-vehicle-damage build real-time vehicle damage in ue5.6-5.8 without chaos destruction: lattice deformation measured in delta-v, dents drawn in the material with world position offset, one nanite asset, doors that tear off, per-wheel...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/simulation-vfx/crushform-ue5-vehicle-damage/SKILL.md">crushform-ue5-vehicle-damage</a></h3>

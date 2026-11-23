@@ -85,6 +85,75 @@ music only, no narration; summaries under
   observation; the promised fight is not visible in the sampled
   frames.
 
+Second source (expansion, 2026-11-22): memoryfloater, a Unity
+solo dev working on foliage, crowds, and performance. All quotes
+below were verified verbatim in the raw comment JSON fetched via
+`instagram-cli fetch-post-comments` (first page only, 50 comments
+per reel). Reel summaries live under
+`~/workspace/custom-skills/local-video-summarizer/work/memoryfloater-<shortcode>/`.
+
+Comment evidence (quoted exactly, spelling as written):
+
+- Hash grow/cull rule, on reel DgAFMl4o27h ("I have some flowers
+  for everyone!", 2026-11-21,
+  https://www.instagram.com/reel/DgAFMl4o27h/, 50 of 64 comments
+  read), answering dhewachmad: memoryfloater: "@dhewachmad the
+  shader decides. Every instance id goes through a hash. This
+  provides a stable random number per instance which I use to
+  decide which ones go and which ones stay. With that it’s always
+  the same flowers that grow and cull."
+- Pop hiding, same reel, answering jamaliticus: memoryfloater:
+  "@jamaliticus it’s not perfectly tuned here but the pop
+  disappears when you have some grass texture underneath the
+  flowers and set the thinning start distance properly." He adds
+  that with the right grow/shrink distribution, growing plants
+  hide shrinking ones as the camera zooms out.
+- Wind and the patch alternative, same reel, answering
+  mrbunnysky: memoryfloater: "@mrbunnysky they already are wind
+  reactive and distance based reduction renders faster than
+  switching to a patch plus has zero visual pop. Aligning a color
+  patch is harder to align and doesn’t allow you to freely mix
+  different flowers inside a patch."
+- Bleed tool, same reel, answering cynomanic: memoryfloater: "I
+  use GIMP, if something is missing I just add it myself. ... You
+  could also use AI to generate a script that bleeds your
+  textures directly."
+- Far-field noise rationale, on reel DfRsg8eIRya ("Far away,
+  foliage is just noise", 2026-11-03,
+  https://www.instagram.com/reel/DfRsg8eIRya/, 7 of 7 comments
+  read), answering inzlps: memoryfloater: "a single flower
+  renders to a single pixel (or maybe even less). ... foliage
+  technically (depending on distance) is just a noise pattern and
+  I could just render that noise pattern itself instead of the
+  actual geometry. It’s still experimental though, and finding
+  the right values is a pain". On grass: "Haven’t tried it yet
+  though. So basically: the grass will also be noise, that’s why
+  it should work."
+
+Reel evidence (12 frames each read firsthand; summaries as above):
+
+- DgAFMl4o27h: distance flower-field technique, narrated:
+  scale flowers up with distance while thinning the count (one
+  shot shows 3.0% drawn), colour-bleed the texture so sampling
+  outside the shape returns colour instead of black, and drive
+  mip bias plus alpha cutoff from camera distance with on-screen
+  shader pseudocode. No parameter values, distances, or
+  performance numbers in the video; the selection rule is the
+  hash comment above.
+- DfMjBGcIPOB ("Every flower is just 6 triangles.", 2026-11-01,
+  https://www.instagram.com/reel/DfMjBGcIPOB/, silent showcase):
+  the 3-quad cage, two crossed vertical planes plus one
+  horizontal head plane, demonstrated across eight species. No
+  creator replies in the fetched comments; the overdraw
+  counter-argument in the expansion section is viewer material,
+  labeled as such.
+- DfU1Xt9oNqu ("My improved flower making process in Blender.",
+  2026-11-04, https://www.instagram.com/reel/DfU1Xt9oNqu/):
+  captioned 5-step process: stem alignment with 2 loop cuts,
+  top-view alignment, and shrinking the geometry to the visible
+  texture space to cut alpha overdraw. Step 1's caption was not
+  captured in the sampled frames and is not reconstructed here.
+
 ## Related skills (read before building)
 
 - `procgen-worlds/godot-grass-lod-wind`: the deep grass skill. It
@@ -460,6 +529,294 @@ bands are the budget; the ground tint is what makes the end of
 the instances invisible. Overdraw is the cost most builders
 measure last and regret first.
 
+## Expansion: memoryfloater flower construction and distance thinning (2026-11-22)
+
+This section adds a second creator's construction and distance
+technique to the skill. It does not replace Phases 1 to 6: the
+Before the Sun Sets recipe stays the base construction, and the
+memoryfloater material is the cheaper cage construction plus the
+distance-thinning system. Creator statements are quoted in the
+Source section above; viewer material is labeled unendorsed
+wherever it appears; every Godot transfer is derivation, labeled
+as such.
+
+### The 3-quad cage: 6 triangles per flower
+
+**Do**
+1. Build the flower from exactly three quads: two tall vertical
+   quads crossed at roughly 90 degrees through the plant's
+   centre, and one horizontal quad at the height of the flower
+   head. That is 3 quads, 6 triangles total, regardless of
+   species. (Reel DfMjBGcIPOB, wireframe frames read firsthand.)
+2. Paint the whole plant onto the textures on those quads: the
+   vertical quads carry the side view (stem, leaves, head
+   profile); the horizontal quad carries the top-down view of
+   the flower head, which is what the player sees from above
+   and what stops the flower reading as flat from high angles.
+3. Reuse the same cage across species, changing only the
+   texture and the cage proportions. The reel demonstrates
+   poppy, cornflower, daisy, gentian, columbine, lupine,
+   foxglove, and hollyhock on the same cage.
+4. Choose between this cage and the Phase 1 modeled flower by
+   camera distance, not by taste. The cage is the cheaper
+   construction for mid and far fields, where the texture
+   carries the read. Where the camera walks through the flowers
+   at close range, keep the Phase 1 modeled flower: flat cards
+   read as paper up close, and Phase 1 step 3 stands. Do not
+   present the cage as a replacement for the modeled flower;
+   it is the distance construction for the same field.
+
+**Check**
+- From the game's normal camera height, the cage reads as a
+  flower from the side and from above. If the top view is
+  missing, the head vanishes when the camera looks down; the
+  horizontal quad is not optional.
+- The triangle count per flower is 6 before any optimisation
+  step below. If it is higher, the cage has extra quads that
+  the reel's construction does not use.
+
+**Why**
+The texture does the work, not the mesh. Three quads instanced
+by the thousand cost almost nothing in vertices; the cost moves
+to fragment shading of transparent texels, which is the subject
+of the overdraw note below.
+
+### Stem alignment and shrink-to-texture
+
+**Do**
+1. Align the stem: add 2 loop cuts to the vertical planes, then
+   move vertices so the geometry follows the painted stem
+   instead of the stem wandering off the plane edges. (Reel
+   DfU1Xt9oNqu, Step 2, on-screen caption read firsthand.)
+2. Align the top view: rotate the top petal plane and adjust it
+   over the edges so the top-down head view lines up with the
+   side planes. (Step 3, caption text partly garbled; the
+   alignment intent is what the frames show.)
+3. Optimise alpha: add more vertices and shrink the geometry to
+   the visible texture space, cutting away transparent quad
+   area to reduce alpha overdraw. The reel's wireframe frame
+   shows triangles hugging petals, stem, and leaves after this
+   step. (Step 4.)
+4. Keep the creator's side note: more vertices also improve wind
+   motion (more deformation points along the stem) and let the
+   shape be defined better. The creator admits he was "lazy
+   here", meaning the demo does not fully define the shape; do
+   not cite the demo's wireframe as the finished silhouette.
+
+**Check**
+- The stem texture stays inside the geometry from every side
+  angle. Painted stem hanging off a plane edge means Step 2
+  was skipped.
+- Transparent quad area is cut away around the silhouette. A
+  full rectangular quad behind a thin stem means Step 4 was
+  skipped, and the overdraw note below applies at full force.
+
+**Why**
+Alignment is what keeps a painted plant on its cage, and
+shrink-to-texture is what keeps the cage cheap: every
+transparent texel the fragment shader shades is cost with no
+picture, and cutting the silhouette is the only way to remove
+it without adding triangles elsewhere.
+
+### Distance thinning: scale up, thin out, hash decides
+
+**Do**
+1. Scale flowers up as the camera zooms out, and at the same
+   time REDUCE the number drawn. The reel's one measured shot
+   shows 3.0% of flowers drawn at distance, with the field
+   still reading dense. Scaling everything without thinning
+   overlaps, costs more, and flickers; thinning without
+   scaling leaves a sparse field. The pair is the technique.
+   (Reel DgAFMl4o27h, narrated, frames read firsthand.)
+2. Let the shader decide which instances grow and which cull,
+   from a hash of the instance id. The creator's rule, quoted
+   in the Source section: every instance id goes through a
+   hash, giving a stable random number per instance, so it is
+   always the same flowers that grow and the same ones that
+   cull. Stability is the whole point: a per-frame random
+   reselects every frame and the field flickers.
+3. Hide the pop with the creator's recipe, quoted in the Source
+   section: grass texture underneath the flowers, the thinning
+   start distance set properly, and a grow/shrink distribution
+   in which growing plants slowly hide shrinking ones as the
+   camera zooms out. The creator says it is "not perfectly
+   tuned" in his demo; treat the recipe as the method and the
+   tuning as open work, not as solved values.
+4. Colour-bleed the flower texture: fill fully transparent
+   texels with neighbouring colours, so sampling just outside
+   the drawn shape returns flower or stem colour instead of
+   black. The creator's tool is GIMP, with a custom addition of
+   his own; he also suggests an AI-generated bleed script as an
+   alternative. The reel shows the no-bleed failure (black
+   fringes when the cutoff drops) against the bled result.
+5. Drive mip bias and alpha cutoff from camera distance in the
+   shader, using the reel's on-screen pseudocode, reproduced
+   here as shown (no parameter values were given, and none are
+   invented here):
+   `f = saturate((dist - from) / (to - from))`,
+   `lod = mip + f * bias`,
+   draw if `alpha >= lerp(cutoff, cutoffFar, f)`.
+   Lowering the cutoff at distance thickens the stem and head;
+   the bleed in step 4 is what keeps that from producing black
+   fringes. In the optimal case the creator says alpha overdraw
+   can go to zero and the shader can switch to a non-clipping
+   variant; that is his claim about his setup, not a measured
+   result, and no values for from, to, bias, cutoff, or
+   cutoffFar are stated anywhere in the video or the fetched
+   comments.
+
+**Godot transfer of the hash rule (derivation, not the creator's
+code)**
+1. The creator's engine is Unity. In Godot, the spatial shader
+   vertex function exposes `INSTANCE_ID` (int, "Instance ID
+   for instancing") and `INSTANCE_CUSTOM` (Godot docs, spatial
+   shader reference:
+   https://docs.godotengine.org/en/4.1/tutorials/shaders/shader_reference/spatial_shader.html).
+   Hash the id in `vertex()` to a stable 0-to-1 value, for
+   example `fract(sin(float(INSTANCE_ID) * 12.9898) * 43758.5453)`,
+   and pass the result to `fragment()` through a varying, since
+   instance built-ins are vertex-stage only. This hash line is
+   this skill's derivation, not the creator's code; any
+   deterministic hash with a uniform output serves the same
+   purpose.
+2. Compare the hashed value against the distance-driven keep
+   fraction: instances below the fraction cull (discard), the
+   rest scale up. Because the hash is a pure function of the
+   instance id, the same instances grow and cull every frame,
+   which is the stability the creator's rule exists to provide.
+3. The alternative already present in this skill also works:
+   per-instance custom data (Phase 2 step 5) carrying one
+   random float per instance, set once on the CPU. The hash
+   route needs no CPU data; the custom-data route needs no
+   shader hash. Pick one; do not mix both, or two different
+   random values decide the same instance.
+4. Honest limit: shader-side discard saves fragment and
+   overdraw cost, not vertex or instance cost; the culled
+   instances are still processed as geometry. True draw
+   savings need CPU-side thinning (`visible_instance_count`
+   per chunk, or chunk visibility bands as in Phase 6). Do not
+   claim the discard alone as the performance win; the
+   creator's "renders faster" statement describes his setup,
+   and the split between fragment savings and instance savings
+   is this skill's analysis, labeled as such.
+
+**Check**
+- Zoom the camera out slowly: the same individual flowers grow
+  and the same ones vanish at every pass. Reselection between
+  passes means the random value is per-frame, not per-instance.
+- No visible pop at the thinning start distance with grass
+  texture under the flowers. A pop means the start distance,
+  the distribution, or the under-texture is wrong, in that
+  order.
+- At distance, stems stay coloured, never black-fringed. Black
+  fringes mean the texture was not bled, whatever the cutoff
+  does.
+
+**Why**
+A distant flower renders into a few pixels, so the field's job
+at distance is pixel density per surviving flower, not flower
+count. Fewer, bigger flowers with a stable selection read as
+the same field for less fragment cost, and the bleed plus
+cutoff shift is what keeps thin stems readable instead of
+broken or black.
+
+### Far-field noise pattern (experimental, creator's own label)
+
+**Do**
+1. Know the idea and its status before using it. The creator's
+   rationale, quoted in the Source section: at distance a
+   flower renders to a single pixel or less, which normally
+   causes aliasing; since distant foliage is already just a
+   noise pattern on screen, render the noise pattern itself
+   instead of the geometry. He calls it "still experimental"
+   and says "finding the right values is a pain". The reel
+   (DfRsg8eIRya) is a visual demo with debug views and no
+   speech, code, shader, distances, or numbers.
+2. Treat the grass version as untested. The creator's own words
+   on grass: "Haven't tried it yet though. So basically: the
+   grass will also be noise, that's why it should work." Do not
+   present a grass noise pass as proven by this source; it is
+   a stated hypothesis, not a result.
+3. If the pattern is tried, the Godot form is derivation: a
+   density and colour noise in the ground shader whose patch
+   distribution matches the near-field foliage distribution,
+   swapped in past a tuned distance. No noise function, scale,
+   palette, or switch distance is given by the creator; all of
+   it is tuning work, and the tuning difficulty is the
+   creator's own warning, not an implementation detail.
+
+**Check**
+- The far field reads as the same patch distribution as the
+  near field, in colour and density. A generic noise that does
+  not match the patch layout reads as a different field.
+- The switch distance is not visible in normal play. The
+  creator moved the switch closer to make it visible for the
+  demo; in a shipping field it must not be findable by eye.
+
+**Why**
+This is the limit case of the thinning above: when geometry
+renders to less than a pixel, the pattern is cheaper than the
+geometry. It is recorded here as an experimental direction with
+the creator's own caveats attached, not as a phase to build
+before the thinning system works.
+
+### Viewer material: the overdraw counter-argument (unendorsed)
+
+Everything in this subsection comes from viewers in the
+fetched comments. No creator reply endorses any of it in the
+pages read. It is recorded because it is the strongest
+objection to the 3-quad cage, and the creator's own Step 4
+(shrink-to-texture) is his answer to the same objection.
+
+**Do**
+1. Know the objection. Viewer Danny Mačura: with GPU
+   instancing, extra triangles are cheap, but transparent-quad
+   overdraw is expensive, because the GPU must look up the
+   texture for every overlapping transparent triangle to decide
+   whether the terrain behind shows. His rule: cut the geometry
+   close to the silhouette and balance cutout tightness against
+   vertex count. Viewer Abhilash kar, same point in short form:
+   stacked plants multiply transparency overdraw and depth-test
+   cost; "cut islands to pixels". Viewer Siusiacz: "Use more
+   triangles to cutout the siluette."
+2. Know the shader-mode rule as a viewer rule, not a creator
+   statement. Viewer Costescu Catalin Mihai: use alpha clip
+   (discard fragments below alpha 0.5) instead of alpha blend,
+   because clip populates the depth buffer and blend causes
+   alpha overdraw; and low polygon counts still matter because
+   GPUs fill triangles in 2x2 pixel groups, so more edges mean
+   more wasted fragment work. His far-distance suggestion
+   (one vertical billboard, top texture when the camera looks
+   down) and his fresnel edge-cleanup suggestion (viewer
+   Thomas: drive alpha with fresnel at grazing angles) are
+   likewise unendorsed leads, not verified practice.
+3. Know the correction. Viewer "your local heelys pro": the
+   flowers are "masked not translucent", which changes how the
+   overdraw cost should be reasoned about. The skill's existing
+   guidance agrees: Phase 3 already requires alpha scissor, not
+   blend, for the grass, and the same rule applies to the cage.
+4. Treat the counter-argument as the reason Step 4 exists, not
+   as a reason to abandon the cage. The creator's shrink step
+   and the viewers' cut-close rule converge on the same
+   construction: geometry hugging the visible texture. Where
+   they disagree (how many triangles the silhouette deserves),
+   the answer is measurement on the densest viewpoint, per
+   Phase 6 step 3, not allegiance to either side.
+
+**Check**
+- The densest viewpoint's cost is measured, not assumed. If
+  overdraw dominates, the fix is a tighter silhouette (Step
+  4), not fewer instances.
+- The material is scissor/clip, never blend, for both the cage
+  and the grass. A blend material on foliage reopens the whole
+  objection.
+
+**Why**
+The cage's bargain is vertex-cheap and fragment-expensive, and
+the objection names the fragment side honestly. Recording it
+with its unendorsed status keeps the skill from overselling
+the cage while keeping the construction that answers it.
+
 ## Failure modes
 
 - **Fixed normal in model space.** Each rotated instance rotates
@@ -629,3 +986,10 @@ Unreal-to-Godot normal conversion (Z-up to Y-up, world space)
 is a derivation, stated as one. No hands-on Godot test of the
 full stack was run for this skill; the checks in each phase are
 what closes that gap.
+
+Expanded 2026-11-22 with memoryfloater construction and
+distance-thinning material (3-quad cage, stem alignment,
+shrink-to-texture, hash-rule thinning, colour bleed, far-field
+noise, and the viewer overdraw counter-argument, labeled
+unendorsed). The added material is labeled by source throughout,
+and the PARTIAL rating is unchanged.

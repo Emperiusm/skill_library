@@ -144,6 +144,214 @@ Styles are the difference between a field and a lawn. Debris is the
 difference between wind you can see and wind you have to be told
 about. Both are cheap compared to more blades.
 
+## Expansion: distance transitions, look-direction density, and the wheat cell architecture (2026-11-22)
+
+This section adds distance-transition and density material from
+a second creator (memoryfloater, Unity) and a third
+(tenekekafalar, Surviwall) to the skill. It does not replace
+Phases 1 to 4: the rank falloff and carpet stay the base density
+system, and the material below is complementary transition and
+density mechanisms plus one architecture. Creator statements are
+quoted verbatim from raw comment JSON (first page only, 50 per
+reel) and labeled; viewer material is labeled unendorsed; every
+Godot transfer is derivation, labeled as such.
+
+### Near/far dither transition (memoryfloater, reel DfrlUpgoHW4)
+
+**Do**
+1. Know the setup. Real grass geometry near the camera; beyond
+   a set distance, only a flat grass texture on the ground.
+   The hard part is the transition: a plain distance cutoff
+   makes a visible seam, and because the cutoff is
+   camera-distance based, the seam follows the camera as it
+   moves. (Reel DfrlUpgoHW4, narrated, 12 frames read
+   firsthand: https://www.instagram.com/reel/DfrlUpgoHW4/.)
+2. Diagnose with a dither-mask debug view before fixing: green
+   for real grass kept, yellow for fake (flat) grass. With a
+   plain distance threshold the boundary is a sharp line, and
+   screen-space dithering produces banding that tracks the
+   camera. If the debug view is not built, the seam is tuned
+   blind.
+3. Break the banding with world-space noise in the dither
+   threshold. The threshold varies per world position instead
+   of per screen pixel, so the boundary breaks into speckle
+   and no longer follows the camera.
+4. Widen the transition band on top of the noise, so real and
+   fake grass interleave over a distance and the seam
+   disappears entirely. Then scatter some real grass along the
+   far edge of the transition so the field does not end in a
+   flat line.
+5. Use the creator's cross-engine recipe, verified verbatim in
+   the raw comment JSON, answering whether the technique works
+   in Unreal: memoryfloater: "@shizenixel of course, everything
+   I show can be applied to any engine. This stuff is made in
+   Unity but that shouldn’t matter. For unreal your setup is
+   very similar all you need to do is to define a material and
+   use some dither node, world space position and you use that
+   distance to camera to define the fade distance." The named
+   shader inputs are a dither node, world-space position, and
+   distance to camera. No distances, transition widths, noise
+   type or scale, dither pattern, texture resolution, or FPS
+   numbers are given anywhere in the video or the fetched
+   comments; all of those are tuning gaps, labeled as such.
+   The creator also links this reel to his own flower noise
+   solution (reel DfRsg8eIRya) and states there are no
+   published references for noise-based distance foliage.
+
+**Godot transfer (derivation, not the creator's code)**
+1. The transition complements Phase 3 rather than replacing
+   it. Rank thinning removes blades; the dither transition
+   blends the ground representation underneath from bladed to
+   flat. The carpet in Phase 3 is what the flat texture lands
+   on; without a carpet colour match, the dithered blend lands
+   on bare ground and the seam returns in another form.
+2. Build the threshold in the spatial shader from world-space
+   noise: sample a `NoiseTexture2D` at world XZ (the same
+   travelling-noise pattern Phase 4 of the sibling skill
+   `procgen-worlds/instanced-ground-cover-flower-fields` uses
+   for wind), compare against a distance-driven threshold that
+   widens over the transition band, and `discard` fragments on
+   the far side of the threshold. The noise texture, the
+   discard, and the world-space sampling are established
+   Godot patterns from that sibling skill; combining them
+   into this transition is this expansion's derivation.
+3. Keep the far-edge real grass from step 4 as placed
+   instances, not as part of the blend: a few real clumps past
+   the band edge break the flat line the way the creator's
+   final touch does.
+
+**Check**
+- The dither-mask debug view shows speckle, never a sharp
+  line, and the speckle pattern stays fixed to the world as
+  the camera moves. Banding that follows the camera means the
+  noise is sampled in screen space, not world space.
+- The seam is invisible from the game's normal camera height
+  at the transition distance, with the carpet colour matched.
+  A visible line means the band is too narrow, the noise
+  scale is wrong, or the carpet does not match.
+- The far edge does not end in a flat line. If it does, the
+  far-edge real grass from step 4 is missing.
+
+**Why**
+A distance cutoff is a line, and the eye finds lines. Noise
+in world space turns the line into a gradient the eye cannot
+track, and the wide band plus far-edge grass give the gradient
+somewhere to land. The debug view is what makes the threshold
+tunable instead of guessed.
+
+### Look-direction grass (tenekekafalar, Surviwall, reel DeRzWGRJT5X)
+
+**Do**
+1. Know the concept and its limits before using any of it.
+   The reel demonstrates, in split screen, a player view of
+   dense grass everywhere against a wide view showing grass
+   only in a patch around the character, thinning with
+   distance. The narration: grass is generated only where the
+   character looks, and further away it gets thinner. No
+   engine, component, code, or system is named in the reel;
+   no radius, density, draw-call, or FPS numbers are given;
+   and 0 gems were mined from the 50 fetched comments.
+   (Reel DeRzWGRJT5X, 2026-10-09,
+   https://www.instagram.com/reel/DeRzWGRJT5X/, 12 frames read
+   firsthand.)
+2. Do NOT attribute a mechanism. Viewers in the comments named
+   frustum and occlusion culling and one viewer inferred a
+   custom density-by-camera-distance script; none of it was
+   confirmed or endorsed by the creator in the returned
+   comments, and the synthesis deliberately did not count it.
+   Presenting any of those names as the creator's method
+   would be inventing evidence. The mechanism is unknown.
+3. Take only the transferable observation, as derivation: with
+   a fixed isometric camera, visibility is deterministic, so
+   a look-direction or view-centred density mask over an
+   authored map is cheap to compute, because the viewed area
+   never changes unexpectedly. That is this expansion's
+   reasoning from Valkyrie's fixed camera, not the creator's
+   statement, and the pop-in and quick-turn behavior the
+   commenters asked about is unanswered in the source and
+   must be solved, not assumed away, by any implementation.
+
+**Check**
+- Any implementation built from this concept names its own
+  mechanism (mask, spawn/despawn, or shader culling) and its
+  pop-in behavior on quick turns. A design that cites this
+  reel as its mechanism fails the check: the reel shows no
+  mechanism.
+
+**Why**
+The reel's value is the split-screen proof that the player
+cannot tell dense-everywhere from dense-where-looked. The
+concept ports; the implementation does not come with it.
+
+### Wheat cell architecture (memoryfloater, reel De7IhYsI_k8)
+
+**Do**
+1. Know the architecture as an idea, not as portable code.
+   The 14-second montage shows the pipeline in order:
+   scatter stalks, arrange them onto crossed cards around a
+   volume ("clusters"), a "harmonize" step shown as a spherical
+   cage (named but not explained; what it does to the texture
+   is inferred from the visual only), bake one card, C#
+   per-cell draw decisions, HLSL "FovField" shaders, one
+   Inspector component, cards fading into impostors, wind.
+   The shader and C# shown are Unity and HLSL specific
+   (`CBUFFER_START(UnityPerMaterial)`,
+   `SAMPLE_TEXTURE2D_ARRAY_GRAD`, instance-id cell data);
+   a Godot port re-implements the cell classification and the
+   card/slab split, it does not translate the code.
+2. Use the creator's Inspector values as starting points,
+   labeled as his values, not as verified optima: field size
+   120 by 80, Card Atlas "wheat_card", 24 stalks per cell,
+   height range 0.85 to 1.1, seed 1337, wind strength 0.85,
+   gust speed 3.2, gust scale 28, tint noise scale 12.5, ear
+   droop 0.3, shadows on. The Card Distance and Fade Band
+   values are obscured in the sampled frame and are not
+   stated.
+3. Keep the cell split: near cells draw textured cards, far
+   cells draw cheap slab impostors, edge cells are handled
+   separately, and the shader fades between them with a
+   dither-based threshold, per-item fade, growth, and
+   shadow-pass thinning of casters beyond a distance. This is
+   the same near/far split as the dither transition above, at
+   cell granularity with CPU classification instead of a pure
+   shader threshold.
+4. Record the one hard stat with its caveat, exactly as
+   shown on screen: "card cells: 306 - 9.8k triangles /
+   impostor cells: 2,310 - 23.1k triangles / total: 37.5k
+   triangles". The components do not sum on screen (9.8k plus
+   23.1k is 32.9k, not 37.5k); the remainder is not itemised.
+   Report the numbers as shown and do not reconcile them. No
+   FPS or frame-time measurement exists in the reel.
+
+**Check**
+- The port keeps three separate decisions visible: the cell
+   classification (CPU), the card/slab split (draw), and the
+   fade (shader). A port that merges them into one threshold
+   loses the edge-cell handling and the shadow-pass thinning.
+- The triangle stat is cited with its caveat wherever it is
+   cited. A clean 37.5k without the non-summing components is
+   a misquote.
+
+**Why**
+The wheat reel is the only cell-granularity LOD in this batch:
+classification per cell, one component for the whole field,
+fade in the shader. That shape is the portable part; the
+FovField plumbing is not.
+
+### Far-field noise, grass version: untested
+
+The flower noise idea is recorded in the sibling skill
+`procgen-worlds/instanced-ground-cover-flower-fields`
+(expansion, 2026-11-22), with the creator's rationale and his
+"still experimental" label. For grass, the creator's own words,
+verified in the raw comment JSON on reel DfRsg8eIRya, are:
+overlay multiple noise patterns with different patterns and
+palettes, and "Haven’t tried it yet though. So basically: the
+grass will also be noise, that’s why it should work." That is a
+hypothesis, not a result. Do not present a grass noise pass as
+proven by this source; the dither transition above is the
+grass distance mechanism with a demonstrated reel behind it.
+
 ## Failure modes
 
 - **Repeating patterns in the far grass.** Two commenters called this
@@ -272,3 +480,13 @@ technique numbers are the author's own. Gaps stated, not hidden: no
 source code or repo published, no performance numbers anywhere, and
 the far-field repetition plus the end-of-blades seam are open defects
 in the source system).
+
+Expanded 2026-11-22 with memoryfloater and tenekekafalar
+distance-transition and look-direction material (dither
+transition, look-direction concept, wheat cell architecture,
+untested grass noise note). The added material is labeled by
+source throughout, creator statements are quoted from verified
+raw comment JSON, viewer material is labeled unendorsed, and
+the FULL rating describes the original reconstruction; the
+added derivations carry their own labeled gaps and were not
+run hands-on.
