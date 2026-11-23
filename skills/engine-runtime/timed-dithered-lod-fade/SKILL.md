@@ -259,7 +259,7 @@ The fade duration is the one free parameter, and the reel never states it. This 
 1. Start at 0.3 seconds. Walk the camera through the densest part of the forest at play speed and watch the mid-fade counter. Then park the camera inside a former blend band and watch the counter fall to zero within one fade duration. That parked-to-zero behavior is the acceptance test for the whole technique.
 2. Tune in this order: too short (below ~0.15 seconds) reads as a pop, because the dither pattern does not have time to average out in the eye; too long (above ~0.6 seconds) reintroduces the double-draw cost the technique removes, and the pattern becomes noticeable as a crawling noise. Between those, prefer the shorter end for fast cameras and the longer end for slow, scenic cameras.
 3. Test with the project's real anti-aliasing. The dither pattern is far less visible with temporal anti-aliasing, which accumulates the per-frame pattern into a smooth blend; without it, the pattern is a visible static noise, especially on flat painted fills. If the project has no TAA, shorten the fade and push the switch distances farther out, where the pattern is sub-pixel.
-4. Test shadows during a fade. Watch the tree's shadow on the ground while the fade runs. If the shadow shows the full un-faded silhouette while the tree itself is half-dithered, the shadow pass is not honoring the discard on your renderer, and the fade will read as a lighting bug in sunlight. This is a check, not a claim: shadow-pass discard behavior is renderer-dependent, and the docs expose an `IN_SHADOW_PASS` built-in precisely because shaders sometimes need to behave differently there. If the silhouette persists, the fix is to gate the discard on the shadow pass explicitly, or accept the artifact and restrict fades to overcast or interior lighting. Do not ship the fade into strong directional sunlight untested.
+4. Test shadows during a fade. Watch the tree's shadow on the ground while the fade runs. If the shadow shows the full un-faded silhouette while the tree itself is half-dithered, the shadow pass is not honoring the discard on your renderer, and the fade will read as a lighting bug in sunlight. This is a check, not a claim: shadow-pass discard behavior is renderer-dependent, and the docs expose an `IN_SHADOW_PASS` built-in precisely because shaders sometimes need to behave differently there. If the silhouette persists, the fix is to gate the discard on the shadow pass explicitly, or accept the artifact and restrict fades to overcast or interior lighting. Do not ship the fade into strong directional sunlight untested. For a second, independent report of stock-fade shadow trouble, and a cascade-sync construction that reduces transition count, see the 2026-11-23 expansion below (manual LOD fades and shadow-cascade sync).
 5. Test the fast-camera case. Teleport the camera across several switch distances at once, and whip-pan at maximum speed. The mid-fade counter will spike; that spike is expected (see Failure mode 3), but it must fall back to zero within one fade duration of the camera stopping, and no tree may be left stuck mid-fade.
 
 ### Check
@@ -292,6 +292,64 @@ The impostor is the cheapest LOD and the most expensive asset. Decide where the 
 ### Why
 
 The reel's argument is economic: LODs are cheap to store and cost draw calls; impostors are cheap to draw and cost memory. The chain exists because neither wins everywhere, and the timed fade exists so the handoff between them costs one fade duration instead of a permanent band.
+
+## Expansion (2026-11-23): manual LOD fades and shadow-cascade sync, from Toni Macaroni's Godot forest work
+
+Source: Toni Macaroni's Godot forest video "[Godot Forest] SSILVB test, better LOD transitions and optimizations" (https://www.youtube.com/watch?v=8v5MoWP-pzc, 97 seconds, music only, no captions), its creator-written description, and creator comment answers verified verbatim in the raw comment JSON (`~/workspace/custom-skills/local-video-summarizer/work/tonimacaroni/comments/8v5MoWP-pzc.json`). Per-video summary: `~/workspace/custom-skills/local-video-summarizer/work/tonimacaroni/8v5MoWP-pzc/summary.md`.
+
+Claim labeling, stated once here and applying to the whole section: every performance figure and every broken-behavior claim below is the creator's, unverified by independent measurement in this skill. Nothing in this section was run hands-on in a Godot project. The creator's own implementation modifies Godot C++ source; the sync construction below is this skill's transfer to stock Godot, labeled as such, not the creator's code.
+
+### The creator's report: the stock fade toggle is broken for his use
+
+The creator states, in the video description, that he knows Godot has a toggle for fading LODs, that it is broken for his purposes, and that this is why he fades LODs manually. He names two mechanisms:
+
+1. The fade takes the distance to the shadow camera into account as well, which breaks shadows on the affected objects.
+2. It forces the object to be drawn in the alpha pass.
+
+Attribute this carefully. This is one creator's report about his Godot version and his scene, not an established fact about Godot's stock fade. The stock fade this skill replaces is the distance-driven BaseMaterial3D fade described in AAA studio practice, and whether the shadow-camera and alpha-pass behaviors reproduce in your Godot version is a Phase 4 verification question, not an assumption. Run the Phase 4 shadow check before deciding the stock toggle is unusable for you. The value of the report is that it names two specific failure modes to test for, not that it settles them.
+
+### The configuration: 2 LODs plus a billboard
+
+The creator, answering a viewer in the comments (verified verbatim in the raw JSON, 18 likes):
+
+> "I use 2 LODs for the trees (so LOD0, LOD1 and billboard)."
+
+That is a shorter chain than the reel's LOD0 through LOD3 plus impostor in Phase 1: two geometry levels, then a billboard at the far end. The timed fade construction in Phases 2 and 3 is unchanged by chain length; a two-level chain simply has one pairwise fade instead of several. If your forest already uses the longer chain, do not shorten it on the strength of this quote: the creator's chain fits his scene and his shadow-cascade sync below, and chain length is a scene decision, not a rule.
+
+### Manual shadow-cascade sync (this skill's transfer, not the creator's code)
+
+The creator's stated aim, from the same verified comment:
+
+> "I kind of sync the LODs to the shadow cascades as well to have as little transitions as possible. Currently I do this manually, but in the future I want the shadow cascades to choose the right LOD in the renderer directly."
+
+The sync itself is manual in his implementation, and his implementation lives partly in modified Godot source. The construction below adapts the idea to the stock-Godot fade manager from Phase 3. It is this skill's derivation, labeled as such: the creator published no code, no cascade settings, and no measurements for the sync.
+
+#### Do
+
+1. Read the project's directional shadow cascade split distances from the DirectionalLight3D shadow settings (the cascade split positions, in world distance from the camera). Record them in the fade manifest from Phase 1, next to the LOD switch distances.
+2. Align each LOD switch distance to the nearest cascade boundary, keeping the Phase 3 hysteresis margin on the return switch. The aim is the creator's stated one: one transition event per boundary crossing per tree, instead of an LOD pop and a shadow-resolution change at two nearby distances reading as two separate artifacts.
+3. Drive the aligned switches through the existing Phase 3 trigger: the staggered distance evaluation compares against the aligned distances, and the timed fade runs exactly as before. No new shader work is needed; the cascade sync is a switch-distance decision, not a fade-mechanism change.
+4. If a cascade boundary and the natural LOD switch distance disagree badly (the boundary is far inside the distance where the LOD pair still reads cleanly), keep the LOD switch where the pop inventory says it belongs and record the mismatch. Do not drag a switch distance across a pop boundary to satisfy the sync; the sync exists to reduce visible transitions, and a premature switch is itself a visible transition.
+
+#### Check
+
+- The manifest lists, per object type, the cascade boundaries and the aligned switch distances side by side. An aligned distance with no recorded boundary is not a sync, it is a guess.
+- Walking the camera outward through one boundary produces one transition event per tree (one fade), not an LOD fade followed shortly by a visible shadow-resolution change. Count events per tree per pass; the sync has paid off only if the count drops against the unaligned baseline.
+- The Phase 4 shadow check still passes during the fade: the shadow silhouette matches the visible LOD. If aligning the switch to a cascade boundary makes the shadow artifact worse, the alignment is wrong for that object type; revert to the pop-inventory distance.
+
+#### Why
+
+Shadow cascades already partition the scene by distance, and an LOD switch is already a distance event. Two distance events near each other produce two moments where the image visibly changes. Putting them at the same distance spends one moment instead of two. That is the whole argument, and it is the creator's stated aim, not a measured result: no transition counts were published, so the Check above is the measurement that decides whether the sync helps your scene.
+
+### Future work, not a shipped feature: renderer-driven cascade selection
+
+The creator's stated future goal, from the same verified comment, is for the shadow cascades to choose the right LOD in the renderer directly. That is engine work: it requires the renderer to know the cascade selection at LOD-decision time, which stock Godot does not expose to the fade manager. Do not build it from this skill, and do not describe any stock-Godot construction as the creator's planned feature. If a future Godot version exposes cascade selection to shaders or to the LOD system, revisit this section then.
+
+### Related reading only: SSILVB as a compositor effect (no procedure here)
+
+The same video's other technique is SSILVB (screen-space indirect lighting via voxel binning, in the creator's framing), prototyped entirely in compositor effects first because, in the creator's words, verified in the raw JSON, it is easier to iterate on that way, while the creator also modifies Godot C++ source where needed. The description states it is crude GI that darkens forest interiors, that the creator got it down to a claimed 0.7 ms after precision loss, and that it can be a good alternative to Unreal's far-distance SDF AO. The creator later found SSILVB efforts in the existing GTAO pull request and says he probably will not improve his version further.
+
+Every figure and comparison in that paragraph is the creator's claim, unverified here. This skill gives no SSILVB procedure: no parameters, no sample counts, no shader code, and no compositor-effect settings were published in the video, and the on/off toggle the creator confirmed in comments is not labeled in any sampled frame. If SSILVB is wanted, it is a separate research task starting from the GTAO work, not an extension of this fade skill. The one transferable habit is the prototyping order: compositor effect first for iteration speed, engine modification only where the prototype proves the idea.
 
 ## The MultiMesh variant (forests and crowds at scale)
 

@@ -198,6 +198,7 @@
         "./skills/engine-runtime/ue59-wasm-webgpu-browser",
         "./skills/engine-runtime/unity-dots-fake-ragdoll-crowds",
         "./skills/engine-runtime/unity-per-frame-dynamic-mesh-jobs-burst",
+        "./skills/engine-runtime/voxel-hierarchy-aggregate-forest-rendering",
         "./skills/engine-runtime/vulkan-particle-neighbour-search-benchmark",
         "./skills/engine-runtime/webgpu-black-hole-raytracer",
         "./skills/engine-runtime/xogot-modeler-godot-mesh-editing",
@@ -523,6 +524,7 @@
         "./skills/engine-runtime/ue59-wasm-webgpu-browser",
         "./skills/engine-runtime/unity-dots-fake-ragdoll-crowds",
         "./skills/engine-runtime/unity-per-frame-dynamic-mesh-jobs-burst",
+        "./skills/engine-runtime/voxel-hierarchy-aggregate-forest-rendering",
         "./skills/engine-runtime/vulkan-particle-neighbour-search-benchmark",
         "./skills/engine-runtime/webgpu-black-hole-raytracer",
         "./skills/engine-runtime/xogot-modeler-godot-mesh-editing"
