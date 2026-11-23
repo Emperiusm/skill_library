@@ -111,6 +111,7 @@
         "./skills/capture/lidar-roof-rebuild-photogrammetry",
         "./skills/capture/opentwin-3dgs-point-maps",
         "./skills/capture/photogrammetry-realitycapture-game-assets",
+        "./skills/capture/reference-image-test-gates",
         "./skills/capture/spirula-3dgs-anti-floater-capture",
         "./skills/capture/vathography-depth-remap",
         "./skills/characters/ai-3d-character-pipeline",
@@ -118,6 +119,7 @@
         "./skills/characters/blender-character-sculpt-reference",
         "./skills/characters/blender-fake-sim-rigging",
         "./skills/characters/character-animation-pipeline-rig-mocap",
+        "./skills/characters/comfyui-trellis2-character-pipeline",
         "./skills/characters/facial-animation-blendshape-mocap",
         "./skills/characters/godot-runtime-procedural-creatures",
         "./skills/characters/godot-stylized-character-shader",
@@ -418,6 +420,7 @@
         "./skills/capture/lidar-roof-rebuild-photogrammetry",
         "./skills/capture/opentwin-3dgs-point-maps",
         "./skills/capture/photogrammetry-realitycapture-game-assets",
+        "./skills/capture/reference-image-test-gates",
         "./skills/capture/spirula-3dgs-anti-floater-capture",
         "./skills/capture/vathography-depth-remap"
       ]
@@ -433,6 +436,7 @@
         "./skills/characters/blender-character-sculpt-reference",
         "./skills/characters/blender-fake-sim-rigging",
         "./skills/characters/character-animation-pipeline-rig-mocap",
+        "./skills/characters/comfyui-trellis2-character-pipeline",
         "./skills/characters/facial-animation-blendshape-mocap",
         "./skills/characters/godot-runtime-procedural-creatures",
         "./skills/characters/godot-stylized-character-shader",

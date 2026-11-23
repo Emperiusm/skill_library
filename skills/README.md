@@ -18,6 +18,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`houdini-single-image-gsplat-sharp-moge2`](capture/houdini-single-image-gsplat-sharp-moge2/SKILL.md) | Turn a single photo into a Gaussian splat in Houdini 22: built-in MoGe-2 node or Apple's SHARP via ONNX in Copernicus, contract-exact COPs prep, CUDA inference, volumes to points, Karma shadow-skip, HDA wrap. |
 | [`comfyui-ldoi-image-to-3d`](capture/comfyui-ldoi-image-to-3d/SKILL.md) | Turn one photo into a 3D asset locally on low VRAM: ComfyUI-ldoi TripoSG nodes, five fp16 weights (~3.8 GB), splat to MeshLab Screened Poisson to Blender voxel remesh. |
 | [`photogrammetry-realitycapture-game-assets`](capture/photogrammetry-realitycapture-game-assets/SKILL.md) | Turn real-world objects into game assets: shoot overlapping photos in manual mode, reconstruct in RealityCapture, clean up and bake color and normal maps. |
+| [`reference-image-test-gates`](capture/reference-image-test-gates/SKILL.md) | Gate a generated or rebuilt 3D model against its reference images before it enters the pipeline: orthographic silhouette renders from Blender, IoU and boundary-fit scores computed in plain Python, thresholds calibrated per project instead of copied, and a human-signed contact sheet. |
 
 ## Characters and rigging (`characters/`)
 
@@ -45,6 +46,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`blender-character-sculpt-reference`](characters/blender-character-sculpt-reference/SKILL.md) | Sculpt a character in Blender against a reference image: sphere head blockout with Grab and Dyntopo, Clay Strips robe, procedural fabric, hard-modeled lightsaber hilt. |
 | [`godot-stylized-character-shader`](characters/godot-stylized-character-shader/SKILL.md) | Build a stylized anime character shader in Godot 4: hand-paint the textures first, simplify light into base, shadows, AO and highlights, modify mesh normals for faces, keep shadow softness adjustable, paint occlusion into the diffuse. |
 | [`self-recorded-mocap-blender-retarget`](characters/self-recorded-mocap-blender-retarget/SKILL.md) | Turn a phone video of yourself into game animation: record the move, run it through a single-camera video mocap tool, retarget the result onto your game rig in Blender, fix the feet and root motion the raw capture gets wrong, and export GLB clips to Godot. Covers Rokoko Vision, DeepMotion, Plask, and Move One pricing and outputs, the Rokoko and Auto-Rig Pro retarget workflows, Mixamo's real role and limits, and the fix pass the source reel skips. |
+| [`comfyui-trellis2-character-pipeline`](characters/comfyui-trellis2-character-pipeline/SKILL.md) | Generate a game character from one reference image with Claude driving ComfyUI's native TRELLIS.2 pipeline: a pose-locked A-pose or T-pose reference with spread fingers, watertight shell check, Blender retopology and rigging handoff, and GLB export. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 

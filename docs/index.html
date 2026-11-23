@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="283 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="285 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,13 +31,13 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">283 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">285 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 283 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+  <input id="search" type="search" placeholder="Search 285 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
 <section><h2>Engine and runtime <span class="count">64</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
@@ -953,7 +953,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build physically based lens flare in Houdini Copernicus with Zenith: ray-trace a real lens prescription (built-in 28/50/135/300mm lenses or your own .zmx Zemax file) instead of painting sprites, drive flare from...</p>
 </article>
 </div></section>
-<section><h2>Characters and rigging <span class="count">22</span></h2>
+<section><h2>Characters and rigging <span class="count">23</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
@@ -974,6 +974,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="character-animation-pipeline-rig-mocap take a character from model to game-ready animation: build the joint-and-control rig with painted skin weights, break motion into interruptible layered clips, capture performance with a mocap suit or video, then clean...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/character-animation-pipeline-rig-mocap/SKILL.md">character-animation-pipeline-rig-mocap</a></h3>
   <p>Take a character from model to game-ready animation: build the joint-and-control rig with painted skin weights, break motion into interruptible layered clips, capture performance with a mocap suit or video, then clean...</p>
+</article>
+<article class="card" data-search="comfyui-trellis2-character-pipeline generate a game character from one reference image with claude driving comfyui&#x27;s native trellis.2 pipeline: a pose-locked a-pose or t-pose reference with spread fingers, watertight shell check, blender retopology and...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/comfyui-trellis2-character-pipeline/SKILL.md">comfyui-trellis2-character-pipeline</a></h3>
+  <p>Generate a game character from one reference image with Claude driving ComfyUI&#x27;s native TRELLIS.2 pipeline: a pose-locked A-pose or T-pose reference with spread fingers, watertight shell check, Blender retopology and...</p>
 </article>
 <article class="card" data-search="facial-animation-blendshape-mocap build facial animation from blendshapes to motion capture: sculpt expressions or muscle-group shapes, link them to a control rig, keyframe dialogue against the voiceover first, then graduate to iphone, camera-plus-ml...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/facial-animation-blendshape-mocap/SKILL.md">facial-animation-blendshape-mocap</a></h3>
@@ -1135,7 +1139,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
 </article>
 </div></section>
-<section><h2>Capture and reconstruction <span class="count">12</span></h2>
+<section><h2>Capture and reconstruction <span class="count">13</span></h2>
 <div class="grid">
 <article class="card" data-search="adaptive-frame-extractor feed photogrammetry only the frames it needs: score frames for quality and overlap, extract the best, skip the rest. trigger when extracting frames for sfm pipelines.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/adaptive-frame-extractor/SKILL.md">adaptive-frame-extractor</a></h3>
@@ -1177,6 +1181,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/photogrammetry-realitycapture-game-assets/SKILL.md">photogrammetry-realitycapture-game-assets</a></h3>
   <p>Turn real-world objects into game assets with photogrammetry: shoot overlapping photos in manual mode, reconstruct in RealityCapture, understand the feature-point triangulation underneath, then clean up and bake color...</p>
 </article>
+<article class="card" data-search="reference-image-test-gates gate a generated or rebuilt 3d model against its reference images before it enters the pipeline: orthographic silhouette renders from blender, iou and boundary-fit scores computed in plain python, thresholds calibrated...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/reference-image-test-gates/SKILL.md">reference-image-test-gates</a></h3>
+  <p>Gate a generated or rebuilt 3D model against its reference images before it enters the pipeline: orthographic silhouette renders from Blender, IoU and boundary-fit scores computed in plain Python, thresholds calibrated...</p>
+</article>
 <article class="card" data-search="spirula-3dgs-anti-floater-capture produce clean 3d gaussian splats with spirula: plan phone capture around the actual camera moves (4k60), enable normal and depth estimation at sfm time, and use mild training-time floater suppression. reconstructs...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/capture/spirula-3dgs-anti-floater-capture/SKILL.md">spirula-3dgs-anti-floater-capture</a></h3>
   <p>Produce clean 3D Gaussian splats with Spirula: plan phone capture around the actual camera moves (4K60), enable normal and depth estimation at SfM time, and use Mild training-time floater suppression. Reconstructs...</p>
@@ -1197,7 +1205,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-22 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-23 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
