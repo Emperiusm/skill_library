@@ -71,6 +71,30 @@ Procedural trees + calendar seasons turn one authored shrine into a place that c
 **Why**
 Baking is a commitment: it trades per-object flexibility for per-area cheapness. Distance hiding is what makes that commitment affordable on phones without shrinking the world. Edge presence (Workers + Durable Objects) keeps the shared clock and visitor state without a dedicated game server.
 
+## AAA studio practice
+
+AAA crowd, city, and shared-world work runs on the same three disciplines this skill uses at indie scale: one instanced draw for a whole population with variety painted per instance, distance-tiered detail so far things cost almost nothing, and a shared deterministic clock so every viewer computes the same world instead of syncing state.
+
+- **Ubisoft, *Assassin's Creed Unity* (GDC 2015).** Ubisoft's crowd system managed up to 10,000 NPCs by tiering them into high-fidelity autonomous NPCs near the player, mid-range puppet NPCs, and long-range low-resolution meshes, with pooled assets and pre-calculated paths in a deterministic "Shepherd" container; only about 120 of the up to 12,000 agents were rendered with high-resolution models, and the crowd system consumed only about 5% of the RAM budget in the GDC summary.
+  (https://www.gamedeveloper.com/programming/video-behind-the-massive-crowds-of-i-assassin-s-creed-unity-i-)
+  (https://www.cs.upc.edu/~npelechano/abstract_prePrintCGF2015Survey.pdf)
+  The direct parallel: one instanced mesh for the whole pond, variety in the fragment shader, and far stations hidden until near are the same tiering, at pond scale. The production upgrade is Ubisoft's explicit tier table: record which tier each population sits in at which distance, instead of one hide/show distance for everything.
+- **Wube Software, *Factorio* (Friday Facts #76) and Ensemble Studios, *Age of Empires* (GDC 2001).** Factorio runs lockstep multiplayer in which each peer runs the full simulation and only player actions travel over the network, so traffic stays at a few hundred bytes per second whether the map holds hundreds or millions of objects, at the price that any nondeterminism accumulates into a desync. The same architecture powered *Age of Empires*: Bettner and Terrano's "1500 Archers on a 28.8" showed commands-only networking lifting the ceiling past 1,500 units where sending positions capped it near 250.
+  (https://direct.factorio.com/blog/post/fff-76)
+  (https://gamedev-canon.alekseiprikhodko.com/m04-netcode-taxonomy.html)
+  The direct parallel: the shrine's shared clock is lockstep without the multiplayer, a deterministic function of time so every visitor sees the same shoal with no fish state synced. The production upgrade is Factorio's: treat any clock-dependent behaviour as a determinism contract, and test it by comparing two clients at the same clock value, not by watching one client swim.
+- **Insomniac Games, *Marvel's Spider-Man* (GDC 2019) and Epic Games, *The Matrix Awakens* City Sample.** Insomniac procedurally authored Manhattan with systems that generated streets, curbs, sidewalks, and building spaces from street curves and instanced modular building-kit components onto surfaces, while preserving hand-authored work whenever it still met specifications across city-layout iterations. Epic's City Sample carried the same idea to streaming scale: a 4.138 by 4.968 km city with 7,000 simulated buildings and 35,000 walking pedestrians, built by procedural rules (Houdini among them) so changing an input rule redefined the whole city, with World Partition and Nanite streaming the result.
+  (https://history.siggraph.org/wp-content/uploads/2022/09/2019-Talks-Santiago_Procedural-System-Assisted-Authoring.pdf)
+  (https://gamesbeat.com/epic-games-shows-off-unreal-engine-5-realism-with-stunning-the-matrix-awakens-demo/)
+  The direct parallel: baking each area into one toon mesh and hiding far stations is the same bake-and-stream commitment at shrine scale. Insomniac's lesson is the preservation rule: a bake must be regenerable from its inputs without destroying hand work, and a baked area that cannot be rebaked after an edit is a liability, not an optimization.
+
+**Agent automation**
+
+1. **Instancing manifest.** Keep `instancing-manifest.json` per build: pond draw-call count (one), triangles per fish (638), variety count (12), and the per-instance painting mechanism (fragment shader). A check asserts the pond still draws in one call and the variety count still reads from the shader output, not from added meshes or textures.
+2. **Outline kept-list audit.** Keep the outline kept list as a checked file: every listed object gets an outline, every unlisted object gets none, and the list is countable. A check asserts the outline pass reads the list and does not walk the scene a second time per frame; an outline appearing on an unlisted object, or a second traversal, fails the audit.
+3. **Shared-clock parity check.** Record a shoal-position hash at fixed clock values from two independent loads of the build, and compare the hashes. Identical clock values must produce identical hashes; differing hashes mean the clock is not the only input (per-visitor timers, unsynced randomness, or frame-dependent motion have leaked in), and the shared-world claim fails until the leak is found.
+4. **Bake and visibility ledger.** Keep `bake-ledger.json`: one mesh per area, the bake inputs for each, and the hide distance per station. A check asserts far stations contribute no draw calls until approached and that every baked mesh can be regenerated from its recorded inputs. The unanswered real-time-shadows question in Phase 4 stays open in the ledger until it is answered by inspection, not assumed.
+
 ## The human method, distilled
 
 1. **State the budget in the post.** 638 triangles a fish, one instanced mesh, one mesh per area: budgets stated are budgets that can be checked.

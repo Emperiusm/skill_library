@@ -85,6 +85,30 @@ Regenerating everything guarantees drift in parts the user never asked to change
 **Why**
 License scope and seed variance are both decided before the first paid job, not discovered during it. The blind test in Phase 2 exists to make both visible: it uses two seeds, and the author reports the seed that failed alongside the seed that worked.
 
+## AAA studio practice
+
+AAA face work does not trust a single generation, and it does not redraw what nobody asked to change. The production pattern is a reference repository plus a ground-truth check, with the changed layer kept separate from the untouched plate so the untouched part can be restored exactly.
+
+- **ILM FaceSwap, *Indiana Jones and the Dial of Destiny* (2023).** ILM's proprietary FaceSwap system replaced Harrison Ford's face using "a good repository of imagery to work from, either from reference or for helping to process through machine learning", plus a complete CG asset of Ford and a younger version of it; supervisor Robert Weaver stressed that the result depended on "having a good repository of imagery" and on artists pulling key components, not on one automatic pass.
+  (https://postperspective.com/vfx-supervisors-talk-de-aging-indiana-jones-and-more/)
+  ILM's Face Finder tool searched that repository frame by frame for "the best likeness and performance for that individual frame", matching angle, lighting, and facial performance, so artists worked from "a perfect palette" of reference frames rather than from memory.
+  (https://www.motionpictures.org/2023/07/indiana-jones-and-the-dial-of-destiny-vfx-artists-on-de-aging-indy/)
+  The direct parallel: AusBoss's six separate reference photos are the same discipline at indie scale, a per-person reference pack searched per shot. The production upgrade is to keep that pack as a versioned file set (one photo per person, left-to-right order recorded) instead of six loose inputs, and to treat "faces and outfits started drifting" past six as a measured capacity limit to re-test, the way ILM re-tested per frame.
+- **Disney Research Studios, FRAN (Production-Ready Face Re-Aging, 2022).** FRAN predicts only what age changes and layers it over the original face as an extra channel, which "accurately preserves the performer's appearance and identity, even when their head is moving", and it gives artists "localized control and creative freedom to direct and fine-tune the re-aging effect, a feature that is largely important in real production pipelines".
+  (https://studios.disneyresearch.com/2022/11/30/production-Ready-Face-Re-Aging-for-Visual-Effects/)
+  The direct parallel: Edit Lock is the same shape, a change layer over an untouched original, with the original pasted back after decode. FRAN's lesson is the artist control: the change must stay a separate, adjustable layer, never a baked-in redraw of the whole frame. If an edit cannot be dialled back locally, it has lost the FRAN property even if it looks right once.
+- **Ubisoft La Forge, CHORD / Generative Base Material (SIGGRAPH Asia 2025).** La Forge built a three-stage ComfyUI pipeline (texture synthesis, CHORD material estimation, upscaling) and stated the production rule this skill's Phase 2 rediscovers: judge at the resolution the pipeline is built for. CHORD is optimized for 1024 while production textures are usually 2048 or 4096, and La Forge reported artists found the results "not production-ready yet, but a solid first step".
+  (https://arxiv.org/html/2509.09952v1)
+  (https://comfyui.org/en/ubisoft-open-sources-the-chord-model)
+  The direct parallel: H3's blind-test split (even at native sizes, last at a fixed 1 MP) is the same honest sizing discipline. A comparison that omits size, or a speed claim that omits resolution, is invalid in both pipelines.
+
+**Agent automation**
+
+1. **Reference-pack manifest.** Keep `reference-pack.json` per job: one entry per person with the reference file hash, the left-to-right position, and the keep instruction ("keeps their own face, hair, and outfit"). A check asserts the entry count equals the number of people named in the prompt and that no two entries share a file hash; a job with six people and five references fails before generation.
+2. **Blind-test manifest.** Keep `blind-test.json` per comparison: model, size, seed, edit count, and score, with both splits recorded (each model at its own size, then all at a fixed size). A check asserts every row carries its size and seed; a row without a size is unscoreable, per Phase 2, and a speed row without its resolution is rejected the same way.
+3. **Edit-Lock verification.** After every edit, compare the output against the saved original pixel-for-pixel in the regions the prompt did not name for change, and record the result in the manifest. Unchanged regions must return as the exact original pixels (the post-decode paste in Phase 4); any drift there means Edit Lock was not wired in, and the job is a full redraw, not an edit. The comparison itself is scripted; judging whether a named change looks right stays human.
+4. **Capacity and license gates.** Record the person count, the seed, and the license check in the manifest for every job. A job with more than six people carries the author's measured drift warning until a new count is tested and logged; a job in the US, EU, UK, or South Korea does not run until the current MiniMax terms have been read and the check recorded, per Phase 5.
+
 ## The human method, distilled
 
 1. **Name who stays.** "Keep the other two people" fixed 1-of-12 to 12-of-12; identity preservation is a prompt instruction, not luck.

@@ -74,6 +74,29 @@ A stated unsupported list is a contract. Silent drops (hair arriving missing, pa
 **Why**
 Styles change during development. A translation tool locked to one style forces a rebuild (or a repurchase decision) at every style change, which is the cost the commenter is pricing at "a few dollars" for a single style.
 
+## AAA studio practice
+
+AAA toon work is not one shader; it is a renderer-wide discipline in which the look is authored once, in the DCC, and carried into the engine as a contract, with outlines, shading thresholds, and light selection all decided per element and checked against the authored reference. The DCC-to-engine bridge is the same pattern at a different scale: procedural tools authored in one application, run inside the engine editor, with nightly rebuilds proving the translation still holds.
+
+- **Arc System Works, *Guilty Gear Xrd* (GDC 2015).** Arc System Works built the 3D anime look on custom cel shaders plus handcrafted normals: character models relied on vertex properties instead of textures for resolution independence, artists controlled shading thresholds with vertex colors, and outlines combined two approaches, with the inverted-hull method (an inflated, inverted, backface-culled copy of the model) as the basic line drawing. The talk's through-line is that every visual element was an intentional artist choice, not a calculation: handcrafted face normals, per-material shaded colors, and real-time shader preview in the DCC so artists saw the in-game result without exporting.
+  (https://archive.org/stream/GGXrd-design-docs/4Gamer%20-%20The%20Secrets%20of%20GGXrd%27s%20Graphics_djvu.txt)
+  The direct parallel: Enso's translation list (cel shading, masks, light selection, curvature) is the same element-by-element contract. The production upgrade is Arc's: judge each element against the Blender reference separately, and keep the authored normals and thresholds as data that crosses the bridge, not as settings re-entered by hand in Godot.
+- **Tango Gameworks, *Hi-Fi Rush* (GDC 2024).** Tango built a deferred toon renderer in customized Unreal Engine 4 that toon-shaded the entire world, characters and environment, at 60 fps at native resolution, by stylizing customized UE4 render passes plus added passes of their own inside deferred post-process volumes: comic shaders, toon lights, dynamic and static shadow-map strategies, light-probe GI, and a face-shadow implementation.
+  (https://www.gdcvault.com/play/1034251/3D-Toon-Rendering-in-Hi)
+  (https://80.lv/articles/the-making-of-hi-fi-rush-s-3d-toon-rendering-style?amp=1)
+  The direct parallel: Enso's post stack (bloom, light gradient, vignette, grain, letterbox) plus lights, camera, and depth of field is the same whole-scene, post-process-volume shape. Hi-Fi Rush's lesson is that the toon look lives in the render passes and post volumes, not in one material: a bridge that carries materials but drops the post stack has not carried the look.
+- **Ubisoft Montreal, *Far Cry 5* (GDC 2018).** Ubisoft built an ecosystem of procedural tools in Houdini (freshwater networks, cliffs, biomes, fences, fog-density maps) and ran them inside the Dunia editor through Houdini Engine, so artists used the tools "from within the game editor environment they're comfortable with", with tools chained sequentially so each tool's output (for example a water mask) fed the next, and the whole world rebuilt nightly on build machines.
+  (https://blog.playstation.com/2018/03/22/the-procedural-world-generation-of-far-cry-5/)
+  (https://christianjmills.com/posts/procedural-tools-far-cry-5-notes/index.html)
+  The direct parallel: Enso's one-button send is the same DCC-in-engine pattern, with Blender as the authoring side instead of Houdini. Far Cry 5's lesson is the nightly rebuild: a bridge is only trustworthy if re-sending the same scene reproduces the same Godot result, and if a changed scene re-sends without hand fixes.
+
+**Agent automation**
+
+1. **Translation manifest.** Keep `translation-manifest.json` per send: one row per element in the Phase 2 list (cel shading, masks, light selection, curvature, table reflections, lights, camera, depth of field, each post effect, rigs/animation), each with the Blender reference render path and the Godot render path. A check asserts every row has both renders; a row with only a Blender render is an untranslated element, not a passed one.
+2. **Unsupported-element pre-send scan.** Before sending, inventory the scene for particles, hair curves, and volumes (the Phase 3 unsupported list) and record the inventory in the manifest. A scene containing any of them does not send until each has a recorded Godot-side plan; silent drops are the failure the scan exists to prevent.
+3. **Range test.** Keep a style-range corpus: the demonstrated scene plus at least two further scenes in different styles, each sent and recorded in the manifest with its per-element verdicts. The paid add-on decision in Phase 4 is made from the corpus, not from one clip; a corpus of one is a demo.
+4. **Re-send regression.** Re-send the reference scene after any Enso or Godot version change and diff the new Godot renders against the recorded ones in the manifest. A re-send that changes an element without a scene change is a translation regression to report upstream, not a scene to rebuild by hand.
+
 ## The human method, distilled
 
 1. **Translate the look, not just the meshes.** Mesh-only export recreates the rebuild work.

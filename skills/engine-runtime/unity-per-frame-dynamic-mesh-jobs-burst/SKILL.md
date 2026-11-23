@@ -82,6 +82,27 @@ Wall space is the coordinate system every consumer shares: the rasterizer, the i
 **Why**
 Regenerating a mesh per frame and telling the renderer it is static is a contradiction the renderer cannot resolve for you. The setting is the one line that keeps the two in agreement.
 
+## AAA studio practice
+
+AAA studios that ship Unity DOTS do not adopt it as a slogan; they adopt the data contract (flat native data, no managed objects in the hot path, one parallel job per system) and they prove it with shipped-scale numbers and a determinism or regression harness. Procedural generation in AAA follows the same contract: data first, generation as a pure function of that data, regeneration cheap enough to run on every change.
+
+- **Stunlock Studios, *V Rising*, and Blackbird Interactive, *Hardspace: Shipbreaker* (Unity DOTS in production).** Unity's DOTS page records that Stunlock used ECS throughout *V Rising*, an open-world multiplayer survival game, including world building in the editor with custom visual scripting and scalable open-world streaming; the studio's own dev blog reports a world of more than 100,000 interactable objects, with DOTS letting the team "utilize the threads and cores of the CPU in a simpler but still very efficient manner". Blackbird's technical director reported processes on *Hardspace: Shipbreaker* that "initially took an hour now take only 100 milliseconds after implementing DOTS".
+  (https://unity.com/dots?_rsc=Dz9_UsQASG-XbkV7)
+  The direct parallel: Roomcopter's nodes-plus-lines native structs and single parallel job are the same contract at room scale. The production upgrade is Stunlock's: keep the authoring data (nodes and lines) separate from the runtime meshes, so the editor data survives regeneration and the job stays a pure function of it.
+- **Konami / Unity, *Survival Kids* (Unite 2025).** The *Survival Kids* case study used Unity DOTS features, Burst, Jobs, systems, and profiling, to optimize GameObject gameplay without fully adopting Entities, covering update ordering, multithreaded Jobs, transform access, Burst-safe camera functions, and profiler-guided bottleneck detection.
+  (https://www.classcentral.com/course/youtube-using-dots-to-optimize-gameobject-gameplay-a-case-study-from-survival-kids-unite-2025-516824)
+  The direct parallel: a single parallel job that regenerates meshes per frame is exactly the "Jobs without full Entities" shape. The lesson is profiler-guided: the job earns its place only if profiling shows mesh generation, not something else, is the bottleneck, and short jobs are left unparallelized where scheduling costs more than the work.
+- **Insomniac Games, *Marvel's Spider-Man* (GDC 2019).** Insomniac's procedural systems generated streets, curbs, sidewalks, alleys, plazas, and building spaces from street curves, then procedurally modularized designer-blocked buildings by instancing kit components, as a starting point for artist iteration; crucially, the systems preserved hand-authored work whenever it continued to meet specifications across iterations of the city layout.
+  (https://history.siggraph.org/wp-content/uploads/2022/09/2019-Talks-Santiago_Procedural-System-Assisted-Authoring.pdf)
+  The direct parallel: regenerating every room mesh every frame is only safe if regeneration preserves the authored room data. The lesson is the preservation rule: the nodes-and-lines data is the authored work, the meshes are disposable output, and any edit must land in the data, never in a generated mesh.
+
+**Agent automation**
+
+1. **Regeneration corpus.** Keep a fixed corpus of room inputs in `regen-corpus/`: a rectangle, a concave outline, a three-or-more-wall corner, a self-intersecting outline, and a room with a window behind a window. A headless run regenerates every corpus room each frame and records a mesh hash per room; identical inputs must produce identical hashes across runs, and the corpus, not a demo room, is the acceptance test.
+2. **Per-frame job ledger.** Log `regen-log.jsonl` per run: job time per frame, wall/floor/roof triangle counts, and the frame rate on the target hardware. A check flags any corpus room whose job time grows with wall count faster than the single-job design implies, and any run with no timing log is unmeasured, per the *Survival Kids* profiler discipline. No frame-time numbers are claimed here; the skill's source disclosed none.
+3. **Miter and triangulation gates.** Scripted checks on the corpus output: corners join without gaps or overlaps at three-or-more-wall anchors, floors and roofs stay valid on the concave and self-intersecting outlines (the Phase 3 constraints doing their work), and window holes cut in wall space in both Phase 4 cases (inner-wall window behind a window, and ray-traced view). A corpus room failing any gate blocks promotion of the job change.
+4. **Dynamic-mesh flag audit.** A check asserts every dynamically generated mesh's renderer carries the ray-tracing dynamic-mesh setting from Phase 5. The check is the setting's presence, not the truncated consequence the source text never reached; do not claim a consequence the author did not state.
+
 ## The human method, distilled
 
 1. **Data first, meshes second.** Nodes + lines in native structs; the job is a pure function of that data.
