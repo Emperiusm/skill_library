@@ -97,6 +97,7 @@
         "./skills/automation/nightshoal-opus-weekly-loop",
         "./skills/automation/nomad-blender-live-link",
         "./skills/automation/persistent-stateful-agent-systems",
+        "./skills/automation/predict-verify-checker-pipeline",
         "./skills/automation/retrocrunch-ps1-godot-conversion",
         "./skills/automation/steam-publish",
         "./skills/automation/url-to-skill",
@@ -229,6 +230,7 @@
         "./skills/procgen-worlds/blender-floaters-hard-surface-detail",
         "./skills/procgen-worlds/blender-gingerbread-house-build",
         "./skills/procgen-worlds/branch-propagation-tree-generator",
+        "./skills/procgen-worlds/brief-driven-parametric-massing",
         "./skills/procgen-worlds/chronicle-of-gods-planet-pipeline",
         "./skills/procgen-worlds/cinematic-cavern",
         "./skills/procgen-worlds/city-diffusion-osm-training",
@@ -267,6 +269,7 @@
         "./skills/procgen-worlds/ue-grass-cards-lod",
         "./skills/procgen-worlds/unreal-pcg-village-generation",
         "./skills/procgen-worlds/voronoi-border-warp-province-maps",
+        "./skills/procgen-worlds/walkability-density-remap",
         "./skills/simulation-vfx/armor-simulation-mode",
         "./skills/simulation-vfx/baradur-env-breakdown",
         "./skills/simulation-vfx/blender-glitch-render-geometry-nodes",
@@ -390,6 +393,7 @@
         "./skills/automation/nightshoal-opus-weekly-loop",
         "./skills/automation/nomad-blender-live-link",
         "./skills/automation/persistent-stateful-agent-systems",
+        "./skills/automation/predict-verify-checker-pipeline",
         "./skills/automation/retrocrunch-ps1-godot-conversion",
         "./skills/automation/steam-publish",
         "./skills/automation/url-to-skill"
@@ -570,6 +574,7 @@
         "./skills/procgen-worlds/blender-floaters-hard-surface-detail",
         "./skills/procgen-worlds/blender-gingerbread-house-build",
         "./skills/procgen-worlds/branch-propagation-tree-generator",
+        "./skills/procgen-worlds/brief-driven-parametric-massing",
         "./skills/procgen-worlds/chronicle-of-gods-planet-pipeline",
         "./skills/procgen-worlds/cinematic-cavern",
         "./skills/procgen-worlds/city-diffusion-osm-training",
@@ -607,7 +612,8 @@
         "./skills/procgen-worlds/runevision-voronoi-terrain-stack",
         "./skills/procgen-worlds/ue-grass-cards-lod",
         "./skills/procgen-worlds/unreal-pcg-village-generation",
-        "./skills/procgen-worlds/voronoi-border-warp-province-maps"
+        "./skills/procgen-worlds/voronoi-border-warp-province-maps",
+        "./skills/procgen-worlds/walkability-density-remap"
       ]
     },
     {
