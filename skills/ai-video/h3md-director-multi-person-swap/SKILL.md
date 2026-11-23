@@ -3,7 +3,7 @@ name: h3md-director-multi-person-swap
 description: "Swap up to 5 people in any live-action video with MiniMax H3 in ComfyUI: SAM3.1 tracks people by identity, Qwen Image 2.1 builds a keyframe plan at every crossing, the Director renders with the Remake LoRA. Trigger when a character swap must survive crossings, overlaps, and camera cuts."
 ---
 
-# H3MD 0.5: Multi-Person Character Swap in MiniMax H3
+# H3MD 0.5–0.6: Multi-Person Character Swap in MiniMax H3
 
 ## Purpose
 
@@ -13,9 +13,11 @@ This skill reconstructs the exact workflow ReferenceFluffy6159 demonstrates for 
 
 Creator: ReferenceFluffy6159. Post: "Put yourself into any dance video – swap up to 5 people at once, 100% local (MiniMax H3 + ComfyUI)" https://www.reddit.com/r/comfyui/comments/1xzrra6/ (score 38, 8 comments, including the author's two detailed replies; full post text and comments read) | Workflows (free): https://civitai.com/models/3037225?modelVersionId=3478241 | Nodes: https://github.com/1113800942/comfy-h3md-director | Walkthrough (Chinese voice, English subtitles): https://youtu.be/WMQJjmHZikc | 2026-11-19 scout run, audit 3.
 
+Update (0.6): "H3MD 0.6: upgraded keyframes let a free open-source ComfyUI tool swap every person in a messy, crowded group video (MiniMax H3)" https://www.reddit.com/r/comfyui/comments/1y38u12/h3md_06_upgraded_keyframes_let_a_free_opensource/ (r/comfyui post 1y38u12, score 50, 4 comments; full post text and comments read) | Free workflows: https://civitai.com/models/3037225 | Nodes (AGPL-3.0): https://github.com/1113800942/comfy-h3md-director | Full walkthrough (English audio, Chinese audio track and subtitles too): https://youtu.be/ye7YbiWgzsg — captions were unobtainable in the 2026-11-23 run and the media download was blocked by YouTube's bot sign-in wall, so the walkthrough's on-screen steps are not in this skill | 2026-11-23 scout run, audit 6. The 0.6 phases below supersede the 0.5 keyframe plan where they differ; the 0.5 render, face-fix, and limits phases above still stand except where the 0.6 post contradicts them, and the contradiction is noted in place.
+
 ## Tools used
 
-MiniMax H3, ComfyUI, comfy-h3md-director nodes (H3MD 0.5), Qwen Image 2.1, SAM3.1, Remake LoRA, VOSR2. 100% local.
+MiniMax H3, ComfyUI, comfy-h3md-director nodes (H3MD 0.5, then 0.6), Qwen Image 2.1 (0.5 keyframe step only; the 0.6 post does not name the prompt-writing model — it says only "your own AI writes the keyframe prompts with the included skill"), H3 Image (paints the 0.6 keyframes), SAM3.1, Remake LoRA, VOSR2. 100% local.
 
 ## Phase 1: Build the keyframe plan
 
@@ -70,12 +72,52 @@ A face that is 50 pixels in the source has no identity to preserve; redrawing it
 **Why**
 The failure mode is a contradiction between the picture and the text: the model follows the text, so a wrong line overrides a right picture.
 
+## Phase 5 (0.6): Pre-scan and one manual identity check
+
+**Do**
+1. "Pre-scan + one manual check. Face tracking and body masks build a cast list; you drag a line from each character picture to the right person (one picture can link to several boxes when someone is half-visible)."
+2. This check covers the hard cases the author names: "People cross, block each other, walk in and out of frame and wear almost the same clothes – the kind of clip where swap tools keep putting the wrong face on the wrong person."
+
+**Check**
+- The cast list must link every picture to the right person, including half-visible people (one picture to several boxes). The author states the check's purpose directly: "That one check is what stops the mix-ups."
+
+**Why**
+Identity by manual link, not by position or by automatic tracking alone: when people cross and wear almost the same clothes, position-based assignment puts the wrong face on the wrong person. One human link per character is the fix, and it is the only manual step claimed. This supersedes the 0.5 Phase 1 numbering/left-to-right plan as the identity step; the 0.5 left-to-right numbering is not repeated in the 0.6 post.
+
+## Phase 6 (0.6): Place keyframes only where the picture needs one, and redo one at a time
+
+**Do**
+1. "Your own AI writes the keyframe prompts with the included skill; H3 Image paints them." No model name for "your own AI" is stated in the 0.6 post; do not carry the 0.5 Qwen Image 2.1 name over as a 0.6 fact.
+2. "Keyframes only where the picture needs one (start, each cut, someone entering or coming back, people swapping places)." Result on the author's example: "a 38 s five-person clip went from 19 keyframes to 10."
+3. "Redo rerolls a single keyframe; for big errors ask your AI for a new package (cached, only the wrong ones rerun)."
+4. "The plan imports straight into the Director, which renders 2–3 minute videos."
+
+**Check**
+- Count the keyframes against the event list: start, each cut, each entry/return, each place-swap. The 19-to-10 reduction is the author's measured result on that one clip, not a general guarantee.
+- A single bad keyframe is fixed by rerolling that keyframe alone. Larger errors get a new package, with caching so "only the wrong ones rerun".
+
+**Why**
+Keyframes are placed at identity-risk moments (cuts, entries, returns, swaps), not at a fixed interval. Fewer, better-placed keyframes is the 0.6 claim: "We rebuilt and improved how H3MD makes them, so multi-character swap now holds on complex scenes." Localised repair means a single-keyframe failure does not cost a full re-render.
+
+## Phase 7 (0.6): Budget the render on an RTX 5090
+
+**Do**
+1. Author reply to "How much it takes to render video?": "at 5090 and H3MD 1 sec -> 1 min, short video like under 15 sec usually more fast, around 12 mins, over mins like 2 mins usually take around 120 mins". Read as: roughly 1 minute of render per 1 second of video; a sub-15-second video around 12 minutes; a ~2-minute video around 120 minutes. The author's English is compressed; quote it, do not smooth it into a cleaner claim.
+2. Note that this replaces the 0.5 Phase 2 budget (26 seconds in 29 minutes) as the current planning figure for the 0.6 workflow; the two figures are from different clips and different versions, so do not average them.
+
+**Check**
+- Budget 1 min/sec on a 5090 as the planning figure, and watch the ~2 s mark of the 0.6 demo for the reported pop (see Failure modes). No other hardware figure is stated.
+
+**Why**
+Render time is the real cost of the workflow: the keyframe savings in Phase 6 buy identity correctness, not speed.
+
 ## Failure modes
 
 - **Identity swap on crossings:** the model puts the wrong face on a person or the wrong clothes on a body. The fix is a keyframe at every crossing and overlap, not a better prompt.
 - **Wrong person from a contradicting description line:** one line per person must agree with that person's picture (gender, ethnicity, clothes).
 - **Blurry faces in wide shots:** faces at 50–100 px need the H3-in-SAM3-mask redraw plus VOSR2; even then, keep faces out of very wide shots.
 - **Stacked people, big-to-small swaps, long-to-short hair:** stated limits of version 0.5; do not expect the workflow to handle them.
+- **Visible pop at ~2 s (0.6 demo):** "Except the weird pop at about 2 seconds in, it looks good!" (commenter RobMilliken). The author did not reply to that comment. Watch the ~2 s mark when checking a 0.6 render; no cause or fix is stated.
 
 ## AAA studio practice
 
@@ -96,5 +138,6 @@ The failure mode is a contradiction between the picture and the text: the model 
 1. Find the hard moments first: keyframes go on the crossings and overlaps, not on the easy stretches.
 2. Track identity, not position: numbering left-to-right in the first full frame is what makes crossings survivable.
 3. One simple line per person, and it must agree with the picture.
+4. (0.6) Spend human attention exactly once — the drag-line identity check — and let the rebuilt keyframe generation carry the rest. Keyframes only at identity-risk moments; redo one keyframe at a time.
 
-**Depth status:** FULL (full post text + 8 comments, including the author's detailed replies on identity tracking, keyframes, and limits; the native clip is the before/after demo of the same workflow). Distinct from `minimax-h3-character-swap-comfyui`, `minimax-h3-character-swap-nomask-lowvram`, and `minimax-h3-reference-video-character-swap`: H3MD is a different tool (comfy-h3md-director) with a keyframe-plan step and identity tracking for up to five people at once.
+**Depth status:** FULL (full post text + 8 comments, including the author's detailed replies on identity tracking, keyframes, and limits; the native clip is the before/after demo of the same workflow). 0.6 update: FULL (post-text only, with the walkthrough unviewed — captions unobtainable, download blocked by the bot sign-in wall). Distinct from `minimax-h3-character-swap-comfyui`, `minimax-h3-character-swap-nomask-lowvram`, and `minimax-h3-reference-video-character-swap`: H3MD is a different tool (comfy-h3md-director) with a keyframe-plan step and identity tracking for up to five people at once.

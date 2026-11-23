@@ -13,7 +13,7 @@ skill.
 
 ## The skills
 
-286 skills in 9 categories, growing with every daily scout run. The full grouped
+290 skills in 9 categories, growing with every daily scout run. The full grouped
 list is in [`skills/`](skills/README.md); new skills are announced in the daily
 reports under [`docs/scout-reports/`](docs/scout-reports/).
 
@@ -21,12 +21,12 @@ reports under [`docs/scout-reports/`](docs/scout-reports/).
 |---|---|---|
 | [`capture`](skills/capture/) | 13 | Photogrammetry, 3D Gaussian splats, greenscreen plates, photo-based intake |
 | [`characters`](skills/characters/) | 23 | Character pipelines, consistent identities, rigging, cloth and hair |
-| [`procgen-worlds`](skills/procgen-worlds/) | 49 | Procedural generation: terrain, cities, creatures, whole games from a seed |
+| [`procgen-worlds`](skills/procgen-worlds/) | 50 | Procedural generation: terrain, cities, creatures, whole games from a seed |
 | [`ai-video`](skills/ai-video/) | 47 | AI video generation and editing, multi-shot pipelines, avatar evaluation |
 | [`simulation-vfx`](skills/simulation-vfx/) | 25 | Physics sims, fluids, fracture, VFX effects and environment breakdowns |
 | [`materials-shaders`](skills/materials-shaders/) | 22 | Material authoring, shaders, texturing |
-| [`engine-runtime`](skills/engine-runtime/) | 65 | Engine systems, runtime and render tech, browser and WebGPU |
-| [`automation`](skills/automation/) | 40 | Agent-driven pipelines, DCC bridges, productized generation |
+| [`engine-runtime`](skills/engine-runtime/) | 67 | Engine systems, runtime and render tech, browser and WebGPU |
+| [`automation`](skills/automation/) | 41 | Agent-driven pipelines, DCC bridges, productized generation |
 | [`no-tooling`](skills/no-tooling/) | 2 | Negative examples: footage with no extractable workflow, kept on purpose |
 
 ## The tool
