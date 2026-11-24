@@ -81,4 +81,28 @@ The visualisation is honest only if it matches how the sessions actually work: h
 1. "it's also just a fun three.js playground, which is honestly half the reason it exists". The method is half status board, half playground, and the author is explicit about both halves.
 2. Scope honesty as a design habit: "if your flow is one terminal and you read the main session at the end, you honestly don't need it."
 
+## AAA studio practice
+
+**Do**
+1. Do not build the office to be watched. No AAA studio ships a 3D office for coding-agent logs, and the transferable AAA practice is fleet observability through reports, not live watching. Massive Entertainment's client bots for The Division gathered performance statistics while playing missions and the open world, ran overnight and around the clock, and created reports from the runs; developers then looked at the data and the bots' reports to find stuck spots and frame-rate drops. (https://www.gamedeveloper.com/design/the-secret-ai-testers-inside-tom-clancy-s-the-division) The office is the glanceable front end of that same pattern: the logs are the fleet, the manifest in Agent automation below is the report, and the waiting-on-user signal is the top item in the queue, not a character to stare at.
+2. Make every waiting state an explicit human decision with a recorded answer. Ubisoft La Forge's Ghostwriter gave writers a pair of generated lines to accept or reject, and sent their choices back to the tool to improve later suggestions. (https://www.videogameschronicle.com/news/ubisoft-developer-explains-its-ai-writing-tool-in-more-detail/) Apply the same contract here: a character waving at the lead, a yellow floor strip, or a blue waiting circle is only the queue. The work is the answer, approval, or rejection, and it must be recorded against the session it resolves, so the next glance starts from a settled state.
+3. Keep one status source feeding every encoding. The Division's client bots were built so every game system believed a human was playing, with no special modifications that let the bots cheat. (https://www.gamedeveloper.com/design/the-secret-ai-testers-inside-tom-clancy-s-the-division) The analogue, labelled inference, is one log parser feeding the character, the monitor texture, the LEDs, and the floor strip. If any encoding reads a second source, the office can show two different truths about the same session, which is exactly the failure the skill's Phase 2 check guards against.
+4. Treat the low-power throttle as the price of a visual board, not as a free feature. The Division bots did their reporting runs headless and overnight, with no renderer to keep alive. The office keeps a renderer open all day, so the author's rule stands as the cost control: throttle when unfocused, stop entirely when hidden, and queue status changes for the glance on return rather than rendering them unseen. The queue-on-return behaviour is labelled inference, an automation design choice, not a claim from either source.
+
+**Check**
+- Every session shown as waiting in the office has exactly one entry in the log-derived waiting queue, and every queue entry maps to a live session. A waiting character with no queue entry, or a queue entry with no character, is a failed sync, not a cosmetic gap.
+- Every resolved wait has a recorded decision (answer, approval, or rejection) with the session it resolved. An unresolved wait that disappears from the office is a lost request, not a completed one.
+- A hidden tab renders nothing. On return, the office shows the latest log state, not the last rendered frame.
+
+**Why**
+AAA agent fleets are observed through reports and nightly runs, with a human deciding only the items the fleet cannot decide itself. A 3D office earns its place only when the glance, the queue, and the recorded decision all agree. Decoration that encodes nothing, and a live scene nobody watches, are the same failure: cost without status.
+
+## Agent automation
+
+1. **Session-status manifest.** The log parser writes one JSONL line per status change (session id, role, state, waiting-on text, timestamp) to `session-status.jsonl`. The office reads the manifest, never the raw logs directly. A session with no manifest line is unobserved, not idle.
+2. **Waiting-queue gate.** A script asserts that every session in the waiting state has a queue entry and every queue entry maps to a live session, and lists failures instead of dropping them silently. The gate runs on every manifest write.
+3. **A* obstacle audit.** Desks and room walls from the layout file are obstacles in the pathfinding grid. A script samples routes between desks and asserts no sampled path segment crosses a desk bounding box. A crossing is a grid error, not a character animation choice.
+4. **Low-power probe.** A code audit asserts the render loop checks the tab visibility state and stops requesting frames while hidden, and throttles while unfocused, per the author's Phase 3 rule. No throttle rate is claimed, since the author states none.
+5. **Stale-session flag.** A session with no log change beyond a threshold recorded in the manifest is flagged stale, not shown as working. The threshold is operator-set and recorded; this skill invents no number for it.
+
 **Depth status:** FULL (post-text plus author replies). Stack, log source, animation/pathing/monitor/LED encoding, and low-power behaviour are exact. Missing: log format and read interval, A* grid details, character rig details, and any performance numbers. A media download of the short clip would show the office in motion but would not supply the undisclosed log/parsing details.
