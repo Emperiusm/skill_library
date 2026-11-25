@@ -16,6 +16,7 @@ This skill reconstructs the recipe from the release post and its comment thread,
 - Evidence: full post selftext + 25 top-level comments, 2026-10-21 scout run
 - Expansion 2026-10-28: "MOSS Image in ComfyUI | Text to Image, Words & Layout (Ep40)" by pixaromadesign — https://youtu.be/l4R96NemQS8 (19 min, 13,752 views, full captions, 466 segments, + description); Reddit post https://www.reddit.com/r/comfyui/comments/1xgwtyb/ (score 39). ASR garbles brand names in places ("PixArt-Alpha" for Pixaroma nodes, "Laura" for LoRA); settings below are taken from the description and from caption passages where the meaning is unambiguous.
 - Expansion 2026-11-21: "MOSS Image ROCKS! Fast, Uncensored & Under 6 GB – EASY Install Guide" by Olivio Sarikas — https://www.youtube.com/watch?v=amjhvE-h2kM (10:32, 10,996 views, uploaded 2026-11-20, full ASR captions, 252 segments, + description); 2026-11-21 scout run, audit 5. A distinct low-VRAM variant on the same model: int8 quantized generation-optimized workflow at 1-2 MP plus Ultimate SD Upscale, not the 50-step starter recipe and not the tuned fusion. Model file names were ASR-garbled in the captions; the exact names and sampler/upscale numbers are now frame-verified in Phase G5 (2026-11-22 expansion).
+- Expansion 2026-11-25: "MOSS TURBO - 4 Steps ONLY! Fast & Uncensored - EASY Install Guide" by Olivio Sarikas — https://www.youtube.com/watch?v=4gmEzsXOO6Q (17:13, 4,931 views, uploaded 2026-11-24, full captions, 400 segments, + description); 2026-11-25 scout run, audit 2. Turbo LoRA install/wiring/settings/defect evidence (MOSS_Image_SFT_4_steps_v2, LoRA Manager, 4-8 steps, CFG 1, Euler) in Phase H.
 
 ## Tools used
 
@@ -307,6 +308,99 @@ Exact filenames remove the one guessing step the 2026-11-21 audit left open. Sam
 3. Wire the upscaler subgraph completely (model, VAE, both prompts) and derive its size from the image.
 4. Re-render defects instead of rescuing them; fix small faces before upscaling, not after.
 5. Review against named rivals and name the failures (six fingers, floating pyramid) in the same breath as the wins.
+
+## Expansion 2026-11-25: Olivio MOSS Turbo LoRA (4-step SFT v2 + LoRA Manager)
+
+Source: "MOSS TURBO - 4 Steps ONLY! Fast & Uncensored - EASY Install Guide" by Olivio Sarikas, https://www.youtube.com/watch?v=4gmEzsXOO6Q (17:13, 4,931 views at extraction, uploaded 2026-11-24). Evidence: full captions, 400 segments, plus the description. This expansion supplies the install, wiring, sampler settings, and defect profile for the 4/8-step Turbo LoRA that Phase 4 anticipated and Phase E3 used at draft level. It does not replace the int8 workflow above: the Turbo LoRA sits on top of the official MOSS workflow from the prerequisite video (https://www.youtube.com/watch?v=amjhvE-h2kM), and the author starts where that video left off.
+
+### Phase H1: Install the LoRA Manager node pack
+
+**Do**
+1. In ComfyUI, open Extensions, search for LoRA Manager, and install the first one, "from Will Meow". If the Extensions window is absent, install the Node Manager first.
+2. Restart ComfyUI so the new nodes load. An "L" icon appears; clicking it opens LoRA Manager in an extra tab showing the LoRAs already in your folders (use Refresh if it does not).
+
+**Check**
+- The L icon is present after restart and the manager lists existing LoRAs.
+
+**Why**
+The LoRA Manager pack supplies both the download UI and the LoRA Loader node used later. Without it, the official workflow has no place to attach a LoRA.
+
+### Phase H2: Give LoRA Manager read-only API keys
+
+**Do**
+1. Open the manager's settings icon. Enter a Civitai API key and a Hugging Face access token.
+2. Civitai: account icon, Account Settings, Security and Apps, API Key, permission preset Read Only, name it, Save, copy the key. Hugging Face: user icon, Access Tokens, Create New Token, Read Only, name it, Create Token, copy it over.
+
+**Check**
+- Both keys are read-only. The download step in Phase H3 is the functional check; the author states no separate verification step.
+
+**Why**
+Read-only keys can fetch models but cannot act on the account.
+
+### Phase H3: Download the Turbo LoRA
+
+**Do**
+1. In LoRA Manager, click Download, paste the Civitai page address (https://civitai.red/models/3006599/moss-image-turbo-loras?modelVersionId=3414934), click Next, select the LoRA from the list shown, click Next to download. The chosen LoRA is MOSS_Image_SFT_4_steps_v2.
+2. In the manager, click a LoRA and scroll down: example images show all settings used, including seed, prompt, and negative prompt, which can be sent to the workflow; the model description mirrors the Civitai page.
+
+**Check**
+- Example images carry their settings on mouse-over, so a working configuration can be copied rather than guessed.
+
+**Why**
+The example images are the settings documentation. Reading them replaces trial-and-error on steps, CFG, and prompts.
+
+### Phase H4: Add a LoRA Loader node to the subgraph workflow
+
+**Do**
+1. Double-click the canvas background, search for LoRA Loader, and use the one labelled "LoRA Manager" in brackets. Place it inside the workflow. The official MOSS workflow is presented as a subgraph block; the captions describe it as simplified so the "noodle mess" is hidden.
+2. The loader initially has no in/out because it sits in a subgraph. Click the subgraph icon to see the full workflow.
+3. Expose outputs: drag from the model output's grey dot to create a Model output, and from the CLIP output to create a CLIP output. Then create inputs the same way: drag from the grey dots to the KSampler's model input, and to the CLIP inputs of the positive and negative prompt nodes, so the untouched model and CLIP go out, through the LoRA, and back into the subgraph.
+4. Optional trigger words: double-click the background, add a Concatenate Text node OUTSIDE the subgraph box, put the existing prompt string into input A, and drag the LoRA's trigger-word output into string B, then send the result into the positive prompt. Placing it outside matters: if the prompt-enhancer box is disabled, a node inside it would be disabled too, but the trigger words must survive.
+5. Return via the return icon to the original workflow view. Connect model to model, CLIP to CLIP, and the trigger-word string to string B on the lower part of the subgraph node.
+6. Back in LoRA Manager, click the paper-plane icon to add the LoRA to the active workflow. The blue button toggles it on/off; set strength to taste (the author usually leaves it at 1, and notes LoRAs can be mixed for different styles/enhancements).
+
+**Check**
+- The loader appears in the workflow after the paper-plane click, with the model and CLIP routed through it and the trigger-word string connected.
+
+**Why**
+The subgraph hides wiring, so inputs and outputs must be created explicitly before anything can pass through the LoRA. Keeping the trigger-word concatenation outside the enhancer box preserves trigger words when the enhancer is bypassed.
+
+### Phase H5: Set the turbo sampler settings
+
+**Do**
+1. Steps: 4 to 8. The author sets 8, "because I think usually it gives you better results". Rule of thumb stated: 4 steps should be enough at 1 megapixel; use 8 steps at 2 megapixels.
+2. CFG: 1.
+3. Sampler: Euler (captions render the name as "Uler"; read as the Euler sampler). The rest stays the same as the original workflow.
+4. Model precision: the author uses the INT8 model, under 6 GB. The original LoRA suggests the BF16 model, almost 10 GB, which may not fit. The author reports no quality difference seen from INT8 in his tests.
+
+**Check**
+- At 1 MP, 4 steps; at 2 MP, 8 steps. If the image is a close-up with wrinkly skin, see Phase H6 before accepting the result.
+
+**Why**
+A step-distilled LoRA changes the sampler contract: the 25-to-50-step settings of the base workflow no longer apply. CFG 1 and few steps are part of the LoRA's design, not a speed shortcut applied on top of it.
+
+### Phase H6: Judge the LoRA by its defects
+
+**Do**
+1. Expect plasticky skin on close-ups with wrinkly skin, in both BF16 and INT8. For close-ups, run without the speed LoRA at 25 steps for the better quality, remembering to set CFG and sampler back.
+2. Expect extra fingers or extra limbs sometimes; render multiple times until a clean result appears.
+3. Expect a checkerboard pattern in backgrounds (the example: holes in a tree behind a grey-haired man). Expect the model to stay strong on 3D/comic/artistic styles, character sheets, emotional expressions, text rendering, and prompt adherence (7 green apples in a row; a matte red square on a shiny blue ball, though the ball was not completely round), and weaker on photorealism.
+4. Use the prompt wording "an amateur smartphone photo", and optionally a little blur with the blur location defined, to make photoreal results more realistic. Use the extensive negative prompt visible on the LoRA's sample images in LoRA Manager as a learning source.
+5. Note the prompt enhancer trade-off: on, it optimises the prompt through an LLM model and can help results but slows the process; off, it is bypassed at the back, while trigger words still apply because of the Phase H4 placement.
+
+**Check**
+- Close-up skin, hands/fingers, and background trees are the three defect checks. A clean result is confirmed by re-rendering, not by adjusting settings after the fact.
+
+**Why**
+The LoRA's speed is real, but its defect profile is fixed: wrinkly skin, extra limbs, and checkerboard backgrounds do not improve with more steps inside the turbo settings. The author's stated rule is to switch the LoRA off for close-ups rather than fight the defect.
+
+### Turbo LoRA human method, distilled
+
+1. Install the node pack that owns the workflow change (LoRA Manager), before touching the workflow.
+2. Copy settings from example images; do not guess steps or CFG for a distilled LoRA.
+3. Wire trigger words outside any box that can be disabled.
+4. Set steps by megapixels (4 at 1 MP, 8 at 2 MP), CFG 1, Euler.
+5. Judge a speed LoRA by its defects (plasticky skin, extra limbs, checkerboard), and fall back to the 25-step base run for close-ups.
 
 ## AAA studio practice
 
