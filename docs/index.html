@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="296 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="302 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,14 +31,14 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">296 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">302 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 296 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
-<section><h2>Engine and runtime <span class="count">68</span></h2>
+  <input id="search" type="search" placeholder="Search 302 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+<section><h2>Engine and runtime <span class="count">70</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/ai-3d-engine-export/SKILL.md">ai-3d-engine-export</a></h3>
@@ -99,6 +99,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="godot-3d-essentials set up a godot 4.7 3d scene: node3d transforms, camera3d, lighting (directionallight3d/omnilight3d), worldenvironment for sky/ambient/tonemap/post, meshinstance3d materials, and gridmap for tile-based 3d levels. use...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-3d-essentials/SKILL.md">godot-3d-essentials</a></h3>
   <p>Set up a Godot 4.7 3D scene: Node3D transforms, Camera3D, lighting (DirectionalLight3D/OmniLight3D), WorldEnvironment for sky/ambient/tonemap/post, MeshInstance3D materials, and GridMap for tile-based 3D levels. Use...</p>
+</article>
+<article class="card" data-search="godot-500-rigidbody-octree-two-viewport run a 500-ship rigidbody3d fleet battle in godot 4.7: keep real rigid bodies moved with apply_force/apply_torque, replace a 30ms+ gdscript neighbour search with an engine-level octree, drive ships with shoot/evade...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-500-rigidbody-octree-two-viewport/SKILL.md">godot-500-rigidbody-octree-two-viewport</a></h3>
+  <p>Run a 500-ship RigidBody3D fleet battle in Godot 4.7: keep real rigid bodies moved with apply_force/apply_torque, replace a 30ms+ GDScript neighbour search with an engine-level octree, drive ships with shoot/evade...</p>
 </article>
 <article class="card" data-search="godot-animation animate in godot 4.7 three ways: animationplayer for keyframed clips (incl. call and signal tracks), animationtree with state machines and blend spaces for character animation, and tween for short procedural/ui tweens...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/godot-animation/SKILL.md">godot-animation</a></h3>
@@ -208,6 +212,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/karles22-cycles-houdini-solaris/SKILL.md">karles22-cycles-houdini-solaris</a></h3>
   <p>Render Blender Cycles inside Houdini 22 Solaris with the karles22 Hydra 2 delegate: one Render Settings node, MaterialX native, even per-pixel sampling, photon caustics, and one-click in-render post FX. Trigger when a...</p>
 </article>
+<article class="card" data-search="leveldot-godot-hotspot-texturing model and texture a godot level in leveldot, a standalone level design tool made in godot: start from a primitive box with a hotspot material, extrude/inset/subdivide faces (shift+z extrude), rotate faces into arches...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/leveldot-godot-hotspot-texturing/SKILL.md">leveldot-godot-hotspot-texturing</a></h3>
+  <p>Model and texture a Godot level in Leveldot, a standalone level design tool made in Godot: start from a primitive box with a hotspot material, extrude/inset/subdivide faces (Shift+Z extrude), rotate faces into arches...</p>
+</article>
 <article class="card" data-search="mass-entity-niagara-crowd render massive ue crowds without per-agent actors: simulate in custom c++ massentity processors, stream transform arrays into niagara gpu particles, animate with vats. trigger when building rts/battle crowds, swarm...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/engine-runtime/mass-entity-niagara-crowd/SKILL.md">mass-entity-niagara-crowd</a></h3>
   <p>Render massive UE crowds without per-agent actors: simulate in custom C++ MassEntity processors, stream transform arrays into Niagara GPU particles, animate with VATs. Trigger when building RTS/battle crowds, swarm...</p>
@@ -313,7 +321,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build and edit 3D meshes directly inside the Godot editor with Xogot Modeler (first public beta, Godot Asset Store): block out levels with basic shapes, edit vertices, edges, and faces, extrude and bevel, draw curved...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">50</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">52</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -342,6 +350,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="blender-floaters-hard-surface-detail fake hard-surface detail in blender with floaters: model the base form clean, place separate small meshes (cylinders, vents, rings) on the surface instead of cutting booleans, sell the seam with a bevel, and unify with...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/blender-floaters-hard-surface-detail/SKILL.md">blender-floaters-hard-surface-detail</a></h3>
   <p>Fake hard-surface detail in Blender with floaters: model the base form clean, place separate small meshes (cylinders, vents, rings) on the surface instead of cutting booleans, sell the seam with a bevel, and unify with...</p>
+</article>
+<article class="card" data-search="blender-geometry-nodes-data-visualization turn a real density map into a 3d bar visualization in blender: clean the california population density 2020 map in krita to isolated blobs on transparency, map it onto a plane with an image texture into a principled...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/blender-geometry-nodes-data-visualization/SKILL.md">blender-geometry-nodes-data-visualization</a></h3>
+  <p>Turn a real density map into a 3D bar visualization in Blender: clean the California population density 2020 map in Krita to isolated blobs on transparency, map it onto a plane with an Image Texture into a Principled...</p>
 </article>
 <article class="card" data-search="blender-gingerbread-house-build build a finished gingerbread-house scene in blender as a beginner tutorial series finale: flat-sculpted gingerbread man with one principled bsdf, mirrored tree with ornaments, botaniq scatter for dressing, one...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/blender-gingerbread-house-build/SKILL.md">blender-gingerbread-house-build</a></h3>
@@ -467,6 +479,10 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-pnw-forest-custom-engine/SKILL.md">procedural-pnw-forest-custom-engine</a></h3>
   <p>Build a procedural Pacific Northwest forest in a custom C++20/DirectX 12 engine: heightfield terrain with a per-tile stream-power erosion bake, rivers that carve first with the water surface following the channel...</p>
 </article>
+<article class="card" data-search="procedural-race-circuits-racing-line-first generate procedural race circuits racing-line-first: measure 173 real circuits (corner radii and angles, straights, length, compactness), sample corners and straights from those distributions, solve each sequence so the...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-race-circuits-racing-line-first/SKILL.md">procedural-race-circuits-racing-line-first</a></h3>
+  <p>Generate procedural race circuits racing-line-first: measure 173 real circuits (corner radii and angles, straights, length, compactness), sample corners and straights from those distributions, solve each sequence so the...</p>
+</article>
 <article class="card" data-search="procedural-ribbon-cables generate ribbon cables procedurally with parametric controls instead of modeling by hand. trigger when detailing hard-surface props.">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/procedural-ribbon-cables/SKILL.md">procedural-ribbon-cables</a></h3>
   <p>Generate ribbon cables procedurally with parametric controls instead of modeling by hand. Trigger when detailing hard-surface props.</p>
@@ -516,7 +532,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Test a station-area density claim with walked distance, not a crow-flies circle: pull a walkable street network from OpenStreetMap, route every plot to the station, remap walk distance to density steps, and extrude a...</p>
 </article>
 </div></section>
-<section><h2>AI video <span class="count">48</span></h2>
+<section><h2>AI video <span class="count">49</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-multishot-ai-video-farm-crew produce multi-shot ai video with a tiny render farm and a four-agent crew: slice every edit into a shot job with explicit not-allowed-to-change lock lists, dispatch via a comfyui front-end plus gpu-rental queue, run...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/agentic-multishot-ai-video-farm-crew/SKILL.md">agentic-multishot-ai-video-farm-crew</a></h3>
@@ -573,6 +589,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="h3md-director-multi-person-swap swap up to 5 people in any live-action video with minimax h3 in comfyui: sam3.1 tracks people by identity, qwen image 2.1 builds a keyframe plan at every crossing, the director renders with the remake lora. trigger when...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/h3md-director-multi-person-swap/SKILL.md">h3md-director-multi-person-swap</a></h3>
   <p>Swap up to 5 people in any live-action video with MiniMax H3 in ComfyUI: SAM3.1 tracks people by identity, Qwen Image 2.1 builds a keyframe plan at every crossing, the Director renders with the Remake LoRA. Trigger when...</p>
+</article>
+<article class="card" data-search="h3md-expression-studio-minimax-h3 control facial expressions in minimax h3 video with the h3md expression studio (free, agpl-3.0): pick from 25 built-in expressions or tune eyes, gaze, cheeks, and mouth with live-updating sliders, save expression only...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/h3md-expression-studio-minimax-h3/SKILL.md">h3md-expression-studio-minimax-h3</a></h3>
+  <p>Control facial expressions in MiniMax H3 video with the H3MD Expression Studio (free, AGPL-3.0): pick from 25 built-in expressions or tune eyes, gaze, cheeks, and mouth with live-updating sliders, save Expression Only...</p>
 </article>
 <article class="card" data-search="iv-studio-comfyui-film-studio direct ai short films without touching a node graph: drive your own comfyui over its api with iv studio — an agent writes the minimax h3 prompt from references, a checker fixes what h3 punishes, hunt cheap 0.4-0.9 mp...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/ai-video/iv-studio-comfyui-film-studio/SKILL.md">iv-studio-comfyui-film-studio</a></h3>
@@ -989,7 +1009,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build physically based lens flare in Houdini Copernicus with Zenith: ray-trace a real lens prescription (built-in 28/50/135/300mm lenses or your own .zmx Zemax file) instead of painting sprites, drive flare from...</p>
 </article>
 </div></section>
-<section><h2>Materials and shaders <span class="count">24</span></h2>
+<section><h2>Materials and shaders <span class="count">25</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-pbr-materials-textures author and verify pbr materials for ai assets: channel meanings and color spaces, material-first texture prompting, normal map generation versus checking, the two-light and moving-light tests, and the 2k-master rule...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-pbr-materials-textures/SKILL.md">ai-3d-pbr-materials-textures</a></h3>
@@ -998,6 +1018,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="ai-3d-retopology-uv repair ai-generated meshes for production: when to retopologize by destination, wireframe checks, and a uv inspection and repair routine with checker textures, overlap overlays, and a second lightmap uv set. trigger...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/ai-3d-retopology-uv/SKILL.md">ai-3d-retopology-uv</a></h3>
   <p>Repair AI-generated meshes for production: when to retopologize by destination, wireframe checks, and a UV inspection and repair routine with checker textures, overlap overlays, and a second lightmap UV set. Trigger...</p>
+</article>
+<article class="card" data-search="bevy-wgsl-aurora-curtain-raymarch place an aurora by the latitude of the curtain each pixel looks at, not the camera&#x27;s, in bevy/wgsl: raymarch curtains in the sky pass at about 3 km of curtain per degree, roll the oval from the real 64/54/50-degree...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/bevy-wgsl-aurora-curtain-raymarch/SKILL.md">bevy-wgsl-aurora-curtain-raymarch</a></h3>
+  <p>Place an aurora by the latitude of the curtain each pixel looks at, not the camera&#x27;s, in Bevy/WGSL: raymarch curtains in the sky pass at about 3 km of curtain per degree, roll the oval from the real 64/54/50-degree...</p>
 </article>
 <article class="card" data-search="bismith-browser-procedural-textures generate procedural textures in the browser with bismith.dev: start from a starter template, preview tiling live, export greyscale diffuse and separate height maps. trigger when a texture is needed with zero install and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/materials-shaders/bismith-browser-procedural-textures/SKILL.md">bismith-browser-procedural-textures</a></h3>
@@ -1249,7 +1273,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-25 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-26 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
