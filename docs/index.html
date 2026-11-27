@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skill_library: game tooling skills for AI agents</title>
-<meta name="description" content="302 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
+<meta name="description" content="306 executable game-tooling skills learned from real workflow videos, updated daily. Installs into Claude Code, Codex, Cursor, and any Agent Skills reader.">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --dim:#8b949e; --accent:#58a6ff; }
   * { box-sizing: border-box; }
@@ -31,13 +31,13 @@
 <body>
 <main>
   <h1>skill_library</h1>
-  <p class="sub">302 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
+  <p class="sub">306 executable game-tooling skills, learned from real workflow videos by a daily scout, plus imported engine skills. Every skill is a plain SKILL.md an agent can execute end to end.</p>
   <div class="install">
     <code>npx skills add Emperiusm/skill_library
 claude plugin marketplace add Emperiusm/skill_library
 claude plugin install skill-library@skill-library</code>
   </div>
-  <input id="search" type="search" placeholder="Search 302 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
+  <input id="search" type="search" placeholder="Search 306 skills (try: godot, keying, crowd, publish)" aria-label="Search skills">
 <section><h2>Engine and runtime <span class="count">70</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-engine-export hand an ai asset to unity, unreal, or blender without losing scale, materials, or pivots: shared export gates plus per-target settings tables and a fresh-scene re-import proof. trigger when exporting an ai asset into an...">
@@ -321,7 +321,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Build and edit 3D meshes directly inside the Godot editor with Xogot Modeler (first public beta, Godot Asset Store): block out levels with basic shapes, edit vertices, edges, and faces, extrude and bevel, draw curved...</p>
 </article>
 </div></section>
-<section><h2>Procedural generation and worlds <span class="count">52</span></h2>
+<section><h2>Procedural generation and worlds <span class="count">55</span></h2>
 <div class="grid">
 <article class="card" data-search="agentic-terrain-pipeline build game terrain inside unreal as an editable node graph with an ai agent driving it: erosion chains, sub-0.1s preview, auto-mask material layers, real-survey import matched to the centimeter, 4k to 16k builds, and...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/agentic-terrain-pipeline/SKILL.md">agentic-terrain-pipeline</a></h3>
@@ -511,6 +511,14 @@ claude plugin install skill-library@skill-library</code>
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/runevision-voronoi-terrain-stack/SKILL.md">runevision-voronoi-terrain-stack</a></h3>
   <p>Drive large-scale procedural terrain with Voronoi macro-cells for level-design control over noise: LayerProcGen framework, fast erosion filter, GPU Instancer Pro instancing + occlusion culling, Microsplat, Amplify...</p>
 </article>
+<article class="card" data-search="story-driven-procedural-houses generate procedural houses story-first: draw a street, give every house a backstory (age, owner, trade, wealth, fire, added floor) that reads the street context, let the 3d follow the story, spread rarity (common...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/story-driven-procedural-houses/SKILL.md">story-driven-procedural-houses</a></h3>
+  <p>Generate procedural houses story-first: draw a street, give every house a backstory (age, owner, trade, wealth, fire, added floor) that reads the street context, let the 3D follow the story, spread rarity (common...</p>
+</article>
+<article class="card" data-search="trochoidal-procedural-ocean-code-drawn draw a procedural pixel-art ocean entirely in code at 320x180 with no hand-drawn art: trochoidal waves where longer waves outpace shorter ones and build with wind, shoaling at the beach, underwater light-beam...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/trochoidal-procedural-ocean-code-drawn/SKILL.md">trochoidal-procedural-ocean-code-drawn</a></h3>
+  <p>Draw a procedural pixel-art ocean entirely in code at 320x180 with no hand-drawn art: trochoidal waves where longer waves outpace shorter ones and build with wind, shoaling at the beach, underwater light-beam...</p>
+</article>
 <article class="card" data-search="ue-grass-cards-lod build cheap game grass from crossed cards: start with two crossed cards, add rotated crosses for volume, hide the card look from top-down views, then swap cheap crosses in the distance and detailed grass near the player...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/ue-grass-cards-lod/SKILL.md">ue-grass-cards-lod</a></h3>
   <p>Build cheap game grass from crossed cards: start with two crossed cards, add rotated crosses for volume, hide the card look from top-down views, then swap cheap crosses in the distance and detailed grass near the player...</p>
@@ -518,6 +526,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="unity-planet-database-burst-terrain build a procedural planet in unity with a lat/lon planet database queried by a burst cpu mesh generator, starting from an icosahedron subdivided around the camera. trigger when a planet must be flyable from orbit to the...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/unity-planet-database-burst-terrain/SKILL.md">unity-planet-database-burst-terrain</a></h3>
   <p>Build a procedural planet in Unity with a lat/lon planet database queried by a Burst CPU mesh generator, starting from an icosahedron subdivided around the camera. Trigger when a planet must be flyable from orbit to the...</p>
+</article>
+<article class="card" data-search="unity-urp-procedural-planet-near-surface render a procedural planet at near-surface detail in unity urp with custom shaders and walking: target 60fps on an rtx 3070 at 1440p native, name grass and water as the budget breakers, build clouds from a reference...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/unity-urp-procedural-planet-near-surface/SKILL.md">unity-urp-procedural-planet-near-surface</a></h3>
+  <p>Render a procedural planet at near-surface detail in Unity URP with custom shaders and walking: target 60fps on an RTX 3070 at 1440p native, name grass and water as the budget breakers, build clouds from a reference...</p>
 </article>
 <article class="card" data-search="unreal-pcg-village-generation generate a village with unreal&#x27;s pcg framework: break the environment into elements, derive placement rules, spawn points, drive static mesh spawners through transform points, and break uniformity with random choice...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/procgen-worlds/unreal-pcg-village-generation/SKILL.md">unreal-pcg-village-generation</a></h3>
@@ -1112,7 +1124,7 @@ claude plugin install skill-library@skill-library</code>
   <p>Texture any untextured 3D mesh locally in ComfyUI with UltraTex: one reference image in, 2K PBR textures out, free, on 6 to 16 GB GPUs. Trigger when texturing a mesh without a paid service or a large GPU.</p>
 </article>
 </div></section>
-<section><h2>Characters and rigging <span class="count">23</span></h2>
+<section><h2>Characters and rigging <span class="count">24</span></h2>
 <div class="grid">
 <article class="card" data-search="ai-3d-character-pipeline take an ai character from clean a-pose reference through modular parts, rigging, skins, and animation prep to an engine proof, with a movement test that decides retopology versus regeneration. trigger when making ai...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/ai-3d-character-pipeline/SKILL.md">ai-3d-character-pipeline</a></h3>
@@ -1149,6 +1161,10 @@ claude plugin install skill-library@skill-library</code>
 <article class="card" data-search="godot-stylized-character-shader build a stylized anime character shader in godot 4: hand-paint the textures first, simplify light into base, shadows, ambient occlusion and highlights, modify mesh normals for faces, keep shadow softness adjustable...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/godot-stylized-character-shader/SKILL.md">godot-stylized-character-shader</a></h3>
   <p>Build a stylized anime character shader in Godot 4: hand-paint the textures first, simplify light into base, shadows, ambient occlusion and highlights, modify mesh normals for faces, keep shadow softness adjustable...</p>
+</article>
+<article class="card" data-search="jibjab-blender-rigs use the jibjab blender rigs in blender 5.2.5 or later: one .blend file with seven rigged characters (including a faceless rig for custom faces), hand control via drivers, ik arms and legs, jaw-bone toggles for character...">
+  <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/jibjab-blender-rigs/SKILL.md">jibjab-blender-rigs</a></h3>
+  <p>Use the JibJab Blender rigs in Blender 5.2.5 or later: one .blend file with seven rigged characters (including a Faceless rig for custom faces), hand control via drivers, IK arms and legs, jaw-bone toggles for character...</p>
 </article>
 <article class="card" data-search="keenface-metahuman-heads turn reference photos into production-ready 3d heads with native metahuman topology, clean bald base mesh, and full pbr maps (base color, normal, roughness, specular) using keenface. trigger when a character pipeline...">
   <h3><a href="https://github.com/Emperiusm/skill_library/blob/main/skills/characters/keenface-metahuman-heads/SKILL.md">keenface-metahuman-heads</a></h3>
@@ -1273,7 +1289,7 @@ claude plugin install skill-library@skill-library</code>
   <p>NO-TOOLING: beginner modeling Q&amp;A with no extractable workflow. Kept as a negative example of what the scout skips. No trigger.</p>
 </article>
 </div></section>
-  <footer>Generated 2026-11-26 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
+  <footer>Generated 2026-11-27 from the <a href="https://github.com/Emperiusm/skill_library">skill_library repository</a>. New skills land with every daily scout run. Imported skills are credited in THIRD-PARTY-NOTICES.md in the repo.</footer>
 </main>
 <script>
   const box = document.getElementById('search');
