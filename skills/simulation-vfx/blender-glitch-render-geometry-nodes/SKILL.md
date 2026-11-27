@@ -420,3 +420,31 @@ FULL: 523 ASR caption segments plus the description; node types,
 wiring, values above 1.0, the 90-degree rotation, and both abandoned
 methods are in the captions. Caveat: no render settings or sample
 counts are stated, and the course project files were not retrieved.
+
+## Frame-verified render-settings addendum, 2026-11-27 re-audit
+
+The same video was re-encountered in the 2026-11-27 scout run. That
+extraction found no captions, which contradicts the 523-segment
+caption evidence above; the contradiction is reported here and was
+not investigated further. The run spent its second pre-approved media
+download on this video (mid quality, 360p, 45,866,518 bytes) and read
+12 frames firsthand. The frames add render settings only. Node labels
+are mostly illegible at 360p, so no new shader steps are claimed from
+the frames, and the workflow above is unchanged.
+
+- Output: Resolution X 2000 px, Y 4000 px, 100%, frame rate 24 fps,
+  frame range 1 to 250 (Output properties, frame-read).
+- Render engine: Cycles, Device GPU Compute, Open Shading Language
+  enabled.
+- Sampling: Render Samples 128, Time Limit 0 s, Denoise on
+  (frame-read; the viewport sampling value is partially legible and is
+  not stated).
+- Nodes corroborated by frames: Geometry Nodes modifier on a cube
+  object, Layer Weight with Factor 0.320, Color Ramp and Mix nodes,
+  two Emission nodes with Strength 3.000 and 1.000, an Area light with
+  Power 131.100.
+- Camera: Focal Length 22 mm (frame-read).
+
+These are frame-read values, not recommendations. The FULL depth
+status above stands on the caption evidence; the addendum does not
+change it.

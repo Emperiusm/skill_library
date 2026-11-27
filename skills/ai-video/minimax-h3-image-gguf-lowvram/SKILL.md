@@ -108,3 +108,15 @@ Sources:
 - The skill's whole failure mode is version mismatch discovered late; a gate that runs before downloads turns the manual Phase 1 check into a contract, and the tier manifest makes the Q8/Q6/Q4 tradeoff explicit and reversible instead of a one-off download choice.
 
 **Depth status:** PARTIAL (files, links, version gates, and hardware rules are fully disclosed in the description; generation settings and quality steps are in-video only, no captions).
+
+## Frame-verified addendum, 2026-11-27 re-audit
+
+The same video was re-encountered in the 2026-11-27 scout run. No captions were found in that extraction either. The run spent one of its two pre-approved media downloads on this video (mid quality, 360p, 25,267,015 bytes) and read 12 frames firsthand. The frames add the following facts, and nothing else new. No transcription was attempted.
+
+- Hugging Face file sizes, read from a model-listing frame (360p, legible): the pruned bf16 file is 40.2 GB, the int8 file is 21 GB, the w4a8 file is 12.5 GB. The int8 filename as shown reads "ned_int8_convrot.safetensors" (prefix cut off at the frame edge; reported as shown).
+- ComfyUI-GGUF node, read from a ComfyUI Manager frame: ComfyUI-GGUF by city96, 6 nodes, version 1.11.0, dated Jan 12, 2026, 2,813,177 downloads, already installed. The neighbouring fork, ComfyUI-GGUF_Forked by mattbyte (5 nodes, 1.0.0, Feb 28, 2025, 33,406 downloads), is shown uninstalled. Use the city96 node, updated to the latest version, per the description.
+- Ready workflow filename, read from a frame: `image_minimax_h3_image_t2i_gguf.json`. The workflow list in the video also names "MiniMax-H3-Image: Image Edit" and "MiniMax-H3-Image: Text to Image".
+- Example-image check, read from a frame: a counting and geometry test image shows 7 green apples in a row, a red cube balanced on a blue sphere, a yellow pyramid, and a glass of liquid. No caption states that the creator intended it as a counting test; it is described here as what the frame shows, not as a stated test protocol.
+- Text-encoder placement, read from a frame header: place files inside `ComfyUI/models/clip/` or `ComfyUI/models/text_encoders/` (the full path list is cut off at the frame edge).
+
+Generation settings and quality steps remain in-video only. The PARTIAL depth status above is unchanged.

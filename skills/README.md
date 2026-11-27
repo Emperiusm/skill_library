@@ -48,6 +48,8 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`self-recorded-mocap-blender-retarget`](characters/self-recorded-mocap-blender-retarget/SKILL.md) | Turn a phone video of yourself into game animation: record the move, run it through a single-camera video mocap tool, retarget the result onto your game rig in Blender, fix the feet and root motion the raw capture gets wrong, and export GLB clips to Godot. Covers Rokoko Vision, DeepMotion, Plask, and Move One pricing and outputs, the Rokoko and Auto-Rig Pro retarget workflows, Mixamo's real role and limits, and the fix pass the source reel skips. |
 | [`comfyui-trellis2-character-pipeline`](characters/comfyui-trellis2-character-pipeline/SKILL.md) | Generate a game character from one reference image with Claude driving ComfyUI's native TRELLIS.2 pipeline: a pose-locked A-pose or T-pose reference with spread fingers, watertight shell check, Blender retopology and rigging handoff, and GLB export. |
 
+| [`jibjab-blender-rigs`](characters/jibjab-blender-rigs/SKILL.md) | Use the JibJab Blender rigs in Blender 5.2.5 or later: seven rigged characters, hand drivers, IK limbs, jaw-bone gag toggles, Mesh Plane accessories at Roughness and IOR 1.0, and custom faces from FFDec-decompiled .swf images. |
+
 ## Procedural generation and worlds (`procgen-worlds/`)
 
 | Skill | What it teaches |
@@ -191,6 +193,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`godot-shallow-water-stream-sim`](simulation-vfx/godot-shallow-water-stream-sim/SKILL.md) | Build a real-time shallow-water stream simulation in Godot 4 with RenderingDevice compute shaders: CPU heightfield prototype first, then a well-balanced staggered-grid shallow-water discretization on the GPU with tuned substeps for stability, and sim-tied visual layers (mesh displacement, advected ripple coordinates, caustics, foam last). |
 | [`stable-fluids-blast-smoke`](simulation-vfx/stable-fluids-blast-smoke/SKILL.md) | Make explosion smoke that pours out of doors and windows: one 80x80 CPU stable-fluids grid per blast at 30 Hz, blast as a pressure divergence source, solid cells for walls, about 1,900 particles riding the field, rendered through a half-float texture. |
 
+| [`unity-urp-procedural-planet-near-surface`](procgen-worlds/unity-urp-procedural-planet-near-surface/SKILL.md) | Render a procedural planet at near-surface detail in Unity URP: 60fps target on an RTX 3070 at 1440p, grass and water as budget breakers, RDR2-derived clouds switched to an opaque version at distance to prevent TAA shimmering. |
+| [`story-driven-procedural-houses`](procgen-worlds/story-driven-procedural-houses/SKILL.md) | Generate procedural houses story-first: backstory per house from street context, 3D following the story, rarity spread so oddities do not repeat, and a reason for every oddity. |
+| [`trochoidal-procedural-ocean-code-drawn`](procgen-worlds/trochoidal-procedural-ocean-code-drawn/SKILL.md) | Draw a procedural pixel-art ocean entirely in code at 320x180: trochoidal waves, shoaling, light-beam deflection, noise sea floor and clouds, weather as a global palette change, seed-generated boid fish. |
 ## Materials and shaders (`materials-shaders/`)
 | [`morphing-bas-relief-baked-lighting`](materials-shaders/morphing-bas-relief-baked-lighting/SKILL.md) | Recreate the Immersive Garden morphing bas-relief effect in Three.js with TSL: bake 6 lighting/shadow levels into 2 textures in Blender, extrude by mouse, interpolate the baked shadows. |
 | [`surface3d-normal-map-sculpting`](materials-shaders/surface3d-normal-map-sculpting/SKILL.md) | Sculpt tufts and cloth detail straight into the normal map with surface3d, a free standalone app: no high-poly mesh, no bake step. |
