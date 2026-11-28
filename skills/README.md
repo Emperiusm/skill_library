@@ -49,6 +49,9 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`comfyui-trellis2-character-pipeline`](characters/comfyui-trellis2-character-pipeline/SKILL.md) | Generate a game character from one reference image with Claude driving ComfyUI's native TRELLIS.2 pipeline: a pose-locked A-pose or T-pose reference with spread fingers, watertight shell check, Blender retopology and rigging handoff, and GLB export. |
 
 | [`jibjab-blender-rigs`](characters/jibjab-blender-rigs/SKILL.md) | Use the JibJab Blender rigs in Blender 5.2.5 or later: seven rigged characters, hand drivers, IK limbs, jaw-bone gag toggles, Mesh Plane accessories at Roughness and IOR 1.0, and custom faces from FFDec-decompiled .swf images. |
+| [`character-backpack-production-pipeline`](characters/character-backpack-production-pipeline/SKILL.md) | Take a character backpack from ZBrush blockout through Marvelous Designer cloth, Blender retopo, Maya UV, Marmoset bake, and Substance texture to Unreal look dev. |
+| [`flesh-dynamics-godot-soft-body-paint`](characters/flesh-dynamics-godot-soft-body-paint/SKILL.md) | Add runtime soft-body flesh to an animated Godot character with Flesh Dynamics: paint soft regions, one godot-cpp binary for 4.3-4.7, 26-neighbour weld, plain paths. |
+| [`comfyui-yedp-face3d-face-reconstruction`](characters/comfyui-yedp-face3d-face-reconstruction/SKILL.md) | Reconstruct one editable 3D face from one image with Yedp-Face3D in ComfyUI, track and animate it, reuse expressions across shots via OpenPose plus ControlNet. |
 
 ## Procedural generation and worlds (`procgen-worlds/`)
 
@@ -196,6 +199,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`unity-urp-procedural-planet-near-surface`](procgen-worlds/unity-urp-procedural-planet-near-surface/SKILL.md) | Render a procedural planet at near-surface detail in Unity URP: 60fps target on an RTX 3070 at 1440p, grass and water as budget breakers, RDR2-derived clouds switched to an opaque version at distance to prevent TAA shimmering. |
 | [`story-driven-procedural-houses`](procgen-worlds/story-driven-procedural-houses/SKILL.md) | Generate procedural houses story-first: backstory per house from street context, 3D following the story, rarity spread so oddities do not repeat, and a reason for every oddity. |
 | [`trochoidal-procedural-ocean-code-drawn`](procgen-worlds/trochoidal-procedural-ocean-code-drawn/SKILL.md) | Draw a procedural pixel-art ocean entirely in code at 320x180: trochoidal waves, shoaling, light-beam deflection, noise sea floor and clouds, weather as a global palette change, seed-generated boid fish. |
+| [`godot-precut-destruction-jolt-sleep`](simulation-vfx/godot-precut-destruction-jolt-sleep/SKILL.md) | Breakable Godot world with pre-cut destruction: Blender pre-cut pieces, Jolt physics, rubble sleeps on stop, local voice casting. |
 ## Materials and shaders (`materials-shaders/`)
 | [`morphing-bas-relief-baked-lighting`](materials-shaders/morphing-bas-relief-baked-lighting/SKILL.md) | Recreate the Immersive Garden morphing bas-relief effect in Three.js with TSL: bake 6 lighting/shadow levels into 2 textures in Blender, extrude by mouse, interpolate the baked shadows. |
 | [`surface3d-normal-map-sculpting`](materials-shaders/surface3d-normal-map-sculpting/SKILL.md) | Sculpt tufts and cloth detail straight into the normal map with surface3d, a free standalone app: no high-poly mesh, no bake step. |
@@ -301,6 +305,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`unity-sdf-ui-shader-batching`](engine-runtime/unity-sdf-ui-shader-batching/SKILL.md) | Build Unity UI with rounded corners, soft shadows, and shine in a single shader without breaking batching: rounded-box SDF on one quad, per-corner radii packed into UV channels, mesh grown by shadow bounds, materials pooled by effect settings. |
 | [`godot-500-rigidbody-octree-two-viewport`](engine-runtime/godot-500-rigidbody-octree-two-viewport/SKILL.md) | Run a 500-ship RigidBody3D fleet battle in Godot 4.7: engine-level octree replaces a 30ms+ GDScript neighbour search, shoot/evade timers with predictive targeting, distance-scaled effects, two viewports with +25 degrees FOV on the background. |
 | [`leveldot-godot-hotspot-texturing`](engine-runtime/leveldot-godot-hotspot-texturing/SKILL.md) | Model and texture a Godot level in Leveldot, a standalone Godot-made level editor: extrude and hotspot-texture with no manual UV mapping, then export into Godot and walk the level. DEPTH-LIMITED: frames only, no transcript. |
+| [`godot-48-trail3d-fogvolume-dust`](engine-runtime/godot-48-trail3d-fogvolume-dust/SKILL.md) | Godot 4.8 RC1 Trail3D sword trail and FogVolume dust burst: swing-plane alignment, volume_size 160, volume_depth 128, reprojection 0.6, local warm emission fix. |
 
 ## Automation and bridges (`automation/`)
 
@@ -348,6 +353,7 @@ Every directory here is one executable skill: a `SKILL.md` playbook that teaches
 | [`enso-blender-godot-npr-link`](automation/enso-blender-godot-npr-link/SKILL.md) | Send a full anime/NPR scene from Blender to Godot 4.7 with one button (Enso Engine): node trees translated to Godot shaders, reflections, post stack, rigs/animation; particles, hair curves, volumes unsupported. |
 
 | [`claude-code-agent-office-threejs`](automation/claude-code-agent-office-threejs/SKILL.md) | Turn Claude Code session logs into a live three.js office: sessions as team leads, sub-agents as characters at role-based desks, A* pathfinding, canvas-texture monitors, LED status encoding, low-power throttle so it can stay open all day. |
+| [`claude-fable-headless-self-check-game-loop`](automation/claude-fable-headless-self-check-game-loop/SKILL.md) | Build a browser game with Claude Fable 5.2 in Claude Code: one small change per build, headless same-shot screenshots plus frame-time self-check, human judges feel and sound. |
 ## No-tooling examples (`no-tooling/`)
 
 | Skill | What it teaches |

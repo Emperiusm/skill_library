@@ -7,23 +7,23 @@ description: "Render a procedural planet at near-surface detail in Unity URP wit
 
 ## Purpose
 
-This skill reconstructs the exact workflow El-Jomo shows for near-surface rendering of a procedural planet, with walking added, in Unity with URP and custom shaders. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The core method is: set a measured performance target on named hardware, build clouds from a reference presentation, switch clouds by distance, and report the worst case at the switch point.
+This skill reconstructs the exact workflow El-Jomo shows for near-surface rendering of a procedural planet, with walking added, in Unity with URP and custom shaders. Every phase has three parts: **Do** (the action), **Check** (how the human verifies it), and **Why** (the principle). The core method is: set a measured performance target on named hardware, build terrain from prebaked heightmaps blended by Wave Function Collapse, build clouds from a reference presentation, switch clouds by distance, and report the worst case at the switch point.
 
 ## Source
 
-Creator: El-Jomo. Post: "Did some work on near-surface rendering of my procedural planet. Took the opportunity to add walking as well" — https://www.reddit.com/r/proceduralgeneration/comments/1y651u9/ (score 142, 13 comments, all retrieved). Video: https://v.redd.it/6cvhyxhfez3i1. Scout audit 2026-11-27, audit 2, PARTIAL.
+Creator: El-Jomo. Post: "Did some work on near-surface rendering of my procedural planet. Took the opportunity to add walking as well" — https://www.reddit.com/r/proceduralgeneration/comments/1y651u9/ (score 142 at first audit, 174 on re-scan, 13 comments then 15; 14 retrieved 2026-11-28). Video: https://v.redd.it/6cvhyxhfez3i1. Scout audit 2026-11-27, audit 2, PARTIAL; expanded 2026-11-28 with the creator's heightmap answer (Phase 2), which the 2026-11-27 retrieved comments did not contain.
 
 ## Tools used
 
-Unity with URP as a basis; all shaders custom. No Unity version, terrain tool, heightmap method, or ground-texturing method is stated in the post or comments. The linked cloud reference presentation was not watched in this run.
+Unity with URP as a basis; all shaders custom. Terrain: prebaked, tiling heightmaps with curvature, AO, and soil data, blended with Wave Function Collapse weight distribution and multi-octave distance blending (Phase 2). No Unity version, terrain tool, or ground-texture authoring method is stated in the post or comments. The linked cloud reference presentation was not watched in this run.
 
 ## AAA studio practice
 
-**Hello Games, No Man's Sky (GDC 2017).** Innes McKendrick's "Continuous World Generation" breaks the pipeline into voxel-based world generation, polygonization, texturing, and population/simulation, generated continuously in real time so players transition seamlessly from space to an interactive, populated terrain; Sean Murray's companion talk, "Building Worlds Using Math(s)," covers the noise, fractal, and L-system maths behind believable terrain. The governing rule, repeated across Hello Games' accounts of the game, is deterministic generation from seeds: the same seed yields the same planet, computed on demand rather than stored. Source: https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i- — The transferable discipline is the stage order plus the determinism contract: terrain, then surface detail, then population, each stage re-derivable from the seed, so a near-surface view and a space view of the same coordinates can never disagree. The creator's two open questions (heightmap method, ground texturing) are exactly the first two stages of this pipeline; answering them in that order is the work, not a choice between them.
+**Hello Games, No Man's Sky (GDC 2017).** Innes McKendrick's "Continuous World Generation" breaks the pipeline into voxel-based world generation, polygonization, texturing, and population/simulation, generated continuously in real time so players transition seamlessly from space to an interactive, populated terrain; Sean Murray's companion talk, "Building Worlds Using Math(s)," covers the noise, fractal, and L-system maths behind believable terrain. The governing rule, repeated across Hello Games' accounts of the game, is deterministic generation from seeds: the same seed yields the same planet, computed on demand rather than stored. Source: https://www.gamedeveloper.com/programming/video-how-continuous-world-generation-works-in-i-no-man-s-sky-i- — The transferable discipline is the stage order plus the determinism contract: terrain, then surface detail, then population, each stage re-derivable from the seed, so a near-surface view and a space view of the same coordinates can never disagree. The creator's heightmap method (answered 2026-11-28, Phase 2) and the remaining ground-texturing question are exactly the first two stages of this pipeline; answering them in that order is the work, not a choice between them.
 
 **Cloud Imperium Games, Star Citizen.** CIG moved the engine to 64-bit positioning with camera-relative rendering because 32-bit precision degrades with distance from origin (millimetres become centimetres, then metres), and built Planet Ed so artists get "90% of the way there" procedurally and hand-tune the final 10%. Planets generate on demand based on where the camera views from, "since the planet could never fit in memory." Sources: https://gamersnexus.net/gg/2636-citizencon-parallax-occlusion-mapping-sean-tracy-interview and https://www.eurogamer.net/watch-star-citizen-reveal-procedurally-generated-planets — Two transfers, both labeled: the 90/10 split is the right framing for the creator's "vibe-coded" clouds (procedural first pass, hand-tuned finish, with the split recorded), and the precision warning is an open check for any Unity (single-precision float) planet at orbital distances, not a recipe imported here.
 
-**Rockstar Games, Red Dead Redemption 2 (SIGGRAPH 2019).** Fabian Bauer's "Creating the Atmospheric World of Red Dead Redemption 2: A Complete and Integrated Solution" covers the game's sky rendering as one integrated system: cloud and fog rendering, volumetric effects, and the resulting ambient lighting model that represents indirect light. Source (course listing with abstract): https://www.realtimerendering.com/advances/s2019/index.htm — Caveat: the creator's linked presentation was not watched in this run, so whether it is this talk is unconfirmed; cite Bauer's published talk only for the integrated-atmosphere principle, not for any step the creator used. The principle still bites: clouds are part of the lighting model, not a backdrop, which is why switching cloud representations by distance (Phase 3) must also switch what the lighting expects, and why the switch point, not the average frame, is where the cost is reported.
+**Rockstar Games, Red Dead Redemption 2 (SIGGRAPH 2019).** Fabian Bauer's "Creating the Atmospheric World of Red Dead Redemption 2: A Complete and Integrated Solution" covers the game's sky rendering as one integrated system: cloud and fog rendering, volumetric effects, and the resulting ambient lighting model that represents indirect light. Source (course listing with abstract): https://www.realtimerendering.com/advances/s2019/index.htm — Caveat: the creator's linked presentation was not watched in this run, so whether it is this talk is unconfirmed; cite Bauer's published talk only for the integrated-atmosphere principle, not for any step the creator used. The principle still bites: clouds are part of the lighting model, not a backdrop, which is why switching cloud representations by distance (Phase 4) must also switch what the lighting expects, and why the switch point, not the average frame, is where the cost is reported.
 
 **Agent automation (agent-written checks, no creator values invented).** Keep a `planet-perf.json` ledger, one row per capture, recorded at fixed camera distances (orbit, far, switch point, near-surface, walking) on the named hardware (RTX 3070, 1440p native): fps, frame time, and the active cloud representation. The gate is completeness, not a threshold: a run is incomplete if the switch-point row is missing, since the creator's own worst case (around 50fps) lives there. Two further checks: (1) LOD continuity: sample terrain height at the same coordinates from the orbital LOD and the ground LOD for the same seed and record the measured delta with paired renders; fail on a visible seam, and set no numeric tolerance here, the first measured delta becomes the baseline. (2) Switch shimmer: paired renders just inside and outside the cloud-switch distance, pixel-diffed, with the diff image saved as the TAA-shimmer evidence; no shimmer threshold is invented. Precision audit (labeled inference): log camera distance from origin at the farthest view and check paired renders for vertex jitter at increasing distances; if jitter appears, record it as an open gap with CIG's 64-bit/camera-relative approach as the reference direction, not as a fix applied here.
 
@@ -39,7 +39,22 @@ Unity with URP as a basis; all shaders custom. No Unity version, terrain tool, h
 **Why**
 A named target on named hardware turns "needs optimization" into a measured statement. The two named breakers say where the work goes.
 
-## Phase 2: Build clouds from a reference presentation
+## Phase 2: Build terrain from prebaked heightmaps blended by Wave Function Collapse [added 2026-11-28]
+
+**Do**
+1. Reject runtime noise: "I never liked the look I got from noises so I went with prebaked, tiling, heightmaps." (El-Jomo, comment, verbatim).
+2. For each heightmap, also store curvature, AO, and soil data ("For each map I also have curvature, AO, Soil-data etc.", comment, verbatim).
+3. For a planet, select 3 to 4 heightmaps at random and distribute their weights using Wave Function Collapse (comment, verbatim: "For a planet I select 3-4 heightmaps at random and distribute their weights using Wave Function Collapse.").
+4. When sampling a heightmap, sample in several octaves and blend based on distance, "which reduces the repetition" (comment, verbatim).
+5. Keep scattering and ground colors independent of the heightmap: "The scattering and ground colors are independent of the heightmap which means the same alpine mountain range can be used in a lush biome and a dessert biome." (comment, verbatim; "dessert" as written).
+
+**Check**
+- The terrain does not read as repeated noise tiling; the same mountain range reads differently across biomes. No repetition metric or screenshot comparison is given.
+
+**Why**
+Prebaked maps buy the look noise did not deliver, and the stated tradeoff is disk and memory size: "The tradeoff is of course the size of the project on disk (and memory to a certain extent). The heightmaps are pretty beefy." (comment, verbatim). Decoupling color from height is what multiplies one heightmap into many biomes without new geometry. The author is considering generating heightmaps at load time instead, but notes "that requires a lot of work", so it is an open consideration, not a done step.
+
+## Phase 3: Build clouds from a reference presentation
 
 **Do**
 1. Build the clouds from the Red Dead Redemption 2 presentation the creator links in a comment (YouTube link, timestamp 7116). The creator's word for the process is "vibe-coded": "I basically vibe-coded the clouds from Red Dead Redemption 2 based on [this] presentation."
@@ -51,7 +66,7 @@ A named target on named hardware turns "needs optimization" into a measured stat
 **Why**
 Building from a named reference presentation, and saying so, keeps the cloud method traceable even when the implementation was improvised.
 
-## Phase 3: Switch clouds by distance to prevent TAA shimmering
+## Phase 4: Switch clouds by distance to prevent TAA shimmering
 
 **Do**
 1. When the planet is far away, switch to a cheaper opaque version of the clouds "to prevent TAA shimmering" (El-Jomo, verbatim reason).
@@ -65,29 +80,31 @@ Building from a named reference presentation, and saying so, keeps the cloud met
 **Why**
 Distance switching trades cloud fidelity for stability at range. The switch point is where the cost is worst, so the worst case, not the average, is the number to report.
 
-## Phase 4: Add walking, and leave the open questions open
+## Phase 5: Add walking, and leave the open questions open
 
 **Do**
 1. Add walking to the near-surface rendering. The viewpoint is not stated in the retrieved text and is not assumed here.
-2. Record the two unanswered commenter questions as open work, not as solved steps: how the heightmap generation was done (a commenter assumes noise and says the result looks better than a basic implementation), and how the ground textures and colouring were done. The creator did not answer either in the retrieved comments.
+2. Record the known limitations as stated by the creator: the system "currently assumes the planet at origin" (comment, verbatim), with ideas for fixing it but no need for dynamic interplanetary travel in the game he has in mind; there is no day/night cycle yet, and the creator is "tempted to just rotate my directional ligtht" (comment, verbatim spelling) to avoid dealing with physics.
+3. Record the remaining open question: the ground-texture authoring method beyond the independence statement in Phase 2 is still unstated, and the walking implementation is unknown.
 
 **Check**
-- A future breakdown answers the heightmap question and the ground-texture question with a method, not a guess.
+- A future breakdown answers the ground-texture authoring question with a method, not a guess. The heightmap question, recorded as unanswered in the 2026-11-27 version of this skill, is answered in Phase 2 above; do not treat it as open.
 
 **Why**
-Unanswered questions recorded as open protect the next person from building on an invented method.
+Answered and unanswered questions recorded separately protect the next person from building on an invented method. The heightmap answer closes one question; it does not close the texture-authoring question.
 
 ## Failure modes
 
 - Reporting only the far-view frame rate (around 70fps) and hiding the pre-switch worst case (around 50fps). The creator reports both; the worst case is the honest number.
-- Assuming a heightmap method (for example, plain noise) when the creator left the question unanswered. No method is stated.
+- Assuming a heightmap method (for example, plain noise) when the creator's stated method is prebaked tiling heightmaps blended by Wave Function Collapse (Phase 2). Do not substitute noise for the stated method.
 - Assuming the walking viewpoint. It is not stated.
 
 ## The human method, distilled
 
 1. State the hardware, resolution, and frame-rate target before judging the work.
 2. Name the two things that break the budget.
-3. Switch the expensive thing to a cheaper version at distance, and report the worst case at the switch point.
-4. Build from a reference presentation and say so, including the word "vibe-coded".
+3. When a method does not deliver the look, replace the method (noise to prebaked maps) and state the tradeoff (disk/memory) honestly.
+4. Switch the expensive thing to a cheaper version at distance, and report the worst case at the switch point.
+5. Build from a reference presentation and say so, including the word "vibe-coded".
 
-**Depth status:** PARTIAL. Engine, custom-shader fact, performance numbers, cloud switch, and open questions are grounded in the post and comments. Heightmap generation, ground texturing, and the walking implementation are unknown.
+**Depth status:** PARTIAL. Engine, custom-shader fact, performance numbers, cloud switch, and the heightmap method are grounded in the post and comments. Ground-texture authoring, the walking implementation, and the day/night cycle are unknown.
