@@ -17,6 +17,20 @@ Post: "I turned the JibJab presidential candidates into Blender rigs" by DragonA
 
 Blender 5.2.5 or later, one `.blend` file (`JibJab Blender Rigs.blend`, plus a `.blend1` backup file), a `shapes` directory, FFDec (to decompile JibJab `.swf` files for custom rigs). The `.blend` file itself was not opened in this run, and the tech-demo video linked from the README was not reviewed, so bone names and driver values are not stated here.
 
+## AAA studio practice
+
+**Arc System Works, Guilty Gear Xrd -SIGN- (GDC 2015).** Technical artist Junya C. Motomura's talk, "Guilty Gear Xrd's Art Style: The X Factor Between 2D and 3D," describes adapting 480p 2D sprites to 1080p 3D models under one tenet: "kill everything 3D," so the models read as hi-res 2D sprites, with intentionally limited animation, character-specific lighting, and hand-keyed animation during cutscenes and close-ups. Source: https://www.polygon.com/2015/5/26/8663003/guilty-gear-xrd-cel-shading-making-of — The JibJab rigs run the same problem in the opposite direction (flat 2D art rigged inside a 3D file). The transferable discipline is per-character law, not generic rigging: decide what stays flat and limited for each character and enforce it. The Dean scream toggle and the Kerry/Clinton side-head toggles in Phase 2 are exactly that kind of character-specific control; treat them as animation law for that character, not as interchangeable rig features. Do not let default smooth 3D interpolation erase a gag that only reads at a held, limited pose.
+
+**Blender Studio, Sprite Fright (studio film production, not a game).** The production logs show rigging as an animator-feedback loop, not a one-shot build: rigger Demeter Dzadik iterated the face rigs through expression pose tests (Rex's eyelids on bendy bones, "round 1 of Rex face rig feedback"), refined the CloudRig tooling from animator requests, and built a Python override system so shot lighting could override rigged assets without breaking them. Source: https://studio.blender.org/projects/sprite-fright/production-logs/2021/may/ — The transferable discipline is rig acceptance by pose test: a rig is done when an animator can hit the desired poses and transitions, with each feedback round logged, not when the file merely opens. Apply that to Phase 2: pose-test every character (hands via drivers, limbs via IK, each named jaw toggle) and log the round, instead of checking the armature exists once.
+
+**Agent automation (agent-written checks, no creator values invented).** Run a headless audit against the `.blend` file before any custom-rig work, and re-run it after Phase 4:
+
+```
+blender --background "JibJab Blender Rigs.blend" --python rig_audit.py
+```
+
+`rig_audit.py` (discover, never assert, bone/control names, which the README does not give) writes `rig-audit.json` with: Blender version vs the 5.2.5 floor; every armature and its driver count; every driver whose variable target is missing (broken driver); every hand material with more than one user (shared, must be single-user before a custom rig); every accessory material whose Roughness or IOR is not 1.0. After Phase 4, the gate is: every hand driver variable target must point at the custom rig's armature object, and no hand material may still be shared with the original rig. Fail the run on any broken driver or any shared hand material; the audit discovers names from the file, so it cannot pass by inventing them.
+
 ## Phase 1: Open the rig file in Blender 5.2.5 or later
 
 **Do**
